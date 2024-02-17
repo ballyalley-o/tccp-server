@@ -85,7 +85,7 @@ Needs to be fetching datas from the sources and passing them to users as much as
 
 •Does the software conform to any technical standards to ease maintainability?
 
-### Mock[Link](https://www.figma.com/file/tZXvOHsfeq4e128I4Mdr0I/THE-CODE-COACH-PROJECT?node-id=0%3A1&t=cyO2mkqkP8JE4b4Y-1)
+### [Design Study](https://www.figma.com/file/tZXvOHsfeq4e128I4Mdr0I/THE-CODE-COACH-PROJECT?node-id=0%3A1&t=cyO2mkqkP8JE4b4Y-1)
 
 ### Project Planning
 
