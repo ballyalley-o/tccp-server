@@ -1,5 +1,6 @@
 import 'colors'
 import ILogger from '@interface/logger'
+import { Key } from '@constant/enum'
 
 declare module 'colors' {
   interface String {
@@ -8,13 +9,8 @@ declare module 'colors' {
     bgRed: string
     red: string
     bgYellow: string
-    // errored: any[]
   }
 }
-
-// colors.setTheme({
-//   errored: ['bgWhite', 'bold'],
-// })
 
 const logger: ILogger = {
   // @type - custom
@@ -34,19 +30,41 @@ const logger: ILogger = {
   tbl: (...message: any[]) => console.table(message),
 
   // @type - error
-  error: (...message: string[]) =>
-    console.log(new Error(message.join(' ').bgRed)),
+  error: (...message: string[]) => console.log(message.join('').red.bold),
 
   // @type - debug
   debug: (...message: string[]) => console.debug(message.join(' ').bgRed),
 
-  server: (port: any, apiRoot: any, isConnected: boolean) => {
-    console.log('SERVER PORT: '.bgYellow, port.yellow)
-    console.log('SERVER API: '.bgYellow, apiRoot.yellow)
-    if (isConnected) {
-      console.log('SERVER STATUS: '.bgYellow, 'CONNECTED 🟢'.yellow)
+  req: (req, res) => {
+    console.log('')
+    console.log(Key.ReqMethod.dim, req.method.yellow.bold)
+    console.log(Key.ReqURL.dim, req.url.yellow.bold)
+    console.log(Key.ReqTime.dim, new Date().toString().yellow.bold)
+    console.log('')
+  },
+
+  /**
+   *
+   * @param port - server port
+   * @param apiRoot - api version
+   * @param isProd - send the status of the server environment
+   * @param isConnected - send the status of the server connection
+   * @return void
+   */
+  server: (port: any, apiRoot: any, isProd: boolean, isConnected: boolean) => {
+    console.log(Key.ServerPort.bgYellow, port.yellow)
+    console.log(Key.ServerAPIVersion.bgYellow, apiRoot.yellow)
+
+    if (isProd) {
+      console.log(Key.Environment.bgYellow, Key.Production.blue.bold)
     } else {
-      console.log('SERVER STATUS: '.bgRed, 'NOT CONNECTED 🛑'.red)
+      console.log(Key.Environment.bgYellow, Key.Development.white.bold)
+    }
+
+    if (isConnected) {
+      console.log(Key.ServerStatus.bgYellow, Key.Connected.green.bold)
+    } else {
+      console.log(Key.ServerStatus.bgYellow, Key.NotConnected.red.bold)
     }
   },
 
@@ -56,7 +74,7 @@ const logger: ILogger = {
       {
         HOST: host,
         DATABASE: dbName,
-        STATUS: isConnected ? 'CONNECTED' : 'NO CONNECTION',
+        STATUS: isConnected ? Key.Connected : Key.NotConnected,
       },
     ]
     console.table(DB_LOG)
