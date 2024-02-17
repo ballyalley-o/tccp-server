@@ -4,9 +4,9 @@ import { Request, Response } from 'express'
 const RESPONSE = {
   server: (req: Request, res: Response) => {
     const response = {
-      name: 'ClassMate',
+      name: 'The CodeCoach Projct',
       status: 'Running',
-      API: 'classmate-server',
+      API: 'tccp-server',
       // url: GLOBAL.baseUrl,
       // port: GLOBAL.port,
       // environment: GLOBAL.env,
