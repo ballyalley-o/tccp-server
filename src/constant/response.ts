@@ -32,6 +32,7 @@ const RESPONSE = {
     503: 'SERVICE UNAVAILABLE: The server is temporarily unable to handle the Request',
     504: 'GATEWAY TIMEOUT: The server acting as a gateway did not receive a timely response from an upstream server',
     parseErr: (err: any) => `Error parsing JSON: ${err}`,
+    NotInstance: 'This class cannot be instantiated',
   },
 }
 
