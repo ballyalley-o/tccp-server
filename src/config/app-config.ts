@@ -1,5 +1,6 @@
 import express, { Application } from 'express'
 import GLOBAL from '@config/global'
+import { AppRouter } from '@app-router'
 import { logger, errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
 import { oneDay } from '@constant'
@@ -59,7 +60,7 @@ class App {
   @LogInitRequest
   private registerRoute() {
     // this._app.use(AppRouter.instance)
-    // AppRouter.serverRouter()
+    AppRouter.serverRouter()
   }
 
   /**
