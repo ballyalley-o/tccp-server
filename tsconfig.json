@@ -8,8 +8,11 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
-      "@*": ["./*"]
+      "@*": ["./*"],
+      "@enum": ["@constant/enum"]
     },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "noResolve": false,
     "skipLibCheck": true,
     "jsx": "preserve",
