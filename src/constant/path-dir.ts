@@ -9,7 +9,7 @@ import { PathParam } from '@constant/enum'
  * @description This class handles all routers/traffic and acts as a path directory
  * @returns void
  */
-export class PathDir {
+class PathDir {
   constructor() {
     throw new Error(RESPONSE.error.NotInstance)
   }
@@ -39,3 +39,5 @@ export class PathDir {
   static BUILD_LOC = this._connex(__dirname, 'client', '.dist')
   static BUILD_VIEW = this._connex(__dirname, 'client', '.dist', 'index.html')
 }
+
+export default PathDir
