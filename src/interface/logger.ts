@@ -1,3 +1,5 @@
+import { IExpressController } from '@interface/middleware'
+
 interface ILogger {
   /**
    * Custom log
@@ -42,12 +44,21 @@ interface ILogger {
    */
   debug(...message: string[]): void
 
+  req: IExpressController
+
   /**
    *
    * @param port - server port
+   * @param apiRoot - api version
+   * @param isProd - send the status of the server environment
    * @param isConnected - send the status of the server connection
    */
-  server(port: any, apiRoot: any, isConnected: boolean): void
+  server(
+    port: number,
+    apiRoot: string,
+    isProd: boolean,
+    isConnected: boolean
+  ): void
 
   /**
    * Preset log type for connection status update in the console
