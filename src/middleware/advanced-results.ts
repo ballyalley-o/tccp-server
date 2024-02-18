@@ -1,71 +1,84 @@
-const advancedResults = (model, populate) => async (req, res, next) => {
-  let query
-  //c    opy query string
-  let queryStr = JSON.stringify(req.query)
+import { Request, Response, NextFunction } from 'express'
+import { Model } from '@typings'
+import { IPagination } from '@interface'
 
-  const reqQuery = { ...req.query }
-  const removeFields = ['select', 'sort', 'page', 'limit']
+const advancedResults =
+  (model: any, populate: any) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    let query
+    //c    opy query string
+    let queryStr = JSON.stringify(req.query)
 
-  removeFields.forEach((param) => delete reqQuery[param])
+    const reqQuery = { ...req.query }
+    const removeFields = ['select', 'sort', 'page', 'limit']
 
-  //create query string
-  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`)
+    removeFields.forEach((param) => delete reqQuery[param])
 
-  //append query operators
-  query = model.find(JSON.parse(queryStr))
+    queryStr = queryStr.replace(
+      /\b(gt|gte|lt|lte|in)\b/g,
+      (match) => `$${match}`
+    )
 
-  //select fields
-  if (req.query.select) {
-    const fields = req.query.select.split(',').join(' ')
-    query = query.select(fields)
-  }
+    //append query operators
+    query = model.find(JSON.parse(queryStr))
 
-  //sort
-  if (req.query.sort) {
-    const sortBy = req.query.sort.split(',').join(' ')
-    query = query.sort(sortBy)
-  } else {
-    query = query.sort('name')
-  }
-
-  const page = parseInt(req.query.page, 10) || 1
-  const limit = parseInt(req.query.limit, 10) || 25
-  const startIndex = (page - 1) * limit
-  const endIndex = page * limit
-  const total = await model.countDocuments()
-
-  query = query.skip(startIndex).limit(limit)
-
-  if (populate) {
-    query = query.populate(populate)
-  }
-  //executing query
-  const results = await query
-
-  //pagination results
-  const pagination = {}
-
-  if (endIndex < total) {
-    pagination.next = {
-      page: page + 1,
-      limit,
+    //select fields
+    if (typeof req.query.select === 'string') {
+      const fields = req.query.select.split(',').join(' ')
+      query = query.select(fields)
     }
-  }
 
-  if (startIndex > 0) {
-    pagination.prev = {
-      page: page - 1,
-      limit,
+    //sort
+    const page = parseInt((req.query.page as string) || '', 10) || 1
+    const limit = parseInt((req.query.limit as string) || '', 10) || 25
+    const startIndex = (page - 1) * limit
+    const endIndex = page * limit
+    const total = await model.countDocuments()
+
+    query = query.skip(startIndex).limit(limit)
+
+    if (populate) {
+      query = query.populate(populate)
     }
-  }
+    //executing query
+    const results = await query
 
-  res.advancedResults = {
-    success: true,
-    count: results.length,
-    pagination,
-    data: results,
+    const pagination: IPagination = {}
+
+    if (endIndex < total) {
+      pagination.next = {
+        page: page + 1,
+        limit,
+      }
+    }
+
+    if (startIndex > 0) {
+      pagination.prev = {
+        page: page - 1,
+        limit,
+      }
+    }
+
+    // Add custom property 'advancedResults' to Response type
+    interface CustomResponse extends Response {
+      advancedResults: {
+        success: boolean
+        count: number
+        pagination: IPagination
+        data: Model[]
+      }
+    }
+
+    // Cast 'res' to CustomResponse
+    const customRes = res as CustomResponse
+
+    customRes.advancedResults = {
+      success: true,
+      count: results.length,
+      pagination,
+      data: results,
+    }
+    next()
   }
-  next()
-}
 
 module.exports = advancedResults
