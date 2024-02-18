@@ -1,11 +1,13 @@
 import express, { Application } from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import GLOBAL from '@config/global'
+import { setHeader, connectDb } from '@config'
 import { AppRouter } from '@app-router'
+import { mainRoute } from '@route'
 import { logger, errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
 import { oneDay } from '@constant'
-import '@controllers/auth'
-import '@controllers/core'
 
 const TAG_env = 'production'
 
@@ -24,7 +26,9 @@ class App {
   isConnected: boolean = false
 
   static app() {
-    return new App().start()
+    const app = new App()
+    app.connectDb()
+    app.start()
   }
 
   /**
@@ -41,13 +45,9 @@ class App {
     this._app = express()
     this._app.use(express.json())
     this._app.use(express.urlencoded({ extended: true }))
-    // this._app.use(
-    //   cookieSession({
-    //     name: 'bobbi-session',
-    //     keys: ['key1'],
-    //     maxAge: oneDay,
-    //   })
-    // )
+    this._app.use(cookieParser())
+    this._app.use(setHeader)
+    this._app.use(cors())
     this.registerRoute()
     this._app.use(notFound)
     this._app.use(errorHandler)
@@ -60,7 +60,22 @@ class App {
   @LogInitRequest
   private registerRoute() {
     // this._app.use(AppRouter.instance)
+    mainRoute(this._app)
     AppRouter.serverRouter()
+  }
+
+  /**
+   * Connects to the database.
+   * @returns A promise that resolves when the database connection is established.
+   */
+  public async connectDb(): Promise<void> {
+    try {
+      await connectDb(true)
+    } catch (error) {
+      if (error instanceof Error) {
+        logger.error(error.message)
+      }
+    }
   }
 
   /**
