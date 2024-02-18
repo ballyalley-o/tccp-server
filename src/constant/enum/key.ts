@@ -3,6 +3,10 @@ enum Key {
   User = 'User',
 
   Cookie = 'cookie',
+  Token = 'token',
+  None = 'none',
+
+  CryptoHash = 'sha256',
   // @error keys
   ObjectId = 'ObjectId',
   CastError = 'CastError',
@@ -11,6 +15,7 @@ enum Key {
   Environment = 'ENVIRONMENT',
   Production = 'production',
   Development = 'development',
+  Password = '+password',
 
   // @logger - req
   ReqMethod = ' Request Method: ',
@@ -20,6 +25,9 @@ enum Key {
   ServerPort = ' SERVER PORT: ',
   ServerAPIVersion = ' API VERSION: ',
   ServerStatus = ' SERVER STATUS: ',
+  // @nodemailer - mailtrap
+  MessageSent = ' Message sent: %s ',
+  MessageError = ' Error occurred: %s ',
 }
 
 export default Key
