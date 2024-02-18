@@ -2,16 +2,17 @@ import { asyncHandler } from '@middleware'
 import { ErrorResponse } from '@util'
 import { RESPONSE } from '@constant'
 import { User } from '@model'
+import { IResponseExtended } from '@interface'
 
 //@desc     Get all users
-//@route    GET /api/v1/auth/users
+//@route    GET /api/v0.1/auth/users
 //@access   Private/Admin
 const getUsers = asyncHandler(async (req, res, next) => {
-  res.status(200).json(res.advancedResults)
+  res.status(200).json((res as IResponseExtended).advancedResults)
 })
 
 //@desc     Get a user
-//@route    GET /api/v1/auth/users/:userId
+//@route    GET /api/v0.1/auth/users/:userId
 //@access   Private/Admin
 const getUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id)
@@ -24,7 +25,7 @@ const getUser = asyncHandler(async (req, res, next) => {
 })
 
 //@desc     Create a new user
-//@route    POST /api/v1/auth/users
+//@route    POST /api/v0.1/auth/users
 //@access   Private/Admin
 const createUser = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body)
@@ -37,7 +38,7 @@ const createUser = asyncHandler(async (req, res, next) => {
 })
 
 //@desc     Update a user
-//@route    PUT/api/v1/auth/users/:id
+//@route    PUT/api/v0.1/auth/users/:id
 //@access   Private/Admin
 const updateUser = asyncHandler(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -53,7 +54,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
 })
 
 //@desc   Delete a user
-//@route  PUT/api/v1/auth/users/:id
+//@route  PUT/api/v0.1/auth/users/:id
 //@access Private/Admin
 const deleteUser = asyncHandler(async (req, res, next) => {
   await User.findByIdAndDelete(req.params.id)
@@ -65,4 +66,5 @@ const deleteUser = asyncHandler(async (req, res, next) => {
   })
 })
 
-export { getUsers, getUser, createUser, updateUser, deleteUser }
+const userController = { getUsers, getUser, createUser, updateUser, deleteUser }
+export default userController
