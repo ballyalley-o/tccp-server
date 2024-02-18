@@ -13,7 +13,7 @@ const GLOBAL = {
     process.env.API_VERSION || ''
   ),
   API_VERSION: process.env.API_VERSION || '',
-  PORT: Number(process.env.PORT) || 3005,
+  PORT: process.env.PORT || 3005,
   ENV: process.env.NODE_ENV || '',
   // jwt
   JWT_SECRET: process.env.JWT_SECRET,
