@@ -2,7 +2,7 @@ import { __dirname } from '@config'
 import { GLOBAL } from '@config'
 import { conNex } from '@util'
 import { RESPONSE } from '@constant'
-import { PathParam } from '@constant/enum'
+import { PathParam, Key } from '@constant/enum'
 
 /**
  * @class PathDir
@@ -17,8 +17,10 @@ class PathDir {
   // path parameters
   static readonly ORIGIN_PARAM = PathParam.ORIGIN_PARAM
   static readonly HOME_PARAM = PathParam.HOME_PARAM
+  static readonly DASHBOARD_PARAM = PathParam.DASHBOARD_PARAM
   static readonly API_PARAM = PathParam.API_PARAM
   static readonly AUTH_PARAM = PathParam.AUTH_PARAM
+  static readonly USER_PARAM = PathParam.USER_PARAM
   static readonly SIGN_IN_PARAM = PathParam.SIGN_IN_PARAM
   static readonly SIGN_OUT_PARAM = PathParam.SIGN_OUT_PARAM
 
@@ -28,16 +30,31 @@ class PathDir {
    */
   private static _connex = conNex
 
-  // endpoints
+  /**
+   * ENDPOINTS
+   * @description Path directory for the server
+   */
+  // {baseUrl}/api/{apiVer}
   static API_ROOT = this._connex(PathDir.API_PARAM, GLOBAL.API_VERSION)
-  static HOME = this._connex(PathDir.API_ROOT, this.HOME_PARAM)
+  // {baseUrl}/api/{apiVer}/home
+  static DASHBOARD = this._connex(PathDir.API_ROOT, this.DASHBOARD_PARAM)
+  // {baseUrl}/api/{apiVer}/auth
   static AUTH_ROOT = this._connex(PathDir.API_ROOT, PathDir.AUTH_PARAM)
+  // {baseUrl}/api/{apiVer}/auth/user
+  static USER = this._connex(PathDir.AUTH_ROOT, PathDir.USER_PARAM)
+  // {baseUrl}/api/{apiVer}/auth/sign-in
   static SIGN_IN = this._connex(PathDir.AUTH_ROOT, PathDir.SIGN_IN_PARAM)
+  // {baseUrl}/api/{apiVer}/auth/sign-out
   static SIGN_OUT = this._connex(PathDir.AUTH_ROOT, PathDir.SIGN_OUT_PARAM)
 
   // @production
-  static BUILD_LOC = this._connex(__dirname, 'client', '.dist')
-  static BUILD_VIEW = this._connex(__dirname, 'client', '.dist', 'index.html')
+  static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
+  static BUILD_VIEW = this._connex(
+    __dirname,
+    Key.Client,
+    PathParam.DIST,
+    Key.IndexHtml
+  )
 }
 
 export default PathDir

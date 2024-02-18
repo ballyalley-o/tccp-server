@@ -10,7 +10,6 @@ export interface IExpressController {
   (req: IRequestExtended, res: Response, next: NextFunction): void
 }
 
-// Add custom property 'advancedResults' to Response type
 export interface IResponseExtended extends Response {
   advancedResults: {
     success: boolean
