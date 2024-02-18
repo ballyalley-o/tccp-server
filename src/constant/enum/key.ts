@@ -29,7 +29,7 @@ enum Key {
   CastError = 'CastError',
   Connected = 'CONNECTED 🟢',
   NotConnected = 'NOT CONNECTED 🔴',
-  Environment = 'ENVIRONMENT',
+  Environment = ' ENVIRONMENT: ',
   Production = 'production',
   Development = 'development',
   Password = '+password',
