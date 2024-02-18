@@ -1,11 +1,10 @@
-import { Schema, model } from 'mongoose'
+import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
+import jwt from 'jsonwebtoken'
+import mongoose, { Schema, model } from 'mongoose'
+import { GLOBAL } from '@config'
 import { IUser } from '@interface/model'
 import { Key } from '@constant/enum'
-
-const crypto = require('crypto')
-const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 
 const TAG = Key.User
 
@@ -83,8 +82,8 @@ UserSchema.pre('save', async function (next) {
 
 //Sign JWT and return
 UserSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+  return jwt.sign({ id: this._id }, GLOBAL.JWT_SECRET || '', {
+    expiresIn: GLOBAL.JWT_EXP,
   })
 }
 
@@ -135,6 +134,5 @@ UserSchema.pre('save', async function (next) {
 UserSchema.index({ username: 1 })
 UserSchema.index({ firstname: 1 })
 
-const User = mongoose.model(TAG, UserSchema)
-
+const User = model(TAG, UserSchema)
 export default User
