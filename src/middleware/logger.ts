@@ -52,19 +52,19 @@ const logger: ILogger = {
    * @return void
    */
   server: (port: any, apiRoot: any, isProd: boolean, isConnected: boolean) => {
-    console.log(Key.ServerPort.bgYellow, port.yellow)
-    console.log(Key.ServerAPIVersion.bgYellow, apiRoot.yellow)
+    console.log(Key.ServerPort.dim, port.bgYellow)
+    console.log(Key.ServerAPIVersion.dim, apiRoot.bgYellow)
 
     if (isProd) {
-      console.log(Key.Environment.bgYellow, Key.Production.blue.bold)
+      console.log(Key.Environment.dim, Key.Production.bgBlue.bold)
     } else {
-      console.log(Key.Environment.bgYellow, Key.Development.white.bold)
+      console.log(Key.Environment.dim, Key.Development.bgMagenta.bold)
     }
 
     if (isConnected) {
-      console.log(Key.ServerStatus.bgYellow, Key.Connected.green.bold)
+      console.log(Key.ServerStatus.dim, Key.Connected.green.bold)
     } else {
-      console.log(Key.ServerStatus.bgYellow, Key.NotConnected.red.bold)
+      console.log(Key.ServerStatus.dim, Key.NotConnected.red.bold)
     }
   },
 
