@@ -7,6 +7,7 @@ import { RESPONSE } from '@constant'
 import { Key } from '@constant/enum'
 import { thirtyDays } from '@constant'
 import { GLOBAL } from '@config'
+import { expire } from '@constant/max-age'
 
 //@desc   Register user
 //@method POST /api/v1/auth/register
@@ -145,7 +146,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   if (!user) {
     return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), 404))
   }
-  const resetToken = user.getResetPasswordToken()
+  const resetToken = user.resetPasswordToken
 
   await user.save({ validateBeforeSave: false })
 
@@ -164,18 +165,18 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: 'Email sent',
+      data: RESPONSE.success.EMAIL_SENT,
     })
   } catch (err) {
     console.log(err)
-    user.resetPasswordToken = undefined
-    user.resetPasswordExpire = undefined
+    user.resetPasswordToken = ''
+    user.resetPasswordExpire = expire
 
     await user.save({
       validateBeforeSave: false,
     })
 
-    return next(new ErrorResponse('Email could not be sent', 500))
+    return next(new ErrorResponse(RESPONSE.error.FAILED_EMAIL, 500))
   }
 
   res.status(200).json({
@@ -189,7 +190,6 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 //@method PUT /api/v1/auth/resetpassword/:resettoken
 //@access Public
 const resetPassword = asyncHandler(async (req, res, next) => {
-  //get hashed token
   let resetPasswordToken = crypto
     .createHash(Key.CryptoHash)
     .update(req.params.resettoken)
@@ -204,20 +204,16 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(RESPONSE.error.INVALID_TOKEN, 400))
   }
 
-  //set new password
   user.password = req.body.password
-  resetPasswordToken = ''
-  // resetPasswordExpire =
+  user.resetPasswordToken = ''
+  user.resetPasswordExpire = expire
   await user.save()
 
   sendTokenResponse(user, 200, res)
 })
 
-//get token from model, create cookie and send response
 const sendTokenResponse = (user: any, statusCode: number, res: any) => {
-  //Create Token
   const token = user.getSignedJwtToken()
-
   const options = {
     expires: new Date(Date.now() + thirtyDays),
     httpOnly: true,

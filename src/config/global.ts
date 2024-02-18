@@ -33,6 +33,10 @@ const GLOBAL = {
       pass: process.env.SMTP_PASSWORD,
     },
   } as TransportOptions,
+
+  // @geocoder
+  GEOCODER_PROVIDER: process.env.GEOCODER_PROVIDER,
+  GEOCODER_API_KEY: process.env.GEOCODER_API_KEY,
 }
 
 export default GLOBAL

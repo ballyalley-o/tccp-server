@@ -44,6 +44,7 @@ const RESPONSE = {
     NOT_FOUND: (data: string) => `There is no user with email ${data}`,
     parseErr: (err: any) => `Error parsing JSON: ${err}`,
     NotInstance: 'This class cannot be instantiated',
+    FAILED_EMAIL: 'Email could not be sent',
     RESET_SUBJECT: 'Password Reset Request',
     RESET_MESSAGE: (resetUrl: string) =>
       `A request has been made to reset your password. If you made this request, please copy the following code into the prompt in: \n\n ${resetUrl} to verify your identity.`,

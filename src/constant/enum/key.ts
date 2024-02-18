@@ -1,11 +1,24 @@
 enum Key {
+  Save = 'save',
+  Remove = 'remove',
+
   // @tag
+  id = '_id',
   User = 'User',
+  Course = 'Course',
+  Bootcamp = 'Bootcamp',
+  Cohort = 'Cohort',
+  Feedback = 'Feedback',
+  CourseVirtual = 'courses',
+  BootcampVirtual = 'bootcamp',
 
   Cookie = 'cookie',
   Token = 'token',
   None = 'none',
 
+  HTTPAdapter = 'https',
+
+  Hex = 'hex',
   CryptoHash = 'sha256',
   // @error keys
   ObjectId = 'ObjectId',
@@ -28,6 +41,11 @@ enum Key {
   // @nodemailer - mailtrap
   MessageSent = ' Message sent: %s ',
   MessageError = ' Error occurred: %s ',
+
+  // @geocoder
+  Google = 'google',
+  MapQuest = 'mapquest',
+  GeocoderType = 'Point',
 }
 
 export default Key
