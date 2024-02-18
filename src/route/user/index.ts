@@ -1,8 +1,8 @@
 import { PathDir } from '@constant'
-import studentRoute from '@route/user/user'
+import studentRoute from '@route/user'
 
-const linkStudentRoutes = (app: any) => {
+const linkUserRoutes = (app: any) => {
   app.use(PathDir.USER, studentRoute)
 }
 
-export default linkStudentRoutes
+export default linkUserRoutes
