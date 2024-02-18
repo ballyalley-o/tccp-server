@@ -8,6 +8,7 @@ const options: OptionsExtended = {
   //   provider: GLOBAL.GEOCODER_PROVIDER || 'google',
   provider: Key.MapQuest,
   httpAdapter: Key.HTTPAdapter,
+  // TODO: REFAX: call to app-config
   apiKey: process.env.GEOCODER_API_KEY || '',
   formatter: null,
 }
