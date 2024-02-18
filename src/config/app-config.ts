@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser'
 import { setHeader, connectDb } from '@config'
 import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
+// TODO: REFAX: call logger library from github
 import { logger, errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
 import { Key } from '@constant/enum'
