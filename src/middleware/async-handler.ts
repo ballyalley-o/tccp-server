@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+// import { IResponseExtended } from '@interface'
 
 type AsyncHandler = (
   req: Request,
