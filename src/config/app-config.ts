@@ -4,21 +4,29 @@ dotenv.config()
 
 import express, { Application } from 'express'
 import nodemailer from 'nodemailer'
+import logger from 'logger'
 import NodeGeocoder from 'node-geocoder'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { setHeader, connectDb } from '@config'
 import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
-// TODO: REFAX: call logger library from github
-import { logger, errorHandler, notFound } from '@middleware'
+import { errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
 import { Key } from '@constant/enum'
 import options from '@util/geocoder'
 
 export const globalConfig = GLOBAL
 export const transporter = nodemailer.createTransport(GLOBAL.MAIL)
-export const geocoder = NodeGeocoder(options)
+export const geocoder = NodeGeocoder(options(GLOBAL.GEOCODER_API_KEY || ''))
+export const message = (options: any) => {
+  return {
+    from: GLOBAL.MAIL_FROM,
+    to: options.email,
+    subject: options.subject,
+    text: options.message,
+  }
+}
 
 const TAG_env = Key.Production
 
@@ -56,6 +64,7 @@ class App {
     this._app = express()
     this._app.use(express.json())
     this._app.use(express.urlencoded({ extended: true }))
+    this._app.use(express.static(Key.Public))
     this._app.use(cookieParser())
     this._app.use(setHeader)
     this._app.use(cors())
@@ -85,6 +94,7 @@ class App {
     } catch (error) {
       if (error instanceof Error) {
         logger.error(error.message)
+        connectDb(false)
       }
     }
   }
