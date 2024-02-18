@@ -1,15 +1,25 @@
+import GLOBAL from '@config/global'
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express, { Application } from 'express'
+import nodemailer from 'nodemailer'
+import NodeGeocoder from 'node-geocoder'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import GLOBAL from '@config/global'
 import { setHeader, connectDb } from '@config'
 import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
 import { logger, errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
-import { oneDay } from '@constant'
+import { Key } from '@constant/enum'
+import options from '@util/geocoder'
 
-const TAG_env = 'production'
+export const globalConfig = GLOBAL
+export const transporter = nodemailer.createTransport(GLOBAL.MAIL)
+export const geocoder = NodeGeocoder(options)
+
+const TAG_env = Key.Production
 
 /**
  * @class App
@@ -91,10 +101,20 @@ class App {
 
     try {
       this._app.listen(GLOBAL.PORT, () => {
-        logger.server(GLOBAL.PORT, GLOBAL.API_VERSION, prod, this.isConnected)
+        logger.server(
+          GLOBAL.PORT as number,
+          GLOBAL.API_VERSION,
+          prod,
+          this.isConnected
+        )
       })
     } catch (error: any) {
-      logger.server(GLOBAL.PORT, GLOBAL.API_VERSION, prod, this.isConnected)
+      logger.server(
+        GLOBAL.PORT as number,
+        GLOBAL.API_VERSION,
+        prod,
+        this.isConnected
+      )
       logger.error(error.message)
     }
   }
