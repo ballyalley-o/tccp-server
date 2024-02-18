@@ -1,6 +1,7 @@
 import { conNex } from '@util'
 import { oneDay } from '@constant'
 import { ARGV } from '@constant/enum'
+import { TransportOptions } from 'nodemailer'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -21,6 +22,17 @@ const GLOBAL = {
   DB_URI: process.env.DB_URI,
   DB_HOST: (db: any) => db.connection.host,
   DB_NAME: (db: any) => db.connection.name,
+
+  // @mail - nodemailer - mailtrap
+  MAIL_FROM: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
+  MAIL: {
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    auth: {
+      user: process.env.SMTP_EMAIL,
+      pass: process.env.SMTP_PASSWORD,
+    },
+  } as TransportOptions,
 }
 
 export default GLOBAL
