@@ -18,6 +18,7 @@ dotenv.config()
 
 const sendEmail = async (options: IEmailOptions) => {
   let message = {
+    // TODO: REFAX: call to app-config
     from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
     to: options.email,
     subject: options.subject,
