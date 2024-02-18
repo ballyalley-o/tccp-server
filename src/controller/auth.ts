@@ -229,7 +229,7 @@ const sendTokenResponse = (user: any, statusCode: number, res: any) => {
   })
 }
 
-export {
+const authController = {
   register,
   login,
   logout,
@@ -239,3 +239,4 @@ export {
   forgotPassword,
   resetPassword,
 }
+export default authController
