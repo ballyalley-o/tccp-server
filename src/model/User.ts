@@ -5,6 +5,7 @@ import mongoose, { Schema, model } from 'mongoose'
 import { GLOBAL } from '@config'
 import { IUser } from '@interface/model'
 import { Key } from '@constant/enum'
+import { oneDayFromNow } from '@constant/max-age'
 
 const TAG = Key.User
 
@@ -95,23 +96,23 @@ UserSchema.methods.matchPassword = async function (enteredPassword: string) {
 //Generate and hash password TOKEN
 UserSchema.methods.getResetPasswordToken = function () {
   //generate TOKEN
-  const resetToken = crypto.randomBytes(20).toString('hex')
+  const resetToken = crypto.randomBytes(20).toString(Key.Hex)
 
   //hash TOKEN and set to resetPasswordToken field
   this.resetPasswordToken = crypto
-    .createHash('sha256')
+    .createHash(Key.CryptoHash)
     .update(resetToken)
-    .digest('hex')
+    .digest(Key.Hex)
 
   //set expire
-  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000
+  this.resetPasswordExpire = oneDayFromNow
 
   return resetToken
 }
 
-UserSchema.pre('save', async function (next) {
+UserSchema.pre(Key.Save, async function (next) {
   try {
-    const cohort = await mongoose.model('Cohort').findById(this.cohort)
+    const cohort = await mongoose.model(Key.Cohort).findById(this.cohort)
     // const studentRole = await mongoose.model('Role').find({ type: 'Student' })
     const studentRole = await mongoose
       .model('Role')
