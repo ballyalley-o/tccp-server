@@ -84,5 +84,5 @@ CourseSchema.pre(new RegExp(Key.Remove), function (this: ICourse, next: any) {
   next()
 })
 
-const Course = model(Key.Course, CourseSchema)
+const Course = model(TAG, CourseSchema)
 export default Course
