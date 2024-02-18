@@ -2,6 +2,10 @@ enum Key {
   Save = 'save',
   Remove = 'remove',
 
+  Client = 'client',
+  Server = 'server',
+  IndexHtml = 'index.html',
+
   // @tag
   id = '_id',
   User = 'User',
