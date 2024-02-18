@@ -1,5 +1,5 @@
-import { __dirname } from '@config'
 import { GLOBAL } from '@config'
+import { __dirname } from '@config'
 import { conNex } from '@util'
 import { RESPONSE } from '@constant'
 import { PathParam, Key } from '@constant/enum'
@@ -35,7 +35,10 @@ class PathDir {
    * @description Path directory for the server
    */
   // {baseUrl}/api/{apiVer}
-  static API_ROOT = this._connex(PathDir.API_PARAM, GLOBAL.API_VERSION)
+  static API_ROOT = this._connex(
+    PathDir.API_PARAM,
+    process.env.API_VERSION || ''
+  )
   // {baseUrl}/api/{apiVer}/home
   static DASHBOARD = this._connex(PathDir.API_ROOT, this.DASHBOARD_PARAM)
   // {baseUrl}/api/{apiVer}/auth

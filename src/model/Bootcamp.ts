@@ -2,8 +2,8 @@ import slugify from 'slugify'
 import logger from 'logger'
 import mongoose, { Schema, model } from 'mongoose'
 import { IBootcamp } from '@interface/model'
-import { geocoder } from '@util'
 import { Key } from '@constant/enum'
+import { geocoder } from '@config/app-config'
 
 const TAG = Key.Bootcamp
 

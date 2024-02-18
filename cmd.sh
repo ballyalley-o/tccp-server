@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 rm -rf tsconfig.tsbuildinfo
-rm -rf .dist
+rm -rf dist
 
 npm run build
 
