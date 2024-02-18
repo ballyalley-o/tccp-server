@@ -73,7 +73,7 @@ FeedbackSchema.statics.getAverageRating = async function (bootcampId) {
     })
   } catch (error) {
     if (error instanceof Error) {
-      logger.error(err)
+      logger.error(error)
     }
   }
 }
