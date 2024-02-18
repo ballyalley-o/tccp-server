@@ -25,6 +25,7 @@ const RESPONSE = {
     COLLECTION_DESTROYED: ' COLLECTION/s DESTROYED 💥 ',
     LOGOUT: `User logged out`,
     UPDATED: `User updated`,
+    DELETED: `User deleted`,
     EMAIL_SENT: 'Email sent',
   },
   error: {
