@@ -1,9 +1,2 @@
-export {
-  register,
-  login,
-  logout,
-  forgotPassword,
-  resetPassword,
-  updateAccount,
-  updatePassword,
-} from './auth'
+export { default as authController } from '@controller/auth'
+export { default as userController } from '@controller/user'
