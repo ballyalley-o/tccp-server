@@ -150,7 +150,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 
   await user.save({ validateBeforeSave: false })
 
-  //Create reset URL
+  // TODO: refax the hard coded url to path-dir
   const resetUrl = `${req.protocol}://${req.get(
     'host'
   )}/api/v0.1/auth/reset_password/${resetToken}`
