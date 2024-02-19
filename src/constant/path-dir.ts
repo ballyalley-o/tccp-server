@@ -21,6 +21,7 @@ class PathDir {
   static readonly API_PARAM = PathParam.API_PARAM
   static readonly AUTH_PARAM = PathParam.AUTH_PARAM
   static readonly USER_PARAM = PathParam.USER_PARAM
+  // static readonly COURSE_PARAM = PathParam.COURSE_PARAM
   static readonly SIGN_IN_PARAM = PathParam.SIGN_IN_PARAM
   static readonly SIGN_OUT_PARAM = PathParam.SIGN_OUT_PARAM
 
