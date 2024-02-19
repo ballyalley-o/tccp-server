@@ -9,8 +9,8 @@ enum PathParam {
   COURSE_PARAM = '/course',
   BOOTCAMP_PARAM = '/bootcamp',
   FEEDBACK_PARAM = '/feedback',
-  SIGN_IN_PARAM = '/sign-in',
-  SIGN_OUT_PARAM = '/sign-out',
+  LOG_IN_PARAM = '/log-in',
+  LOG_OUT_PARAM = '/log-out',
   DIST = 'dist',
 }
 export default PathParam
