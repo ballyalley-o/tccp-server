@@ -1,4 +1,3 @@
-import { GLOBAL } from '@config'
 import { __dirname } from '@config'
 import { conNex } from '@util'
 import { RESPONSE } from '@constant'
@@ -21,9 +20,11 @@ class PathDir {
   static readonly API_PARAM = PathParam.API_PARAM
   static readonly AUTH_PARAM = PathParam.AUTH_PARAM
   static readonly USER_PARAM = PathParam.USER_PARAM
-  // static readonly COURSE_PARAM = PathParam.COURSE_PARAM
-  static readonly SIGN_IN_PARAM = PathParam.SIGN_IN_PARAM
-  static readonly SIGN_OUT_PARAM = PathParam.SIGN_OUT_PARAM
+  static readonly COURSE_PARAM = PathParam.COURSE_PARAM
+  static readonly FEEDBACK_PARAM = PathParam.FEEDBACK_PARAM
+  static readonly BOOTCAMP_PARAM = PathParam.BOOTCAMP_PARAM
+  static readonly LOG_IN_PARAM = PathParam.LOG_IN_PARAM
+  static readonly LOG_OUT_PARAM = PathParam.LOG_OUT_PARAM
 
   /**
    * Connect the path
@@ -40,16 +41,22 @@ class PathDir {
     PathDir.API_PARAM,
     process.env.API_VERSION || ''
   )
-  // {baseUrl}/api/{apiVer}/home
+  // {baseUrl}/api/{apiVer}/dashboard
   static DASHBOARD = this._connex(PathDir.API_ROOT, this.DASHBOARD_PARAM)
   // {baseUrl}/api/{apiVer}/auth
-  static AUTH_ROOT = this._connex(PathDir.API_ROOT, PathDir.AUTH_PARAM)
+  static AUTH_ROOT = this._connex(PathDir.API_ROOT, this.AUTH_PARAM)
   // {baseUrl}/api/{apiVer}/auth/user
-  static USER = this._connex(PathDir.AUTH_ROOT, PathDir.USER_PARAM)
-  // {baseUrl}/api/{apiVer}/auth/sign-in
-  static SIGN_IN = this._connex(PathDir.AUTH_ROOT, PathDir.SIGN_IN_PARAM)
-  // {baseUrl}/api/{apiVer}/auth/sign-out
-  static SIGN_OUT = this._connex(PathDir.AUTH_ROOT, PathDir.SIGN_OUT_PARAM)
+  static USER = this._connex(PathDir.AUTH_ROOT, this.USER_PARAM)
+  // {baseUrl}/api/{apiVer}/bootcamp
+  static BOOTCAMP = this._connex(PathDir.API_ROOT, this.BOOTCAMP_PARAM)
+  // {baseUrl}/api/{apiVer}/course
+  static COURSE = this._connex(PathDir.API_ROOT, this.COURSE_PARAM)
+  // {baseUrl}/api/{apiVer}/feedback
+  static FEEDBACK = this._connex(PathDir.AUTH_ROOT, this.FEEDBACK_PARAM)
+  // {baseUrl}/api/{apiVer}/auth/log-in
+  static LOG_IN = this._connex(PathDir.AUTH_ROOT, this.LOG_IN_PARAM)
+  // {baseUrl}/api/{apiVer}/auth/log-out
+  static LOG_OUT = this._connex(PathDir.AUTH_ROOT, this.LOG_OUT_PARAM)
 
   // @production
   // static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
