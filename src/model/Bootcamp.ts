@@ -126,6 +126,8 @@ const BootcampSchema = new Schema<IBootcamp>(
   },
   {
     timestamps: true,
+    collation: { locale: 'en', strength: 2 },
+    collection: TAG,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
