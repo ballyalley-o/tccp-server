@@ -1,3 +1,3 @@
-import App from '@config/app-config'
+import App from '@config/server'
 
 App.app()
