@@ -22,7 +22,7 @@ const getCourses = asyncHandler(async (req, res, next) => {
       data: courses,
     })
   } else {
-    res.status(200).json((res as IResponseExtended).advancedResults)
+    res.status(200).json((res as IResponseExtended).advancedResult)
   }
 })
 
@@ -114,10 +114,10 @@ const updateCourse = asyncHandler(async (req: any, res, next) => {
   })
 })
 
-//Delete a course
-//Route DELETE /api/v1/courses/:id
-//access Private
-exports.deleteCourse = asyncHandler(async (req: any, res, next) => {
+//@desc     Delete a course
+//@route    DELETE /api/v1/courses/:id
+//@access   PRIVATE
+const deleteCourse = asyncHandler(async (req: any, res, next) => {
   const course = await Course.findById(req.params.id)
   courseId = req.params.id
   userId = req.user.id
@@ -141,3 +141,12 @@ exports.deleteCourse = asyncHandler(async (req: any, res, next) => {
     data: {},
   })
 })
+
+const courseController = {
+  getCourses,
+  getCourse,
+  addCourse,
+  updateCourse,
+  deleteCourse,
+}
+export default courseController
