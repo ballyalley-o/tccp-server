@@ -8,11 +8,6 @@ import { User } from '@model'
 //@access   Private/Admin
 const getUsers = asyncHandler(async (req, res, next) => {
   res.status(200).json((res as IResponseExtended).advancedResults)
-  //   res.status(200).json({
-  //     success: true,
-  //     message: RESPONSE.success[200],
-  //     data: [],
-  //   })
 })
 
 //@desc     Get a user
