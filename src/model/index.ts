@@ -1,4 +1,5 @@
 export { default as Default } from '@model/Default'
 export { default as User } from '@model/User'
-export { default as Post } from '@model/Course'
+export { default as Course } from '@model/Course'
 export { default as Bootcamp } from '@model/Bootcamp'
+export { default as Feedback } from '@model/Feedback'
