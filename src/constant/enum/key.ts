@@ -6,6 +6,7 @@ enum Key {
   Client = 'client',
   Server = 'server',
   Public = 'public',
+  Admin = 'admin',
   IndexHtml = 'index.html',
 
   // @tag
