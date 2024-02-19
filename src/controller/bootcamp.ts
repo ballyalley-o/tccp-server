@@ -21,7 +21,7 @@ let bootcampId: string
 //@route    GET /api/{apiVer}/bootcamps
 //@access   Public
 const getBootcamps = asyncHandler(async (req, res, next) => {
-  res.status(200).json((res as IResponseExtended).advancedResults)
+  res.status(200).json((res as IResponseExtended).advancedResult)
 })
 
 //@desc     Get single bootcamp
