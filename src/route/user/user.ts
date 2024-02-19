@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import advancedResults from '@middleware/advanced-results'
+import { advancedResult } from '@middleware'
 import { userController } from '@controller'
 import { PathParam } from '@constant/enum'
 import { User } from '@model'
@@ -11,7 +11,7 @@ const router = Router({ mergeParams: true })
  */
 router.get(
   PathParam.ORIGIN_PARAM,
-  advancedResults(User),
+  advancedResult(User),
   userController.getUsers
 )
 router.get(PathParam.ID_PARAM, userController.getUser)
