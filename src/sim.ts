@@ -2,9 +2,14 @@ import 'colors'
 import goodlog from 'good-logs'
 import { App } from '@config'
 // @datas
-import userCollection from '@mock/user-collection'
+import {
+  userCollection,
+  feedbackCollection,
+  bootcampCollection,
+  courseCollection,
+} from '@mock'
 // @models
-import { User } from '@model'
+import { User, Course, Bootcamp, Feedback } from '@model'
 import { COLOR } from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { ARGV } from '@constant/enum'
@@ -19,9 +24,9 @@ const seeder = async () => {
     // await Cohort.deleteMany()
 
     const createdUserCollection = await User.insertMany(userCollection)
-    // const createdUsers = await User.insertMany(users)
-    // const createdCohort = await Cohort.insertMany(cohort)
-    // const createdModule = await Module.insertMany(module)
+    const createdCourse = await Course.insertMany(courseCollection)
+    const createdBootcamp = await Bootcamp.insertMany(bootcampCollection)
+    const createdFeedback = await Feedback.insertMany(feedbackCollection)
 
     goodlog.warn(RESPONSE.success.COLLECTION_SEED)
     process.exit()
@@ -34,8 +39,9 @@ const seeder = async () => {
 const destroy = async () => {
   try {
     await User.deleteMany()
-    // await Role.deleteMany()
-    // await Cohort.deleteMany()
+    await Course.deleteMany()
+    await Bootcamp.deleteMany()
+    await Feedback.deleteMany()
 
     goodlog.custom(COLOR.BG_RED, RESPONSE.success.COLLECTION_DESTROYED)
     process.exit(1)
