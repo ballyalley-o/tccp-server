@@ -1,36 +1,45 @@
 import { Request, Response, NextFunction } from 'express'
-import { Model } from '@typings'
 import { IPagination } from '@interface'
+import { IResponseExtended } from '@interface'
+import { IUser } from '@interface/model'
+import { REGEX, REMOVE_FIELDS } from '@constant'
+import { Key, TYPE } from '@constant/enum'
 
 const advancedResults =
-  (model: any, populate: any) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  (model: any, populate?: any) =>
+  async (
+    req: Request,
+    res: Response | IResponseExtended,
+    next: NextFunction
+  ) => {
     let query
-    //c    opy query string
     let queryStr = JSON.stringify(req.query)
 
     const reqQuery = { ...req.query }
-    const removeFields = ['select', 'sort', 'page', 'limit']
 
-    removeFields.forEach((param) => delete reqQuery[param])
+    REMOVE_FIELDS.forEach((param) => delete reqQuery[param])
 
-    queryStr = queryStr.replace(
-      /\b(gt|gte|lt|lte|in)\b/g,
-      (match) => `$${match}`
-    )
+    queryStr = queryStr.replace(REGEX.MAP_LOC, (match) => `$${match}`)
 
     //append query operators
     query = model.find(JSON.parse(queryStr))
 
-    //select fields
-    if (typeof req.query.select === 'string') {
-      const fields = req.query.select.split(',').join(' ')
+    // select fields
+    if (req.query.select && typeof req.query.select === 'string') {
+      const fields = req.query.select.split(',').join(' ') as keyof IUser
       query = query.select(fields)
     }
 
+    if (req.query.sort && typeof req.query.sort === 'string') {
+      const sortBy = req.query.sort.split(',').join(' ')
+      query = query.sort(sortBy)
+    } else {
+      query = query.sort(Key.Name)
+    }
+
     //sort
-    const page = parseInt((req.query.page as string) || '', 10) || 1
-    const limit = parseInt((req.query.limit as string) || '', 10) || 25
+    const page = parseInt((req.query.page as any) || '', 10) || 1
+    const limit = parseInt((req.query.limit as any) || '', 10) || 25
     const startIndex = (page - 1) * limit
     const endIndex = page * limit
     const total = await model.countDocuments()
@@ -38,11 +47,11 @@ const advancedResults =
     query = query.skip(startIndex).limit(limit)
 
     if (populate) {
-      query = query.populate(populate)
+      const populateString =
+        typeof populate === TYPE.Function ? populate() : populate
+      query = query.populate(populateString)
     }
-    //executing query
     const results = await query
-
     const pagination: IPagination = {}
 
     if (endIndex < total) {
@@ -59,20 +68,7 @@ const advancedResults =
       }
     }
 
-    // Add custom property 'advancedResults' to Response type
-    interface CustomResponse extends Response {
-      advancedResults: {
-        success: boolean
-        count: number
-        pagination: IPagination
-        data: Model[]
-      }
-    }
-
-    // Cast 'res' to CustomResponse
-    const customRes = res as CustomResponse
-
-    customRes.advancedResults = {
+    ;(res as IResponseExtended).advancedResults = {
       success: true,
       count: results.length,
       pagination,
@@ -81,4 +77,4 @@ const advancedResults =
     next()
   }
 
-module.exports = advancedResults
+export default advancedResults

@@ -1,4 +1,4 @@
-import logger from 'logger'
+import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { Key, Aggregate } from '@constant/enum'
 import { ICourse, ICourseExtended } from '@interface/model'
@@ -70,7 +70,7 @@ CourseSchema.statics.getAverageCost = async function (
     })
   } catch (error) {
     if (error instanceof Error) {
-      logger.error(error.message)
+      goodlog.error(error.message)
     }
   }
 }

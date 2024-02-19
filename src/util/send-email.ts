@@ -1,6 +1,6 @@
-import logger from 'logger'
+import goodlog from 'good-logs'
 import nodemailer, { SentMessageInfo, TransportOptions } from 'nodemailer'
-import { transporter, message } from '@config/app-config'
+import { transporter, message } from '@config/server'
 import { IEmailOptions } from '@interface'
 import { Key } from '@constant/enum'
 import { GLOBAL } from '@config'
@@ -29,10 +29,10 @@ const sendEmail = async (options: IEmailOptions) => {
 
   try {
     const info: SentMessageInfo = await transporter.sendMail(message(options))
-    logger.log(Key.MessageSent, info.messageId)
+    goodlog.log(Key.MessageSent, info.messageId)
   } catch (error) {
     if (error instanceof Error) {
-      logger.error(Key.MessageError, error.message)
+      goodlog.error(Key.MessageError, error.message)
     }
   }
 }

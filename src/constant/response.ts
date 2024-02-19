@@ -21,7 +21,7 @@ const RESPONSE = {
     200: 'OK: Request fetched',
     201: 'CREATED: Request created',
     204: 'NO CONTENT: The server successfully processed the request but there is no content to send in the response.',
-    COLLECTION_SEED: ' COLLECTION/s SEED SUCCESSFUL 🌱 ',
+    COLLECTION_SEED: ' MOCK MIGRATION SUCCESSFUL 🌱 ',
     COLLECTION_DESTROYED: ' COLLECTION/s DESTROYED 💥 ',
     LOGOUT: `User logged out`,
     UPDATED: `User updated`,

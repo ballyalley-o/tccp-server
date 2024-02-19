@@ -1,9 +1,9 @@
-// import linkProgressRoutes from '@routes/progress'
-// import linkExerciseRoutes from '@routes/exercise'
-import linkStudentRoutes from '@route/user'
+import { linkUserRoutes } from '@route/user'
+import { Application } from 'express'
+import { PathDir } from '@constant'
 
-const mainRoute = (app: any) => {
-  linkStudentRoutes(app)
+const mainRoute = (app: Application) => {
+  linkUserRoutes(app)
 }
 
 export { mainRoute }

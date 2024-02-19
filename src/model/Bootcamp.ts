@@ -1,9 +1,9 @@
 import slugify from 'slugify'
-import logger from 'logger'
+import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { IBootcamp } from '@interface/model'
 import { Key } from '@constant/enum'
-import { geocoder } from '@config/app-config'
+import { geocoder } from '@config/server'
 
 const TAG = Key.Bootcamp
 
@@ -157,7 +157,7 @@ BootcampSchema.pre(Key.Save, async function (next) {
 BootcampSchema.pre(
   new RegExp(Key.Remove),
   async function (this: IBootcamp, next) {
-    logger.custom(
+    goodlog.custom(
       'inverse',
       `Courses being deleted from bootcamp ID: ${this.name}. Reload page to see the effect`
     )
