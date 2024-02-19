@@ -1,6 +1,6 @@
-import logger from 'logger'
+import goodlog from 'good-logs'
 import nodemailer, { SentMessageInfo, TransportOptions } from 'nodemailer'
-import { transporter } from '@config/app-config'
+import { transporter, message } from '@config/server'
 import { IEmailOptions } from '@interface'
 import { Key } from '@constant/enum'
 import { GLOBAL } from '@config'
@@ -15,24 +15,24 @@ dotenv.config()
 //     pass: process.env.SMTP_PASSWORD,
 //   },
 // } as TransportOptions)
+// export const message = (from: string, options: any) => {
+//   return {
+//     from: from,
+//     to: options.email,
+//     subject: options.subject,
+//     text: options.message,
+//   }
+// }
 
 const sendEmail = async (options: IEmailOptions) => {
-  let message = {
-    // TODO: REFAX: call to app-config
-    from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-  }
-
-  const info = await transporter.sendMail(message)
+  const info = await transporter.sendMail(message(options))
 
   try {
-    const info: SentMessageInfo = await transporter.sendMail(message)
-    logger.log(Key.MessageSent, info.messageId)
+    const info: SentMessageInfo = await transporter.sendMail(message(options))
+    goodlog.log(Key.MessageSent, info.messageId)
   } catch (error) {
     if (error instanceof Error) {
-      logger.error(Key.MessageError, error.message)
+      goodlog.error(Key.MessageError, error.message)
     }
   }
 }

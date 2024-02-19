@@ -1,14 +1,18 @@
 import { asyncHandler } from '@middleware'
-import { ErrorResponse } from '@util'
+import { IResponseExtended } from '@interface'
 import { RESPONSE } from '@constant'
 import { User } from '@model'
-import { IResponseExtended } from '@interface'
 
 //@desc     Get all users
 //@route    GET /api/v0.1/auth/users
 //@access   Private/Admin
 const getUsers = asyncHandler(async (req, res, next) => {
   res.status(200).json((res as IResponseExtended).advancedResults)
+  //   res.status(200).json({
+  //     success: true,
+  //     message: RESPONSE.success[200],
+  //     data: [],
+  //   })
 })
 
 //@desc     Get a user

@@ -1,3 +1,5 @@
 export { default as RESPONSE } from '@constant/response'
 export { default as PathDir } from '@constant/path-dir'
+export { REGEX, RegexKey } from '@constant/regex'
+export { REMOVE_FIELDS } from '@constant/remove-fields'
 export { oneDay, oneHr, sixHr, thirtyDays, twoHr } from '@constant/max-age'

@@ -51,13 +51,13 @@ class PathDir {
   static SIGN_OUT = this._connex(PathDir.AUTH_ROOT, PathDir.SIGN_OUT_PARAM)
 
   // @production
-  static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
-  static BUILD_VIEW = this._connex(
-    __dirname,
-    Key.Client,
-    PathParam.DIST,
-    Key.IndexHtml
-  )
+  // static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
+  // static BUILD_VIEW = this._connex(
+  //   __dirname,
+  //   Key.Client,
+  //   PathParam.DIST,
+  //   Key.IndexHtml
+  // )
 }
 
 export default PathDir

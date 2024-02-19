@@ -1,4 +1,4 @@
-import logger from 'logger'
+import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { IFeedback, IFeedbackExtended } from '@interface/model'
 import { Key, Aggregate } from '@constant/enum'
@@ -60,7 +60,7 @@ FeedbackSchema.statics.getAverageRating = async function (bootcampId) {
     })
   } catch (error) {
     if (error instanceof Error) {
-      logger.error(error.message)
+      goodlog.error(error.message)
     }
   }
 }
