@@ -72,9 +72,8 @@ const UserSchema = new Schema<IUser>(
   }
 )
 
-//Encryption (password)
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+UserSchema.pre(Key.Save, async function (next) {
+  if (!this.isModified(Key.Password)) {
     next()
   }
   const salt = await bcrypt.genSalt(10)
@@ -88,17 +87,13 @@ UserSchema.methods.getSignedJwtToken = function () {
   })
 }
 
-//Match the user entered password to hashed password in DB
 UserSchema.methods.matchPassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password)
 }
 
-//Generate and hash password TOKEN
 UserSchema.methods.getResetPasswordToken = function () {
-  //generate TOKEN
   const resetToken = crypto.randomBytes(20).toString(Key.Hex)
 
-  //hash TOKEN and set to resetPasswordToken field
   this.resetPasswordToken = crypto
     .createHash(Key.CryptoHash)
     .update(resetToken)
