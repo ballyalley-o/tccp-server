@@ -38,6 +38,7 @@ const RESPONSE = {
     500: 'INTERNAL SERVER ERROR: Server encountered an Unhandled Exception',
     503: 'SERVICE UNAVAILABLE: The server is temporarily unable to handle the Request',
     504: 'GATEWAY TIMEOUT: The server acting as a gateway did not receive a timely response from an upstream server',
+    NOT_FOUND_COURSE: (data: string) => `Course not found with id of ${data}`,
     NOT_FOUND_BOOTCAMP: (data: string) =>
       `Bootcamp not found with id of ${data}`,
     BOOTCAMP_ALREADY_PUBLISHED: (data: string) =>
@@ -46,6 +47,8 @@ const RESPONSE = {
     FAILED_DESTROY: ' FAILED TO DESTROY COLLECTION/s ',
     INVALID_CREDENTIAL: 'Please provide a valid email and password',
     INVALID_TOKEN: 'Invalid token',
+    NOT_OWNER: (user: string, course: string) =>
+      `User ${user} is unauthorized to update course ${course}`,
     NOT_FOUND: (data: string) => `There is no user with email ${data}`,
     parseErr: (err: any) => `Error parsing JSON: ${err}`,
     NotInstance: 'This class cannot be instantiated',
