@@ -3,6 +3,8 @@ import mongoose, { Schema, model } from 'mongoose'
 import { IFeedback, IFeedbackExtended } from '@interface/model'
 import { Key, Aggregate } from '@constant/enum'
 
+const TAG = Key.Feedback
+
 const FeedbackSchema = new Schema<IFeedbackExtended>(
   {
     title: {
@@ -38,6 +40,8 @@ const FeedbackSchema = new Schema<IFeedbackExtended>(
   },
   {
     timestamps: true,
+    collation: { locale: 'en', strength: 2 },
+    collection: TAG,
   }
 )
 
@@ -71,7 +75,6 @@ FeedbackSchema.post(Key.Save, function () {
   )
 })
 
-//Call averageRating before remove
 FeedbackSchema.pre(
   new RegExp(Key.Remove),
   function (this: IFeedback, next: any) {
@@ -90,5 +93,5 @@ FeedbackSchema.index(
   { unique: true }
 )
 
-const Feedback = model(Key.Feedback, FeedbackSchema)
+const Feedback = model(TAG, FeedbackSchema)
 export default Feedback

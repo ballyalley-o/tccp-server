@@ -8,8 +8,8 @@
     "start:run": "nodemon dist/app.js",
     "start": "concurrently npm:start:*",
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "seed": "node dist/mock.js -i",
-    "destroy": "node dist/mock.js -d",
+    "sim": "node dist/sim.js -i",
+    "destroy": "node dist/sim.js -d",
     "docs": "typedoc --out docs '*/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -119,13 +119,15 @@ const BootcampSchema = new Schema<IBootcamp>(
       default: false,
     },
     user: {
-      type: Schema.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: Key.User,
       required: true,
     },
   },
   {
     timestamps: true,
+    collation: { locale: 'en', strength: 2 },
+    collection: TAG,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }

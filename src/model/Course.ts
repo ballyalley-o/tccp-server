@@ -46,6 +46,8 @@ const CourseSchema = new Schema<ICourseExtended>(
   },
   {
     timestamps: true,
+    collation: { locale: 'en', strength: 2 },
+    collection: TAG,
   }
 )
 

@@ -11,7 +11,7 @@ export interface IExpressController {
 }
 
 export interface IResponseExtended extends Response {
-  advancedResults: {
+  advancedResult: {
     success: boolean
     count: number
     pagination: IPagination

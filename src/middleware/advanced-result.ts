@@ -5,7 +5,7 @@ import { IUser } from '@interface/model'
 import { REGEX, REMOVE_FIELDS } from '@constant'
 import { Key, TYPE } from '@constant/enum'
 
-const advancedResults =
+const advancedResult =
   (model: any, populate?: any) =>
   async (
     req: Request,
@@ -68,7 +68,7 @@ const advancedResults =
       }
     }
 
-    ;(res as IResponseExtended).advancedResults = {
+    ;(res as IResponseExtended).advancedResult = {
       success: true,
       count: results.length,
       pagination,
@@ -77,4 +77,4 @@ const advancedResults =
     next()
   }
 
-export default advancedResults
+export default advancedResult

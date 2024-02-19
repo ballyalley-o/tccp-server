@@ -3,6 +3,10 @@ enum Key {
   Remove = 'remove',
   Name = 'name',
 
+  // Roles
+  Trainer = 'trainer',
+  Admin = 'admin',
+
   Client = 'client',
   Server = 'server',
   Public = 'public',
@@ -17,9 +21,13 @@ enum Key {
   Feedback = 'Feedback',
   CourseVirtual = 'courses',
   BootcampVirtual = 'bootcamp',
+  CourseSelect = 'bootcamp_title description',
+  DefaultSelect = 'name description',
+  PasswordSelect = '-password',
 
   Cookie = 'cookie',
   Token = 'token',
+  Bearer = 'Bearer',
   None = 'none',
 
   HTTPAdapter = 'https',
