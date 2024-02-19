@@ -119,7 +119,7 @@ const BootcampSchema = new Schema<IBootcamp>(
       default: false,
     },
     user: {
-      type: Schema.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: Key.User,
       required: true,
     },
