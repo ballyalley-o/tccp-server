@@ -18,6 +18,7 @@ enum Key {
   Feedback = 'Feedback',
   CourseVirtual = 'courses',
   BootcampVirtual = 'bootcamp',
+  CourseSelect = 'bootcamp_title description',
 
   Cookie = 'cookie',
   Token = 'token',
