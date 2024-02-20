@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { advancedResult } from '@middleware'
-import { userController } from '@controller'
+import { UserController } from '@controller'
 import { PathParam } from '@constant/enum'
 import { User } from '@model'
 
@@ -12,12 +12,13 @@ const router = Router({ mergeParams: true })
 router.get(
   PathParam.ORIGIN_PARAM,
   advancedResult(User),
-  userController.getUsers
+  UserController.getUsers
 )
-router.get(PathParam.ID_PARAM, userController.getUser)
-router.post(PathParam.ORIGIN_PARAM, userController.createUser)
-router.put(PathParam.ID_PARAM, userController.updateUser)
-router.delete(PathParam.ID_PARAM, userController.deleteUser)
+
+router.get(PathParam.ID_PARAM, UserController.getUser)
+router.post(PathParam.ORIGIN_PARAM, UserController.createUser)
+router.put(PathParam.ID_PARAM, UserController.updateUser)
+router.delete(PathParam.ID_PARAM, UserController.deleteUser)
 
 const userRoute = router
 export default userRoute
