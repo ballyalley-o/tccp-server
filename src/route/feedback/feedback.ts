@@ -1,33 +1,43 @@
-// const express = require('express')
+import express from 'express'
+import { feedbackController } from '@controller'
+import { advancedResult, protect, authorize } from '@middleware'
+import { PathParam } from '@constant/enum'
+import { Key } from '@constant/enum'
+import { Feedback } from '@model'
 
-// const {
-//   getFeedbacks,
-//   getFeedback,
-//   addFeedback,
-//   updateFeedback,
-//   deleteFeedback,
-// } = require('../controllers/feedbacks')
+const router = express.Router({ mergeParams: true })
 
-// const Feedback = require('../models/Feedback')
-// const advancedResults = require('../middleware/advancedResults')
+/**
+ * @path - {baseUrl}/api/v0.1/feedback
+ */
+router
+  .route(PathParam.ORIGIN)
+  .get(
+    advancedResult(Feedback, {
+      path: Key.BootcampVirtual,
+      select: Key.DefaultSelect,
+    }),
+    feedbackController.getFeedbacks
+  )
+  .post(
+    protect,
+    authorize(Key.Student, Key.Admin),
+    feedbackController.addFeedback
+  )
 
-// const router = express.Router({ mergeParams: true })
+router
+  .route(PathParam.ID)
+  .get(feedbackController.getFeedback)
+  .put(
+    protect,
+    authorize(Key.Student, Key.Admin),
+    feedbackController.updateFeedback
+  )
+  .delete(
+    protect,
+    authorize(Key.Student, Key.Admin),
+    feedbackController.deleteFeedback
+  )
 
-// const { protect, authorize } = require('../middleware/auth')
-
-// router
-//   .route('/')
-//   .get(
-//     advancedResults(Feedback, {
-//       path: 'bootcamp',
-//       select: 'name description',
-//     }),
-//     getFeedbacks
-//   )
-//   .post(protect, authorize('student', 'admin'), addFeedback)
-
-// router
-//   .route('/:id')
-//   .get(getFeedback)
-//   .put(protect, authorize('student', 'admin'), updateFeedback)
-//   .delete(protect, authorize('student', 'admin'), deleteFeedback)
+const feedbackRoute = router
+export default feedbackRoute
