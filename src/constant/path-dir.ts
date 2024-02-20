@@ -14,17 +14,17 @@ class PathDir {
   }
 
   // path parameters
-  static readonly ORIGIN_PARAM = PathParam.ORIGIN_PARAM
-  static readonly HOME_PARAM = PathParam.HOME_PARAM
-  static readonly DASHBOARD_PARAM = PathParam.DASHBOARD_PARAM
-  static readonly API_PARAM = PathParam.API_PARAM
-  static readonly AUTH_PARAM = PathParam.AUTH_PARAM
-  static readonly USER_PARAM = PathParam.USER_PARAM
-  static readonly COURSE_PARAM = PathParam.COURSE_PARAM
-  static readonly FEEDBACK_PARAM = PathParam.FEEDBACK_PARAM
-  static readonly BOOTCAMP_PARAM = PathParam.BOOTCAMP_PARAM
-  static readonly LOG_IN_PARAM = PathParam.LOG_IN_PARAM
-  static readonly LOG_OUT_PARAM = PathParam.LOG_OUT_PARAM
+  static readonly ORIGIN_PARAM = PathParam.ORIGIN
+  static readonly HOME_PARAM = PathParam.HOME
+  static readonly DASHBOARD_PARAM = PathParam.DASHBOARD
+  static readonly API_PARAM = PathParam.API
+  static readonly AUTH_PARAM = PathParam.AUTH
+  static readonly USER_PARAM = PathParam.USER
+  static readonly COURSE_PARAM = PathParam.COURSE
+  static readonly FEEDBACK_PARAM = PathParam.FEEDBACK
+  static readonly BOOTCAMP_PARAM = PathParam.BOOTCAMP
+  static readonly LOG_IN_PARAM = PathParam.LOG_IN
+  static readonly LOG_OUT_PARAM = PathParam.LOG_OUT
 
   /**
    * Connect the path
@@ -36,27 +36,30 @@ class PathDir {
    * ENDPOINTS
    * @description Path directory for the server
    */
-  // {baseUrl}/api/{apiVer}
+
+  /**
+   *  @path - {baseUrl}/api/{apiVer}
+   */
   static API_ROOT = this._connex(
     PathDir.API_PARAM,
     process.env.API_VERSION || ''
   )
-  // {baseUrl}/api/{apiVer}/dashboard
+  //  /dashboard
   static DASHBOARD = this._connex(PathDir.API_ROOT, this.DASHBOARD_PARAM)
-  // {baseUrl}/api/{apiVer}/auth
-  static AUTH_ROOT = this._connex(PathDir.API_ROOT, this.AUTH_PARAM)
-  // {baseUrl}/api/{apiVer}/auth/user
-  static USER = this._connex(PathDir.AUTH_ROOT, this.USER_PARAM)
-  // {baseUrl}/api/{apiVer}/bootcamp
+  //  /auth
+  static AUTH = this._connex(PathDir.API_ROOT, this.AUTH_PARAM)
+  //  /auth/user
+  static USER = this._connex(PathDir.AUTH, this.USER_PARAM)
+  //  /bootcamp
   static BOOTCAMP = this._connex(PathDir.API_ROOT, this.BOOTCAMP_PARAM)
-  // {baseUrl}/api/{apiVer}/course
+  // /course
   static COURSE = this._connex(PathDir.API_ROOT, this.COURSE_PARAM)
-  // {baseUrl}/api/{apiVer}/feedback
-  static FEEDBACK = this._connex(PathDir.AUTH_ROOT, this.FEEDBACK_PARAM)
-  // {baseUrl}/api/{apiVer}/auth/log-in
-  static LOG_IN = this._connex(PathDir.AUTH_ROOT, this.LOG_IN_PARAM)
-  // {baseUrl}/api/{apiVer}/auth/log-out
-  static LOG_OUT = this._connex(PathDir.AUTH_ROOT, this.LOG_OUT_PARAM)
+  // /feedback
+  static FEEDBACK = this._connex(PathDir.API_ROOT, this.FEEDBACK_PARAM)
+  // /auth/log-in
+  static LOG_IN = this._connex(PathDir.AUTH, this.LOG_IN_PARAM)
+  // /auth/log-out
+  static LOG_OUT = this._connex(PathDir.AUTH, this.LOG_OUT_PARAM)
 
   // @production
   // static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)

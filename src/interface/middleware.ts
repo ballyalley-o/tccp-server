@@ -18,3 +18,7 @@ export interface IResponseExtended extends Response {
     data: Model[]
   }
 }
+
+export interface RouteHandlerDescriptor extends PropertyDescriptor {
+  value?: RequestHandler
+}
