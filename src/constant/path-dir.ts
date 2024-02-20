@@ -25,6 +25,8 @@ class PathDir {
   static readonly BOOTCAMP_PARAM = PathParam.BOOTCAMP
   static readonly LOG_IN_PARAM = PathParam.LOG_IN
   static readonly LOG_OUT_PARAM = PathParam.LOG_OUT
+  static readonly RESET_PASSWORD_PARAM = PathParam.RESET_PASSWORD
+  static readonly RESET_TOKEN_PARAM = PathParam.RESET_TOKEN
 
   /**
    * Connect the path
@@ -60,6 +62,14 @@ class PathDir {
   static LOG_IN = this._connex(PathDir.AUTH, this.LOG_IN_PARAM)
   // /auth/log-out
   static LOG_OUT = this._connex(PathDir.AUTH, this.LOG_OUT_PARAM)
+  // /auth/reset-password/
+  static RESET_URL = this._connex(PathDir.AUTH, this.RESET_PASSWORD_PARAM)
+  // /auth/reset-password/:resetToken
+  static RESET_PASSWORD = this._connex(
+    PathDir.AUTH,
+    this.RESET_PASSWORD_PARAM,
+    this.RESET_TOKEN_PARAM
+  )
 
   // @production
   // static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
