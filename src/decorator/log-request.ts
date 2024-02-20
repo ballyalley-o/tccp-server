@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
 import { IExpressController } from '@interface/middleware'
@@ -7,6 +8,7 @@ const LogRequest: IExpressController = (
   res: Response,
   next: NextFunction
 ) => {
+  goodlog.log('info', 'Request received')
   goodlog.req(req, res, next)
   next()
 }
