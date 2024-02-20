@@ -14,17 +14,17 @@ class PathDir {
   }
 
   // path parameters
-  static readonly ORIGIN_PARAM = PathParam.ORIGIN_PARAM
-  static readonly HOME_PARAM = PathParam.HOME_PARAM
-  static readonly DASHBOARD_PARAM = PathParam.DASHBOARD_PARAM
-  static readonly API_PARAM = PathParam.API_PARAM
-  static readonly AUTH_PARAM = PathParam.AUTH_PARAM
-  static readonly USER_PARAM = PathParam.USER_PARAM
-  static readonly COURSE_PARAM = PathParam.COURSE_PARAM
-  static readonly FEEDBACK_PARAM = PathParam.FEEDBACK_PARAM
-  static readonly BOOTCAMP_PARAM = PathParam.BOOTCAMP_PARAM
-  static readonly LOG_IN_PARAM = PathParam.LOG_IN_PARAM
-  static readonly LOG_OUT_PARAM = PathParam.LOG_OUT_PARAM
+  static readonly ORIGIN_PARAM = PathParam.ORIGIN
+  static readonly HOME_PARAM = PathParam.HOME
+  static readonly DASHBOARD_PARAM = PathParam.DASHBOARD
+  static readonly API_PARAM = PathParam.API
+  static readonly AUTH_PARAM = PathParam.AUTH
+  static readonly USER_PARAM = PathParam.USER
+  static readonly COURSE_PARAM = PathParam.COURSE
+  static readonly FEEDBACK_PARAM = PathParam.FEEDBACK
+  static readonly BOOTCAMP_PARAM = PathParam.BOOTCAMP
+  static readonly LOG_IN_PARAM = PathParam.LOG_IN
+  static readonly LOG_OUT_PARAM = PathParam.LOG_OUT
 
   /**
    * Connect the path
