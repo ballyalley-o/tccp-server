@@ -20,7 +20,10 @@ const getBootcamps = asyncHandler(async (req, res, next) => {
 //@access   Public
 const getBootcamp = asyncHandler(async (req, res, next) => {
   bootcampId = req.params.id
-  const bootcamp = await Bootcamp.findById(bootcampId)
+  const bootcamp = await Bootcamp.findById(bootcampId).populate(
+    'user',
+    'firstname'
+  )
 
   if (!bootcamp) {
     return next(

@@ -1,7 +1,9 @@
+import ObjectID from 'bson-objectid'
+
 const bootcampCollection = [
   {
     _id: '5d725a1b7b292f5f8ceff788',
-    user: '5d7a514b5d2c12c7449be045',
+    user: ObjectID('65d44d6ef8e810489db6a5a1'),
     name: ' Some Bootcamp',
     description:
       'IBM dev bootcamp is a complete Interskill self-paced elearning courses grouped by curriculum. Our learning designs are informed by contemporary learning theory and are interactive, conbodyualized and responsive to diverse learning styles. We believe in immersing learners in relevant authentic activities designed to motivate, engage, and produce quantifiable change.',
@@ -27,7 +29,7 @@ const bootcampCollection = [
   },
   {
     _id: '5d725a037b292f5f8ceff787',
-    user: '5d7a514b5d2c12c7449be046',
+    user: ObjectID('65d44d6ef8e810489db6a59d'),
     name: 'Free Code Camp',
     description:
       'The Data Science & AI Programme can be taken in either 24 weeks part time or 12 weeks full time and is designed for career-driven professionals to transition into the big data and AI industry. The programme includes pre-work, intensive practical training, industry award and a job outcomes programme in collaboration with industry partners. The course content has been tailored to give you the skills that are demanded by businesses in today’s rapidly evolving job market.',
@@ -50,7 +52,7 @@ const bootcampCollection = [
   },
   {
     _id: '5d725a1b7b292f5f8ceff458',
-    user: '5c8a1d5b0190b214360dc031',
+    user: ObjectID('65d44d6ef8e810489db6a59c'),
     name: 'Apple devCenter',
     description:
       'You don’t need prior experience to dive right into creating apps for Apple platforms. Apple’s app development curriculum makes it easy for anyone to code in Swift just like the pros — whether it’s for a semester in school, for professional certification, or to advance your skills.',
@@ -73,7 +75,7 @@ const bootcampCollection = [
   },
   {
     _id: '5d725a1b7b292f5f8cefb098',
-    user: '5c8a1d5b0190b214360dc032',
+    user: ObjectID('65d44d6ef8e810489db6a59d'),
     name: 'Meta Coursera Bootcamp',
     description:
       'Unlimited access to 7,000+ world-class courses, hands-on projects, and job-ready certificate programs, for one all-inclusive subscription price',

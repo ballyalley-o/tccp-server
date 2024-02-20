@@ -19,15 +19,8 @@ router.route(PathParam.DISTANCE).get(bootcampController.getBootcampsInRadius)
 
 router
   .route(PathParam.ORIGIN)
-  .get(bootcampController.getBootcamps)
+  .get(advancedResult(Bootcamp), bootcampController.getBootcamps)
   .post(bootcampController.createBootcamp)
-
-router
-  .route(PathParam.ORIGIN)
-  .get(
-    advancedResult(Bootcamp, Key.CourseVirtual),
-    bootcampController.getBootcamps
-  )
 
 router
   .route(PathParam.CREATE)

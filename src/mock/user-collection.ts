@@ -33,6 +33,7 @@ const userCollection = [
     password: bcrypt.hashSync('123456', 10),
   },
   {
+    _id: ObjectID('65d44d6ef8e810489db6a59c'),
     firstname: 'Bob',
     lastname: 'Johnson',
     username: '@bobjohnson',
@@ -43,6 +44,7 @@ const userCollection = [
     password: bcrypt.hashSync('123456', 10),
   },
   {
+    _id: ObjectID('65d44d6ef8e810489db6a59d'),
     firstname: 'Emily',
     lastname: 'Brown',
     username: '@emilybrown',
@@ -83,6 +85,7 @@ const userCollection = [
     password: bcrypt.hashSync('123456', 10),
   },
   {
+    _id: ObjectID('65d44d6ef8e810489db6a5a1'),
     firstname: 'Sophia',
     lastname: 'Miller',
     username: '@sophiamiller',
