@@ -1,9 +1,16 @@
-import { linkUserRoutes } from '@route/user'
+import { linkUserRoute } from '@route/user'
+import { linkBootcampRoute } from '@route/bootcamp'
+import { linkFeedbackRoute } from '@route/feedback'
+import { linkCourseRoute } from '@route/course'
+import { linkAuthRoute } from './auth'
 import { Application } from 'express'
-import { PathDir } from '@constant'
 
 const mainRoute = (app: Application) => {
-  linkUserRoutes(app)
+  linkAuthRoute(app)
+  linkUserRoute(app)
+  linkBootcampRoute(app)
+  linkFeedbackRoute(app)
+  linkCourseRoute(app)
 }
 
 export { mainRoute }

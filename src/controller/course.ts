@@ -64,7 +64,6 @@ const addCourse = asyncHandler(async (req: any, res, next) => {
     )
   }
 
-  //verification if the user is the owner
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== Key.Admin) {
     return next(
       new ErrorResponse(RESPONSE.error.NOT_OWNER(req.user.id, bootcampId), 401)

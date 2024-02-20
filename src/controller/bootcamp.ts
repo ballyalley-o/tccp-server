@@ -1,4 +1,3 @@
-import path from 'path'
 import { Bootcamp } from '@model'
 import { asyncHandler } from '@middleware'
 import { IResponseExtended } from '@interface'
@@ -6,14 +5,6 @@ import { RESPONSE } from '@constant'
 import { ErrorResponse } from '@util'
 import { geocoder } from '@config/server'
 import { Key } from '@constant/enum'
-
-interface CustomRequest extends Request {
-  user: {
-    id: string // Assuming id is a string, adjust accordingly
-    role: string // Assuming role is a string, adjust accordingly
-    // Add any other properties your 'user' object may have
-  }
-}
 
 let bootcampId: string
 

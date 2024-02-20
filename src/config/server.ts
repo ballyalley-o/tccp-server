@@ -16,6 +16,7 @@ import { errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
 import { Key } from '@constant/enum'
 import options from '@util/geocoder'
+import '@controller/user'
 
 // TODO: initialize this in the App class
 export const globalConfig = GLOBAL

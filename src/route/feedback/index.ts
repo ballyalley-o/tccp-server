@@ -1,9 +1,9 @@
 import { Application } from 'express'
 import { PathDir } from '@constant'
-import userRoute from '@route/user/user'
+import feedbackRoute from '@route/feedback/feedback'
 
-const linkUserRoutes = (app: Application) => {
-  app.use(PathDir.USER, userRoute)
+const linkFeedbackRoute = (app: Application) => {
+  app.use(PathDir.FEEDBACK, feedbackRoute)
 }
 
-export { linkUserRoutes }
+export { linkFeedbackRoute }
