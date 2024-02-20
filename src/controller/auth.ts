@@ -1,17 +1,22 @@
 import crypto from 'crypto'
+import goodlog from 'good-logs'
 import { asyncHandler } from '@middleware'
 import { ErrorResponse } from '@util'
 import { sendEmail } from '@util'
 import { User } from '@model'
 import { RESPONSE } from '@constant'
-import { Key } from '@constant/enum'
+import { Key, PathParam } from '@constant/enum'
 import { thirtyDays } from '@constant'
 import { GLOBAL } from '@config'
 import { expire } from '@constant/max-age'
+import { PathDir } from '@constant'
 
+/**
+ * @path {baseUrl}/api/v1/auth
+ */
 //@desc   Register user
-//@method POST /api/v1/auth/register
-//@access Public
+//@route  POST /register
+//@access PUBLIC
 const register = asyncHandler(async (req, res, next) => {
   const {
     firstName,
@@ -21,11 +26,9 @@ const register = asyncHandler(async (req, res, next) => {
     username,
     role,
     avatar,
-    cohort,
     location,
   } = req.body
 
-  //creat user
   const user = await User.create({
     firstName,
     lastName,
@@ -34,7 +37,6 @@ const register = asyncHandler(async (req, res, next) => {
     username,
     role,
     avatar,
-    cohort,
     location,
   })
 
@@ -42,8 +44,8 @@ const register = asyncHandler(async (req, res, next) => {
 })
 
 //@desc   Login user
-//@method POST /api/v1/auth/login
-//@access Public
+//@route  POST /api/v1/auth/login
+//@access PUBLIC
 const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body
 
@@ -67,7 +69,7 @@ const login = asyncHandler(async (req, res, next) => {
 })
 
 //@desc   Get Log out User
-//@method GET /api/v0.1/auth/logout
+//@route GET /api/v0.1/auth/logout
 //@access Private
 const logout = asyncHandler(async (req, res, next) => {
   res.cookie(Key.Token, Key.None, {
@@ -83,21 +85,21 @@ const logout = asyncHandler(async (req, res, next) => {
 })
 
 //@desc   Get current logged in user
-//@method GET /api/v1/auth/me
-//@access Private
-const myAccount = asyncHandler(async (req, res, next) => {
-  const { firstName, lastName, email, password, role } = req.body
+//@route  GET /account
+//@access PRIVATE
+const myAccount = asyncHandler(async (req: any, res, next) => {
+  const user = (await User.findById(req.user.id)) || null
 
   res.status(200).json({
     success: true,
     message: RESPONSE.success[200],
-    data: req.body,
+    data: user,
   })
 })
 
 //@desc   Update user details
-//@method PUT /api/v1/auth/update_details
-//@access Private
+//@route  PUT /update
+//@access PRIVATE
 const updateAccount = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
     name: req.body.name,
@@ -117,9 +119,9 @@ const updateAccount = asyncHandler(async (req, res, next) => {
   })
 })
 
-//Update Password
-//PUT /api/v1/auth/update_password
-//Private
+//@desc   Update Password
+//@route  PUT /update-password
+//@access PRIVATE
 const updatePassword = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.body.user.id).select(Key.Password)
 
@@ -136,9 +138,9 @@ const updatePassword = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res)
 })
 
-//Forgot Password
-//POST/api/v1/auth/forgot_password
-//Public
+//@desc   Forgot Password
+//@route  POST /forgot-password
+//@access PUBLIC
 const forgotPassword = asyncHandler(async (req, res, next) => {
   const userEmail = req.body.email
   const user = await User.findOne({ email: req.body.email })
@@ -146,14 +148,14 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   if (!user) {
     return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), 404))
   }
-  const resetToken = user.resetPasswordToken
+  const resetToken = user.getResetPasswordToken()
 
   await user.save({ validateBeforeSave: false })
 
   // TODO: refax the hard coded url to path-dir
-  const resetUrl = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v0.1/auth/reset_password/${resetToken}`
+  const resetUrl = `${req.protocol}://${req.get('host')}${
+    PathDir.RESET_URL
+  }/${resetToken}`
 
   const message = RESPONSE.error.RESET_MESSAGE(resetUrl)
   try {
@@ -162,21 +164,18 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
       subject: RESPONSE.error.RESET_SUBJECT,
       message,
     })
+  } catch (error) {
+    if (error instanceof Error) {
+      goodlog.log(error.message)
+      user.resetPasswordToken = ''
+      user.resetPasswordExpire = expire
 
-    res.status(200).json({
-      success: true,
-      data: RESPONSE.success.EMAIL_SENT,
-    })
-  } catch (err) {
-    console.log(err)
-    user.resetPasswordToken = ''
-    user.resetPasswordExpire = expire
+      await user.save({
+        validateBeforeSave: false,
+      })
 
-    await user.save({
-      validateBeforeSave: false,
-    })
-
-    return next(new ErrorResponse(RESPONSE.error.FAILED_EMAIL, 500))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_EMAIL, 500))
+    }
   }
 
   res.status(200).json({
@@ -187,13 +186,13 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
 })
 
 //@desc   Reset Password
-//@method PUT /api/v1/auth/resetpassword/:resettoken
-//@access Public
+//@method PUT /reset-password/:resetToken
+//@access PUBLIC
 const resetPassword = asyncHandler(async (req, res, next) => {
   let resetPasswordToken = crypto
     .createHash(Key.CryptoHash)
-    .update(req.params.resettoken)
-    .digest('hex')
+    .update(req.params.resetToken)
+    .digest(Key.Hex)
 
   const user = await User.findOne({
     resetPasswordToken,
