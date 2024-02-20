@@ -13,6 +13,12 @@ enum PathParam {
   FEEDBACK = '/feedback',
   LOG_IN = '/log-in',
   LOG_OUT = '/log-out',
+  REGISTER = '/register',
+  ACCOUNT = '/account',
+  UPDATE = '/update',
+  UPDATE_PASSWORD = '/update-password',
+  FORGOT_PASSWORD = '/forgot-password',
+  RESET_PASSWORD = '/reset-password',
   DIST = 'dist',
   // @redir
   REDIR_FEEDBACK = '/:bootcampId/feedback',
