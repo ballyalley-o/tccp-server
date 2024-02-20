@@ -5,9 +5,11 @@ import { advancedResult, authorize, protect } from '@middleware'
 import { Key, PathParam } from '@constant/enum'
 
 const router = Router({ mergeParams: true })
-
+/**
+ * @path - {baseUrl}/api/v0.1/course
+ */
 router
-  .route(PathParam.ORIGIN_PARAM)
+  .route(PathParam.ORIGIN)
   .get(
     advancedResult(Course, {
       path: Key.BootcampVirtual,
@@ -18,7 +20,7 @@ router
   .post(protect, authorize(Key.Trainer, Key.Admin), courseController.addCourse)
 
 router
-  .route(PathParam.ID_PARAM)
+  .route(PathParam.ID)
   .get(courseController.getCourse)
   .put(
     protect,
