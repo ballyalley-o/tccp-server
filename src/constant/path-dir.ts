@@ -36,26 +36,29 @@ class PathDir {
    * ENDPOINTS
    * @description Path directory for the server
    */
-  // {baseUrl}/api/{apiVer}
+
+  /**
+   *  @path - {baseUrl}/api/{apiVer}
+   */
   static API_ROOT = this._connex(
     PathDir.API_PARAM,
     process.env.API_VERSION || ''
   )
-  // {baseUrl}/api/{apiVer}/dashboard
+  //  /dashboard
   static DASHBOARD = this._connex(PathDir.API_ROOT, this.DASHBOARD_PARAM)
-  // {baseUrl}/api/{apiVer}/auth
+  //  /auth
   static AUTH_ROOT = this._connex(PathDir.API_ROOT, this.AUTH_PARAM)
-  // {baseUrl}/api/{apiVer}/auth/user
+  //  /auth/user
   static USER = this._connex(PathDir.AUTH_ROOT, this.USER_PARAM)
-  // {baseUrl}/api/{apiVer}/bootcamp
+  //  /bootcamp
   static BOOTCAMP = this._connex(PathDir.API_ROOT, this.BOOTCAMP_PARAM)
-  // {baseUrl}/api/{apiVer}/course
+  // /course
   static COURSE = this._connex(PathDir.API_ROOT, this.COURSE_PARAM)
-  // {baseUrl}/api/{apiVer}/feedback
+  // /feedback
   static FEEDBACK = this._connex(PathDir.AUTH_ROOT, this.FEEDBACK_PARAM)
-  // {baseUrl}/api/{apiVer}/auth/log-in
+  // /auth/log-in
   static LOG_IN = this._connex(PathDir.AUTH_ROOT, this.LOG_IN_PARAM)
-  // {baseUrl}/api/{apiVer}/auth/log-out
+  // /auth/log-out
   static LOG_OUT = this._connex(PathDir.AUTH_ROOT, this.LOG_OUT_PARAM)
 
   // @production
