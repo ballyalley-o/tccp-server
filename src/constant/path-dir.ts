@@ -47,19 +47,19 @@ class PathDir {
   //  /dashboard
   static DASHBOARD = this._connex(PathDir.API_ROOT, this.DASHBOARD_PARAM)
   //  /auth
-  static AUTH_ROOT = this._connex(PathDir.API_ROOT, this.AUTH_PARAM)
+  static AUTH = this._connex(PathDir.API_ROOT, this.AUTH_PARAM)
   //  /auth/user
-  static USER = this._connex(PathDir.AUTH_ROOT, this.USER_PARAM)
+  static USER = this._connex(PathDir.AUTH, this.USER_PARAM)
   //  /bootcamp
   static BOOTCAMP = this._connex(PathDir.API_ROOT, this.BOOTCAMP_PARAM)
   // /course
   static COURSE = this._connex(PathDir.API_ROOT, this.COURSE_PARAM)
   // /feedback
-  static FEEDBACK = this._connex(PathDir.AUTH_ROOT, this.FEEDBACK_PARAM)
+  static FEEDBACK = this._connex(PathDir.API_ROOT, this.FEEDBACK_PARAM)
   // /auth/log-in
-  static LOG_IN = this._connex(PathDir.AUTH_ROOT, this.LOG_IN_PARAM)
+  static LOG_IN = this._connex(PathDir.AUTH, this.LOG_IN_PARAM)
   // /auth/log-out
-  static LOG_OUT = this._connex(PathDir.AUTH_ROOT, this.LOG_OUT_PARAM)
+  static LOG_OUT = this._connex(PathDir.AUTH, this.LOG_OUT_PARAM)
 
   // @production
   // static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
