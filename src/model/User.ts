@@ -44,10 +44,9 @@ const UserSchema = new Schema<IUser>(
       unique: true,
     },
     role: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'Role',
-      default: 'Student',
+      type: String,
+      enum: ['student', 'trainer'],
+      default: 'student',
     },
     avatar: {
       type: String,
