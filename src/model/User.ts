@@ -53,10 +53,6 @@ const UserSchema = new Schema<IUser>(
       type: String,
       default: 'no-photo.jpg',
     },
-    cohort: {
-      type: Schema.Types.ObjectId,
-      ref: 'Cohort',
-    },
     location: {
       type: String,
       required: true,
@@ -80,7 +76,6 @@ UserSchema.pre(Key.Save, async function (next) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-//Sign JWT and return
 UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id }, GLOBAL.JWT_SECRET || '', {
     expiresIn: GLOBAL.JWT_EXP,
@@ -104,28 +99,6 @@ UserSchema.methods.getResetPasswordToken = function () {
 
   return resetToken
 }
-
-UserSchema.pre(Key.Save, async function (next) {
-  try {
-    const cohort = await mongoose.model(Key.Cohort).findById(this.cohort)
-    // const studentRole = await mongoose.model('Role').find({ type: 'Student' })
-    const studentRole = await mongoose
-      .model('Role')
-      .findOne({ type: 'Student' })
-
-    if (cohort && studentRole) {
-      if (this.role && this.role.toString() === studentRole._id.toString()) {
-        cohort.students.push(this._id)
-      } else {
-        cohort.trainers.push(this._id)
-      }
-      await cohort.save()
-    }
-    next()
-  } catch (error: any) {
-    next(error)
-  }
-})
 
 UserSchema.index({ username: 1 })
 UserSchema.index({ firstname: 1 })
