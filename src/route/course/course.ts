@@ -9,7 +9,7 @@ const router = Router({ mergeParams: true })
  * @path - {baseUrl}/api/v0.1/course
  */
 router
-  .route(PathParam.ORIGIN)
+  .route(PathParam.F_SLASH)
   .get(
     advancedResult(Course, {
       path: Key.BootcampVirtual,
