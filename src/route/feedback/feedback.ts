@@ -11,7 +11,7 @@ const router = express.Router({ mergeParams: true })
  * @path - {baseUrl}/api/v0.1/feedback
  */
 router
-  .route(PathParam.ORIGIN)
+  .route(PathParam.F_SLASH)
   .get(
     advancedResult(Feedback, {
       path: Key.BootcampVirtual,
