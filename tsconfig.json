@@ -8,8 +8,7 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "paths": {
-      "@*": ["./*"],
-      "@enum": ["@constant/enum"]
+      "@*": ["./*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -19,7 +18,6 @@
     "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    // "allowSyntheticDefaultImports": true,
     "strict": true
   },
   "tsc-alias": {

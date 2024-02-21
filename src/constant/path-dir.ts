@@ -14,7 +14,7 @@ class PathDir {
   }
 
   // path parameters
-  static readonly ORIGIN_PARAM = PathParam.ORIGIN
+  static readonly ORIGIN_PARAM = PathParam.F_SLASH
   static readonly HOME_PARAM = PathParam.HOME
   static readonly DASHBOARD_PARAM = PathParam.DASHBOARD
   static readonly API_PARAM = PathParam.API
@@ -70,6 +70,17 @@ class PathDir {
     this.RESET_PASSWORD_PARAM,
     this.RESET_TOKEN_PARAM
   )
+
+  static RESET_FULL_EMAIL = (req: any, resetToken: string) =>
+    // {protocol}://{host}/api/{apiVer}/reset-password/:resetToken`
+    this._connex(
+      req.protocol,
+      PathParam.SCH_SEPARATOR,
+      req.get(Key.Host),
+      this.RESET_URL,
+      PathParam.F_SLASH,
+      resetToken
+    )
 
   // @production
   // static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)

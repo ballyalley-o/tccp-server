@@ -1,5 +1,6 @@
 enum PathParam {
-  ORIGIN = '/',
+  F_SLASH = '/',
+  SCH_SEPARATOR = '://',
   ID = '/:id',
   CREATE = '/create',
   HOME = '/home',

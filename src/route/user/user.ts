@@ -9,9 +9,9 @@ const router = Router({ mergeParams: true })
 /**
  * @path - {baseUrl}/api/v0.1/auth/user
  */
-router.get(PathParam.ORIGIN, advancedResult(User), UserController.getUsers)
+router.get(PathParam.F_SLASH, advancedResult(User), UserController.getUsers)
 router.get(PathParam.ID, UserController.getUser)
-router.post(PathParam.ORIGIN, UserController.createUser)
+router.post(PathParam.F_SLASH, UserController.createUser)
 router.put(PathParam.ID, UserController.updateUser)
 router.delete(PathParam.ID, UserController.deleteUser)
 

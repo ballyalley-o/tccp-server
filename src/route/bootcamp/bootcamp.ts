@@ -18,16 +18,9 @@ router.use(PathParam.REDIR_FEEDBACK, feedbackRoute)
 router.route(PathParam.DISTANCE).get(bootcampController.getBootcampsInRadius)
 
 router
-  .route(PathParam.ORIGIN)
-  .get(bootcampController.getBootcamps)
+  .route(PathParam.F_SLASH)
+  .get(advancedResult(Bootcamp), bootcampController.getBootcamps)
   .post(bootcampController.createBootcamp)
-
-router
-  .route(PathParam.ORIGIN)
-  .get(
-    advancedResult(Bootcamp, Key.CourseVirtual),
-    bootcampController.getBootcamps
-  )
 
 router
   .route(PathParam.CREATE)
