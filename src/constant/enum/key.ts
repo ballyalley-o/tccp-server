@@ -2,6 +2,7 @@ enum Key {
   Save = 'save',
   Remove = 'remove',
   Name = 'name',
+  Host = 'host',
 
   // Roles
   Trainer = 'trainer',
