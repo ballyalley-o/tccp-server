@@ -45,10 +45,10 @@ class AuthController {
   //@route  POST /register
   //@access PUBLIC
   public static register: IExpressController = asyncHandler(
-    async (req, res, next) => {
+    async (req, res, _next) => {
       const {
-        firstName,
-        lastName,
+        firstname,
+        lastname,
         email,
         password,
         username,
@@ -58,8 +58,8 @@ class AuthController {
       } = req.body
 
       const user = await User.create({
-        firstName,
-        lastName,
+        firstname,
+        lastname,
         email,
         password,
         username,
@@ -114,7 +114,7 @@ class AuthController {
   //@route GET /api/v0.1/auth/logout
   //@access Private
   public static logout: IExpressController = asyncHandler(
-    async (req, res, next) => {
+    async (_req, res, _next) => {
       res.cookie(Key.Token, Key.None, {
         expires: fiveSecFromNow,
         httpOnly: true,
@@ -132,7 +132,7 @@ class AuthController {
   //@route  GET /account
   //@access PRIVATE
   public static myAccount: IExpressController = asyncHandler(
-    async (req: any, res, next) => {
+    async (req: any, res, _next) => {
       const user = (await User.findById(req.user.id)) || null
 
       res.status(Code.OK).json({
@@ -147,21 +147,22 @@ class AuthController {
   //@route  PUT /update
   //@access PRIVATE
   public static updateAccount: IExpressController = asyncHandler(
-    async (req, res, next) => {
+    async (req: any, res, _next) => {
       const fieldsToUpdate = {
-        name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        password: req.body.password,
         email: req.body.email,
         role: req.body.role,
+        avatar: req.body.avatar,
+        location: req.body.location,
       }
 
-      const user = await User.findByIdAndUpdate(
-        req.body.user.id,
-        fieldsToUpdate,
-        {
-          new: true,
-          runValidators: true,
-        }
-      )
+      const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+        new: true,
+        runValidators: true,
+      })
 
       res.status(Code.OK).json({
         success: true,
@@ -175,8 +176,8 @@ class AuthController {
   //@route  PUT /update-password
   //@access PRIVATE
   public static updatePassword: IExpressController = asyncHandler(
-    async (req, res, next) => {
-      const user = await User.findById(req.body.user.id).select(Key.Password)
+    async (req: any, res, next) => {
+      const user = await User.findById(req.user.id).select(Key.Password)
 
       if (!(await user?.matchPassword(req.body.currentPassword))) {
         return next(
@@ -190,6 +191,7 @@ class AuthController {
       if (user) {
         user.password = req.body.password
       }
+
       await user?.save()
 
       this._sendTokenResponse(user, Code.OK, res)
@@ -241,7 +243,7 @@ class AuthController {
         }
       }
 
-      res.status(200).json({
+      res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.EMAIL_SENT,
         data: user,
@@ -265,7 +267,9 @@ class AuthController {
       })
 
       if (!user) {
-        return next(new ErrorResponse(RESPONSE.error.INVALID_TOKEN, 400))
+        return next(
+          new ErrorResponse(RESPONSE.error.INVALID_TOKEN, Code.ALREADY_REPORTED)
+        )
       }
 
       user.password = req.body.password
@@ -273,7 +277,7 @@ class AuthController {
       user.resetPasswordExpire = expire
       await user.save()
 
-      this._sendTokenResponse(user, 200, res)
+      this._sendTokenResponse(user, Code.OK, res)
     }
   )
 }
