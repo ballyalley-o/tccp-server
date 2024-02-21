@@ -18,7 +18,6 @@
     "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    // "allowSyntheticDefaultImports": true,
     "strict": true
   },
   "tsc-alias": {
