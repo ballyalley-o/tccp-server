@@ -93,7 +93,6 @@ UserSchema.methods.getResetPasswordToken = function () {
     .update(resetToken)
     .digest(Key.Hex)
 
-  //set expire
   this.resetPasswordExpire = oneDayFromNow
 
   return resetToken

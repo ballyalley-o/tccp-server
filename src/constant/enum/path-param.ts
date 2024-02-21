@@ -19,6 +19,8 @@ enum PathParam {
   UPDATE_PASSWORD = '/update-password',
   FORGOT_PASSWORD = '/forgot-password',
   RESET_PASSWORD = '/reset-password',
+  RESET_TOKEN = '/:resetToken',
+  RESET_URL = '/reset-password/:resetToken',
   DIST = 'dist',
   // @redir
   REDIR_FEEDBACK = '/:bootcampId/feedback',

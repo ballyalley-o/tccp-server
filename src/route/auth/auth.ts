@@ -15,7 +15,7 @@ router.get(PathParam.ACCOUNT, protect, authController.myAccount)
 router.put(PathParam.UPDATE, protect, authController.updateAccount)
 router.put(PathParam.UPDATE_PASSWORD, protect, authController.updatePassword)
 router.post(PathParam.FORGOT_PASSWORD, authController.forgotPassword)
-router.put(PathParam.RESET_PASSWORD, authController.resetPassword)
+router.put(PathParam.RESET_URL, authController.resetPassword)
 
 const authRoute = router
 export default authRoute

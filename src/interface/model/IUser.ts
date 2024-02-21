@@ -13,6 +13,8 @@ interface IUser {
   progress: Schema.Types.ObjectId
   resetPasswordToken: string
   resetPasswordExpire: Date
+  getSignedJwtToken(): string
+  getResetPasswordToken(): string
   matchPassword(enteredPassword: string): Promise<boolean>
 }
 
