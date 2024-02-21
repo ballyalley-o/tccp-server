@@ -4,6 +4,9 @@ enum Key {
   Name = 'name',
   Host = 'host',
 
+  MorganShort = 'short',
+  MorganDev = 'dev',
+
   // Roles
   Trainer = 'trainer',
   Admin = 'admin',
@@ -21,11 +24,15 @@ enum Key {
   Bootcamp = 'Bootcamp',
   Cohort = 'Cohort',
   Feedback = 'Feedback',
-  CourseVirtual = 'courses',
+
+  UserVirtual = 'user',
+  CourseVirtual = 'course',
   BootcampVirtual = 'bootcamp',
+
   CourseSelect = 'bootcamp_title description',
   DefaultSelect = 'name description',
   PasswordSelect = '-password',
+  BootcampPopulate = 'firstname email',
 
   Cookie = 'cookie',
   Token = 'token',
