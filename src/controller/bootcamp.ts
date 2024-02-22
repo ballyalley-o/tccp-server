@@ -1,139 +1,165 @@
 import { Bootcamp } from '@model'
+import { Request, Response, NextFunction } from 'express'
 import { asyncHandler } from '@middleware'
+import { IExpressController } from '@interface/middleware'
 import { IResponseExtended } from '@interface'
+import { geocoder } from '@config/server'
+import { Key, Code } from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { ErrorResponse } from '@util'
-import { geocoder } from '@config/server'
-import { Key } from '@constant/enum'
 
-let bootcampId: string
-
-//@desc     Get ALL bootcamps
-//@route    GET /api/{apiVer}/bootcamps
-//@access   Public
-const getBootcamps = asyncHandler(async (req, res, next) => {
-  res.status(200).json((res as IResponseExtended).advancedResult)
-})
-
-//@desc     Get single bootcamp
-//@route    GET /api/{apiVer}/bootcamp/:id
-//@access   Public
-const getBootcamp = asyncHandler(async (req, res, next) => {
-  bootcampId = req.params.id
-  const bootcamp = await Bootcamp.findById(bootcampId).populate(
-    Key.UserVirtual,
-    Key.BootcampPopulate
+class BootcampController {
+  //@desc     Get ALL bootcamps
+  //@route    GET /api/{apiVer}/bootcamps
+  //@access   Public
+  public static getBootcamps: IExpressController = asyncHandler(
+    async (_req: Request, res: Response, _next: NextFunction) => {
+      res.status(200).json((res as IResponseExtended).advancedResult)
+    }
   )
 
-  if (!bootcamp) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), 404)
-    )
-  }
-  res.status(200).json({ success: true, data: bootcamp })
-})
+  //@desc     Get single bootcamp
+  //@route    GET /api/{apiVer}/bootcamp/:id
+  //@access   Public
+  public static getBootcamp: IExpressController = asyncHandler(
+    async (req, res, next) => {
+      // this._bootcampId = req.params.id
 
-//@desc     Create NEW bootcamp
-//@route    POST /api/{apiVer}/bootcamps
-//@access   PRIVATE
-const createBootcamp = asyncHandler(async (req: any, res, next) => {
-  req.body.user = req.user.id
-
-  const publishedBootcamp = await Bootcamp.findOne({ user: req.user.id })
-
-  //if user is not an admin, they are only allowed to add one bootcamp
-  if (publishedBootcamp && req.user.role !== Key.Admin) {
-    return next(
-      new ErrorResponse(
-        RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(req.user.id),
-        400
+      const bootcamp = await Bootcamp.findById(req.params.id).populate(
+        Key.UserVirtual,
+        Key.BootcampPopulate
       )
-    )
-  }
 
-  const bootcamp = await Bootcamp.create(req.body)
+      if (!bootcamp) {
+        return next(
+          new ErrorResponse(
+            RESPONSE.error.NOT_FOUND_BOOTCAMP(req.params.id),
+            404
+          )
+        )
+      }
+      res.status(200).json({ success: true, data: bootcamp })
+    }
+  )
 
-  res.status(201).json({
-    success: true,
-    data: bootcamp,
-  })
-})
+  //@desc     Create NEW bootcamp
+  //@route    POST /api/{apiVer}/bootcamps
+  //@access   PRIVATE
+  public static createBootcamp: IExpressController = asyncHandler(
+    async (req: any, res, next) => {
+      // this._userId = req.user.id
+      req.body.user = req.user.id
 
-//@desc     UPDATE bootcamp
-//@route    PUT /api/{apiVer}/bootcamps/:id
-//@access   PRIVATE
-const updateBootcamp = asyncHandler(async (req: any, res, next) => {
-  let bootcamp = await Bootcamp.findById(req.params.id)
+      const publishedBootcamp = await Bootcamp.findOne({ user: req.user.id })
 
-  if (!bootcamp) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(req.params.id), 404)
-    )
-  }
+      if (publishedBootcamp && req.user.role !== Key.Admin) {
+        return next(
+          new ErrorResponse(
+            RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(req.user.id),
+            400
+          )
+        )
+      }
 
-  if (bootcamp.user.toString() !== req.user.id && req.user.role !== Key.Admin) {
-    return next(new ErrorResponse(RESPONSE.error[401], 401))
-  }
+      const bootcamp = await Bootcamp.create(req.body)
 
-  bootcamp = await Bootcamp.findOneAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  })
+      res.status(201).json({
+        success: true,
+        data: bootcamp,
+      })
+    }
+  )
 
-  res.status(200).json({ success: true, data: bootcamp })
-})
+  //@desc     UPDATE bootcamp
+  //@route    PUT /api/{apiVer}/bootcamps/:id
+  //@access   PRIVATE
+  public static updateBootcamp: IExpressController = asyncHandler(
+    async (req: any, res, next) => {
+      // this._bootcampId = req.params.id
+      // this._userId = req.user.id
 
-//@desc     DELETE bootcamp
-//@route    DELETE /api/{apiVer}/bootcamps/:id
-//@access   PRIVATE
-const deleteBootcamp = asyncHandler(async (req: any, res, next) => {
-  bootcampId = req.params.id
-  const bootcamp = await Bootcamp.findById(bootcampId)
+      let bootcamp = await Bootcamp.findById(req.params.id)
 
-  if (!bootcamp) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), 404)
-    )
-  }
+      if (!bootcamp) {
+        return next(
+          new ErrorResponse(
+            RESPONSE.error.NOT_FOUND_BOOTCAMP(req.params.id),
+            404
+          )
+        )
+      }
 
-  if (bootcamp.user.toString() !== req.user.id && req.user.role !== Key.Admin) {
-    return next(new ErrorResponse(RESPONSE.error[401], 401))
-  }
+      if (
+        bootcamp.user.toString() !== req.user.id &&
+        req.user.role !== Key.Admin
+      ) {
+        return next(new ErrorResponse(RESPONSE.error[401], 401))
+      }
 
-  await Bootcamp.deleteOne({ _id: bootcampId })
+      bootcamp = await Bootcamp.findOneAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      })
 
-  res.status(200).json({ success: true, data: {} })
-})
+      res.status(200).json({ success: true, data: bootcamp })
+    }
+  )
 
-//@desc     Get bootcamps within a radius
-//@route    GET /api/v1/bootcamps/radius/:zipcode/:distance
-//@access   PRIVATE
-const getBootcampsInRadius = asyncHandler(async (req, res, next) => {
-  const { zipcode, distance } = req.params
+  //@desc     DELETE bootcamp
+  //@route    DELETE /api/{apiVer}/bootcamps/:id
+  //@access   PRIVATE
+  public static deleteBootcamp: IExpressController = asyncHandler(
+    async (req: any, res, next) => {
+      // this._bootcampId = req.params.id
+      // this._userId = req.user.id
+      const bootcamp = await Bootcamp.findById(req.params.id)
 
-  const loc = await geocoder.geocode(zipcode)
-  const lat = loc[0].latitude
-  const lng = loc[0].longitude
+      if (!bootcamp) {
+        return next(
+          new ErrorResponse(
+            RESPONSE.error.NOT_FOUND_BOOTCAMP(req.params.id),
+            404
+          )
+        )
+      }
 
-  const radius = Number(distance) / 3963
+      if (
+        bootcamp.user.toString() !== req.user.id &&
+        req.user.role !== Key.Admin
+      ) {
+        return next(new ErrorResponse(RESPONSE.error[401], 401))
+      }
 
-  const bootcamps = await Bootcamp.find({
-    location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
-  })
+      await Bootcamp.deleteOne({ _id: req.params.id })
 
-  res.status(200).json({
-    success: true,
-    count: bootcamps.length,
-    data: bootcamps,
-  })
-})
+      res.status(200).json({ success: true, data: {} })
+    }
+  )
 
-const bootcampController = {
-  getBootcamps,
-  getBootcamp,
-  createBootcamp,
-  updateBootcamp,
-  deleteBootcamp,
-  getBootcampsInRadius,
+  //@desc     Get bootcamps within a radius
+  //@route    GET /api/v1/bootcamps/radius/:zipcode/:distance
+  //@access   PRIVATE
+  public static getBootcampsInRadius: IExpressController = asyncHandler(
+    async (req, res, _next) => {
+      const { zipcode, distance } = req.params
+
+      const loc = await geocoder.geocode(zipcode)
+      const lat = loc[0].latitude
+      const lng = loc[0].longitude
+
+      const radius = Number(distance) / Key.EarthRadius
+
+      const bootcamps = await Bootcamp.find({
+        location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+      })
+
+      res.status(202).json({
+        success: true,
+        count: bootcamps.length,
+        data: bootcamps,
+      })
+    }
+  )
 }
-export default bootcampController
+
+export default BootcampController
