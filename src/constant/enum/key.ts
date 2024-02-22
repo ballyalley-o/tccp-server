@@ -1,5 +1,5 @@
 enum Key {
-  EarthRadius = 3963, // in miles
+  // EarthRadius = 3963, // in miles
 
   Save = 'save',
   Remove = 'remove',

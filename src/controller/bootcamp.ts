@@ -147,7 +147,7 @@ class BootcampController {
       const lat = loc[0].latitude
       const lng = loc[0].longitude
 
-      const radius = Number(distance) / Key.EarthRadius
+      const radius = Number(distance) / 3963
 
       const bootcamps = await Bootcamp.find({
         location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
