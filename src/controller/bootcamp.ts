@@ -14,7 +14,7 @@ class BootcampController {
   //@access   Public
   public static getBootcamps: IExpressController = asyncHandler(
     async (_req: Request, res: Response, _next: NextFunction) => {
-      res.status(200).json((res as IResponseExtended).advancedResult)
+      res.status(Code.OK).json((res as IResponseExtended).advancedResult)
     }
   )
 
@@ -34,11 +34,11 @@ class BootcampController {
         return next(
           new ErrorResponse(
             RESPONSE.error.NOT_FOUND_BOOTCAMP(req.params.id),
-            404
+            Code.NOT_FOUND
           )
         )
       }
-      res.status(200).json({ success: true, data: bootcamp })
+      res.status(Code.OK).json({ success: true, data: bootcamp })
     }
   )
 
@@ -56,7 +56,7 @@ class BootcampController {
         return next(
           new ErrorResponse(
             RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(req.user.id),
-            400
+            Code.BAD_REQUEST
           )
         )
       }
@@ -84,7 +84,7 @@ class BootcampController {
         return next(
           new ErrorResponse(
             RESPONSE.error.NOT_FOUND_BOOTCAMP(req.params.id),
-            404
+            Code.NOT_FOUND
           )
         )
       }
@@ -93,7 +93,7 @@ class BootcampController {
         bootcamp.user.toString() !== req.user.id &&
         req.user.role !== Key.Admin
       ) {
-        return next(new ErrorResponse(RESPONSE.error[401], 401))
+        return next(new ErrorResponse(RESPONSE.error[401], Code.UNAUTHORIZED))
       }
 
       bootcamp = await Bootcamp.findOneAndUpdate(req.params.id, req.body, {
@@ -101,7 +101,7 @@ class BootcampController {
         runValidators: true,
       })
 
-      res.status(200).json({ success: true, data: bootcamp })
+      res.status(Code.OK).json({ success: true, data: bootcamp })
     }
   )
 
@@ -118,7 +118,7 @@ class BootcampController {
         return next(
           new ErrorResponse(
             RESPONSE.error.NOT_FOUND_BOOTCAMP(req.params.id),
-            404
+            Code.NOT_FOUND
           )
         )
       }
@@ -127,7 +127,7 @@ class BootcampController {
         bootcamp.user.toString() !== req.user.id &&
         req.user.role !== Key.Admin
       ) {
-        return next(new ErrorResponse(RESPONSE.error[401], 401))
+        return next(new ErrorResponse(RESPONSE.error[401], Code.UNAUTHORIZED))
       }
 
       await Bootcamp.deleteOne({ _id: req.params.id })
