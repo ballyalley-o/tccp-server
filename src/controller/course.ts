@@ -9,9 +9,9 @@ let courseId: string
 let userId: string
 
 //@desc     Get ALL courses
-//@route    GET /api/[apiVer]/courses
-//@route    GET /api/v1/bootcamps/:bootcampId/courses
-//@access   Public
+//@route    GET /courses
+//@route    GET /bootcamps/:bootcampId/courses
+//@access   PUBLIC
 const getCourses = asyncHandler(async (req, res, next) => {
   if (req.params.bootcampId) {
     const courses = await Course.find({ bootcamp: req.params.bootcampId })
