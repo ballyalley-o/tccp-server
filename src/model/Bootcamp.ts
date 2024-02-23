@@ -1,9 +1,10 @@
+import { App } from '@config'
 import slugify from 'slugify'
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { IBootcamp } from '@interface/model'
-import { Key } from '@constant/enum'
-import { geocoder } from '@config/server'
+import { RESPONSE } from '@constant'
+import { Key, COLOR } from '@constant/enum'
 
 const TAG = Key.Bootcamp
 
@@ -141,7 +142,7 @@ BootcampSchema.pre(Key.Save, function (next) {
 
 //Geocode & create location field
 BootcampSchema.pre(Key.Save, async function (next) {
-  const loc = await geocoder.geocode(this.address)
+  const loc = await App.geocoder.geocode(this.address)
   this.location = {
     type: Key.GeocoderType,
     coordinates: [loc[0].longitude, loc[0].latitude],
@@ -160,8 +161,8 @@ BootcampSchema.pre(
   new RegExp(Key.Remove),
   async function (this: IBootcamp, next) {
     goodlog.custom(
-      'inverse',
-      `Courses being deleted from bootcamp ID: ${this.name}. Reload page to see the effect`
+      COLOR.INVERSE,
+      RESPONSE.success.COURSES_DELETED(this.name as string)
     )
     await mongoose
       .model(Key.Course)
