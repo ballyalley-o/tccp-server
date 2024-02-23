@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
-import { IExpressController } from '@interface/middleware'
+import { IExpressController, IUserRequest } from '@interface/middleware'
 import { asyncHandler } from '@middleware'
 import { ErrorResponse } from '@util'
 import { sendEmail } from '@util'
@@ -17,10 +17,22 @@ import {
 } from '@constant'
 
 /**
- * @path {baseUrl}/api/v1/auth
+ * @path {baseUrl}/auth
  */
-
 class AuthController {
+  private static _userId: string
+
+  static setUserId(req: IUserRequest) {
+    this._userId = req.user.id
+  }
+  /**
+   * _sendTokenResponse - Send Token Response
+   *
+   * @param user - User
+   * @param statusCode - Status Code
+   * @param res - Response
+   * @returns void
+   */
   private static _sendTokenResponse = (
     user: any,
     statusCode: number,
@@ -133,6 +145,8 @@ class AuthController {
     res: Response,
     _next: NextFunction
   ) {
+    AuthController.setUserId(req)
+
     const fieldsToUpdate = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -144,10 +158,14 @@ class AuthController {
       location: req.body.location,
     }
 
-    const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
-      new: true,
-      runValidators: true,
-    })
+    const user = await User.findByIdAndUpdate(
+      AuthController._userId,
+      fieldsToUpdate,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
 
     res.status(Code.OK).json({
       success: true,
@@ -165,7 +183,11 @@ class AuthController {
     res: Response,
     next: NextFunction
   ) {
-    const user = await User.findById(req.user.id).select(Key.Password)
+    AuthController.setUserId(req)
+
+    const user = await User.findById(AuthController._userId).select(
+      Key.Password
+    )
 
     if (!(await user?.matchPassword(req.body.currentPassword))) {
       return next(
