@@ -65,7 +65,7 @@ class AuthController {
   ) {
     const user = await User.create(req.body)
 
-    this._sendTokenResponse(user, Code.OK, res)
+    AuthController._sendTokenResponse(user, Code.OK, res)
   }
 
   //@desc   Login user
@@ -97,7 +97,7 @@ class AuthController {
       )
     }
 
-    this._sendTokenResponse(user, Code.OK, res)
+    AuthController._sendTokenResponse(user, Code.OK, res)
   }
 
   //@desc     Get Log out User
@@ -200,7 +200,7 @@ class AuthController {
 
     await user?.save()
 
-    this._sendTokenResponse(user, Code.OK, res)
+    AuthController._sendTokenResponse(user, Code.OK, res)
   }
 
   //@desc   Forgot Password
@@ -289,7 +289,7 @@ class AuthController {
     user.resetPasswordExpire = expire
     await user.save()
 
-    this._sendTokenResponse(user, Code.OK, res)
+    AuthController._sendTokenResponse(user, Code.OK, res)
   }
 }
 
