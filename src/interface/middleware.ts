@@ -19,6 +19,13 @@ export interface IResponseExtended extends Response {
   }
 }
 
+export declare interface IUserRequest {
+  user: {
+    id: string
+    role: string
+  }
+}
+
 export interface RouteHandlerDescriptor extends PropertyDescriptor {
   value?: RequestHandler
 }
