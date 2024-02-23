@@ -1,4 +1,5 @@
 export { default as Key } from '@constant/enum/key'
+export { default as NumKey } from '@constant/enum/num-key'
 export { default as MetaKey } from '@constant/enum/meta-key'
 export { default as PathParam } from '@constant/enum/path-param'
 export { default as Aggregate } from '@constant/enum/aggregate'
