@@ -8,7 +8,6 @@ const LogRequest: IExpressController = (
   res: Response,
   next: NextFunction
 ) => {
-  goodlog.log('info', 'Request received')
   goodlog.req(req, res, next)
   next()
 }

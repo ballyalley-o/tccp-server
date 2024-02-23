@@ -4,15 +4,10 @@ import { MetaKey } from '@constant/enum'
 
 function use(middleware: RequestHandler) {
   return function (target: any, key: string, desc: PropertyDescriptor) {
-    const middlewares =
+    let middlewares =
       Reflect.getMetadata(MetaKey.middleware, target, key) || []
-
-    Reflect.defineMetadata(
-      MetaKey.middleware,
-      [...middlewares, middleware],
-      target,
-      key
-    )
+      middlewares.push(middleware)
+      Reflect.defineMetadata(MetaKey.middleware, middlewares, target, key)
   }
 }
 

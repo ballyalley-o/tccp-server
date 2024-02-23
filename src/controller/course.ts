@@ -1,151 +1,245 @@
-import { ErrorResponse } from '@util'
+import { Request, Response, NextFunction } from 'express'
 import { asyncHandler } from '@middleware'
 import { Course, Bootcamp } from '@model'
 import { IResponseExtended } from '@interface'
-import { Key } from '@constant/enum'
+import { IRequestExtended, IUserRequest } from '@interface/middleware'
+import { Key, Code } from '@constant/enum'
 import { RESPONSE } from '@constant'
+import { ErrorResponse } from '@util'
+import { use, LogRequest } from '@decorator'
 
-let courseId: string
-let userId: string
+/**
+ * Course Controller
+ * @path {baseUrl}/api/{apiVer}/course
+ */
+class CourseController {
+  private static _bootcampId: string
+  private static _courseId: string
+  private static _userId: string
+  private static _userRole: string
 
-//@desc     Get ALL courses
-//@route    GET /api/[apiVer]/courses
-//@route    GET /api/v1/bootcamps/:bootcampId/courses
-//@access   Public
-const getCourses = asyncHandler(async (req, res, next) => {
-  if (req.params.bootcampId) {
-    const courses = await Course.find({ bootcamp: req.params.bootcampId })
+  /**
+   * setRequest - Set request parameters
+   *
+   * @param req - Request
+   * @returns void
+   */
+  static setRequest(req: Request) {
+    this._bootcampId = req.params.bootcampId
+    this._courseId = req.params.id
+  }
+  static setUserId(req: IUserRequest) {
+    this._userId = req.user.id
+    this._userRole = req.user.role
+  }
 
-    res.status(200).json({
-      success: true,
-      count: courses.length,
-      data: courses,
+  //@desc     Get ALL courses
+  //@route    GET /course
+  //@route    GET /bootcamp/:bootcampId/course
+  //@access   PUBLIC
+  @use(LogRequest)
+  public static async getCourses(
+    req: Request,
+    res: Response,
+    _next: NextFunction
+  ) {
+    CourseController.setRequest(req)
+
+    if (CourseController._bootcampId) {
+      const course = await Course.find({
+        bootcamp: CourseController._bootcampId,
+      })
+
+      res.status(Code.OK).json({
+        success: true,
+        count: course.length,
+        data: course,
+      })
+    } else {
+      res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+    }
+  }
+
+  //@desc     Get single course
+  //@route    GET /course/:id
+  //@access   PUBLIC
+  @use(LogRequest)
+  public static async getCourse(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    CourseController.setRequest(req)
+
+    const course = await Course.findById(CourseController._courseId).populate({
+      path: Key.BootcampVirtual,
+      select: Key.CourseSelect,
     })
-  } else {
-    res.status(200).json((res as IResponseExtended).advancedResult)
-  }
-})
 
-//@desc     Get single course
-//@route    GET /api/v1/courses/:id
-//@access   Public
-const getCourse = asyncHandler(async (req, res, next) => {
-  courseId = req.params.id
-  const course = await Course.findById(courseId).populate({
-    path: Key.BootcampVirtual,
-    select: Key.CourseSelect,
-  })
-
-  if (!course) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), 404)
-    )
-  }
-  res.status(200).json({
-    success: true,
-    data: course,
-  })
-})
-
-//Add a course
-//Route POST /api/v1/bootcamps/:bootcampId/courses
-//access Private
-const addCourse = asyncHandler(async (req: any, res, next) => {
-  const bootcampId = req.params.bootcampId
-  const userId = req.user.id
-  req.body.bootcamp = req.params.bootcampId
-  req.body.user = userId
-
-  const bootcamp = await Bootcamp.findById(bootcampId)
-
-  if (!bootcamp) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), 404)
-    )
-  }
-
-  if (bootcamp.user.toString() !== req.user.id && req.user.role !== Key.Admin) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_OWNER(req.user.id, bootcampId), 401)
-    )
-  }
-
-  const course = await Course.create(req.body)
-
-  res.status(201).json({
-    success: true,
-    data: course,
-  })
-})
-
-//@desc     Update a course
-//@route    PUT /api/v1/courses/:id
-//@access    Private
-const updateCourse = asyncHandler(async (req: any, res, next) => {
-  courseId = req.params._id
-  userId = req.user.id
-  let course = await Course.findById(req.params.id)
-
-  if (!course) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), 404)
-    )
-  }
-
-  //verification if the user is the course owner
-  if (course.user.toString() !== req.user.id && req.user.role !== Key.Admin) {
-    return next(
-      new ErrorResponse(
-        RESPONSE.error.NOT_OWNER(req.user.id, req.params.id),
-        401
+    if (!course) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId),
+          Code.NOT_FOUND
+        )
       )
-    )
+    }
+    res.status(Code.OK).json({
+      success: true,
+      data: course,
+    })
   }
 
-  course = await Course.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  })
+  //@desc   Add a course
+  //@route  POST /bootcamp/:bootcampId/course
+  //a@ccess PRIVATE
+  @use(LogRequest)
+  public static async addCourse(req: any, res: Response, next: NextFunction) {
+    CourseController.setRequest(req)
+    CourseController.setUserId(req)
 
-  res.status(200).json({
-    success: true,
-    data: course,
-  })
-})
+    req.body.bootcamp = CourseController._bootcampId
+    req.body.user = CourseController._userId
 
-//@desc     Delete a course
-//@route    DELETE /api/v1/courses/:id
-//@access   PRIVATE
-const deleteCourse = asyncHandler(async (req: any, res, next) => {
-  const course = await Course.findById(req.params.id)
-  courseId = req.params.id
-  userId = req.user.id
+    const bootcamp = await Bootcamp.findById(CourseController._bootcampId)
 
-  if (!course) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(req.params.id), 404)
-    )
+    if (!bootcamp) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND_BOOTCAMP(CourseController._bootcampId),
+          Code.NOT_FOUND
+        )
+      )
+    }
+
+    if (
+      bootcamp.user.toString() !== CourseController._userId &&
+      CourseController._userRole !== Key.Admin
+    ) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_OWNER(req.user.id, CourseController._bootcampId),
+          401
+        )
+      )
+    }
+
+    const course = await Course.create(req.body)
+
+    res.status(Code.CREATED).json({
+      success: true,
+      data: course,
+    })
   }
 
-  if (course.user.toString() !== req.user.id && req.user.role !== Key.Admin) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), 401)
+  //@desc     Update a course
+  //@route    PUT /courses/:id
+  //@access   PRIVATE
+  @use(LogRequest)
+  public static async updateCourse(
+    req: any,
+    res: Response,
+    next: NextFunction
+  ) {
+    CourseController.setRequest(req)
+    CourseController.setUserId(req)
+
+    let course = await Course.findById(CourseController._courseId)
+
+    if (!course) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_OWNER(
+            CourseController._userId,
+            CourseController._courseId
+          ),
+          Code.UNAUTHORIZED
+        )
+      )
+    }
+
+    if (
+      course.user.toString() !== CourseController._userId &&
+      CourseController._userRole !== Key.Admin
+    ) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_OWNER(
+            CourseController._userId,
+            CourseController._courseId
+          ),
+          Code.UNAUTHORIZED
+        )
+      )
+    }
+
+    course = await Course.findByIdAndUpdate(
+      CourseController._courseId,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
     )
+
+    res.status(Code.OK).json({
+      success: true,
+      data: course,
+    })
   }
+  //@desc     Delete a course
+  //@route    DELETE /course/:id
+  //@access   PRIVATE
+  @use(LogRequest)
+  public static async deleteCourse(
+    req: any,
+    res: Response,
+    next: NextFunction
+  ) {
+    CourseController.setRequest(req)
+    CourseController.setUserId(req)
 
-  await Course.deleteOne({ _id: courseId })
+    const course = await Course.findById(CourseController._courseId)
 
-  res.status(200).json({
-    success: true,
-    data: {},
-  })
-})
+    if (!course) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId),
+          Code.NOT_FOUND
+        )
+      )
+    }
 
-const courseController = {
-  getCourses,
-  getCourse,
-  addCourse,
-  updateCourse,
-  deleteCourse,
+    if (
+      course.user.toString() !== CourseController._userId &&
+      CourseController._userRole !== Key.Admin
+    ) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_OWNER(
+            CourseController._userId,
+            CourseController._courseId
+          ),
+          Code.UNAUTHORIZED
+        )
+      )
+    }
+
+    await Course.deleteOne({ _id: CourseController._courseId })
+
+    res.status(Code.OK).json({
+      success: true,
+      data: {},
+    })
+  }
 }
-export default courseController
+
+// const courseController = {
+//   getCourses: asyncHandler(CourseController.getCourses),
+//   getCourse: asyncHandler(CourseController.getCourse),
+//   addCourse: asyncHandler(CourseController.addCourse),
+//   updateCourse: asyncHandler(CourseController.updateCourse),
+//   deleteCourse: asyncHandler(CourseController.deleteCourse),
+// }
+
+export default CourseController

@@ -1,11 +1,12 @@
 import crypto from 'crypto'
 import goodlog from 'good-logs'
-import { IExpressController } from '@interface/middleware'
-import { asyncHandler } from '@middleware'
+import { Request, Response, NextFunction } from 'express'
+import { IUserRequest } from '@interface/middleware'
 import { ErrorResponse } from '@util'
 import { sendEmail } from '@util'
 import { User } from '@model'
 import { Key, Code } from '@constant/enum'
+import { use, LogRequest } from '@decorator'
 import {
   RESPONSE,
   PathDir,
@@ -15,10 +16,22 @@ import {
 } from '@constant'
 
 /**
- * @path {baseUrl}/api/v1/auth
+ * @path {baseUrl}/auth
  */
-
 class AuthController {
+  private static _userId: string
+
+  static setUserId(req: IUserRequest) {
+    this._userId = req.user.id
+  }
+  /**
+   * _sendTokenResponse - Send Token Response
+   *
+   * @param user - User
+   * @param statusCode - Status Code
+   * @param res - Response
+   * @returns void
+   */
   private static _sendTokenResponse = (
     user: any,
     statusCode: number,
@@ -44,242 +57,240 @@ class AuthController {
   //@desc   Register user
   //@route  POST /register
   //@access PUBLIC
-  public static register: IExpressController = asyncHandler(
-    async (req, res, _next) => {
-      const {
-        firstname,
-        lastname,
-        email,
-        password,
-        username,
-        role,
-        avatar,
-        location,
-      } = req.body
+  @use(LogRequest)
+  public static async register(
+    req: Request,
+    res: Response,
+    _next: NextFunction
+  ) {
+    const user = await User.create(req.body)
 
-      const user = await User.create({
-        firstname,
-        lastname,
-        email,
-        password,
-        username,
-        role,
-        avatar,
-        location,
-      })
-      this._sendTokenResponse(user, Code.OK, res)
-    }
-  )
+    this._sendTokenResponse(user, Code.OK, res)
+  }
 
   //@desc   Login user
   //@route  POST /api/v1/auth/login
   //@access PUBLIC
-  public static login: IExpressController = asyncHandler(
-    async (req, res, next) => {
-      const { email, password } = req.body
+  @use(LogRequest)
+  public static async login(req: Request, res: Response, next: NextFunction) {
+    const { email, password } = req.body
 
-      if (!email || !password) {
-        return next(
-          new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST)
-        )
-      }
-
-      const user = await User.findOne({ email }).select(Key.Password)
-
-      if (!user) {
-        return next(
-          new ErrorResponse(
-            RESPONSE.error.INVALID_CREDENTIAL,
-            Code.UNAUTHORIZED
-          )
-        )
-      }
-
-      const isMatch = await user.matchPassword(password)
-
-      if (!isMatch) {
-        return next(
-          new ErrorResponse(
-            RESPONSE.error.INVALID_CREDENTIAL,
-            Code.UNAUTHORIZED
-          )
-        )
-      }
-
-      this._sendTokenResponse(user, Code.OK, res)
+    if (!email || !password) {
+      return next(
+        new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST)
+      )
     }
-  )
 
-  //@desc   Get Log out User
-  //@route GET /api/v0.1/auth/logout
-  //@access Private
-  public static logout: IExpressController = asyncHandler(
-    async (_req, res, _next) => {
-      res.cookie(Key.Token, Key.None, {
-        expires: fiveSecFromNow,
-        httpOnly: true,
-      })
+    const user = await User.findOne({ email }).select(Key.Password)
 
-      res.status(Code.OK).json({
-        success: true,
-        message: RESPONSE.success.LOGOUT,
-        data: {},
-      })
+    if (!user) {
+      return next(
+        new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED)
+      )
     }
-  )
+
+    const isMatch = await user.matchPassword(password)
+
+    if (!isMatch) {
+      return next(
+        new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED)
+      )
+    }
+
+    this._sendTokenResponse(user, Code.OK, res)
+  }
+
+  //@desc     Get Log out User
+  //@route    GET /auth/log-out
+  //@access   PRIVATE
+  @use(LogRequest)
+  public static async logout(
+    _req: Request,
+    res: Response,
+    _next: NextFunction
+  ) {
+    res.cookie(Key.Token, Key.None, {
+      expires: fiveSecFromNow,
+      httpOnly: true,
+    })
+
+    res.status(Code.OK).json({
+      success: true,
+      message: RESPONSE.success.LOGOUT,
+      data: {},
+    })
+  }
 
   //@desc   Get current logged in user
   //@route  GET /account
   //@access PRIVATE
-  public static myAccount: IExpressController = asyncHandler(
-    async (req: any, res, _next) => {
-      const user = (await User.findById(req.user.id)) || null
+  @use(LogRequest)
+  public static async myAccount(req: any, res: Response, _next: NextFunction) {
+    const user = (await User.findById(req.user.id)) || null
 
-      res.status(Code.OK).json({
-        success: true,
-        message: RESPONSE.success[200],
-        data: user,
-      })
-    }
-  )
+    res.status(Code.OK).json({
+      success: true,
+      message: RESPONSE.success[200],
+      data: user,
+    })
+  }
 
   //@desc   Update user details
   //@route  PUT /update
   //@access PRIVATE
-  public static updateAccount: IExpressController = asyncHandler(
-    async (req: any, res, _next) => {
-      const fieldsToUpdate = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        role: req.body.role,
-        avatar: req.body.avatar,
-        location: req.body.location,
-      }
+  @use(LogRequest)
+  public static async updateAccount(
+    req: any,
+    res: Response,
+    _next: NextFunction
+  ) {
+    AuthController.setUserId(req)
 
-      const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+    const fieldsToUpdate = {
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      username: req.body.username,
+      password: req.body.password,
+      email: req.body.email,
+      role: req.body.role,
+      avatar: req.body.avatar,
+      location: req.body.location,
+    }
+
+    const user = await User.findByIdAndUpdate(
+      AuthController._userId,
+      fieldsToUpdate,
+      {
         new: true,
         runValidators: true,
-      })
+      }
+    )
 
-      res.status(Code.OK).json({
-        success: true,
-        message: RESPONSE.success.UPDATED,
-        data: user,
-      })
-    }
-  )
+    res.status(Code.OK).json({
+      success: true,
+      message: RESPONSE.success.UPDATED,
+      data: user,
+    })
+  }
 
   //@desc   Update Password
   //@route  PUT /update-password
   //@access PRIVATE
-  public static updatePassword: IExpressController = asyncHandler(
-    async (req: any, res, next) => {
-      const user = await User.findById(req.user.id).select(Key.Password)
+  @use(LogRequest)
+  public static async updatePassword(
+    req: any,
+    res: Response,
+    next: NextFunction
+  ) {
+    AuthController.setUserId(req)
 
-      if (!(await user?.matchPassword(req.body.currentPassword))) {
-        return next(
-          new ErrorResponse(
-            RESPONSE.error.INVALID_CREDENTIAL,
-            Code.UNAUTHORIZED
-          )
-        )
-      }
+    const user = await User.findById(AuthController._userId).select(
+      Key.Password
+    )
 
-      if (user) {
-        user.password = req.body.password
-      }
-
-      await user?.save()
-
-      this._sendTokenResponse(user, Code.OK, res)
+    if (!(await user?.matchPassword(req.body.currentPassword))) {
+      return next(
+        new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED)
+      )
     }
-  )
+
+    if (user) {
+      user.password = req.body.password
+    }
+
+    await user?.save()
+
+    this._sendTokenResponse(user, Code.OK, res)
+  }
 
   //@desc   Forgot Password
   //@route  POST /forgot-password
   //@access PUBLIC
-  public static forgotPassword: IExpressController = asyncHandler(
-    async (req, res, next) => {
-      const userEmail = req.body.email
-      const user = await User.findOne({ email: req.body.email })
+  @use(LogRequest)
+  public static async forgotPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const userEmail = req.body.email
+    const user = await User.findOne({ email: req.body.email })
 
-      if (!user) {
+    if (!user) {
+      return next(
+        new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), Code.NOT_FOUND)
+      )
+    }
+    const resetToken = user.getResetPasswordToken()
+
+    await user.save({ validateBeforeSave: false })
+
+    const message = RESPONSE.error.RESET_MESSAGE(
+      PathDir.RESET_FULL_EMAIL(req, resetToken)
+    )
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: RESPONSE.error.RESET_SUBJECT,
+        message,
+      })
+    } catch (error) {
+      if (error instanceof Error) {
+        goodlog.log(error.message)
+        user.resetPasswordToken = ''
+        user.resetPasswordExpire = expire
+
+        await user.save({
+          validateBeforeSave: false,
+        })
+
         return next(
-          new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), Code.NOT_FOUND)
+          new ErrorResponse(
+            RESPONSE.error.FAILED_EMAIL,
+            Code.INTERNAL_SERVER_ERROR
+          )
         )
       }
-      const resetToken = user.getResetPasswordToken()
-
-      await user.save({ validateBeforeSave: false })
-
-      const message = RESPONSE.error.RESET_MESSAGE(
-        PathDir.RESET_FULL_EMAIL(req, resetToken)
-      )
-      try {
-        await sendEmail({
-          email: user.email,
-          subject: RESPONSE.error.RESET_SUBJECT,
-          message,
-        })
-      } catch (error) {
-        if (error instanceof Error) {
-          goodlog.log(error.message)
-          user.resetPasswordToken = ''
-          user.resetPasswordExpire = expire
-
-          await user.save({
-            validateBeforeSave: false,
-          })
-
-          return next(
-            new ErrorResponse(
-              RESPONSE.error.FAILED_EMAIL,
-              Code.INTERNAL_SERVER_ERROR
-            )
-          )
-        }
-      }
-
-      res.status(Code.OK).json({
-        success: true,
-        message: RESPONSE.success.EMAIL_SENT,
-        data: user,
-      })
     }
-  )
+
+    res.status(Code.OK).json({
+      success: true,
+      message: RESPONSE.success.EMAIL_SENT,
+      data: user,
+    })
+  }
 
   //@desc   Reset Password
-  //@method PUT /reset-password/:resetToken
+  //@route PUT /reset-password/:resetToken
   //@access PUBLIC
-  public static resetPassword: IExpressController = asyncHandler(
-    async (req, res, next) => {
-      let resetPasswordToken = crypto
-        .createHash(Key.CryptoHash)
-        .update(req.params.resetToken)
-        .digest(Key.Hex)
+  @use(LogRequest)
+  public static async resetPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    let resetPasswordToken = crypto
+      .createHash(Key.CryptoHash)
+      .update(req.params.resetToken)
+      .digest(Key.Hex)
 
-      const user = await User.findOne({
-        resetPasswordToken,
-        resetPasswordExpire: { $gt: Date.now() },
-      })
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    })
 
-      if (!user) {
-        return next(
-          new ErrorResponse(RESPONSE.error.INVALID_TOKEN, Code.ALREADY_REPORTED)
-        )
-      }
-
-      user.password = req.body.password
-      user.resetPasswordToken = ''
-      user.resetPasswordExpire = expire
-      await user.save()
-
-      this._sendTokenResponse(user, Code.OK, res)
+    if (!user) {
+      return next(
+        new ErrorResponse(RESPONSE.error.INVALID_TOKEN, Code.ALREADY_REPORTED)
+      )
     }
-  )
+
+    user.password = req.body.password
+    user.resetPasswordToken = ''
+    user.resetPasswordExpire = expire
+    await user.save()
+
+    this._sendTokenResponse(user, Code.OK, res)
+  }
 }
 
 export default AuthController

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { courseController } from '@controller'
+import { CourseController } from '@controller'
 import { Course } from '@model'
 import { advancedResult, authorize, protect } from '@middleware'
 import { Key, PathParam } from '@constant/enum'
@@ -15,22 +15,22 @@ router
       path: Key.BootcampVirtual,
       select: Key.DefaultSelect,
     }),
-    courseController.getCourses
+    CourseController.getCourses
   )
-  .post(protect, authorize(Key.Trainer, Key.Admin), courseController.addCourse)
+  .post(protect, authorize(Key.Trainer, Key.Admin), CourseController.addCourse)
 
 router
   .route(PathParam.ID)
-  .get(courseController.getCourse)
+  .get(CourseController.getCourse)
   .put(
     protect,
     authorize(Key.Trainer, Key.Admin),
-    courseController.updateCourse
+    CourseController.updateCourse
   )
   .delete(
     protect,
     authorize(Key.Trainer, Key.Admin),
-    courseController.deleteCourse
+    CourseController.deleteCourse
   )
 
 const courseRoute = router

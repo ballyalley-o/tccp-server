@@ -56,6 +56,7 @@ const RESPONSE = {
       `Current role ${data} is unauthorized to access this route`,
     parseErr: (err: any) => `Error parsing JSON: ${err}`,
     NotInstance: 'This class cannot be instantiated',
+    STATIC_CLASS: 'This is a static class',
     FAILED_EMAIL: 'Email could not be sent',
     RESET_SUBJECT: 'Password Reset Request',
     RESET_MESSAGE: (resetUrl: string) =>
