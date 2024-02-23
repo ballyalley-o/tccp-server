@@ -4,7 +4,7 @@ import { asyncHandler } from '@middleware'
 import { IExpressController } from '@interface/middleware'
 import { IResponseExtended } from '@interface'
 import { geocoder } from '@config/server'
-import { Key, Code } from '@constant/enum'
+import { Key, NumKey, Code } from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { ErrorResponse } from '@util'
 
@@ -147,7 +147,7 @@ class BootcampController {
       const lat = loc[0].latitude
       const lng = loc[0].longitude
 
-      const radius = Number(distance) / 3963
+      const radius = Number(distance) / NumKey.EarthRadius
 
       const bootcamps = await Bootcamp.find({
         location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
