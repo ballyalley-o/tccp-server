@@ -17,10 +17,15 @@ const RESPONSE = {
   exists: (data: string) => `${data} already exists`,
   dbSaved: (data: string) => `new ${data} has been saved to the database`,
 
+  /**
+   * @Success response
+   */
   success: {
     200: 'OK: Request fetched',
     201: 'CREATED: Request created',
     204: 'NO CONTENT: The server successfully processed the request but there is no content to send in the response.',
+    COURSES_DELETED: (data: string) =>
+      `Courses being deleted from bootcamp ID: ${data}. Reload page to see the effect`,
     COLLECTION_SEED: ' MOCK MIGRATION SUCCESSFUL 🌱 ',
     COLLECTION_DESTROYED: ' COLLECTION/s DESTROYED 💥 ',
     LOGOUT: `User logged out`,
@@ -28,6 +33,10 @@ const RESPONSE = {
     DELETED: `User deleted`,
     EMAIL_SENT: 'Email sent',
   },
+
+  /**
+   * @Error response
+   */
   error: {
     400: 'BAD REQUEST: Client request is Invalid',
     401: 'UNAUTHORIZED: Request cannot be granted unless Client is Authenticated',

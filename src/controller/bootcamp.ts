@@ -1,8 +1,8 @@
+import { App } from '@config'
 import { Bootcamp } from '@model'
 import { Request, Response, NextFunction } from 'express'
-import { geocoder } from '@config/server'
 import { IResponseExtended } from '@interface'
-import { Key, NumKey, Code } from '@constant/enum'
+import { Key, NumKey, Code, COLOR } from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { ErrorResponse } from '@util'
 import { use, LogRequest } from '@decorator'
@@ -186,7 +186,7 @@ class BootcampController {
   ) {
     const { zipcode, distance } = req.params
 
-    const loc = await geocoder.geocode(zipcode)
+    const loc = await App.geocoder.geocode(zipcode)
     const lat = loc[0].latitude
     const lng = loc[0].longitude
 

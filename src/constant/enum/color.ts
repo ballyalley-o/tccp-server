@@ -4,6 +4,7 @@ enum COLOR {
   GREEN = 'green',
   YELLOW = 'yellow',
   MAGENTA = 'magenta',
+  INVERSE = 'inverse',
 
   BG_RED = 'bgRed',
   BG_BLUE = 'bgBlue',
