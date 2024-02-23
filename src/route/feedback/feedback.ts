@@ -1,5 +1,5 @@
 import express from 'express'
-import { feedbackController } from '@controller'
+import { FeedbackController } from '@controller'
 import { advancedResult, protect, authorize } from '@middleware'
 import { PathParam } from '@constant/enum'
 import { Key } from '@constant/enum'
@@ -17,26 +17,26 @@ router
       path: Key.BootcampVirtual,
       select: Key.DefaultSelect,
     }),
-    feedbackController.getFeedbacks
+    FeedbackController.getFeedbacks
   )
   .post(
     protect,
     authorize(Key.Student, Key.Admin),
-    feedbackController.addFeedback
+    FeedbackController.addFeedback
   )
 
 router
   .route(PathParam.ID)
-  .get(feedbackController.getFeedback)
+  .get(FeedbackController.getFeedback)
   .put(
     protect,
     authorize(Key.Student, Key.Admin),
-    feedbackController.updateFeedback
+    FeedbackController.updateFeedback
   )
   .delete(
     protect,
     authorize(Key.Student, Key.Admin),
-    feedbackController.deleteFeedback
+    FeedbackController.deleteFeedback
   )
 
 const feedbackRoute = router

@@ -1,5 +1,5 @@
 export { default as AuthController } from '@controller/auth'
 export { default as bootcampController } from '@controller/bootcamp'
 export { default as CourseController } from '@controller/course'
-export { default as feedbackController } from '@controller/feedback'
+export { default as FeedbackController } from '@controller/feedback'
 export { UserController } from '@controller/user'

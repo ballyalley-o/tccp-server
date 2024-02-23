@@ -1,153 +1,227 @@
-import { ErrorResponse } from '@util'
-import { asyncHandler } from '@middleware'
-import { Feedback, Bootcamp } from '@model'
+import { Request, Response, NextFunction } from 'express'
 import { IResponseExtended } from '@interface'
+import { IUserRequest } from '@interface/middleware'
+import { Feedback, Bootcamp } from '@model'
+import { ErrorResponse } from '@util'
+import { Key, Code } from '@constant/enum'
 import { RESPONSE } from '@constant'
-import { Key } from '@constant/enum'
+import { LogRequest, use } from '@decorator'
 
-let feedbackId: string
-let bootcampId: string
-let userId: string
+/**
+ * Feedback Controller
+ * @path {baseUrl}/api/{apiVer}/feedback
+ *
+ */
+class FeedbackController {
+  private static _feedbackId: string
+  private static _bootcampId: string
+  private static _userId: string
+  private static _userRole: string
 
-//@desc     Get ALL Feedbacks
-//@route    GET /api/{apiVer}/feedbacks
-//@route    GET /api/{apiVer}/bootcamps/:bootcampId/feedback
-//@access   PUBLIC
-const getFeedbacks = asyncHandler(async (req, res, next) => {
-  if (req.params.bootcampId) {
-    const feedbacks = await Feedback.find({ bootcamp: req.params.bootcampId })
+  /**
+   * setRequest - Set request parameters
+   *
+   * @param req - Request
+   * @returns void
+   */
+  static setRequest(req: Request) {
+    this._feedbackId = req.params.id
+    this._bootcampId = req.params.bootcampId
+  }
 
-    res.status(200).json({
+  static setUserId(req: IUserRequest) {
+    this._userId = req.user.id
+    this._userRole = req.user.role
+  }
+
+  //@desc     Get ALL Feedbacks
+  //@route    GET /feedback
+  //@route    GET /bootcamp/:bootcampId/feedback
+  //@access   PUBLIC
+  public static async getFeedbacks(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    if (req.params.bootcampId) {
+      const feedbacks = await Feedback.find({ bootcamp: req.params.bootcampId })
+
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success[200],
+        count: feedbacks.length,
+        data: feedbacks,
+      })
+    } else {
+      res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+    }
+  }
+
+  //@desc     Get a Feedback
+  //@route    GET /feedback/:id
+  //@access   PUBLIC
+  @use(LogRequest)
+  public static async getFeedback(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    FeedbackController.setRequest(req)
+
+    const feedback = await Feedback.findById(
+      FeedbackController._feedbackId
+    ).populate({
+      path: Key.BootcampVirtual,
+      select: Key.DefaultSelect,
+    })
+
+    if (!feedback) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId),
+          Code.NOT_FOUND
+        )
+      )
+    }
+
+    res.status(Code.OK).json({
       success: true,
       message: RESPONSE.success[200],
-      count: feedbacks.length,
-      data: feedbacks,
+      data: feedback,
     })
-  } else {
-    res.status(200).json((res as IResponseExtended).advancedResult)
   }
-})
 
-//@desc     Get a Feedback
-//@route    GET /api/{apiVer}/feedbacks/:id
-//@access   PUBLIC
-const getFeedback = asyncHandler(async (req, res, next) => {
-  feedbackId = req.params.id
-  const feedback = await Feedback.findById(feedbackId).populate({
-    path: Key.BootcampVirtual,
-    select: Key.DefaultSelect,
-  })
+  //@desc     Add feedback
+  //@route    POST  /bootcamp/:bootcampId/feedback
+  //@access   PUBLIC
+  @use(LogRequest)
+  public static async addFeedback(req: any, res: Response, next: NextFunction) {
+    FeedbackController.setRequest(req)
+    FeedbackController.setUserId(req)
 
-  if (!feedback) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), 404)
+    req.body.bootcamp = FeedbackController._bootcampId
+    req.body.user = FeedbackController._userId
+
+    const bootcamp = await Bootcamp.findById(FeedbackController._bootcampId)
+
+    if (!bootcamp) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND_BOOTCAMP(FeedbackController._bootcampId),
+          Code.NOT_FOUND
+        )
+      )
+    }
+
+    const feedback = await Feedback.create(req.body)
+
+    res.status(Code.CREATED).json({
+      success: true,
+      message: RESPONSE.success[201],
+      data: feedback,
+    })
+  }
+
+  //@desc     Update feedback
+  //@route    PUT /feedback/:id
+  //@access   PUBLIC
+  @use(LogRequest)
+  public static async updateFeedback(
+    req: any,
+    res: Response,
+    next: NextFunction
+  ) {
+    FeedbackController.setRequest(req)
+    FeedbackController.setUserId(req)
+
+    let feedback = await Feedback.findById(FeedbackController._feedbackId)
+
+    if (!feedback) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId),
+          Code.NOT_FOUND
+        )
+      )
+    }
+
+    if (
+      feedback.user.toString() !== FeedbackController._userId &&
+      FeedbackController._userRole !== Key.Admin
+    ) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_OWNER(
+            FeedbackController._userId,
+            FeedbackController._feedbackId
+          ),
+          Code.UNAUTHORIZED
+        )
+      )
+    }
+
+    feedback = await Feedback.findByIdAndUpdate(
+      FeedbackController._feedbackId,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
     )
+
+    res.status(Code.OK).json({
+      success: true,
+      message: RESPONSE.success.UPDATED,
+      data: feedback,
+    })
   }
 
-  res.status(200).json({
-    success: true,
-    message: RESPONSE.success[200],
-    data: feedback,
-  })
-})
+  //@desc      Delete feedback
+  //@route     DELETE /feedback/:id
+  //@access    PUBLIC
+  @use(LogRequest)
+  public static async deleteFeedback(
+    req: any,
+    res: Response,
+    next: NextFunction
+  ) {
+    FeedbackController.setRequest(req)
+    FeedbackController.setUserId(req)
 
-//@desc     Add feedback
-//@route    POST/api/{apiVer}/bootcamps/:bootcampId/feedbacks
-//@access   PUBLIC
-const addFeedback = asyncHandler(async (req: any, res, next) => {
-  bootcampId = req.params.bootcampId
-  userId = req.user.id
+    const feedback = await Feedback.findById(FeedbackController._feedbackId)
 
-  req.body.bootcamp = bootcampId
-  req.body.user = userId
+    if (!feedback) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId),
+          Code.NOT_FOUND
+        )
+      )
+    }
 
-  const bootcamp = await Bootcamp.findById(bootcampId)
+    if (
+      feedback.user.toString() !== FeedbackController._userId &&
+      FeedbackController._userRole !== Key.Admin
+    ) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_OWNER(
+            FeedbackController._userId,
+            FeedbackController._feedbackId
+          ),
+          Code.UNAUTHORIZED
+        )
+      )
+    }
 
-  if (!bootcamp) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), 404)
-    )
+    await Feedback.deleteOne({ _id: FeedbackController._feedbackId })
+
+    res.status(Code.OK).json({
+      success: true,
+      message: RESPONSE.success.DELETED,
+      data: {},
+    })
   }
-
-  const feedback = await Feedback.create(req.body)
-
-  res.status(201).json({
-    success: true,
-    message: RESPONSE.success[201],
-    data: feedback,
-  })
-})
-
-//@desc     Update feedback
-//@route    PUT /api/v1/feedbacks/:id
-//@access   PUBLIC
-const updateFeedback = asyncHandler(async (req: any, res, next) => {
-  feedbackId = req.params.id
-  userId = req.user.id
-
-  let feedback = await Feedback.findById(req.params.id)
-
-  if (!feedback) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), 404)
-    )
-  }
-
-  if (feedback.user.toString() !== userId && req.user.role !== 'admin') {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, feedbackId), 401)
-    )
-  }
-
-  feedback = await Feedback.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  })
-
-  res.status(200).json({
-    success: true,
-    message: RESPONSE.success.UPDATED,
-    data: feedback,
-  })
-})
-
-//@desc     Delete feedback
-//@route    DELETE /api/v1/feedbacks/:id
-//@access    PUBLIC
-const deleteFeedback = asyncHandler(async (req: any, res, next) => {
-  feedbackId = req.params.id
-  userId = req.user.id
-
-  const feedback = await Feedback.findById(feedbackId)
-
-  if (!feedback) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), 404)
-    )
-  }
-
-  //verification if the feedback belongs to the user/admin
-  if (feedback.user.toString() !== userId && req.user.role !== Key.Admin) {
-    return next(
-      new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, feedbackId), 401)
-    )
-  }
-
-  await Feedback.deleteOne({ _id: feedbackId })
-
-  res.status(200).json({
-    success: true,
-    message: RESPONSE.success.DELETED,
-    data: {},
-  })
-})
-
-const feedbackController = {
-  addFeedback,
-  updateFeedback,
-  deleteFeedback,
-  getFeedbacks,
-  getFeedback,
 }
 
-export default feedbackController
+export default FeedbackController
