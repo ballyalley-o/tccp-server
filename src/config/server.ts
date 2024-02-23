@@ -18,19 +18,6 @@ import { Key } from '@constant/enum'
 import options from '@util/geocoder'
 import '@controller/user'
 
-// TODO: initialize this in the App class
-export const globalConfig = GLOBAL
-export const transporter = nodemailer.createTransport(GLOBAL.MAIL)
-export const geocoder = NodeGeocoder(options(GLOBAL.GEOCODER_API_KEY || ''))
-export const message = (options: any) => {
-  return {
-    from: GLOBAL.MAIL_FROM,
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-  }
-}
-
 const TAG_env = Key.Production
 
 /**
@@ -46,6 +33,18 @@ class App {
   private _app: Application
   private _env: string = GLOBAL.ENV
   isConnected: boolean = false
+
+  public static globalConfig = GLOBAL
+  public static transporter = nodemailer.createTransport(GLOBAL.MAIL)
+  public static geocoder = NodeGeocoder(options(GLOBAL.GEOCODER_API_KEY || ''))
+  public static message = (options: any) => {
+    return {
+      from: GLOBAL.MAIL_FROM,
+      to: options.email,
+      subject: options.subject,
+      text: options.message,
+    }
+  }
 
   static app() {
     const app = new App()
