@@ -6,7 +6,7 @@ import { ParsedQs } from 'qs'
 import { asyncHandler } from '@middleware'
 import { ErrorResponse } from '@util'
 import { User } from '@model'
-import { Key } from '@constant/enum'
+import { Key, Code } from '@constant/enum'
 import { GLOBAL } from '@config'
 import { RESPONSE } from '@constant'
 import { NextFunction } from 'express'
@@ -27,17 +27,15 @@ const protect = asyncHandler(async (req: any, res, next) => {
   }
 
   if (!token) {
-    return next(new ErrorResponse(RESPONSE.error[401], 401))
+    return next(new ErrorResponse(RESPONSE.error[401], Code.UNAUTHORIZED))
   }
   try {
     const decoded = jwt.verify(token, GLOBAL.JWT_SECRET as string) as any
-
-    goodlog.info(decoded)
     req.user = await User.findById(decoded.id).select(Key.PasswordSelect)
 
     next()
   } catch (err) {
-    return next(new ErrorResponse(RESPONSE.error[401], 401))
+    return next(new ErrorResponse(RESPONSE.error[401], Code.UNAUTHORIZED))
   }
 })
 
