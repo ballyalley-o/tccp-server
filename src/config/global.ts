@@ -1,7 +1,9 @@
+import { ObjectId } from 'mongoose'
+import path from 'path'
 import { conNex } from '@util'
 import { oneDay } from '@constant'
-import { ARGV } from '@constant/enum'
 import { TransportOptions } from 'nodemailer'
+import { NumKey } from '@constant/enum'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -25,6 +27,15 @@ const GLOBAL = {
   DB_URI: process.env.DB_URI,
   DB_HOST: (db: any) => db.connection.host,
   DB_NAME: (db: any) => db.connection.name,
+
+  //@photo upload
+  MAX_FILE_UPLOAD: process.env.MAX_FILE_UPLOAD || NumKey.ONE_MB,
+  PHOTO_UPLOAD_PATH: process.env.PHOTO_UPLOAD_PATH,
+
+  PHOTO_FILENAME: (bootcampId: ObjectId, name: string) =>
+    `tccp-${bootcampId}${path.parse(name).ext}`,
+  PHOTO_UPLOAD_MV: (photo: any, cb: any) =>
+    photo.mv(`${process.env.FILE_UPLOAD_PATH}/${photo.name}`, cb),
 
   // @mail - nodemailer - mailtrap
   MAIL_FROM: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
