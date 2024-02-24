@@ -10,6 +10,8 @@ enum PathParam {
   USER = '/user',
   COURSE = '/course',
   BOOTCAMP = '/bootcamp',
+  PHOTO = '/photo',
+  BOOTCAMP_PHOTO = '/:id/photo',
   DISTANCE = '/radius/:zipcode/:distance',
   FEEDBACK = '/feedback',
   LOG_IN = '/log-in',
