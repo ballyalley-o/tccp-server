@@ -23,6 +23,7 @@ class PathDir {
   static readonly COURSE_PARAM = PathParam.COURSE
   static readonly FEEDBACK_PARAM = PathParam.FEEDBACK
   static readonly BOOTCAMP_PARAM = PathParam.BOOTCAMP
+  static readonly PHOTO_PARAM = PathParam.PHOTO
   static readonly LOG_IN_PARAM = PathParam.LOG_IN
   static readonly LOG_OUT_PARAM = PathParam.LOG_OUT
   static readonly RESET_PASSWORD_PARAM = PathParam.RESET_PASSWORD
