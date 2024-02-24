@@ -1,4 +1,5 @@
-import { App } from '@config'
+import goodlog from 'good-logs'
+import { App, GLOBAL } from '@config'
 import { Bootcamp } from '@model'
 import { Request, Response, NextFunction } from 'express'
 import { IResponseExtended } from '@interface'
@@ -200,6 +201,81 @@ class BootcampController {
       success: true,
       count: bootcamps.length,
       data: bootcamps,
+    })
+  }
+
+  //@desc     Upload photo for bootcamp
+  //@route    PUT /bootcamp/:id/photo
+  //@access   PRIVATE
+  @use(LogRequest)
+  public static async uploadBootcampPhoto(
+    req: any,
+    res: Response,
+    next: NextFunction
+  ) {
+    BootcampController.setRequest(req)
+
+    const photo = req.files.photo
+
+    const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
+
+    if (!bootcamp) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId),
+          Code.NOT_FOUND
+        )
+      )
+    }
+
+    if (!req.files) {
+      return next(
+        new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.BAD_REQUEST)
+      )
+    }
+
+    if (!photo.mimetype.startsWith(Key.Image)) {
+      return next(
+        new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.BAD_REQUEST)
+      )
+    }
+
+    if (photo.size > GLOBAL.MAX_FILE_UPLOAD) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.FAILED_FILESIZE(NumKey.ONE_MB),
+          Code.BAD_REQUEST
+        )
+      )
+    }
+
+    photo.name = GLOBAL.PHOTO_FILENAME(bootcamp._id, photo.name)
+    GLOBAL.PHOTO_UPLOAD_MV(photo, async (error: any) => {
+      goodlog.error(error?.message)
+      if (error) {
+        return next(
+          new ErrorResponse(
+            RESPONSE.error.FAILED_UPLOAD,
+            Code.INTERNAL_SERVER_ERROR
+          )
+        )
+      }
+
+      await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
+        photo: photo.name,
+      })
+
+      const data = {
+        photo: photo.name,
+        bootcampName: bootcamp.name,
+        bootcampId: BootcampController._bootcampId,
+      }
+
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.PHOTO_UPLOADED,
+        data,
+      })
     })
   }
 }
