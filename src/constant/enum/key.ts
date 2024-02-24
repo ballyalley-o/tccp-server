@@ -5,6 +5,7 @@ enum Key {
   Remove = 'remove',
   Name = 'name',
   Host = 'host',
+  Image = 'image',
 
   MorganShort = 'short',
   MorganDev = 'dev',
