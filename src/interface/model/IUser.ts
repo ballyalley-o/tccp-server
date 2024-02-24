@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose'
 
 interface IUser {
+  _id?: Schema.Types.ObjectId
   firstname: string
   lastname: string
   email: string

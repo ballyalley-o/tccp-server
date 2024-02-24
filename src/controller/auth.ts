@@ -1,8 +1,9 @@
 import crypto from 'crypto'
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
+import { IHTMLContent } from '@interface'
 import { IUserRequest } from '@interface/middleware'
-import { ErrorResponse } from '@util'
+import { ErrorResponse, htmlContent } from '@util'
 import { sendEmail } from '@util'
 import { User } from '@model'
 import { Key, Code } from '@constant/enum'
@@ -231,7 +232,7 @@ class AuthController {
       await sendEmail({
         email: user.email,
         subject: RESPONSE.error.RESET_SUBJECT,
-        message,
+        html: htmlContent(user, resetToken),
       })
     } catch (error) {
       if (error instanceof Error) {
