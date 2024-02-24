@@ -44,5 +44,11 @@ router
     bootcampController.deleteBootcamp
   )
 
+router.put(
+  PathParam.BOOTCAMP_PHOTO,
+  protect,
+  bootcampController.uploadBootcampPhoto
+)
+
 const bootcampRoute = router
 export default bootcampRoute
