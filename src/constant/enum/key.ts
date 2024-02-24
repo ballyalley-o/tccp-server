@@ -63,6 +63,12 @@ enum Key {
   ServerPort = ' SERVER PORT: ',
   ServerAPIVersion = ' API VERSION: ',
   ServerStatus = ' SERVER STATUS: ',
+
+  // template params
+  ResetLink = '{{resetLink}}',
+  Username = '{{username}}',
+  EmailContent = '{{emailContent}}',
+
   // @nodemailer - mailtrap
   MessageSent = ' Message sent: %s ',
   MessageError = ' Error occurred: %s ',
