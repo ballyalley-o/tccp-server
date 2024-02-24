@@ -8,6 +8,9 @@ dotenv.config()
 const GLOBAL = {
   APP_NAME: 'The CodeCoach Projct',
   APP_SERVER_NAME: 'tccp-server',
+  API_HOST: conNex(
+    process.env.API_HOST?.replace('{PORT}', process.env.PORT ?? '') || ''
+  ),
   API_URL: conNex(
     process.env.API_URL?.replace('{PORT}', process.env.PORT ?? '') || '',
     process.env.API_VERSION || ''
