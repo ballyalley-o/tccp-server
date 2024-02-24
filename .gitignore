@@ -4,3 +4,5 @@ dist
 tsconfig.tsbuildinfo
 
 updtlog.sh
+
+public/upload/tccp-*.*
