@@ -15,7 +15,7 @@ import helmet from 'helmet'
 import { setHeader, connectDb } from '@config'
 import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
-import { errorHandler, notFound } from '@middleware'
+import { xssHandler, errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
 import { Key } from '@constant/enum'
 import options from '@util/geocoder'
@@ -78,6 +78,7 @@ class App {
     this._app.use(fileupload())
     this._app.use(mongoSanitize())
     this._app.use(helmet())
+    this._app.use(xssHandler)
     this.registerRoute()
     this._app.use(errorHandler)
     this._app.use(notFound)
