@@ -1,5 +1,3 @@
-<!-- language: lang-none -->
-
 <!doctype html>
 <html lang=en>
 <meta charset=utf-8>
@@ -8,99 +6,92 @@
 <link rel="stylesheet" href="./index.css">
 <link rel="icon" href="./favicon64x64.ico" type="image/x-icon">
 <title>TCCP [SERVER]</title>
-
 <div class=container-fluid>
     <div class=row>
         <div class="col-md-12 collection-intro">
             <div style="display: flex; align-items: center;padding: 1em">
                 <h1 style="margin-right: auto;"> the code coach projct [SERVER]</h1>
-                <img src="/favicon.ico" alt="logo" style="margin-left: auto;">
+                <img src="./asset/logo.png" alt="logo" style="margin-left: auto;" width="120">
             </div>
-            <p>
-                <p>[SERVER] support for <em><strong>&ldquo;the CODE COACH Project&rdquo;</strong></em> application to
-                    handle the whole CRUD operations for bootcamps, courses, feedbacks, users, and authentication.
         </div>
         <div class=col-md-12>
             <div class=col-md-3>
                 <ul>
-                    <li><strong><a href=#Bootcamps>Bootcamps</a></strong>
+                    <li><strong><a href=#Bootcamp>Bootcamp</a></strong>
                         <ul>
-                            <li><a class=endpoint_menu href=#jump-Bootcamps-GetAllBootcamps>Get All Bootcamps</a>
-                            <li><a class=endpoint_menu href=#jump-Bootcamps-GetaSingleBootcamp>Get a Single Bootcamp</a>
-                            <li><a class=endpoint_menu href=#jump-Bootcamps-GetBootcampsinDistance>Get Bootcamps in
+                            <li><a class=endpoint_menu href=#jump-Bootcamp-GetAllBootcamp>Get All Bootcamp</a>
+                            <li><a class=endpoint_menu href=#jump-Bootcamp-GetaBootcamp>Get a Bootcamp</a>
+                            <li><a class=endpoint_menu href=#jump-Bootcamp-GetBootcampsinDistance>Get Bootcamps in
                                     Distance</a>
-                            <li><a class=endpoint_menu href=#jump-Bootcamps-CreateNewBootcamp>Create New Bootcamp</a>
-                            <li><a class=endpoint_menu href=#jump-Bootcamps-UpdateBootcamp>Update Bootcamp</a>
-                            <li><a class=endpoint_menu href=#jump-Bootcamps-DeleteBootcamp>Delete Bootcamp</a>
-                            <li><a class=endpoint_menu href=#jump-Bootcamps-UploadPhoto>Upload Photo</a>
+                            <li><a class=endpoint_menu href=#jump-Bootcamp-CreateNewBootcamp>Create New Bootcamp</a>
+                            <li><a class=endpoint_menu href=#jump-Bootcamp-UpdateBootcamp>Update Bootcamp</a>
+                            <li><a class=endpoint_menu href=#jump-Bootcamp-DeleteBootcamp>Delete Bootcamp</a>
+                            <li><a class=endpoint_menu href=#jump-Bootcamp-UploadaPhoto>Upload a Photo</a>
                         </ul>
-                    <li><strong><a href=#Courses>Courses</a></strong>
+                    <li><strong><a href=#Course>Course</a></strong>
                         <ul>
-                            <li><a class=endpoint_menu href=#jump-Courses-GetAllCourses>Get All Courses</a>
-                            <li><a class=endpoint_menu href=#jump-Courses-GetCoursesforBootcamp>Get Courses for
+                            <li><a class=endpoint_menu href=#jump-Course-GetAllCourse>Get All Course</a>
+                            <li><a class=endpoint_menu href=#jump-Course-GetCourseforBootcamp>Get Course for
                                     Bootcamp</a>
-                            <li><a class=endpoint_menu href=#jump-Courses-GetaSingleCourse>Get a Single Course</a>
-                            <li><a class=endpoint_menu href=#jump-Courses-CreateNewCourse>Create New Course</a>
-                            <li><a class=endpoint_menu href=#jump-Courses-UpdateCourse>Update Course</a>
-                            <li><a class=endpoint_menu href=#jump-Courses-DeleteCourses>Delete Courses</a>
+                            <li><a class=endpoint_menu href=#jump-Course-GetaSingleCourse>Get a Single Course</a>
+                            <li><a class=endpoint_menu href=#jump-Course-CreateNewCourse>Create New Course</a>
+                            <li><a class=endpoint_menu href=#jump-Course-UpdateCourse>Update Course</a>
+                            <li><a class=endpoint_menu href=#jump-Course-DeleteCourses>Delete Courses</a>
                         </ul>
                     <li><strong><a href=#Authentication>Authentication</a></strong>
                         <ul>
                             <li><a class=endpoint_menu href=#jump-Authentication-RegisterUser>Register User</a>
-                            <li><a class=endpoint_menu href=#jump-Authentication-GetLoggedinUserviaToken>Get Logged in
-                                    User via Token</a>
-                            <li><a class=endpoint_menu href=#jump-Authentication-LoginUser>Login User</a>
-                            <li><a class=endpoint_menu href=#jump-Authentication-LogoutUser>Logout User</a>
+                            <li><a class=endpoint_menu href=#jump-Authentication-GetmyAccountviaToken>Get myAccount via
+                                    Token</a>
+                            <li><a class=endpoint_menu href=#jump-Authentication-Login>Login</a>
+                            <li><a class=endpoint_menu href=#jump-Authentication-Logout>Logout</a>
                             <li><a class=endpoint_menu href=#jump-Authentication-ForgotPassword>Forgot Password</a>
                             <li><a class=endpoint_menu href=#jump-Authentication-ResetPassword>Reset Password</a>
                             <li><a class=endpoint_menu href=#jump-Authentication-UpdateDetails>Update Details</a>
                             <li><a class=endpoint_menu href=#jump-Authentication-UpdatePassword>Update Password</a>
-                            <li><a class=endpoint_menu href=#jump-Authentication-_5BHACKINGMONGO_5DLoginUser>[HACKING
-                                    MONGO]Login User</a>
                         </ul>
-                    <li><strong><a href=#Users>Users</a></strong>
+                    <li><strong><a href=#User>User</a></strong>
                         <ul>
-                            <li><a class=endpoint_menu href=#jump-Users-GetUsers>Get Users</a>
-                            <li><a class=endpoint_menu href=#jump-Users-GetAUser>Get A User</a>
-                            <li><a class=endpoint_menu href=#jump-Users-CreateAUser>Create A User</a>
-                            <li><a class=endpoint_menu href=#jump-Users-UpdateAUser>Update A User</a>
-                            <li><a class=endpoint_menu href=#jump-Users-DeleteAUser>Delete A User</a>
+                            <li><a class=endpoint_menu href=#jump-User-GetUser>Get User</a>
+                            <li><a class=endpoint_menu href=#jump-User-GetAUser>Get A User</a>
+                            <li><a class=endpoint_menu href=#jump-User-CreateAUser>Create A User</a>
+                            <li><a class=endpoint_menu href=#jump-User-UpdateAUser>Update A User</a>
+                            <li><a class=endpoint_menu href=#jump-User-DeleteAUser>Delete A User</a>
                         </ul>
-                    <li><strong><a href=#Feedbacks>Feedbacks</a></strong>
+                    <li><strong><a href=#Feedback>Feedback</a></strong>
                         <ul>
-                            <li><a class=endpoint_menu href=#jump-Feedbacks-GetAllFeedbacks>Get All Feedbacks</a>
-                            <li><a class=endpoint_menu href=#jump-Feedbacks-GetFeedbacksforBootcamp>Get Feedbacks for
+                            <li><a class=endpoint_menu href=#jump-Feedback-GetAllFeedback>Get All Feedback</a>
+                            <li><a class=endpoint_menu href=#jump-Feedback-GetFeedbacksforBootcamp>Get Feedbacks for
                                     Bootcamp</a>
-                            <li><a class=endpoint_menu href=#jump-Feedbacks-GetAFeedback>Get A Feedback</a>
-                            <li><a class=endpoint_menu href=#jump-Feedbacks-AddAFeedback>Add A Feedback</a>
-                            <li><a class=endpoint_menu href=#jump-Feedbacks-UpdateAFeedback>Update A Feedback</a>
-                            <li><a class=endpoint_menu href=#jump-Feedbacks-DeleteAFeedback>Delete A Feedback</a>
+                            <li><a class=endpoint_menu href=#jump-Feedback-GetAFeedback>Get A Feedback</a>
+                            <li><a class=endpoint_menu href=#jump-Feedback-AddAFeedback>Add A Feedback</a>
+                            <li><a class=endpoint_menu href=#jump-Feedback-UpdateAFeedback>Update A Feedback</a>
+                            <li><a class=endpoint_menu href=#jump-Feedback-DeleteAFeedback>Delete A Feedback</a>
                         </ul>
                 </ul>
             </div>
             <div class=col-md-9>
                 <div class="panel panel-default">
                     <div class=panel-heading>
-                        <h3 class=panel-title id=Bootcamps>Bootcamps
+                        <h3 class=panel-title id=Bootcamp>Bootcamp
                             <span class=badge>7</span></h3>
                     </div>
                     <div class=panel-body>
                         <p>
-                            <p>Bootcamps CRUD functionality<div class=request-item>
-                                    <div class=panel-group id=accordion-Bootcamps>
-                                        <div class="panel panel-info" id=jump-Bootcamps-GetAllBootcamps>
+                            <p>Explore foundational APIs and endpoints that serve as the core of your application's functionality. Ideal for developers familiarizing themselves with the system.<div class=request-item>
+                                    <div class=panel-group id=accordion-Bootcamp>
+                                        <div class="panel panel-info" id=jump-Bootcamp-GetAllBootcamp>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse
-                                                    data-parent=#accordion-Bootcamps
-                                                    href=#collapse-Bootcamps-GetAllBootcamps>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-Bootcamp
+                                                    href=#collapse-Bootcamp-GetAllBootcamp>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get All
-                                                            Bootcamps</strong> &nbsp;|&nbsp;
+                                                            Bootcamp</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/</h4>
+                                                         </h4>
                                                 </a></div>
-                                            <div id=collapse-Bootcamps-GetAllBootcamps class="panel-collapse collapse">
+                                            <div id=collapse-Bootcamp-GetAllBootcamp class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Fetch all bootcamps from database. Includes pagination,
@@ -109,58 +100,84 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Bootcamps-GetaSingleBootcamp>
+                                        <div class="panel panel-info" id=jump-Bootcamp-GetaBootcamp>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse
-                                                    data-parent=#accordion-Bootcamps
-                                                    href=#collapse-Bootcamps-GetaSingleBootcamp>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-Bootcamp
+                                                    href=#collapse-Bootcamp-GetaBootcamp>
                                                     <h4 class=panel-title><span
-                                                            class="glyphicon glyphicon-plus"></span><strong>Get a Single
+                                                            class="glyphicon glyphicon-plus"></span><strong>Get a
                                                             Bootcamp</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/1</h4>
+                                                            </h4>
                                                 </a></div>
-                                            <div id=collapse-Bootcamps-GetaSingleBootcamp
-                                                class="panel-collapse collapse">
+                                            <div id=collapse-Bootcamp-GetaBootcamp class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Get single bootcamp by ID
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>65d52c63ef657741f123aa10
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Bootcamps-GetBootcampsinDistance>
+                                        <div class="panel panel-info" id=jump-Bootcamp-GetBootcampsinDistance>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse
-                                                    data-parent=#accordion-Bootcamps
-                                                    href=#collapse-Bootcamps-GetBootcampsinDistance>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-Bootcamp
+                                                    href=#collapse-Bootcamp-GetBootcampsinDistance>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get
                                                             Bootcamps in Distance</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/radius/05405/200</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Bootcamps-GetBootcampsinDistance
+                                            <div id=collapse-Bootcamp-GetBootcampsinDistance
                                                 class="panel-collapse collapse">
-                                                <div class=panel-body></div>
+                                                <div class=panel-body>
+                                                    <h5 class="label label-default">Description</h5><br><small>
+                                                        <p>Fetch all bootcamps within req. radius.
+                                                    </small><br><br>
+                                                    <h5 class="label label-warning">Headers</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>location.city
+                                                                <td>auckland
+                                                                <td>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-success" id=jump-Bootcamps-CreateNewBootcamp>
+                                        <div class="panel panel-success" id=jump-Bootcamp-CreateNewBootcamp>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
                                                 <a class=text-success data-toggle=collapse
-                                                    data-parent=#accordion-Bootcamps
-                                                    href=#collapse-Bootcamps-CreateNewBootcamp>
+                                                    data-parent=#accordion-Bootcamp
+                                                    href=#collapse-Bootcamp-CreateNewBootcamp>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Create New
                                                             Bootcamp</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-success">POST</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Bootcamps-CreateNewBootcamp
-                                                class="panel-collapse collapse">
+                                            <div id=collapse-Bootcamp-CreateNewBootcamp class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Add new bootcamp to database. Must be authenticated and must
@@ -182,7 +199,7 @@
                                                     </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;name&#34;: &#34;IBM International-Bootcamp&#34;,
+                                                        &#34;name&#34;: &#34;TEST&#34;,
                                                         &#34;description&#34;: &#34;IBM INTERNATIONAL BOOTCAMP is a full
                                                         stack JavaScript Bootcamp located in the heart of Auckland that
                                                         focuses on the technologies you need to get a high paying job as
@@ -190,6 +207,7 @@
                                                         &#34;website&#34;: &#34;https://IBMdev.com&#34;,
                                                         &#34;phone&#34;: &#34;(111) 111-1111&#34;,
                                                         &#34;email&#34;: &#34;enroll@IBMdev.com&#34;,
+                                                        &#34;duration&#34;: &#34;10 Weeks&#34;,
                                                         &#34;address&#34;: &#34;123 Queen Street, New Llyn, Auckland
                                                         1053&#34;,
                                                         &#34;careers&#34;: [ &#34;Web Development&#34;, &#34;IBM Data
@@ -205,69 +223,108 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-warning" id=jump-Bootcamps-UpdateBootcamp>
+                                        <div class="panel panel-warning" id=jump-Bootcamp-UpdateBootcamp>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
                                                 <a class=text-warning data-toggle=collapse
-                                                    data-parent=#accordion-Bootcamps
-                                                    href=#collapse-Bootcamps-UpdateBootcamp>
+                                                    data-parent=#accordion-Bootcamp
+                                                    href=#collapse-Bootcamp-UpdateBootcamp>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Update
                                                             Bootcamp</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-warning">PUT</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/637171e86cca7790a92d5079</h4>
+                                                            </h4>
                                                 </a></div>
-                                            <div id=collapse-Bootcamps-UpdateBootcamp class="panel-collapse collapse">
+                                            <div id=collapse-Bootcamp-UpdateBootcamp class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Update single bootcamp in database
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>5d725a1b7b292f5f8ceff458
+                                                                <td>
+                                                    </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;name&#34; : &#34;Jose Mari Chan&#34;
+                                                        &#34;name&#34; : &#34;JDev Bootcamp&#34;
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-danger" id=jump-Bootcamps-DeleteBootcamp>
+                                        <div class="panel panel-danger" id=jump-Bootcamp-DeleteBootcamp>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
                                                     class=text-danger data-toggle=collapse
-                                                    data-parent=#accordion-Bootcamps
-                                                    href=#collapse-Bootcamps-DeleteBootcamp>
+                                                    data-parent=#accordion-Bootcamp
+                                                    href=#collapse-Bootcamp-DeleteBootcamp>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Delete
                                                             Bootcamp</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-danger">DELETE</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/5d725a037b292f5f8ceff787</h4>
+                                                            </h4>
                                                 </a></div>
-                                            <div id=collapse-Bootcamps-DeleteBootcamp class="panel-collapse collapse">
+                                            <div id=collapse-Bootcamp-DeleteBootcamp class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Delete bootcamp from database
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>65da99e24c32ed3e3b09fe3d
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-warning" id=jump-Bootcamps-UploadPhoto>
+                                        <div class="panel panel-warning" id=jump-Bootcamp-UploadaPhoto>
                                             <div class=panel-heading><small
                                                     class="pull-right text-muted">formdata</small>
                                                 <a class=text-warning data-toggle=collapse
-                                                    data-parent=#accordion-Bootcamps
-                                                    href=#collapse-Bootcamps-UploadPhoto>
+                                                    data-parent=#accordion-Bootcamp
+                                                    href=#collapse-Bootcamp-UploadaPhoto>
                                                     <h4 class=panel-title><span
-                                                            class="glyphicon glyphicon-plus"></span><strong>Upload
+                                                            class="glyphicon glyphicon-plus"></span><strong>Upload a
                                                             Photo</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-warning">PUT</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/5d713995b721c3bb38c1f5d0</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Bootcamps-UploadPhoto class="panel-collapse collapse">
+                                            <div id=collapse-Bootcamp-UploadaPhoto class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
-                                                        <p>Uploading photo for bootcamps
+                                                        <p>Request route for Uploading a Photo
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>5d725a1b7b292f5f8cefb098
+                                                                <td>
+                                                    </table>
                                                     <h5 class="label label-primary">Body</h5>
                                                     <table class="table table-hover">
                                                         <thead>
@@ -277,7 +334,7 @@
                                                                 <th>Description
                                                         <tbody>
                                                             <tr>
-                                                                <td>file
+                                                                <td>photo
                                                                 <td>
                                                                 <td>
                                                     </table>
@@ -290,25 +347,24 @@
                 </div>
                 <div class="panel panel-default">
                     <div class=panel-heading>
-                        <h3 class=panel-title id=Courses>Courses
+                        <h3 class=panel-title id=Course>Course
                             <span class=badge>6</span></h3>
                     </div>
                     <div class=panel-body>
                         <p>
-                            <p>Courses CRUD functionality<div class=request-item>
-                                    <div class=panel-group id=accordion-Courses>
-                                        <div class="panel panel-info" id=jump-Courses-GetAllCourses>
+                            <p>Access APIs related to course management, including enrollment, progress tracking, and content delivery. Perfect for integrating educational features into your application.<div class=request-item>
+                                    <div class=panel-group id=accordion-Course>
+                                        <div class="panel panel-info" id=jump-Course-GetAllCourse>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse data-parent=#accordion-Courses
-                                                    href=#collapse-Courses-GetAllCourses>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-Course
+                                                    href=#collapse-Course-GetAllCourse>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get All
-                                                            Courses</strong> &nbsp;|&nbsp;
+                                                            Course</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/courses</h4>
-                                                </a></div>
-                                            <div id=collapse-Courses-GetAllCourses class="panel-collapse collapse">
+                                                    </h4>                                           </a></div>
+                                            <div id=collapse-Course-GetAllCourse class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Fetch all courses from database. Includes pagination,
@@ -317,58 +373,83 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Courses-GetCoursesforBootcamp>
+                                        <div class="panel panel-info" id=jump-Course-GetCourseforBootcamp>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse data-parent=#accordion-Courses
-                                                    href=#collapse-Courses-GetCoursesforBootcamp>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-Course
+                                                    href=#collapse-Course-GetCourseforBootcamp>
                                                     <h4 class=panel-title><span
-                                                            class="glyphicon glyphicon-plus"></span><strong>Get Courses
+                                                            class="glyphicon glyphicon-plus"></span><strong>Get Course
                                                             for Bootcamp</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/5d725a1b7b292f5f8ceff788/courses</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Courses-GetCoursesforBootcamp
+                                            <div id=collapse-Course-GetCourseforBootcamp
                                                 class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Get courses populated with Bootcamp details
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>bootcampId
+                                                                <td>5d725a037b292f5f8ceff787
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Courses-GetaSingleCourse>
+                                        <div class="panel panel-info" id=jump-Course-GetaSingleCourse>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse data-parent=#accordion-Courses
-                                                    href=#collapse-Courses-GetaSingleCourse>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-Course
+                                                    href=#collapse-Course-GetaSingleCourse>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get a Single
                                                             Course</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/courses/5d725cb9c4ded7bcb480eaa1</h4>
+                                                            </h4>
                                                 </a></div>
-                                            <div id=collapse-Courses-GetaSingleCourse class="panel-collapse collapse">
+                                            <div id=collapse-Course-GetaSingleCourse class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Get single course by ID
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>65d44e14b8c03a047c14ec62
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-success" id=jump-Courses-CreateNewCourse>
+                                        <div class="panel panel-success" id=jump-Course-CreateNewCourse>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
-                                                <a class=text-success data-toggle=collapse
-                                                    data-parent=#accordion-Courses
-                                                    href=#collapse-Courses-CreateNewCourse>
+                                                <a class=text-success data-toggle=collapse data-parent=#accordion-Course
+                                                    href=#collapse-Course-CreateNewCourse>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Create New
                                                             Course</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-success">POST</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/5d725a037b292f5f8ceff787/courses</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Courses-CreateNewCourse class="panel-collapse collapse">
+                                            <div id=collapse-Course-CreateNewCourse class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Add new course to database. Must be authenticated and must be
@@ -388,6 +469,19 @@
                                                                 <td>
                                                                     <p>JSON Type
                                                     </table>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>bootcampId
+                                                                <td>
+                                                                <td>
+                                                    </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
                                                         &#34;title&#34;: &#34;TEST Front End Webby Dev&#34;,
@@ -405,18 +499,18 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-warning" id=jump-Courses-UpdateCourse>
+                                        <div class="panel panel-warning" id=jump-Course-UpdateCourse>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
-                                                <a class=text-warning data-toggle=collapse
-                                                    data-parent=#accordion-Courses href=#collapse-Courses-UpdateCourse>
+                                                <a class=text-warning data-toggle=collapse data-parent=#accordion-Course
+                                                    href=#collapse-Course-UpdateCourse>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Update
                                                             Course</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-warning">PUT</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/courses/5d725a4a7b292f5f8ceff789</h4>
+                                                    </h4>
                                                 </a></div>
-                                            <div id=collapse-Courses-UpdateCourse class="panel-collapse collapse">
+                                            <div id=collapse-Course-UpdateCourse class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Update single course in database
@@ -435,29 +529,56 @@
                                                                 <td>
                                                                     <p>JSON Type
                                                     </table>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>5d725a4a7b292f5f8ceff789
+                                                                <td>
+                                                    </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
+                                                        &#34;tuition&#34;: 3400
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-danger" id=jump-Courses-DeleteCourses>
+                                        <div class="panel panel-danger" id=jump-Course-DeleteCourses>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-danger data-toggle=collapse
-                                                    data-parent=#accordion-Courses href=#collapse-Courses-DeleteCourses>
+                                                    class=text-danger data-toggle=collapse data-parent=#accordion-Course
+                                                    href=#collapse-Course-DeleteCourses>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Delete
                                                             Courses</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-danger">DELETE</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/courses/6395cedf02b552fc62ad8ec6</h4>
+                                                            </h4>
                                                 </a></div>
-                                            <div id=collapse-Courses-DeleteCourses class="panel-collapse collapse">
+                                            <div id=collapse-Course-DeleteCourses class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Delete courses from database
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -468,14 +589,15 @@
                 <div class="panel panel-default">
                     <div class=panel-heading>
                         <h3 class=panel-title id=Authentication>Authentication
-                            <span class=badge>9</span></h3>
+                            <span class=badge>8</span></h3>
                     </div>
                     <div class=panel-body>
                         <p>
-                            <p>Routes for user authentication including password and user auth<div class=request-item>
+                            <p >Secure your application with robust authentication APIs. This folder includes endpoints for user login, registration, and token management, ensuring a safe and controlled user access environment.<div class=request-item>
                                     <div class=panel-group id=accordion-Authentication>
                                         <div class="panel panel-success" id=jump-Authentication-RegisterUser>
-                                            <div class=panel-heading><small class="pull-right text-muted">raw</small>
+                                            <div class=panel-heading><small
+                                                    class="pull-right text-muted">urlencoded</small>
                                                 <a class=text-success data-toggle=collapse
                                                     data-parent=#accordion-Authentication
                                                     href=#collapse-Authentication-RegisterUser>
@@ -484,7 +606,7 @@
                                                             User</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-success">POST</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/auth/register</h4>
+                                                       </h4>
                                                 </a></div>
                                             <div id=collapse-Authentication-RegisterUser
                                                 class="panel-collapse collapse">
@@ -506,30 +628,51 @@
                                                                 <td>
                                                                     <p>JSON Type
                                                     </table>
-                                                    <h5 class="label label-primary">Body</h5><span
-                                                        class=resp-prettyprint>{
-                                                        &#34;name&#34;: &#34;Billy Boy&#34;,
-                                                        &#34;email&#34;: &#34;billyboy@gmail.com&#34;,
-                                                        &#34;password&#34;: &#34;123456&#34;,
-                                                        &#34;role&#34;: &#34;student&#34;
-                                                        }</span>
-                                                    <div class=clearfix></div>
+                                                    <h5 class="label label-primary">Body</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>firstname
+                                                                <td>"test"
+                                                                <td>
+                                                            <tr>
+                                                                <td>lastname
+                                                                <td>urlencoded
+                                                                <td>
+                                                            <tr>
+                                                                <td>username
+                                                                <td>@test
+                                                                <td>
+                                                            <tr>
+                                                                <td>password
+                                                                <td>123456
+                                                                <td>
+                                                            <tr>
+                                                                <td>role
+                                                                <td>trainer
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Authentication-GetLoggedinUserviaToken>
+                                        <div class="panel panel-info" id=jump-Authentication-GetmyAccountviaToken>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
                                                 <a class=text-info data-toggle=collapse
                                                     data-parent=#accordion-Authentication
-                                                    href=#collapse-Authentication-GetLoggedinUserviaToken>
+                                                    href=#collapse-Authentication-GetmyAccountviaToken>
                                                     <h4 class=panel-title><span
-                                                            class="glyphicon glyphicon-plus"></span><strong>Get Logged
-                                                            in User via Token</strong> &nbsp;|&nbsp;
+                                                            class="glyphicon glyphicon-plus"></span><strong>Get
+                                                            myAccount via Token</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/auth/me</h4>
+                                                            </h4>
                                                 </a></div>
-                                            <div id=collapse-Authentication-GetLoggedinUserviaToken
+                                            <div id=collapse-Authentication-GetmyAccountviaToken
                                                 class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-warning">Headers</h5>
@@ -549,19 +692,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-success" id=jump-Authentication-LoginUser>
+                                        <div class="panel panel-success" id=jump-Authentication-Login>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
                                                 <a class=text-success data-toggle=collapse
                                                     data-parent=#accordion-Authentication
-                                                    href=#collapse-Authentication-LoginUser>
+                                                    href=#collapse-Authentication-Login>
                                                     <h4 class=panel-title><span
-                                                            class="glyphicon glyphicon-plus"></span><strong>Login
-                                                            User</strong> &nbsp;|&nbsp;
+                                                            class="glyphicon glyphicon-plus"></span><strong>Login</strong>
+                                                        &nbsp;|&nbsp;
                                                         <strong class="request-method border-success">POST</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/auth/login</h4>
+                                                       <h4>
                                                 </a></div>
-                                            <div id=collapse-Authentication-LoginUser class="panel-collapse collapse">
+                                            <div id=collapse-Authentication-Login class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-warning">Headers</h5>
                                                     <table class="table table-hover">
@@ -579,26 +722,26 @@
                                                     </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;email&#34;:&#34;john@gmail.com&#34;,
-                                                        &#34;password&#34;:&#34;123456&#34;
+                                                        &#34;email&#34;: &#34;ballyalleydev@gmail.com&#34;,
+                                                        &#34;password&#34;: &#34;123456&#34;
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Authentication-LogoutUser>
+                                        <div class="panel panel-info" id=jump-Authentication-Logout>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
                                                     class=text-info data-toggle=collapse
                                                     data-parent=#accordion-Authentication
-                                                    href=#collapse-Authentication-LogoutUser>
+                                                    href=#collapse-Authentication-Logout>
                                                     <h4 class=panel-title><span
-                                                            class="glyphicon glyphicon-plus"></span><strong>Logout
-                                                            User</strong> &nbsp;|&nbsp;
+                                                            class="glyphicon glyphicon-plus"></span><strong>Logout</strong>
+                                                        &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/auth/logout</h4>
+                                                       <h4>
                                                 </a></div>
-                                            <div id=collapse-Authentication-LogoutUser class="panel-collapse collapse">
+                                            <div id=collapse-Authentication-Logout class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Log user out of the database.
@@ -616,7 +759,7 @@
                                                             Password</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-success">POST</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/auth/forgot_password</h4>
+                                                       </h4>
                                                 </a></div>
                                             <div id=collapse-Authentication-ForgotPassword
                                                 class="panel-collapse collapse">
@@ -637,7 +780,7 @@
                                                     </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;email&#34;: &#34;john@gmail.com&#34;
+                                                        &#34;email&#34;: &#34;tina@test.com&#34;
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
@@ -653,8 +796,7 @@
                                                             Password</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-warning">PUT</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/auth/reset_password/f4578e05c557fa551cc462156d912e4222f22a97
-                                                    </h4>
+                                                       </h4>
                                                 </a></div>
                                             <div id=collapse-Authentication-ResetPassword
                                                 class="panel-collapse collapse">
@@ -673,9 +815,22 @@
                                                                 <td>
                                                                     <p>JSON Type
                                                     </table>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>resetToken
+                                                                <td>6149b28a12ba9fd0091342c63ade354d39415967
+                                                                <td>
+                                                    </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;password&#34;: &#34;1234567&#34;
+                                                        &#34;password&#34;: &#34;123456&#34;
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
@@ -691,7 +846,7 @@
                                                             Details</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-warning">PUT</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/auth/update_details</h4>
+                                                       <h4>
                                                 </a></div>
                                             <div id=collapse-Authentication-UpdateDetails
                                                 class="panel-collapse collapse">
@@ -715,8 +870,7 @@
                                                     </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;email&#34;: &#34;john@gmail.com&#34;,
-                                                        &#34;name&#34;: &#34;John Doe&#34;
+                                                        &#34;firstname&#34;:&#34;test&#34;
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
@@ -732,7 +886,7 @@
                                                             Password</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-warning">PUT</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/auth/update_password</h4>
+                                                       </h4>
                                                 </a></div>
                                             <div id=collapse-Authentication-UpdatePassword
                                                 class="panel-collapse collapse">
@@ -756,47 +910,8 @@
                                                     </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;currentPassword&#34;: &#34;1234567&#34;,
-                                                        &#34;newPassword&#34;: &#34;123456&#34;
-                                                        }</span>
-                                                    <div class=clearfix></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel panel-success"
-                                            id=jump-Authentication-_5BHACKINGMONGO_5DLoginUser>
-                                            <div class=panel-heading><small class="pull-right text-muted">raw</small>
-                                                <a class=text-success data-toggle=collapse
-                                                    data-parent=#accordion-Authentication
-                                                    href=#collapse-Authentication-_5BHACKINGMONGO_5DLoginUser>
-                                                    <h4 class=panel-title><span
-                                                            class="glyphicon glyphicon-plus"></span><strong>[HACKING
-                                                            MONGO]Login User</strong> &nbsp;|&nbsp;
-                                                        <strong class="request-method border-success">POST</strong>
-                                                        &nbsp;
-                                                        {{URL}}/api/v1/auth/login</h4>
-                                                </a></div>
-                                            <div id=collapse-Authentication-_5BHACKINGMONGO_5DLoginUser
-                                                class="panel-collapse collapse">
-                                                <div class=panel-body>
-                                                    <h5 class="label label-warning">Headers</h5>
-                                                    <table class="table table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Key
-                                                                <th>Value
-                                                                <th>Description
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Content-Type
-                                                                <td>application/json
-                                                                <td>
-                                                                    <p>JSON Type
-                                                    </table>
-                                                    <h5 class="label label-primary">Body</h5><span
-                                                        class=resp-prettyprint>{
-                                                        &#34;email&#34;:{&#34;$gt&#34;:&#34;&#34;},
-                                                        &#34;password&#34;:&#34;123456&#34;
+                                                        &#34;currentPassword&#34;: &#34;123456&#34;,
+                                                        &#34;newPassword&#34;: &#34;123456789&#34;
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
@@ -808,26 +923,26 @@
                 </div>
                 <div class="panel panel-default">
                     <div class=panel-heading>
-                        <h3 class=panel-title id=Users>Users
+                        <h3 class=panel-title id=User>User
                             <span class=badge>5</span></h3>
                     </div>
                     <div class=panel-body>
                         <p>
-                            <p>Basic CRUD operations for dealing with users&rsquo; details as Admin.<div
+                            <p>Handle user-related functionalities through APIs in this folder. This includes user profile management, preferences, and any other features tied directly to the individual user experience.<div
                                     class=request-item>
-                                    <div class=panel-group id=accordion-Users>
-                                        <div class="panel panel-info" id=jump-Users-GetUsers>
+                                    <div class=panel-group id=accordion-User>
+                                        <div class="panel panel-info" id=jump-User-GetUser>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse data-parent=#accordion-Users
-                                                    href=#collapse-Users-GetUsers>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-User
+                                                    href=#collapse-User-GetUser>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get
-                                                            Users</strong> &nbsp;|&nbsp;
+                                                            User</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/users</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Users-GetUsers class="panel-collapse collapse">
+                                            <div id=collapse-User-GetUser class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Get All Users details. for Admin CRUD Operations.
@@ -835,38 +950,52 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Users-GetAUser>
+                                        <div class="panel panel-info" id=jump-User-GetAUser>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse data-parent=#accordion-Users
-                                                    href=#collapse-Users-GetAUser>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-User
+                                                    href=#collapse-User-GetAUser>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get A
                                                             User</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/users/5d7a514b5d2c12c7449be046</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Users-GetAUser class="panel-collapse collapse">
+                                            <div id=collapse-User-GetAUser class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Get a single User&rsquo;s details from the database, for
                                                             Admin CRUD Operations.
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>65d44e14b8c03a047c14ec5a
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-success" id=jump-Users-CreateAUser>
+                                        <div class="panel panel-success" id=jump-User-CreateAUser>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
-                                                <a class=text-success data-toggle=collapse data-parent=#accordion-Users
-                                                    href=#collapse-Users-CreateAUser>
+                                                <a class=text-success data-toggle=collapse data-parent=#accordion-User
+                                                    href=#collapse-User-CreateAUser>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Create A
                                                             User</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-success">POST</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/users</h4>
+                                                      </h4>
+
                                                 </a></div>
-                                            <div id=collapse-Users-CreateAUser class="panel-collapse collapse">
+                                            <div id=collapse-User-CreateAUser class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Create a single User to the database. restricted to Admin
@@ -888,27 +1017,31 @@
                                                     </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;name&#34;: &#34;Tony Montana&#34;,
-                                                        &#34;email&#34;: &#34;mylittlefriend@yahoo.com&#34;,
-                                                        &#34;password&#34;: &#34;123456&#34;,
-                                                        &#34;role&#34;: &#34;trainer&#34;
+                                                        &#34;firstname&#34;: &#34;Bay&#34;,
+                                                        &#34;lastname&#34;: &#34;Saddiq&#34;,
+                                                        &#34;password&#34;:&#34;123456&#34;,
+                                                        &#34;email&#34;: &#34;saddiq@example.com&#34;,
+                                                        &#34;username&#34;: &#34;@beySaq&#34;,
+                                                        &#34;role&#34;: &#34;5c3b08ae6d663a3c4e8f3566&#34;,
+                                                        &#34;avatar&#34;: &#34;no-photo.jpg&#34;,
+                                                        &#34;location&#34;: &#34;Auckland, NZ&#34;
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-warning" id=jump-Users-UpdateAUser>
+                                        <div class="panel panel-warning" id=jump-User-UpdateAUser>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
-                                                <a class=text-warning data-toggle=collapse data-parent=#accordion-Users
-                                                    href=#collapse-Users-UpdateAUser>
+                                                <a class=text-warning data-toggle=collapse data-parent=#accordion-User
+                                                    href=#collapse-User-UpdateAUser>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Update A
                                                             User</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-warning">PUT</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/users/639721016a8116b67bda43b0</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Users-UpdateAUser class="panel-collapse collapse">
+                                            <div id=collapse-User-UpdateAUser class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Update a single User in the database. restricted to only
@@ -928,32 +1061,58 @@
                                                                 <td>
                                                                     <p>JSON Type
                                                     </table>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>65d40fb6d4655d5ed034f598
+                                                                <td>
+                                                    </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;name&#34;: &#34;Tony Montana Jr&#34;,
+                                                        &#34;firstname&#34;: &#34;Tony Jr&#34;,
                                                         &#34;email&#34;: &#34;mylittlefriends@yahoo.com&#34;
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-danger" id=jump-Users-DeleteAUser>
+                                        <div class="panel panel-danger" id=jump-User-DeleteAUser>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
-                                                <a class=text-danger data-toggle=collapse data-parent=#accordion-Users
-                                                    href=#collapse-Users-DeleteAUser>
+                                                <a class=text-danger data-toggle=collapse data-parent=#accordion-User
+                                                    href=#collapse-User-DeleteAUser>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Delete A
                                                             User</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-danger">DELETE</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/users/639721016a8116b67bda43b0</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Users-DeleteAUser class="panel-collapse collapse">
+                                            <div id=collapse-User-DeleteAUser class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Delete a single User from the database. restricted to Admin
                                                             Operations.
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>65d40fb6d4655d5ed034f598
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -963,26 +1122,25 @@
                 </div>
                 <div class="panel panel-default">
                     <div class=panel-heading>
-                        <h3 class=panel-title id=Feedbacks>Feedbacks
+                        <h3 class=panel-title id=Feedback>Feedback
                             <span class=badge>6</span></h3>
                     </div>
                     <div class=panel-body>
                         <p>
-                            <p>Handling the feedbacks with CRUD operations.<div class=request-item>
-                                    <div class=panel-group id=accordion-Feedbacks>
-                                        <div class="panel panel-info" id=jump-Feedbacks-GetAllFeedbacks>
+                            <p>Manage user feedback effectively by utilizing APIs in this folder. Capture, analyze, and respond to user comments, reviews, and suggestions to enhance the user experience.<div class=request-item>
+                                    <div class=panel-group id=accordion-Feedback>
+                                        <div class="panel panel-info" id=jump-Feedback-GetAllFeedback>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse
-                                                    data-parent=#accordion-Feedbacks
-                                                    href=#collapse-Feedbacks-GetAllFeedbacks>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-Feedback
+                                                    href=#collapse-Feedback-GetAllFeedback>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get All
-                                                            Feedbacks</strong> &nbsp;|&nbsp;
+                                                            Feedback</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/feedbacks</h4>
+                                                         </h4>
                                                 </a></div>
-                                            <div id=collapse-Feedbacks-GetAllFeedbacks class="panel-collapse collapse">
+                                            <div id=collapse-Feedback-GetAllFeedback class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Get ALL Feedbacks from the database.
@@ -990,59 +1148,84 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Feedbacks-GetFeedbacksforBootcamp>
+                                        <div class="panel panel-info" id=jump-Feedback-GetFeedbacksforBootcamp>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
-                                                <a class=text-info data-toggle=collapse data-parent=#accordion-Feedbacks
-                                                    href=#collapse-Feedbacks-GetFeedbacksforBootcamp>
+                                                <a class=text-info data-toggle=collapse data-parent=#accordion-Feedback
+                                                    href=#collapse-Feedback-GetFeedbacksforBootcamp>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get
                                                             Feedbacks for Bootcamp</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/63970631b4f4d2f8f646778c/feedbacks</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Feedbacks-GetFeedbacksforBootcamp
+                                            <div id=collapse-Feedback-GetFeedbacksforBootcamp
                                                 class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Fetch all reviews for a certain Bootcamp.
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>bootcampId
+                                                                <td>5d725a037b292f5f8ceff787
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-info" id=jump-Feedbacks-GetAFeedback>
+                                        <div class="panel panel-info" id=jump-Feedback-GetAFeedback>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
-                                                    class=text-info data-toggle=collapse
-                                                    data-parent=#accordion-Feedbacks
-                                                    href=#collapse-Feedbacks-GetAFeedback>
+                                                    class=text-info data-toggle=collapse data-parent=#accordion-Feedback
+                                                    href=#collapse-Feedback-GetAFeedback>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Get A
                                                             Feedback</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-info">GET</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/feedbacks/5d725a037b292f5f8ceff787</h4>
+                                                            </h4>
                                                 </a></div>
-                                            <div id=collapse-Feedbacks-GetAFeedback class="panel-collapse collapse">
+                                            <div id=collapse-Feedback-GetAFeedback class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Fetch a single Feedback from the database.
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>5d7a514b5d2c12c7449be021
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-success" id=jump-Feedbacks-AddAFeedback>
+                                        <div class="panel panel-success" id=jump-Feedback-AddAFeedback>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
                                                 <a class=text-success data-toggle=collapse
-                                                    data-parent=#accordion-Feedbacks
-                                                    href=#collapse-Feedbacks-AddAFeedback>
+                                                    data-parent=#accordion-Feedback
+                                                    href=#collapse-Feedback-AddAFeedback>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Add A
                                                             Feedback</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-success">POST</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/bootcamps/63984e0ff7cbe5921546a543/feedbacks</h4>
+                                                       </h4>
                                                 </a></div>
-                                            <div id=collapse-Feedbacks-AddAFeedback class="panel-collapse collapse">
+                                            <div id=collapse-Feedback-AddAFeedback class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Leave a Feedback for the bootcamp.
@@ -1061,30 +1244,42 @@
                                                                 <td>
                                                                     <p>JSON Type
                                                     </table>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>bootcampId
+                                                                <td>5d725a1b7b292f5f8cefb098
+                                                                <td>
+                                                    </table>
                                                     <h5 class="label label-primary">Body</h5><span
                                                         class=resp-prettyprint>{
-                                                        &#34;title&#34;: &#34;this is bad, learned nothing!&#34;,
+                                                        &#34;title&#34;: &#34;Great EXPERIENCE TEST!&#34;,
                                                         &#34;body&#34;: &#34;Had a bad experience, please dont waste
                                                         your time enrolling to this bootcamp!&#34;,
-                                                        &#34;rating&#34;: 3
+                                                        &#34;rating&#34;: 9
                                                         }</span>
                                                     <div class=clearfix></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-warning" id=jump-Feedbacks-UpdateAFeedback>
+                                        <div class="panel panel-warning" id=jump-Feedback-UpdateAFeedback>
                                             <div class=panel-heading><small class="pull-right text-muted">raw</small>
                                                 <a class=text-warning data-toggle=collapse
-                                                    data-parent=#accordion-Feedbacks
-                                                    href=#collapse-Feedbacks-UpdateAFeedback>
+                                                    data-parent=#accordion-Feedback
+                                                    href=#collapse-Feedback-UpdateAFeedback>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Update A
                                                             Feedback</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-warning">PUT</strong>
-                                                        &nbsp;
-                                                        {{URL}}/api/v1/feedbacks/63984ee6f7cbe5921546a554</h4>
+                                                             </h4>
                                                 </a></div>
-                                            <div id=collapse-Feedbacks-UpdateAFeedback class="panel-collapse collapse">
+                                            <div id=collapse-Feedback-UpdateAFeedback class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Update a feedback for the bootcamp
@@ -1103,26 +1298,52 @@
                                                                 <td>
                                                                     <p>JSON Type
                                                     </table>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel panel-danger" id=jump-Feedbacks-DeleteAFeedback>
+                                        <div class="panel panel-danger" id=jump-Feedback-DeleteAFeedback>
                                             <div class=panel-heading><small class="pull-right text-muted"></small><a
                                                     class=text-danger data-toggle=collapse
-                                                    data-parent=#accordion-Feedbacks
-                                                    href=#collapse-Feedbacks-DeleteAFeedback>
+                                                    data-parent=#accordion-Feedback
+                                                    href=#collapse-Feedback-DeleteAFeedback>
                                                     <h4 class=panel-title><span
                                                             class="glyphicon glyphicon-plus"></span><strong>Delete A
                                                             Feedback</strong> &nbsp;|&nbsp;
                                                         <strong class="request-method border-danger">DELETE</strong>
                                                         &nbsp;
-                                                        {{URL}}/api/v1/feedbacks/63984ee6f7cbe5921546a554</h4>
+                                                            </h4>
                                                 </a></div>
-                                            <div id=collapse-Feedbacks-DeleteAFeedback class="panel-collapse collapse">
+                                            <div id=collapse-Feedback-DeleteAFeedback class="panel-collapse collapse">
                                                 <div class=panel-body>
                                                     <h5 class="label label-default">Description</h5><br><small>
                                                         <p>Delete a feedback for the bootcamp.
                                                     </small><br><br>
+                                                    <h5 class="label label-info">URL Variables</h5>
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Key
+                                                                <th>Value
+                                                                <th>Description
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>id
+                                                                <td>65d891bd431277e00055c32b
+                                                                <td>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -6225,8 +6446,6 @@
     <footer class="navbar-default navbar-fixed-bottom">
         <div class=container-fluid>
             <div class="span12 text-center"><span data-toggle=tooltip
-                    title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!">Generated
-                    at 2022-12-14 04:05:08 by <a href=https://github.com/thedevsaddam/docgen target=_blank
-                        class=text-muted>docgen</a></span></div>
+                    title="If the application help you, please feel free to give a star to the project in github. Your star inspire me to work more on open-source projects like this!"> api.thecodecoachprojct.io</span></div>
         </div>
     </footer>
