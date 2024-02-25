@@ -1,7 +1,7 @@
 import { IndexDirection } from 'mongoose'
 
 // 1 = ascending, -1 = descending
-
+// TODO: refactor
 const DATABASE_INDEX = {
   FEEDBACK: {
     bootcamp: 1,
