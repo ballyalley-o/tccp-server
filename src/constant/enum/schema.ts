@@ -13,7 +13,8 @@ enum SCHEMA {
   LOCATION_COORDINATES_INDEX = '2dsphere',
   AVERAGE_RATING_MIN = 'Rating must be at least 1',
   AVERAGE_RATING_MAX = 'Rating must can not be more than 10',
-  DEFAULT_AVATAR = 'no-photo.jpg',
+  DEFAULT_PHOTO = 'no-photo.jpg',
+  DEFAULT_AVATAR = 'no-avatar.jpg',
   CAREERS = 'Please add one or more careers',
   // @course
   COURSE_TITLE = 'Please add a course title',
