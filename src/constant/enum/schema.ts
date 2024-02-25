@@ -20,6 +20,9 @@ enum SCHEMA {
   COURSE_WEEK = 'Please add number of weeks',
   COURSE_TUITION = 'Please add a tuition cost',
   MINIMUM_SKILL = 'Please add a minimum skill',
+  // @feedback
+  FEEDBACK_TITLE = 'Please add a title to your Feedback',
+  FEEDBACK_RATING = 'Please rating is required',
 }
 
 export default SCHEMA
