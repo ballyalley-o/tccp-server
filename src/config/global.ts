@@ -28,14 +28,20 @@ const GLOBAL = {
   DB_HOST: (db: any) => db.connection.host,
   DB_NAME: (db: any) => db.connection.name,
 
-  //@photo upload
+  //@photo upload / avatar
+  MAX_AVATAR_UPLOAD: process.env.MAX_AVATAR_UPLOAD || NumKey.FIVE_HUNDRED_KB,
   MAX_FILE_UPLOAD: process.env.MAX_FILE_UPLOAD || NumKey.ONE_MB,
   PHOTO_UPLOAD_PATH: process.env.PHOTO_UPLOAD_PATH,
 
   PHOTO_FILENAME: (bootcampId: ObjectId, name: string) =>
     `tccp-${bootcampId}${path.parse(name).ext}`,
+  AVATAR_FILENAME: (userId: ObjectId, name: string) =>
+    `tccp-av-${userId}${path.parse(name).ext}`,
+
   PHOTO_UPLOAD_MV: (photo: any, cb: any) =>
     photo.mv(`${process.env.FILE_UPLOAD_PATH}/${photo.name}`, cb),
+  AVATAR_UPLOAD_MV: (photo: any, cb: any) =>
+    photo.mv(`${process.env.AVATAR_UPLOAD_PATH}/${photo.name}`, cb),
 
   // @mail - nodemailer - mailtrap
   MAIL_FROM: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,

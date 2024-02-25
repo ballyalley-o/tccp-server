@@ -3,7 +3,7 @@ import slugify from 'slugify'
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { IBootcamp } from '@interface/model'
-import { REGEX, RESPONSE } from '@constant'
+import { REGEX, RESPONSE, DATABASE_INDEX } from '@constant'
 import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 
 const TAG = Key.Bootcamp
@@ -73,7 +73,7 @@ const BootcampSchema = new Schema<IBootcamp>(
     averageCost: Number,
     photo: {
       type: String,
-      default: SCHEMA.DEFAULT_AVATAR,
+      default: SCHEMA.DEFAULT_PHOTO,
     },
     housing: {
       type: Boolean,
@@ -147,6 +147,8 @@ BootcampSchema.virtual(Key.CourseVirtual, {
   foreignField: Key.BootcampVirtual,
   justOne: false,
 })
+
+BootcampSchema.index(DATABASE_INDEX.BOOTCAMP, { unique: true })
 
 const Bootcamp = model(TAG, BootcampSchema)
 export default Bootcamp

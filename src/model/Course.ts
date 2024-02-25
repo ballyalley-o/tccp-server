@@ -1,8 +1,8 @@
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
-import { Key, Aggregate } from '@constant/enum'
 import { ICourse, ICourseExtended } from '@interface/model'
-import { SCHEMA, LOCALE, MinimumSkill } from '@constant/enum'
+import { SCHEMA, LOCALE, MinimumSkill, Key, Aggregate } from '@constant/enum'
+import { DATABASE_INDEX } from '@constant'
 
 const TAG = Key.Course
 
@@ -17,7 +17,7 @@ const CourseSchema = new Schema<ICourseExtended>(
       type: String,
       required: [true, SCHEMA.DESCRIPTION],
     },
-    weeks: {
+    duration: {
       type: String,
       required: [true, SCHEMA.COURSE_WEEK],
     },
@@ -85,6 +85,8 @@ CourseSchema.pre(new RegExp(Key.Remove), function (this: ICourse, next: any) {
   ;(this.constructor as any as ICourseExtended).getAverageCost(this.bootcamp)
   next()
 })
+
+CourseSchema.index(DATABASE_INDEX.COURSE, { unique: true })
 
 const Course = model(TAG, CourseSchema)
 export default Course
