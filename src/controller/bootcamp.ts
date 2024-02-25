@@ -2,11 +2,11 @@ import goodlog from 'good-logs'
 import { App, GLOBAL } from '@config'
 import { Bootcamp } from '@model'
 import { Request, Response, NextFunction } from 'express'
+import { use, LogRequest } from '@decorator'
 import { IResponseExtended } from '@interface'
 import { Key, NumKey, Code } from '@constant/enum'
 import { RESPONSE } from '@constant'
-import { ErrorResponse } from '@util'
-import { use, LogRequest } from '@decorator'
+import { ErrorResponse, DataResponse } from '@util'
 
 /**
  * Bootcamp Controller
@@ -271,17 +271,15 @@ class BootcampController {
         photo: photo.name,
       })
 
-      // TODO: class DataResponse
-      const data = {
-        photo: photo.name,
-        bootcampName: bootcamp.name,
-        bootcampId: BootcampController._bootcampId,
-      }
+      const response = DataResponse.success(
+        { photo: photo.name, bootcampName: bootcamp.name },
+        BootcampController._bootcampId
+      )
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.PHOTO_UPLOADED,
-        data,
+        response,
       })
     })
   }
