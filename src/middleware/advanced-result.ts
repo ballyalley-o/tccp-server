@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { IPagination } from '@interface'
 import { IResponseExtended } from '@interface'
 import { IUser } from '@interface/model'
-import { REGEX, REMOVE_FIELDS } from '@constant'
+import { RESPONSE, REGEX, REMOVE_FIELDS } from '@constant'
 import { Key, TYPE } from '@constant/enum'
 
 const advancedResult =
@@ -70,6 +70,7 @@ const advancedResult =
 
     ;(res as IResponseExtended).advancedResult = {
       success: true,
+      message: RESPONSE.success[200],
       count: results.length,
       pagination,
       data: results,

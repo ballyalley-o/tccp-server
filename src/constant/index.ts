@@ -8,6 +8,8 @@ export { REMOVE_FIELDS } from '@constant/remove-fields'
 export {
   expire,
   fiveSecFromNow,
+  tenMin,
+  tenMinFromNow,
   oneHr,
   twoHr,
   sixHr,

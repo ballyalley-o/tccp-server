@@ -30,8 +30,8 @@ const RESPONSE = {
     COLLECTION_SEED: ' MOCK MIGRATION SUCCESSFUL 🌱 ',
     COLLECTION_DESTROYED: ' COLLECTION/s DESTROYED 💥 ',
     LOGOUT: `User logged out`,
-    UPDATED: `User updated`,
-    DELETED: `User deleted`,
+    UPDATED: `Entity updated`,
+    DELETED: `Entity deleted`,
     EMAIL_SENT: 'Email sent',
   },
 

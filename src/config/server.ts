@@ -10,12 +10,17 @@ import morgan from 'morgan'
 import NodeGeocoder from 'node-geocoder'
 import cookieParser from 'cookie-parser'
 import fileupload from 'express-fileupload'
+import mongoSanitize from 'express-mongo-sanitize'
+import helmet from 'helmet'
+import hpp from 'hpp'
+import rateLimit from 'express-rate-limit'
 import { setHeader, connectDb } from '@config'
 import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
-import { errorHandler, notFound } from '@middleware'
+import { xssHandler, errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
-import { Key } from '@constant/enum'
+import { tenMin } from '@constant'
+import { Key, NumKey } from '@constant/enum'
 import options from '@util/geocoder'
 import '@controller/user'
 
@@ -55,14 +60,34 @@ class App {
   }
 
   /**
-   * Initialize the app
+   * Initialize the app and middlewares
    *
    * @param app
    * @param env - environment
    * @param port - port
    *
    * Constructor
-   * @middlewares
+   * @middleware
+   * - express.json
+   * - express.urlencoded
+   * - express.static
+   * - morgan
+   * - cookieParser
+   * - cors
+   * - setHeader
+   * - fileupload
+   *
+   * @security
+   * - mongoSanitize
+   * - helmet
+   * - xssHandler
+   * - hpp
+   * - registerRoute
+   *
+   * @boundary
+   * - errorHandler()
+   * - notFound()
+   *
    */
   constructor() {
     this._app = express()
@@ -74,6 +99,11 @@ class App {
     this._app.use(cors())
     this._app.use(setHeader)
     this._app.use(fileupload())
+    this._app.use(mongoSanitize())
+    this._app.use(helmet())
+    this._app.use(xssHandler)
+    this._app.use(rateLimit(GLOBAL.LIMITER))
+    this._app.use(hpp())
     this.registerRoute()
     this._app.use(errorHandler)
     this._app.use(notFound)
