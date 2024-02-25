@@ -2,6 +2,7 @@ import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { Key, Aggregate } from '@constant/enum'
 import { ICourse, ICourseExtended } from '@interface/model'
+import { SCHEMA, LOCALE, MinimumSkill } from '@constant/enum'
 
 const TAG = Key.Course
 
@@ -10,24 +11,24 @@ const CourseSchema = new Schema<ICourseExtended>(
     title: {
       type: String,
       trim: true,
-      required: [true, 'Please add a Course Title'],
+      required: [true, SCHEMA.COURSE_TITLE],
     },
     description: {
       type: String,
-      required: [true, 'Please add a Course description'],
+      required: [true, SCHEMA.DESCRIPTION],
     },
     weeks: {
       type: String,
-      required: [true, 'Please add number of weeks'],
+      required: [true, SCHEMA.COURSE_WEEK],
     },
     tuition: {
       type: Number,
-      required: [true, 'Please add a tuition Cost'],
+      required: [true, SCHEMA.COURSE_TUITION],
     },
     minimumSkill: {
       type: String,
-      required: [true, 'Please add a minimum Skill'],
-      enum: ['beginner', 'intermediate', 'advanced'],
+      required: [true, SCHEMA.MINIMUM_SKILL],
+      enum: Object.values(MinimumSkill),
     },
     scholarshipAvailable: {
       type: Boolean,
@@ -46,12 +47,11 @@ const CourseSchema = new Schema<ICourseExtended>(
   },
   {
     timestamps: true,
-    collation: { locale: 'en', strength: 2 },
+    collation: { locale: LOCALE.EN, strength: 2 },
     collection: TAG,
   }
 )
 
-//static method to get the average cost of tuitions
 CourseSchema.statics.getAverageCost = async function (
   bootcampId: Schema.Types.ObjectId
 ): Promise<void> {
