@@ -1,4 +1,5 @@
 enum PathParam {
+  ALL = '*',
   F_SLASH = '/',
   SCH_SEPARATOR = '://',
   ID = '/:id',
