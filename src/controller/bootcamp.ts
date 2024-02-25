@@ -271,6 +271,7 @@ class BootcampController {
         photo: photo.name,
       })
 
+      // TODO: class DataResponse
       const data = {
         photo: photo.name,
         bootcampName: bootcamp.name,
