@@ -3,7 +3,7 @@ import { App, GLOBAL } from '@config'
 import { Bootcamp } from '@model'
 import { Request, Response, NextFunction } from 'express'
 import { IResponseExtended } from '@interface'
-import { Key, NumKey, Code, COLOR } from '@constant/enum'
+import { Key, NumKey, Code } from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { ErrorResponse } from '@util'
 import { use, LogRequest } from '@decorator'
@@ -138,13 +138,11 @@ class BootcampController {
       runValidators: true,
     })
 
-    res
-      .status(Code.OK)
-      .json({
-        success: true,
-        message: RESPONSE.success.UPDATED,
-        data: bootcamp,
-      })
+    res.status(Code.OK).json({
+      success: true,
+      message: RESPONSE.success.UPDATED,
+      data: bootcamp,
+    })
   }
 
   //@desc     DELETE bootcamp
