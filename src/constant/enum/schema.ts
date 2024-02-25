@@ -23,6 +23,10 @@ enum SCHEMA {
   // @feedback
   FEEDBACK_TITLE = 'Please add a title to your Feedback',
   FEEDBACK_RATING = 'Please rating is required',
+  // @user
+  FIRST_NAME = 'Please provide your first name',
+  LAST_NAME = 'Please provide your family/last name',
+  PASSWORD = 'Please add a password',
 }
 
 export default SCHEMA
