@@ -84,13 +84,13 @@ class PathDir {
     )
 
   // @production
-  // static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
-  // static BUILD_VIEW = this._connex(
-  //   __dirname,
-  //   Key.Client,
-  //   PathParam.DIST,
-  //   Key.IndexHtml
-  // )
+  static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
+  static BUILD_VIEW = this._connex(
+    __dirname,
+    Key.Client,
+    PathParam.DIST,
+    Key.IndexHtml
+  )
 }
 
 export default PathDir
