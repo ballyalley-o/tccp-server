@@ -86,6 +86,7 @@ class CourseController {
     }
     res.status(Code.OK).json({
       success: true,
+      message: RESPONSE.success[200],
       data: course,
     })
   }
@@ -184,6 +185,7 @@ class CourseController {
 
     res.status(Code.OK).json({
       success: true,
+      message: RESPONSE.success.UPDATED,
       data: course,
     })
   }
@@ -229,6 +231,7 @@ class CourseController {
 
     res.status(Code.OK).json({
       success: true,
+      message: RESPONSE.success.DELETED,
       data: {},
     })
   }
