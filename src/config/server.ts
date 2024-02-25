@@ -10,6 +10,7 @@ import morgan from 'morgan'
 import NodeGeocoder from 'node-geocoder'
 import cookieParser from 'cookie-parser'
 import fileupload from 'express-fileupload'
+import mongoSanitize from 'express-mongo-sanitize'
 import { setHeader, connectDb } from '@config'
 import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
@@ -74,6 +75,7 @@ class App {
     this._app.use(cors())
     this._app.use(setHeader)
     this._app.use(fileupload())
+    this._app.use(mongoSanitize())
     this.registerRoute()
     this._app.use(errorHandler)
     this._app.use(notFound)
