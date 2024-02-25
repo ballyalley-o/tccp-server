@@ -1,0 +1,1300 @@
+{
+	"info": {
+		"_postman_id": "74c412e3-1066-406b-a8c0-c69db8a596de",
+		"name": "The Code Coach Projct",
+		"description": "This Project’s aim is to take you take you closer to learning, guide you to the path way of becoming a great software developer. Show the bootcamps closer to you, courses to take, and a place for an interactive platform to socialise with your fellow dev friends & trainers.\n\nWe'll introduce you to the modern technologies you need for full stack web development, and by the end of our programme you will be able to build applications and prototypes - independently and in teams.\n\nThis project continues to pressure companies to strengthen their employer brand and to offer compelling compensation as well as expand their talent pool into new markets.\n\nThe demand for software engineers is simply not slowing down. We’ve run out of ways to describe how much it’s increasing. Digital transformation may sound like a buzzword, but as more of the planet arrives online, as business owners become more creative and explore new distribution channels – as our lives evolve, we need software engineers.To get the best and brightest minds on your team, get to know what they’re looking for, what drives them, and where they are.We’re here to help.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23415228"
+	},
+	"item": [
+		{
+			"name": "Bootcamp",
+			"item": [
+				{
+					"name": "Get All Bootcamp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp"
+							]
+						},
+						"description": "Fetch all bootcamps from database. Includes pagination, filtering, etc"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Bootcamp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65d52c63ef657741f123aa10"
+								}
+							]
+						},
+						"description": "Get single bootcamp by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bootcamps in Distance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "location.city",
+								"value": "auckland",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/radius/2013/1000",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								"radius",
+								"2013",
+								"1000"
+							]
+						},
+						"description": "Fetch all bootcamps within req. radius."
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Bootcamp",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						},
+						"followRedirects": true,
+						"followOriginalHttpMethod": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"TEST\",\n\t\t\"description\": \"IBM INTERNATIONAL BOOTCAMP is a full stack JavaScript Bootcamp located in the heart of Auckland that focuses on the technologies you need to get a high paying job as a web developer\",\n\t\t\"website\": \"https://IBMdev.com\",\n\t\t\"phone\": \"(111) 111-1111\",\n\t\t\"email\": \"enroll@IBMdev.com\",\n        \"duration\": \"10 Weeks\",\n\t\t\"address\": \"123 Queen Street, New Llyn, Auckland 1053\",\n\t\t\"careers\": [ \"Web Development\", \"IBM Data Science\", \"Software QA\", \"UI/UX\", \"Business\", \"Back-end\", \"Dev Ops\", \"Software QA\"],\n\t\t\"housing\": true,\n\t\t\"jobAssistance\": true,\n\t\t\"jobGuarantee\": false,\n\t\t\"acceptGi\": true    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/create",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								"create"
+							]
+						},
+						"description": "Add new bootcamp to database. Must be authenticated and must be publisher or admin."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bootcamp",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"JDev Bootcamp\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d725a1b7b292f5f8ceff458"
+								}
+							]
+						},
+						"description": "Update single bootcamp in database"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Bootcamp",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65da99e24c32ed3e3b09fe3d"
+								}
+							]
+						},
+						"description": "Delete bootcamp from database"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload a Photo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/Users/bally/Downloads/meta.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/:id/photo",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								":id",
+								"photo"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d725a1b7b292f5f8cefb098"
+								}
+							]
+						},
+						"description": "Request route for Uploading a Photo"
+					},
+					"response": []
+				}
+			],
+			"description": "Explore foundational APIs and endpoints that serve as the core of your application's functionality. Ideal for developers to familiarise themselves with the system"
+		},
+		{
+			"name": "Course",
+			"item": [
+				{
+					"name": "Get All Course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/course",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"course"
+							]
+						},
+						"description": "Fetch all courses from database. Includes pagination, filtering, etc"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Course for Bootcamp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/:bootcampId/course",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								":bootcampId",
+								"course"
+							],
+							"variable": [
+								{
+									"key": "bootcampId",
+									"value": "5d725a037b292f5f8ceff787"
+								}
+							]
+						},
+						"description": "Get courses populated with Bootcamp details"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Single Course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/course/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"course",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65d44e14b8c03a047c14ec62"
+								}
+							]
+						},
+						"description": "Get single course by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Course",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						},
+						"followRedirects": true,
+						"followOriginalHttpMethod": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"title\": \"TEST Front End Webby Dev\",\n\t\t\"description\": \"This course will provide you with all of the essentials to become a successful frontend web developer. You will learn to master HTML, CSS and front end JavaScript, along with tools like Git, VSCode and front end frameworks like Vue\",\n\t\t\"weeks\": 12,\n\t\t\"tuition\": 3400,\n\t\t\"minimumSkill\": \"intermediate\",\n\t\t\"scholarhipsAvailable\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/:bootcampId/course",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								":bootcampId",
+								"course"
+							],
+							"variable": [
+								{
+									"key": "bootcampId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Add new course to database. Must be authenticated and must be publisher or admin."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tuition\": 3400\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/course/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"course",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d725a4a7b292f5f8ceff789"
+								}
+							]
+						},
+						"description": "Update single course in database"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Courses",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/course/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"course",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Delete courses from database"
+					},
+					"response": []
+				}
+			],
+			"description": "Access APIs related to course management, including enrollment, progress tracking, and content delivery. Perfect for integrating educational features into your application."
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstname",
+									"value": "\"test\"",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "urlencoded",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "@test",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "trainer",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/register",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Add User to database with encrypted password"
+					},
+					"response": []
+				},
+				{
+					"name": "Get myAccount via Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/account",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ballyalleydev@gmail.com\",\n    \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/log-in",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"log-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/auth/logout",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Log user out of the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"tina@test.com\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/forgot-password",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/reset-password/:resetToken",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"reset-password",
+								":resetToken"
+							],
+							"variable": [
+								{
+									"key": "resetToken",
+									"value": "6149b28a12ba9fd0091342c63ade354d39415967"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Details",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\":\"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/update",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"update"
+							]
+						},
+						"description": "Updating the user's name and email."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"123456\",\n    \"newPassword\": \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/update-password",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"update-password"
+							]
+						},
+						"description": "Updates logged-in user's password."
+					},
+					"response": []
+				}
+			],
+			"description": "Secure your application with robust authentication APIs. This folder includes endpoints for user login, registration, and token management, ensuring a safe and controlled user access environment."
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/auth/user",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"user"
+							]
+						},
+						"description": "Get All Users details. for Admin CRUD Operations."
+					},
+					"response": []
+				},
+				{
+					"name": "Get A User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/auth/user/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65d44e14b8c03a047c14ec5a"
+								}
+							]
+						},
+						"description": "Get a single User's details from the database, for Admin CRUD Operations."
+					},
+					"response": []
+				},
+				{
+					"name": "Create A User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"firstname\": \"Bay\",\n        \"lastname\": \"Saddiq\",\n        \"password\":\"123456\",\n        \"email\": \"saddiq@example.com\",\n        \"username\": \"@beySaq\",\n        \"role\": \"5c3b08ae6d663a3c4e8f3566\",\n        \"avatar\": \"no-photo.jpg\",\n        \"location\": \"Auckland, NZ\"\n\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/user",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"user"
+							]
+						},
+						"description": "Create a single User to the database. restricted to Admin Operations."
+					},
+					"response": []
+				},
+				{
+					"name": "Update A User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"Tony Jr\",\n    \"email\": \"mylittlefriends@yahoo.com\"\n}"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/user/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65d40fb6d4655d5ed034f598"
+								}
+							]
+						},
+						"description": "Update a single User in the database. restricted to only Admins Operations."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete A User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/auth/user/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"auth",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65d40fb6d4655d5ed034f598"
+								}
+							]
+						},
+						"description": "Delete a single User from the database. restricted to Admin Operations.\n"
+					},
+					"response": []
+				}
+			],
+			"description": "Handle user-related functionalities through APIs in this folder. This includes user profile management, preferences, and any other features tied directly to the individual user experience."
+		},
+		{
+			"name": "Feedback",
+			"item": [
+				{
+					"name": "Get All Feedback",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/feedback",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"feedback"
+							]
+						},
+						"description": "Get ALL Feedbacks from the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Feedbacks for Bootcamp",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/:bootcampId/feedback",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								":bootcampId",
+								"feedback"
+							],
+							"variable": [
+								{
+									"key": "bootcampId",
+									"value": "5d725a037b292f5f8ceff787"
+								}
+							]
+						},
+						"description": "Fetch all reviews for a certain Bootcamp."
+					},
+					"response": []
+				},
+				{
+					"name": "Get A Feedback",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/feedback/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"feedback",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5d7a514b5d2c12c7449be021"
+								}
+							]
+						},
+						"description": "Fetch a single Feedback from the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Add A Feedback",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Great EXPERIENCE TEST!\",\n    \"body\": \"Had a bad experience, please dont waste your time enrolling to this bootcamp!\",\n    \"rating\": 9\n}\n"
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/bootcamp/:bootcampId/feedback",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"bootcamp",
+								":bootcampId",
+								"feedback"
+							],
+							"variable": [
+								{
+									"key": "bootcampId",
+									"value": "5d725a1b7b292f5f8cefb098"
+								}
+							]
+						},
+						"description": "Leave a Feedback for the bootcamp."
+					},
+					"response": []
+				},
+				{
+					"name": "Update A Feedback",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{DOMAIN}}/feedback/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"feedback",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Update a feedback for the bootcamp"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete A Feedback",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}/feedback/:id",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"path": [
+								"feedback",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65d891bd431277e00055c32b"
+								}
+							]
+						},
+						"description": "Delete a feedback for the bootcamp. "
+					},
+					"response": []
+				}
+			],
+			"description": "Manage user feedback effectively by utilizing APIs in this folder. Capture, analyze, and respond to user comments, reviews, and suggestions to enhance the user experience."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"",
+					"const timestamp = new Date().toISOString();",
+					"",
+					"pm.request.headers.add({",
+					"    key: 'X-Timestamp',",
+					"    value: timestamp",
+					"});",
+					"",
+					"pm.environment.get(\"theCodeCoach\");",
+					"pm.globals.get(\"variable_key\");",
+					"",
+					"console.log('Timestamp:', timestamp);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
