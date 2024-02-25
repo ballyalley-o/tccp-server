@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { advancedResult } from '@middleware'
+import { advancedResult, protect } from '@middleware'
 import { UserController } from '@controller'
 import { PathParam } from '@constant/enum'
 import { User } from '@model'
@@ -14,6 +14,8 @@ router.get(PathParam.ID, UserController.getUser)
 router.post(PathParam.F_SLASH, UserController.createUser)
 router.put(PathParam.ID, UserController.updateUser)
 router.delete(PathParam.ID, UserController.deleteUser)
+
+router.put(PathParam.UPLOAD_AVATAR, protect, UserController.uploadUserAvatar)
 
 const userRoute = router
 export default userRoute

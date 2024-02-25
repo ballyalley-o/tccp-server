@@ -260,7 +260,7 @@ URL: {{URL}}/api/v1/bootcamps/5d725a037b292f5f8ceff787/courses
 {
         "title": "TEST Front End Webby Dev",
 		"description": "This course will provide you with all of the essentials to become a successful frontend web developer. You will learn to master HTML, CSS and front end JavaScript, along with tools like Git, VSCode and front end frameworks like Vue",
-		"weeks": 12,
+		"duration": 12,
 		"tuition": 3400,
 		"minimumSkill": "intermediate",
 		"scholarhipsAvailable": true
