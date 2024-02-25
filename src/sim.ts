@@ -1,4 +1,3 @@
-import 'colors'
 import goodlog from 'good-logs'
 import { App } from '@config'
 // @datas
@@ -20,8 +19,9 @@ app.connectDb()
 const seeder = async () => {
   try {
     await User.deleteMany()
-    // await Role.deleteMany()
-    // await Cohort.deleteMany()
+    await Course.deleteMany()
+    await Bootcamp.deleteMany()
+    await Feedback.deleteMany()
 
     const createdUserCollection = await User.insertMany(userCollection)
     const createdCourse = await Course.insertMany(courseCollection)

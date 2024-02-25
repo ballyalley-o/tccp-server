@@ -45,11 +45,6 @@ type MiddlewareFunction = (
   next: NextFunction
 ) => Promise<void>
 
-type AuthorizeOverload = {
-  (role: Key): MiddlewareFunction
-  (roles: Key[]): MiddlewareFunction
-}
-
 /**
  * Grant access to specific roles
  *

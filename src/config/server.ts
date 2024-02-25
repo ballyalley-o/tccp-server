@@ -19,8 +19,7 @@ import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
 import { xssHandler, errorHandler, notFound } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
-import { tenMin } from '@constant'
-import { Key, NumKey } from '@constant/enum'
+import { Key } from '@constant/enum'
 import options from '@util/geocoder'
 import '@controller/user'
 
@@ -73,7 +72,6 @@ class App {
    * - express.static
    * - morgan
    * - cookieParser
-   * - cors
    * - setHeader
    * - fileupload
    *
@@ -82,11 +80,12 @@ class App {
    * - helmet
    * - xssHandler
    * - hpp
-   * - registerRoute
+   * - cors
+   * - rateLimit
    *
    * @boundary
-   * - errorHandler()
-   * - notFound()
+   * - errorHandler
+   * - notFound
    *
    */
   constructor() {

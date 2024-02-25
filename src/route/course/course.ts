@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { CourseController } from '@controller'
-import { Course } from '@model'
 import { advancedResult, authorize, protect } from '@middleware'
+import { Course } from '@model'
 import { Key, PathParam } from '@constant/enum'
 
 const router = Router({ mergeParams: true })
