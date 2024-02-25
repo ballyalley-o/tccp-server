@@ -1,5 +1,4 @@
-import { GLOBAL } from '@config'
-import NodeGeocoder, { Options } from 'node-geocoder'
+import { Options } from 'node-geocoder'
 import { Key } from '@constant/enum'
 
 type OptionsExtended = Options & { httpAdapter?: string }
