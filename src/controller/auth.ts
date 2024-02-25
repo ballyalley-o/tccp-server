@@ -52,6 +52,7 @@ class AuthController {
     res.status(statusCode).cookie(Key.Token, token, options).json({
       success: true,
       token,
+      user,
     })
   }
 
