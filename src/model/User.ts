@@ -1,11 +1,13 @@
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
-import mongoose, { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose'
 import { GLOBAL } from '@config'
 import { IUser } from '@interface/model'
 import { Key } from '@constant/enum'
 import { oneDayFromNow } from '@constant/max-age'
+import { REGEX, DATABASE_INDEX } from '@constant'
+import { SCHEMA, Role } from '@constant/enum'
 
 const TAG = Key.User
 
@@ -13,28 +15,25 @@ const UserSchema = new Schema<IUser>(
   {
     firstname: {
       type: String,
-      required: [true, 'Please provide your first name'],
+      required: [true, SCHEMA.FIRST_NAME],
       min: 3,
       max: 60,
     },
     lastname: {
       type: String,
-      required: [true, 'Please provide your family/last name'],
+      required: [true, SCHEMA.LAST_NAME],
       min: 3,
       max: 60,
     },
     email: {
       type: String,
-      required: [true, 'Please provide your email'],
+      required: [true, SCHEMA.EMAIL],
       unique: true,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'Please add a valid email',
-      ],
+      match: [REGEX.EMAIL, SCHEMA.EMAIL],
     },
     password: {
       type: String,
-      required: [true, 'Please add a password'],
+      required: [true, SCHEMA.PASSWORD],
       minlength: 6,
       select: false,
     },
@@ -45,12 +44,12 @@ const UserSchema = new Schema<IUser>(
     },
     role: {
       type: String,
-      enum: ['student', 'trainer'],
-      default: 'student',
+      enum: Object.values(Role),
+      default: Role.STUDENT,
     },
     avatar: {
       type: String,
-      default: 'no-photo.jpg',
+      default: SCHEMA.DEFAULT_AVATAR,
     },
     location: {
       type: String,
@@ -98,8 +97,7 @@ UserSchema.methods.getResetPasswordToken = function () {
   return resetToken
 }
 
-UserSchema.index({ username: 1 })
-UserSchema.index({ firstname: 1 })
+UserSchema.index(DATABASE_INDEX.USER, { unique: true })
 
 const User = model(TAG, UserSchema)
 export default User

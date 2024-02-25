@@ -1,7 +1,8 @@
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { IFeedback, IFeedbackExtended } from '@interface/model'
-import { Key, Aggregate } from '@constant/enum'
+import { SCHEMA, LOCALE, Key, Aggregate } from '@constant/enum'
+import { DATABASE_INDEX } from '@constant'
 
 const TAG = Key.Feedback
 
@@ -10,18 +11,18 @@ const FeedbackSchema = new Schema<IFeedbackExtended>(
     title: {
       type: String,
       trim: true,
-      required: [true, 'Please add a title to your Feedback'],
+      required: [true, SCHEMA.FEEDBACK_TITLE],
       maxlength: 100,
     },
     body: {
       type: String,
-      required: [true, 'Please add a description'],
+      required: [true, SCHEMA.DESCRIPTION],
     },
     rating: {
       type: Number,
       min: 1,
       max: 10,
-      required: [true, 'Please rating is required'],
+      required: [true, SCHEMA.FEEDBACK_RATING],
     },
     createdAt: {
       type: Date,
@@ -40,12 +41,11 @@ const FeedbackSchema = new Schema<IFeedbackExtended>(
   },
   {
     timestamps: true,
-    collation: { locale: 'en', strength: 2 },
+    collation: { locale: LOCALE.EN, strength: 2 },
     collection: TAG,
   }
 )
 
-//static method to get the average rating
 FeedbackSchema.statics.getAverageRating = async function (bootcampId) {
   const obj = await this.aggregate([
     {
@@ -85,13 +85,7 @@ FeedbackSchema.pre(
   }
 )
 
-FeedbackSchema.index(
-  {
-    bootcamp: 1,
-    user: 1,
-  },
-  { unique: true }
-)
+FeedbackSchema.index(DATABASE_INDEX.FEEDBACK, { unique: true })
 
 const Feedback = model(TAG, FeedbackSchema)
 export default Feedback
