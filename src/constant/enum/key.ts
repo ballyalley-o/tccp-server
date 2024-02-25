@@ -1,11 +1,10 @@
 enum Key {
-  // EarthRadius = 3963, // in miles
-
   Save = 'save',
   Remove = 'remove',
   Name = 'name',
   Host = 'host',
   Image = 'image',
+  Script = 'script',
 
   MorganShort = 'short',
   MorganDev = 'dev',
