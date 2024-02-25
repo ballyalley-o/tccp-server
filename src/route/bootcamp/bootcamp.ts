@@ -45,7 +45,7 @@ router
   )
 
 router.put(
-  PathParam.BOOTCAMP_PHOTO,
+  PathParam.UPLOAD_PHOTO,
   protect,
   bootcampController.uploadBootcampPhoto
 )
