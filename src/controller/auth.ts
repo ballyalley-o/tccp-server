@@ -1,7 +1,6 @@
 import crypto from 'crypto'
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
-import { IHTMLContent } from '@interface'
 import { IUserRequest } from '@interface/middleware'
 import { ErrorResponse, htmlContent } from '@util'
 import { sendEmail } from '@util'
