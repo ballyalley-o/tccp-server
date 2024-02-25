@@ -5,6 +5,7 @@ export { default as Key } from '@constant/enum/key'
 export { default as PathDir } from '@constant/path-dir'
 export { REGEX, RegexKey } from '@constant/regex'
 export { REMOVE_FIELDS } from '@constant/remove-fields'
+export { default as DATABASE_INDEX } from '@constant/database-index'
 export {
   expire,
   fiveSecFromNow,
