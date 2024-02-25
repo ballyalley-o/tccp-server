@@ -21,10 +21,8 @@ const advancedResult =
 
     queryStr = queryStr.replace(REGEX.MAP_LOC, (match) => `$${match}`)
 
-    //append query operators
     query = model.find(JSON.parse(queryStr))
 
-    // select fields
     if (req.query.select && typeof req.query.select === 'string') {
       const fields = req.query.select.split(',').join(' ') as keyof IUser
       query = query.select(fields)

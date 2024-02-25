@@ -5,7 +5,7 @@ import { IResponseExtended } from '@interface'
 import { Key, Code, NumKey } from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { GLOBAL } from '@config'
-import { ErrorResponse } from '@util'
+import { ErrorResponse, DataResponse } from '@util'
 import { User } from '@model'
 import { use, LogRequest } from '@decorator'
 
@@ -171,16 +171,18 @@ export class UserController {
         avatar: avatar.name,
       })
 
-      const data = {
-        photo: avatar.name,
-        user: user.firstname,
-        userId: UserController._userId,
-      }
+      const response = DataResponse.success(
+        {
+          photo: avatar.name,
+          user: user.firstname,
+        },
+        UserController._userId
+      )
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.AVATAR_UPLOADED,
-        data,
+        response,
       })
     })
   }
