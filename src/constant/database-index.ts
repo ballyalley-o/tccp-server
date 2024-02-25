@@ -14,6 +14,10 @@ const DATABASE_INDEX = {
   BOOTCAMP: {
     averageRating: 1,
   } as Record<string, IndexDirection>,
+  COURSE: {
+    duration: 1,
+    tuition: 1,
+  } as Record<string, IndexDirection>,
 }
 
 export default DATABASE_INDEX

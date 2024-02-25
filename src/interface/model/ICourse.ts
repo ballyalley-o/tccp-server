@@ -3,7 +3,7 @@ import { Document, Schema } from 'mongoose'
 interface ICourse extends Document {
   title: string
   description: string
-  weeks: string
+  duration: string
   tuition: number
   minimumSkill: string
   scholarshipAvailable: boolean
