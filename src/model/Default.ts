@@ -1,14 +1,15 @@
-import mongoose, { Schema } from 'mongoose'
+import { Schema } from 'mongoose'
 import { IDefault } from '@interface/model'
+import { Key } from '@constant'
 
 const DefaultSchema = new Schema<IDefault>({
   createdBy: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: Key.User,
   },
   updatedBy: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: Key.User,
   },
   isActive: {
     type: Boolean,
