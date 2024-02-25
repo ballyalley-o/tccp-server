@@ -3,8 +3,8 @@ import slugify from 'slugify'
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { IBootcamp } from '@interface/model'
-import { RESPONSE } from '@constant'
-import { Key, COLOR } from '@constant/enum'
+import { REGEX, RESPONSE } from '@constant'
+import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 
 const TAG = Key.Bootcamp
 
@@ -12,48 +12,42 @@ const BootcampSchema = new Schema<IBootcamp>(
   {
     name: {
       type: String,
-      required: [true, 'Please add a bootcamp name/title'],
+      required: [true, SCHEMA.NAME],
       unique: true,
       trim: true,
-      maxlength: [50, 'Name can not be more than 50 characters'],
+      maxlength: [50, SCHEMA.MAX_LENGTH_NAME],
     },
     slug: String,
     description: {
       type: String,
-      required: [true, 'Please add a description'],
-      maxlength: [500, 'Description can not be more than 500 characters'],
+      required: [true, SCHEMA.DESCRIPTION],
+      maxlength: [500, SCHEMA.MAX_LENGTH_DESCRIPTION],
     },
     website: {
       type: String,
-      match: [
-        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
-        'Please use a valid URL with HTTP or HTTPS',
-      ],
+      match: [REGEX.URL, SCHEMA.URL],
     },
     phone: {
       type: String,
-      maxlength: [20, 'Phone number can not be longer than 20 characters'],
+      maxlength: [20, SCHEMA.MAX_LENGTH_PHONE],
     },
     email: {
       type: String,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'Please add a valid email',
-      ],
+      match: [REGEX.EMAIL, SCHEMA.EMAIL],
     },
     address: {
       type: String,
-      required: [true, 'Please add an address'],
+      required: [true, SCHEMA.ADDRESS],
     },
     location: {
       // GeoJSON Point
       type: {
         type: String,
-        enum: ['Point'],
+        enum: [SCHEMA.LOCATION_TYPE as string],
       },
       coordinates: {
         type: [Number],
-        index: '2dsphere',
+        index: SCHEMA.LOCATION_COORDINATES_INDEX as string,
       },
       formattedAddress: String,
       street: String,
@@ -67,41 +61,19 @@ const BootcampSchema = new Schema<IBootcamp>(
       required: true,
     },
     careers: {
-      // Array of strings
       type: [String],
       required: true,
-      enum: [
-        'Web Development',
-        'Mobile Development',
-        'UI/UX',
-        'Data Science',
-        'Business',
-        'Software Engineering',
-        'FRONT-END Web Development',
-        'BACK-END Web Development',
-        'FULL_STACK Web Development',
-        'Dev Ops',
-        'Web Design & Development',
-        'Data Science Program',
-        'Software QA',
-        'Mastering Web Designing',
-        'Android App Web Development',
-        'Meta',
-        'IBM Data Science',
-        'Apple iOS Web Apps Development',
-        'Back-end',
-        'Other',
-      ],
+      enum: Object.values(CareerOptions),
     },
     averageRating: {
       type: Number,
-      min: [1, 'Rating must be at least 1'],
-      max: [10, 'Rating must can not be more than 10'],
+      min: [1, SCHEMA.AVERAGE_RATING_MIN],
+      max: [10, SCHEMA.AVERAGE_RATING_MAX],
     },
     averageCost: Number,
     photo: {
       type: String,
-      default: 'no-photo.jpg',
+      default: SCHEMA.DEFAULT_AVATAR,
     },
     housing: {
       type: Boolean,
@@ -127,20 +99,18 @@ const BootcampSchema = new Schema<IBootcamp>(
   },
   {
     timestamps: true,
-    collation: { locale: 'en', strength: 2 },
+    collation: { locale: LOCALE.EN, strength: 2 },
     collection: TAG,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 )
 
-//Create bootcamp slug from the bootcamp title
 BootcampSchema.pre(Key.Save, function (next) {
   this.slug = slugify(this.name, { lower: true })
   next()
 })
 
-//Geocode & create location field
 BootcampSchema.pre(Key.Save, async function (next) {
   const loc = await App.geocoder.geocode(this.address)
   this.location = {
