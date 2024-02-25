@@ -138,7 +138,13 @@ class BootcampController {
       runValidators: true,
     })
 
-    res.status(Code.OK).json({ success: true, data: bootcamp })
+    res
+      .status(Code.OK)
+      .json({
+        success: true,
+        message: RESPONSE.success.UPDATED,
+        data: bootcamp,
+      })
   }
 
   //@desc     DELETE bootcamp
@@ -173,7 +179,9 @@ class BootcampController {
 
     await Bootcamp.deleteOne({ _id: BootcampController._bootcampId })
 
-    res.status(Code.OK).json({ success: true, data: {} })
+    res
+      .status(Code.OK)
+      .json({ success: true, message: RESPONSE.success.DELETED, data: {} })
   }
 
   //@desc     Get bootcamps within a radius

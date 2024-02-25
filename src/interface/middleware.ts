@@ -13,6 +13,7 @@ export interface IExpressController {
 export interface IResponseExtended extends Response {
   advancedResult: {
     success: boolean
+    message?: string
     count: number
     pagination: IPagination
     data: Model[]

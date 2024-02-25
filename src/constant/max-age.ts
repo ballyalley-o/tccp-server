@@ -1,5 +1,6 @@
 interface IMaxAge {
   five_sec: number
+  ten_min: number
   one_hr: number
   two_hr: number
   six_hr: number
@@ -11,6 +12,8 @@ interface IMaxAge {
 
 /**
  * @description maxAge in milliseconds
+ * @property {number} five_sec - 5 seconds
+ * @property {number} ten_min - 10 minutes
  * @property {number} one_hr - 1 hour
  * @property {number} two_hr - 2 hours
  * @property {number} six_hr - 6 hours
@@ -22,6 +25,7 @@ interface IMaxAge {
  */
 const maxAge: IMaxAge = {
   five_sec: 5 * 1000,
+  ten_min: 10 * 60 * 1000,
   one_hr: 60 * 60 * 1000,
   two_hr: 2 * 60 * 60 * 1000,
   six_hr: 6 * 60 * 60 * 1000,
@@ -33,6 +37,7 @@ const maxAge: IMaxAge = {
 
 const expire = new Date(0)
 const fiveSec = maxAge.five_sec
+const tenMin = maxAge.ten_min
 const oneHr = maxAge.one_hr
 const twoHr = maxAge.two_hr
 const sixHr = maxAge.six_hr
@@ -44,6 +49,7 @@ const thirtyDays = maxAge[30]
 const fromNow = (time: number) => new Date(Date.now() + time)
 
 const fiveSecFromNow = fromNow(fiveSec)
+const tenMinFromNow = fromNow(tenMin)
 const oneHrFromNow = fromNow(oneHr)
 const twoHrFromNow = fromNow(twoHr)
 const sixHrFromNow = fromNow(sixHr)
@@ -55,6 +61,8 @@ const thirtyDaysFromNow = fromNow(thirtyDays)
 export {
   expire,
   fiveSecFromNow,
+  tenMin,
+  tenMinFromNow,
   oneHr,
   twoHr,
   sixHr,

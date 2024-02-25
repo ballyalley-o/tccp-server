@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongoose'
 import path from 'path'
 import { conNex } from '@util'
-import { oneDay } from '@constant'
+import { oneDay, tenMin } from '@constant'
 import { TransportOptions } from 'nodemailer'
 import { NumKey } from '@constant/enum'
 import dotenv from 'dotenv'
@@ -48,6 +48,13 @@ const GLOBAL = {
     },
   } as TransportOptions,
 
+  // @limiter - rate limiter
+  RATE_LIMIT_WINDOW: tenMin,
+  RATE_LIMIT: NumKey.RATE_LIMIT,
+  LIMITER: {
+    windowMs: tenMin,
+    max: NumKey.RATE_LIMIT,
+  },
   // @geocoder
   GEOCODER_PROVIDER: process.env.GEOCODER_PROVIDER,
   GEOCODER_API_KEY: process.env.GEOCODER_API_KEY,
