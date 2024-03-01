@@ -97,7 +97,7 @@ UserSchema.methods.getResetPasswordToken = function () {
   return resetToken
 }
 
-UserSchema.index(DATABASE_INDEX.USER, { unique: true })
+UserSchema.index(DATABASE_INDEX.USER)
 
 const User = model(TAG, UserSchema)
 export default User
