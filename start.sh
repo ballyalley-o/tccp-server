@@ -5,4 +5,4 @@ rm -rf dist
 
 npm run build
 
-pm2 start dist/app.js
+npm start
