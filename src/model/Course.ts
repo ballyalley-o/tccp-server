@@ -86,7 +86,7 @@ CourseSchema.pre(new RegExp(Key.Remove), function (this: ICourse, next: any) {
   next()
 })
 
-CourseSchema.index(DATABASE_INDEX.COURSE, { unique: true })
+CourseSchema.index(DATABASE_INDEX.COURSE)
 
 const Course = model(TAG, CourseSchema)
 export default Course

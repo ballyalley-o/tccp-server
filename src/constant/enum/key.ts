@@ -54,6 +54,7 @@ enum Key {
   Production = 'production',
   Development = 'development',
   Password = '+password',
+  UnhandledRejection = 'unhandledRejection',
 
   // @logger - req
   ReqMethod = ' Request Method: ',

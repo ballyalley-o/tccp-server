@@ -85,7 +85,7 @@ FeedbackSchema.pre(
   }
 )
 
-FeedbackSchema.index(DATABASE_INDEX.FEEDBACK, { unique: true })
+FeedbackSchema.index(DATABASE_INDEX.FEEDBACK)
 
 const Feedback = model(TAG, FeedbackSchema)
 export default Feedback

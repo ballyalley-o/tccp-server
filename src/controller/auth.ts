@@ -62,8 +62,27 @@ class AuthController {
   public static async register(
     req: Request,
     res: Response,
-    _next: NextFunction
+    next: NextFunction
   ) {
+    const { email, username } = req.body
+    if (!email) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.ALREADY_EXISTS(email),
+          Code.BAD_REQUEST
+        )
+      )
+    }
+
+    if (!username) {
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.ALREADY_EXISTS(username),
+          Code.BAD_REQUEST
+        )
+      )
+    }
+
     const user = await User.create(req.body)
 
     AuthController._sendTokenResponse(user, Code.OK, res)
