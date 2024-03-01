@@ -1,6 +1,6 @@
 {
   "name": "tccp-server",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Server for The CodeCoach Projct ",
   "main": "app.ts",
   "type": "module",
@@ -10,7 +10,7 @@
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "sim": "node dist/sim.js -i",
     "destroy": "node dist/sim.js -d",
-    "docs": "typedoc --out docs '*/*.ts'",
+    "doc": "typedoc --out docs '*/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
