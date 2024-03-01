@@ -165,7 +165,6 @@ class App {
         goodlog.error(error.message)
         this.isConnected = false
       })
-
     }
   }
 }

@@ -65,6 +65,30 @@ export class UserController {
     next: NextFunction
   ) {
     const user = await User.create(req.body)
+    const { email, username } = req.body
+    const emailExist = await User.findOne({ email })
+    const usernameExist = await User.findOne({ username })
+
+    if (emailExist) {
+      res
+        .status(Code.FORBIDDEN)
+        .json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
+      return next(
+        new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), Code.FORBIDDEN)
+      )
+    }
+
+    if (usernameExist) {
+      res
+        .status(Code.FORBIDDEN)
+        .json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.ALREADY_EXISTS(username),
+          Code.FORBIDDEN
+        )
+      )
+    }
 
     res.status(Code.CREATED).json({
       success: true,
@@ -86,6 +110,46 @@ export class UserController {
       new: true,
       runValidators: true,
     })
+
+    if (!user) {
+      res.status(Code.NOT_FOUND).json({ message: RESPONSE.error.NOT_FOUND })
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.NOT_FOUND(req.params.id),
+          Code.NOT_FOUND
+        )
+      )
+    }
+
+    if (user.email !== req.body.email) {
+      const emailExist = await User.findOne({ email: req.body.email })
+      if (emailExist) {
+        res
+          .status(Code.FORBIDDEN)
+          .json({ message: RESPONSE.error.ALREADY_EXISTS(req.body.email) })
+        return next(
+          new ErrorResponse(
+            RESPONSE.error.ALREADY_EXISTS(req.body.email),
+            Code.FORBIDDEN
+          )
+        )
+      }
+    }
+
+    if (user.username !== req.body.username) {
+      const usernameExist = await User.findOne({ username: req.body.username })
+      if (usernameExist) {
+        res
+          .status(Code.FORBIDDEN)
+          .json({ message: RESPONSE.error.ALREADY_EXISTS(req.body.username) })
+        return next(
+          new ErrorResponse(
+            RESPONSE.error.ALREADY_EXISTS(req.body.username),
+            Code.FORBIDDEN
+          )
+        )
+      }
+    }
 
     res.status(Code.OK).json({
       success: true,
