@@ -1,3 +1,4 @@
+import path from 'path'
 import express, { Router, Request, Response } from 'express'
 import { GLOBAL } from '@config'
 import { PathDir, RESPONSE } from '@constant'
@@ -18,10 +19,12 @@ class AppRouter {
 
   static serverRouter() {
     if (GLOBAL.ENV === ENV) {
-      this._router.use(express.static(PathDir.BUILD_LOC))
-      this._router?.get(PathParam.ALL, (req: Request, res: Response) =>
-        res.sendFile(PathDir.BUILD_VIEW)
-      )
+      // when frontend is ready
+      // this._router.use(express.static(PathDir.BUILD_LOC))
+      // this._router?.get(PathParam.ALL, (req: Request, res: Response) =>
+      //   res.sendFile(PathDir.BUILD_VIEW)
+      // )
+      this._router?.get(PathDir.API_ROOT, RESPONSE.server)
     } else {
       this._router?.get(PathDir.API_ROOT, RESPONSE.server)
     }

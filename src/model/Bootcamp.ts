@@ -148,7 +148,7 @@ BootcampSchema.virtual(Key.CourseVirtual, {
   justOne: false,
 })
 
-BootcampSchema.index(DATABASE_INDEX.BOOTCAMP, { unique: true })
+BootcampSchema.index(DATABASE_INDEX.BOOTCAMP)
 
 const Bootcamp = model(TAG, BootcampSchema)
 export default Bootcamp

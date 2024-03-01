@@ -62,8 +62,33 @@ class AuthController {
   public static async register(
     req: Request,
     res: Response,
-    _next: NextFunction
+    next: NextFunction
   ) {
+    const { email, username } = req.body
+    const emailExist = await User.findOne({ email })
+    const usernameExist = await User.findOne({ username })
+
+    if (emailExist) {
+      res
+        .status(Code.FORBIDDEN)
+        .json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
+      return next(
+        new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), Code.FORBIDDEN)
+      )
+    }
+
+    if (usernameExist) {
+      res
+        .status(Code.FORBIDDEN)
+        .json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
+      return next(
+        new ErrorResponse(
+          RESPONSE.error.ALREADY_EXISTS(username),
+          Code.FORBIDDEN
+        )
+      )
+    }
+
     const user = await User.create(req.body)
 
     AuthController._sendTokenResponse(user, Code.OK, res)
