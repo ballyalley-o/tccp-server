@@ -65,20 +65,26 @@ class AuthController {
     next: NextFunction
   ) {
     const { email, username } = req.body
-    if (!email) {
+    const emailExist = await User.findOne({ email })
+    const usernameExist = await User.findOne({ username })
+
+    if (emailExist) {
+      res
+        .status(Code.FORBIDDEN)
+        .json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
       return next(
-        new ErrorResponse(
-          RESPONSE.error.ALREADY_EXISTS(email),
-          Code.BAD_REQUEST
-        )
+        new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), Code.FORBIDDEN)
       )
     }
 
-    if (!username) {
+    if (usernameExist) {
+      res
+        .status(Code.FORBIDDEN)
+        .json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
       return next(
         new ErrorResponse(
           RESPONSE.error.ALREADY_EXISTS(username),
-          Code.BAD_REQUEST
+          Code.FORBIDDEN
         )
       )
     }
