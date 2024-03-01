@@ -155,13 +155,17 @@ class App {
         )
       })
     } catch (error: any) {
-      goodlog.server(
-        GLOBAL.PORT as number,
-        GLOBAL.API_VERSION,
-        prod,
-        this.isConnected
-      )
-      goodlog.error(error.message)
+      process.on(Key.UnhandledRejection, (err) => {
+        goodlog.server(
+          GLOBAL.PORT as number,
+          GLOBAL.API_VERSION,
+          prod,
+          this.isConnected
+        )
+        goodlog.error(error.message)
+        this.isConnected = false
+      })
+
     }
   }
 }
