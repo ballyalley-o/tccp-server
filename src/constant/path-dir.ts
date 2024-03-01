@@ -1,3 +1,4 @@
+import path from 'path'
 import { __dirname } from '@config'
 import { conNex } from '@util'
 import { RESPONSE } from '@constant'
@@ -9,6 +10,8 @@ import { PathParam, Key } from '@constant/enum'
  * @returns void
  */
 class PathDir {
+  public path = path
+
   constructor() {
     throw new Error(RESPONSE.error.NotInstance)
   }
@@ -84,13 +87,8 @@ class PathDir {
     )
 
   // @production
-  static BUILD_LOC = this._connex(__dirname, Key.Client, PathParam.DIST)
-  static BUILD_VIEW = this._connex(
-    __dirname,
-    Key.Client,
-    PathParam.DIST,
-    Key.IndexHtml
-  )
+  static BUILD_LOC = path.resolve(__dirname, PathParam.DIST)
+  static BUILD_VIEW = path.resolve(__dirname, PathParam.PUBLIC, Key.IndexHtml)
 }
 
 export default PathDir
