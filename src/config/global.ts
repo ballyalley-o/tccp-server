@@ -10,13 +10,10 @@ dotenv.config()
 const GLOBAL = {
   APP_NAME: 'The CodeCoach Projct',
   APP_SERVER_NAME: 'tccp-server',
-  API_HOST: conNex(
-    process.env.API_HOST?.replace('{PORT}', process.env.PORT ?? '') || ''
-  ),
-  API_URL: conNex(
-    process.env.API_URL?.replace('{PORT}', process.env.PORT ?? '') || '',
-    process.env.API_VERSION || ''
-  ),
+  API_HOST: conNex(process.env.API_HOST?.replace('{PORT}', process.env.PORT ?? '') || ''),
+  API_URL: conNex(process.env.API_URL?.replace('{PORT}', process.env.PORT ?? '') || '', process.env.API_VERSION || ''),
+  CLIENT_DEV_URL: conNex(process.env.API_HOST?.replace('{PORT}', process.env.DEV_CLIENT_PORT ?? '') || ''),
+  CORS_ALLOWED_ORIGIN: process.env.CORS_ALLOWED_ORIGIN?.split(',') || [],
   API_VERSION: process.env.API_VERSION || '',
   PORT: process.env.PORT || 3005,
   ENV: process.env.NODE_ENV || '',
@@ -33,15 +30,11 @@ const GLOBAL = {
   MAX_FILE_UPLOAD: process.env.MAX_FILE_UPLOAD || NumKey.ONE_MB,
   PHOTO_UPLOAD_PATH: process.env.PHOTO_UPLOAD_PATH,
 
-  PHOTO_FILENAME: (bootcampId: ObjectId, name: string) =>
-    `tccp-${bootcampId}${path.parse(name).ext}`,
-  AVATAR_FILENAME: (userId: ObjectId, name: string) =>
-    `tccp-av-${userId}${path.parse(name).ext}`,
+  PHOTO_FILENAME: (bootcampId: ObjectId, name: string) => `tccp-${bootcampId}${path.parse(name).ext}`,
+  AVATAR_FILENAME: (userId: ObjectId, name: string) => `tccp-av-${userId}${path.parse(name).ext}`,
 
-  PHOTO_UPLOAD_MV: (photo: any, cb: any) =>
-    photo.mv(`${process.env.FILE_UPLOAD_PATH}/${photo.name}`, cb),
-  AVATAR_UPLOAD_MV: (photo: any, cb: any) =>
-    photo.mv(`${process.env.AVATAR_UPLOAD_PATH}/${photo.name}`, cb),
+  PHOTO_UPLOAD_MV: (photo: any, cb: any) => photo.mv(`${process.env.FILE_UPLOAD_PATH}/${photo.name}`, cb),
+  AVATAR_UPLOAD_MV: (photo: any, cb: any) => photo.mv(`${process.env.AVATAR_UPLOAD_PATH}/${photo.name}`, cb),
 
   // @mail - nodemailer - mailtrap
   MAIL_FROM: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
