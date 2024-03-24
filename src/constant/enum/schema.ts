@@ -13,8 +13,9 @@ enum SCHEMA {
   LOCATION_COORDINATES_INDEX = '2dsphere',
   AVERAGE_RATING_MIN = 'Rating must be at least 1',
   AVERAGE_RATING_MAX = 'Rating must can not be more than 10',
-  DEFAULT_PHOTO = 'no-photo.jpg',
-  DEFAULT_AVATAR = 'no-avatar.jpg',
+  DEFAULT_PHOTO = '/upload/no-photo.jpeg',
+  DEFAULT_BADGE = '/upload/badge/no-badge.png',
+  DEFAULT_AVATAR = '/upload/avatar/no-avatar.jpeg',
   CAREERS = 'Please add one or more careers',
   // @course
   COURSE_TITLE = 'Please add a course title',
@@ -30,4 +31,4 @@ enum SCHEMA {
   PASSWORD = 'Please add a password'
 }
 
-export default SCHEMA;
+export default SCHEMA

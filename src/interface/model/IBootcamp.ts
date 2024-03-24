@@ -24,6 +24,7 @@ interface IBootcamp {
   averageRating: number
   averageCost: number
   photo: string
+  badge: string
   housing: boolean
   jobAssistance: boolean
   jobGuarantee: boolean

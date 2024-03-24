@@ -13,6 +13,7 @@ enum PathParam {
   BOOTCAMP = '/bootcamp',
   PHOTO = '/photo',
   UPLOAD_PHOTO = '/:id/photo',
+  UPLOAD_BADGE = '/:id/badge',
   UPLOAD_AVATAR = '/:id/avatar',
   DISTANCE = '/radius/:zipcode/:distance',
   FEEDBACK = '/feedback',
@@ -30,6 +31,6 @@ enum PathParam {
   PUBLIC = 'public',
   // @redir
   REDIR_FEEDBACK = '/:bootcampId/feedback',
-  REDIR_COURSE = '/:bootcampId/course',
+  REDIR_COURSE = '/:bootcampId/course'
 }
 export default PathParam

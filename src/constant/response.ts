@@ -10,7 +10,7 @@ const RESPONSE = {
       version: GLOBAL.API_VERSION,
       url: GLOBAL.API_URL,
       port: GLOBAL.PORT,
-      environment: GLOBAL.ENV,
+      environment: GLOBAL.ENV
     }
     res.send(response)
   },
@@ -25,6 +25,7 @@ const RESPONSE = {
     201: 'CREATED: Request created',
     204: 'NO CONTENT: The server successfully processed the request but there is no content to send in the response.',
     PHOTO_UPLOADED: 'OK: Photo Uploaded',
+    BADGE_UPLOADED: 'OK: Badge Uploaded',
     AVATAR_UPLOADED: 'OK: Avatar Uploaded',
     COURSES_DELETED: (data: string) => `Courses being deleted from bootcamp ID: ${data}. Reload page to see the effect`,
     COLLECTION_SEED: ' MOCK MIGRATION SUCCESSFUL 🌱 ',
@@ -32,7 +33,7 @@ const RESPONSE = {
     LOGOUT: `User logged out`,
     UPDATED: `Entity updated`,
     DELETED: `Entity deleted`,
-    EMAIL_SENT: 'Email sent',
+    EMAIL_SENT: 'Email sent'
   },
 
   /**
@@ -71,8 +72,8 @@ const RESPONSE = {
     FAILED_EMAIL: 'Email could not be sent',
     RESET_SUBJECT: 'Password Reset Request',
     RESET_MESSAGE: (resetUrl: string) =>
-      `A request has been made to reset your password. If you made this request, please copy the following code into the prompt in: \n\n ${resetUrl} to verify your identity.`,
-  },
+      `A request has been made to reset your password. If you made this request, please copy the following code into the prompt in: \n\n ${resetUrl} to verify your identity.`
+  }
 }
 
 export default RESPONSE

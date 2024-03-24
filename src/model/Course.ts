@@ -11,62 +11,62 @@ const CourseSchema = new Schema<ICourseExtended>(
     title: {
       type: String,
       trim: true,
-      required: [true, SCHEMA.COURSE_TITLE],
+      required: [true, SCHEMA.COURSE_TITLE]
     },
     description: {
       type: String,
-      required: [true, SCHEMA.DESCRIPTION],
+      required: [true, SCHEMA.DESCRIPTION]
     },
     duration: {
       type: String,
-      required: [true, SCHEMA.COURSE_WEEK],
+      required: [true, SCHEMA.COURSE_WEEK]
     },
     tuition: {
       type: Number,
-      required: [true, SCHEMA.COURSE_TUITION],
+      required: [true, SCHEMA.COURSE_TUITION]
     },
     minimumSkill: {
       type: String,
       required: [true, SCHEMA.MINIMUM_SKILL],
-      enum: Object.values(MinimumSkill),
+      enum: Object.values(MinimumSkill)
     },
     scholarshipAvailable: {
       type: Boolean,
-      default: false,
+      default: false
     },
     bootcamp: {
       type: Schema.ObjectId,
       ref: Key.Bootcamp,
-      required: true,
+      required: true
     },
     user: {
       type: Schema.ObjectId,
       ref: Key.User,
-      required: true,
-    },
+      required: true
+    }
   },
   {
     timestamps: true,
     collation: { locale: LOCALE.EN, strength: 2 },
-    collection: TAG,
+    collection: TAG
   }
 )
 
 CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.ObjectId): Promise<void> {
   const obj = await this.aggregate([
     {
-      $match: { bootcamp: bootcampId },
+      $match: { bootcamp: bootcampId }
     },
     {
       $group: {
         _id: Aggregate.Bootcamp,
-        averageCost: { $avg: Aggregate.Tuition },
-      },
-    },
+        averageCost: { $avg: Aggregate.Tuition }
+      }
+    }
   ])
   try {
     await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
-      averageCost: Math.ceil(obj[0].averageCost / 10) * 10,
+      averageCost: Math.ceil(obj[0].averageCost / 10) * 10
     })
   } catch (error) {
     if (error instanceof Error) {
