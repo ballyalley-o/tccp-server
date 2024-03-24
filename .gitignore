@@ -4,6 +4,7 @@ dist
 tsconfig.tsbuildinfo
 
 updtlog.sh
+start.sh
 
 public/upload/tccp-*.*
 public/avatar/tccp-*.*
