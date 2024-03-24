@@ -14,10 +14,10 @@ import mongoSanitize from 'express-mongo-sanitize'
 import helmet from 'helmet'
 import hpp from 'hpp'
 import rateLimit from 'express-rate-limit'
-import { setHeader, connectDb } from '@config'
+import { connectDb } from '@config'
 import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
-import { xssHandler, errorHandler, notFound } from '@middleware'
+import { xssHandler, errorHandler, notFound, corsConfig } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
 import { Key } from '@constant/enum'
 import options from '@util/geocoder'
@@ -95,15 +95,15 @@ class App {
     this._app.use(express.static(Key.Public))
     this._app.use(morgan(Key.MorganDev))
     this._app.use(cookieParser())
-    this._app.use(cors())
-    this._app.use(setHeader)
     this._app.use(fileupload())
+    this._app.use(cors(corsConfig))
     this._app.use(mongoSanitize())
     this._app.use(helmet())
     this._app.use(xssHandler)
     this._app.use(rateLimit(GLOBAL.LIMITER))
     this._app.use(hpp())
     this.registerRoute()
+
     this._app.use(errorHandler)
     this._app.use(notFound)
   }
@@ -147,21 +147,14 @@ class App {
 
     try {
       this._app.listen(GLOBAL.PORT, () => {
-        goodlog.server(
-          GLOBAL.PORT as number,
-          GLOBAL.API_VERSION,
-          prod,
-          this.isConnected
-        )
+        goodlog.server(GLOBAL.PORT as number, GLOBAL.API_VERSION, prod, this.isConnected)
       })
     } catch (error: any) {
-      goodlog.server(
-        GLOBAL.PORT as number,
-        GLOBAL.API_VERSION,
-        prod,
-        this.isConnected
-      )
-      goodlog.error(error.message)
+      process.on(Key.UnhandledRejection, (err) => {
+        goodlog.server(GLOBAL.PORT as number, GLOBAL.API_VERSION, prod, this.isConnected)
+        goodlog.error(error.message)
+        this.isConnected = false
+      })
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'colors'
+import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
 
 function LogInitRequest(
@@ -13,7 +15,7 @@ function LogInitRequest(
     next: NextFunction
   ) {
     console.log('')
-    console.warn(`[${new Date()}] Initial Request to ${key}`)
+    goodlog.warn(` [${new Date().toISOString()}] ${'MOUNTED 🔗'.green} ${key} `)
     console.log('')
     originalMethod.call(this, req, res, next)
   }

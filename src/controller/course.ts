@@ -37,11 +37,7 @@ class CourseController {
   //@route    GET /bootcamp/:bootcampId/course
   //@access   PUBLIC
   @use(LogRequest)
-  public static async getCourses(
-    req: Request,
-    res: Response,
-    _next: NextFunction
-  ) {
+  public static async getCourses(req: Request, res: Response, _next: NextFunction) {
     CourseController.setRequest(req)
 
     if (CourseController._bootcampId) {
@@ -63,11 +59,7 @@ class CourseController {
   //@route    GET /course/:id
   //@access   PUBLIC
   @use(LogRequest)
-  public static async getCourse(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  public static async getCourse(req: Request, res: Response, next: NextFunction) {
     CourseController.setRequest(req)
 
     const course = await Course.findById(CourseController._courseId).populate({
@@ -76,12 +68,7 @@ class CourseController {
     })
 
     if (!course) {
-      return next(
-        new ErrorResponse(
-          RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId),
-          Code.NOT_FOUND
-        )
-      )
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), Code.NOT_FOUND))
     }
     res.status(Code.OK).json({
       success: true,
@@ -104,24 +91,11 @@ class CourseController {
     const bootcamp = await Bootcamp.findById(CourseController._bootcampId)
 
     if (!bootcamp) {
-      return next(
-        new ErrorResponse(
-          RESPONSE.error.NOT_FOUND_BOOTCAMP(CourseController._bootcampId),
-          Code.NOT_FOUND
-        )
-      )
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(CourseController._bootcampId), Code.NOT_FOUND))
     }
 
-    if (
-      bootcamp.user.toString() !== CourseController._userId &&
-      CourseController._userRole !== Key.Admin
-    ) {
-      return next(
-        new ErrorResponse(
-          RESPONSE.error.NOT_OWNER(req.user.id, CourseController._bootcampId),
-          401
-        )
-      )
+    if (bootcamp.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
+      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(req.user.id, CourseController._bootcampId), 401))
     }
 
     const course = await Course.create(req.body)
@@ -136,51 +110,24 @@ class CourseController {
   //@route    PUT /courses/:id
   //@access   PRIVATE
   @use(LogRequest)
-  public static async updateCourse(
-    req: any,
-    res: Response,
-    next: NextFunction
-  ) {
+  public static async updateCourse(req: any, res: Response, next: NextFunction) {
     CourseController.setRequest(req)
     CourseController.setUserId(req)
 
     let course = await Course.findById(CourseController._courseId)
 
     if (!course) {
-      return next(
-        new ErrorResponse(
-          RESPONSE.error.NOT_OWNER(
-            CourseController._userId,
-            CourseController._courseId
-          ),
-          Code.UNAUTHORIZED
-        )
-      )
+      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), Code.UNAUTHORIZED))
     }
 
-    if (
-      course.user.toString() !== CourseController._userId &&
-      CourseController._userRole !== Key.Admin
-    ) {
-      return next(
-        new ErrorResponse(
-          RESPONSE.error.NOT_OWNER(
-            CourseController._userId,
-            CourseController._courseId
-          ),
-          Code.UNAUTHORIZED
-        )
-      )
+    if (course.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
+      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), Code.UNAUTHORIZED))
     }
 
-    course = await Course.findByIdAndUpdate(
-      CourseController._courseId,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
+    course = await Course.findByIdAndUpdate(CourseController._courseId, req.body, {
+      new: true,
+      runValidators: true,
+    })
 
     res.status(Code.OK).json({
       success: true,
@@ -192,38 +139,18 @@ class CourseController {
   //@route    DELETE /course/:id
   //@access   PRIVATE
   @use(LogRequest)
-  public static async deleteCourse(
-    req: any,
-    res: Response,
-    next: NextFunction
-  ) {
+  public static async deleteCourse(req: any, res: Response, next: NextFunction) {
     CourseController.setRequest(req)
     CourseController.setUserId(req)
 
     const course = await Course.findById(CourseController._courseId)
 
     if (!course) {
-      return next(
-        new ErrorResponse(
-          RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId),
-          Code.NOT_FOUND
-        )
-      )
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), Code.NOT_FOUND))
     }
 
-    if (
-      course.user.toString() !== CourseController._userId &&
-      CourseController._userRole !== Key.Admin
-    ) {
-      return next(
-        new ErrorResponse(
-          RESPONSE.error.NOT_OWNER(
-            CourseController._userId,
-            CourseController._courseId
-          ),
-          Code.UNAUTHORIZED
-        )
-      )
+    if (course.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
+      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), Code.UNAUTHORIZED))
     }
 
     await Course.deleteOne({ _id: CourseController._courseId })

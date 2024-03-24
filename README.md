@@ -99,9 +99,3 @@ How was each feature of the application tested?
 Backend been tested well.
 How did you handle edge cases?
 Will still work on that. Did not get to its final version.
-
-### Implementation
-
-    Deploy server on digital ocean so it will be available whenever, wherever.
-
-### End-to-end solution

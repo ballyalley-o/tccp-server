@@ -27,6 +27,7 @@ enum PathParam {
   RESET_TOKEN = '/:resetToken',
   RESET_URL = '/reset-password/:resetToken',
   DIST = 'dist',
+  PUBLIC = 'public',
   // @redir
   REDIR_FEEDBACK = '/:bootcampId/feedback',
   REDIR_COURSE = '/:bootcampId/course',

@@ -52,9 +52,7 @@ const CourseSchema = new Schema<ICourseExtended>(
   }
 )
 
-CourseSchema.statics.getAverageCost = async function (
-  bootcampId: Schema.Types.ObjectId
-): Promise<void> {
+CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.ObjectId): Promise<void> {
   const obj = await this.aggregate([
     {
       $match: { bootcamp: bootcampId },
@@ -86,7 +84,7 @@ CourseSchema.pre(new RegExp(Key.Remove), function (this: ICourse, next: any) {
   next()
 })
 
-CourseSchema.index(DATABASE_INDEX.COURSE, { unique: true })
+CourseSchema.index(DATABASE_INDEX.COURSE)
 
 const Course = model(TAG, CourseSchema)
 export default Course
