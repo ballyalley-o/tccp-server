@@ -52,9 +52,7 @@ const CourseSchema = new Schema<ICourseExtended>(
   }
 )
 
-CourseSchema.statics.getAverageCost = async function (
-  bootcampId: Schema.Types.ObjectId
-): Promise<void> {
+CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.ObjectId): Promise<void> {
   const obj = await this.aggregate([
     {
       $match: { bootcamp: bootcampId },
