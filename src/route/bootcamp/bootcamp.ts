@@ -25,6 +25,7 @@ router
   .delete(protect, authorize(Key.Trainer, Key.Admin), bootcampController.deleteBootcamp)
 
 router.put(PathParam.UPLOAD_PHOTO, protect, bootcampController.uploadBootcampPhoto)
+router.put(PathParam.UPLOAD_BADGE, protect, bootcampController.uploadBootcampBadge)
 
 const bootcampRoute = router
 export default bootcampRoute
