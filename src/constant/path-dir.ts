@@ -46,10 +46,7 @@ class PathDir {
   /**
    *  @path - {baseUrl}/api/{apiVer}
    */
-  static API_ROOT = this._connex(
-    PathDir.API_PARAM,
-    process.env.API_VERSION || ''
-  )
+  static API_ROOT = this._connex(PathDir.API_PARAM, process.env.API_VERSION || '')
   //  /dashboard
   static DASHBOARD = this._connex(PathDir.API_ROOT, this.DASHBOARD_PARAM)
   //  /auth
@@ -69,26 +66,15 @@ class PathDir {
   // /auth/reset-password/
   static RESET_URL = this._connex(PathDir.AUTH, this.RESET_PASSWORD_PARAM)
   // /auth/reset-password/:resetToken
-  static RESET_PASSWORD = this._connex(
-    PathDir.AUTH,
-    this.RESET_PASSWORD_PARAM,
-    this.RESET_TOKEN_PARAM
-  )
+  static RESET_PASSWORD = this._connex(PathDir.AUTH, this.RESET_PASSWORD_PARAM, this.RESET_TOKEN_PARAM)
 
   static RESET_FULL_EMAIL = (req: any, resetToken: string) =>
     // {protocol}://{host}/api/{apiVer}/reset-password/:resetToken`
-    this._connex(
-      req.protocol,
-      PathParam.SCH_SEPARATOR,
-      req.get(Key.Host),
-      this.RESET_URL,
-      PathParam.F_SLASH,
-      resetToken
-    )
+    this._connex(req.protocol, PathParam.SCH_SEPARATOR, req.get(Key.Host), this.RESET_URL, PathParam.F_SLASH, resetToken)
 
   // @production
-  static BUILD_LOC = path.resolve(__dirname, PathParam.DIST)
-  static BUILD_VIEW = path.resolve(__dirname, PathParam.PUBLIC, Key.IndexHtml)
+  // static BUILD_LOC = path.resolve(__dirname, PathParam.DIST)
+  // static BUILD_VIEW = path.resolve(__dirname, PathParam.PUBLIC, Key.IndexHtml)
 }
 
 export default PathDir
