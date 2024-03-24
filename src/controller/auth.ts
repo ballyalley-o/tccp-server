@@ -31,7 +31,7 @@ class AuthController {
     const options = {
       expires: thirtyDaysFromNow,
       httpOnly: true,
-      secure: false,
+      secure: false
     }
 
     if (process.env.NODE_ENV === Key.Production) {
@@ -41,7 +41,7 @@ class AuthController {
     res.status(statusCode).cookie(Key.Token, token, options).json({
       success: true,
       token,
-      user,
+      user
     })
   }
 
@@ -102,13 +102,13 @@ class AuthController {
   public static async logout(_req: Request, res: Response, _next: NextFunction) {
     res.cookie(Key.Token, Key.None, {
       expires: fiveSecFromNow,
-      httpOnly: true,
+      httpOnly: true
     })
 
     res.status(Code.OK).json({
       success: true,
       message: RESPONSE.success.LOGOUT,
-      data: {},
+      data: {}
     })
   }
 
@@ -122,7 +122,7 @@ class AuthController {
     res.status(Code.OK).json({
       success: true,
       message: RESPONSE.success[200],
-      data: user,
+      data: user
     })
   }
 
@@ -141,18 +141,18 @@ class AuthController {
       email: req.body.email,
       role: req.body.role,
       avatar: req.body.avatar,
-      location: req.body.location,
+      location: req.body.location
     }
 
     const user = await User.findByIdAndUpdate(AuthController._userId, fieldsToUpdate, {
       new: true,
-      runValidators: true,
+      runValidators: true
     })
 
     res.status(Code.OK).json({
       success: true,
       message: RESPONSE.success.UPDATED,
-      data: user,
+      data: user
     })
   }
 
@@ -198,7 +198,7 @@ class AuthController {
       await sendEmail({
         email: user.email,
         subject: RESPONSE.error.RESET_SUBJECT,
-        html: htmlContent(user, resetToken),
+        html: htmlContent(user, resetToken)
       })
     } catch (error) {
       if (error instanceof Error) {
@@ -207,7 +207,7 @@ class AuthController {
         user.resetPasswordExpire = expire
 
         await user.save({
-          validateBeforeSave: false,
+          validateBeforeSave: false
         })
 
         return next(new ErrorResponse(RESPONSE.error.FAILED_EMAIL, Code.INTERNAL_SERVER_ERROR))
@@ -217,7 +217,7 @@ class AuthController {
     res.status(Code.OK).json({
       success: true,
       message: RESPONSE.success.EMAIL_SENT,
-      data: user,
+      data: user
     })
   }
 
@@ -230,7 +230,7 @@ class AuthController {
 
     const user = await User.findOne({
       resetPasswordToken,
-      resetPasswordExpire: { $gt: Date.now() },
+      resetPasswordExpire: { $gt: Date.now() }
     })
 
     if (!user) {

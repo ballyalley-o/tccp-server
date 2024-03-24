@@ -48,14 +48,14 @@ const advancedResult = (model: any, populate?: any) => async (req: Request, res:
   if (endIndex < total) {
     pagination.next = {
       page: page + 1,
-      limit,
+      limit
     }
   }
 
   if (startIndex > 0) {
     pagination.prev = {
       page: page - 1,
-      limit,
+      limit
     }
   }
 
@@ -64,7 +64,7 @@ const advancedResult = (model: any, populate?: any) => async (req: Request, res:
     message: RESPONSE.success[200],
     count: results.length,
     pagination,
-    data: results,
+    data: results
   }
   next()
 }
