@@ -1,12 +1,12 @@
-import { App } from '@config';
-import slugify from 'slugify';
-import goodlog from 'good-logs';
-import mongoose, { Schema, model } from 'mongoose';
-import { IBootcamp } from '@interface/model';
-import { REGEX, RESPONSE, DATABASE_INDEX } from '@constant';
-import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum';
+import { App } from '@config'
+import slugify from 'slugify'
+import goodlog from 'good-logs'
+import mongoose, { Schema, model } from 'mongoose'
+import { IBootcamp } from '@interface/model'
+import { REGEX, RESPONSE, DATABASE_INDEX } from '@constant'
+import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 
-const TAG = Key.Bootcamp;
+const TAG = Key.Bootcamp
 
 const BootcampSchema = new Schema<IBootcamp>(
   {
@@ -75,6 +75,10 @@ const BootcampSchema = new Schema<IBootcamp>(
       type: String,
       default: SCHEMA.DEFAULT_PHOTO
     },
+    badge: {
+      type: String,
+      default: SCHEMA.DEFAULT_BADGE
+    },
     housing: {
       type: Boolean,
       default: false
@@ -104,15 +108,15 @@ const BootcampSchema = new Schema<IBootcamp>(
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
   }
-);
+)
 
 BootcampSchema.pre(Key.Save, function (next) {
-  this.slug = slugify(this.name, { lower: true });
-  next();
-});
+  this.slug = slugify(this.name, { lower: true })
+  next()
+})
 
 BootcampSchema.pre(Key.Save, async function (next) {
-  const loc = await App.geocoder.geocode(this.address);
+  const loc = await App.geocoder.geocode(this.address)
   this.location = {
     type: Key.GeocoderType,
     coordinates: [loc[0].longitude, loc[0].latitude],
@@ -122,25 +126,25 @@ BootcampSchema.pre(Key.Save, async function (next) {
     state: loc[0].stateCode || '',
     zipcode: loc[0].zipcode || '',
     country: loc[0].countryCode || ''
-  };
+  }
 
-  this.address = '';
-});
+  this.address = ''
+})
 
 BootcampSchema.pre(new RegExp(Key.Remove), async function (this: IBootcamp, next) {
-  goodlog.custom(COLOR.INVERSE, RESPONSE.success.COURSES_DELETED(this.name as string));
-  await mongoose.model(Key.Course).deleteMany({ bootcamp: this?._id as Schema.Types.ObjectId });
-  next();
-});
+  goodlog.custom(COLOR.INVERSE, RESPONSE.success.COURSES_DELETED(this.name as string))
+  await mongoose.model(Key.Course).deleteMany({ bootcamp: this?._id as Schema.Types.ObjectId })
+  next()
+})
 
 BootcampSchema.virtual(Key.CourseVirtual, {
   ref: Key.Course,
   localField: Key.id,
   foreignField: Key.BootcampVirtual,
   justOne: false
-});
+})
 
-BootcampSchema.index(DATABASE_INDEX.BOOTCAMP);
+BootcampSchema.index(DATABASE_INDEX.BOOTCAMP)
 
-const Bootcamp = model(TAG, BootcampSchema);
-export default Bootcamp;
+const Bootcamp = model(TAG, BootcampSchema)
+export default Bootcamp
