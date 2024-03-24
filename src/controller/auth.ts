@@ -7,13 +7,7 @@ import { sendEmail } from '@util'
 import { User } from '@model'
 import { Key, Code } from '@constant/enum'
 import { use, LogRequest } from '@decorator'
-import {
-  RESPONSE,
-  PathDir,
-  thirtyDaysFromNow,
-  fiveSecFromNow,
-  expire,
-} from '@constant'
+import { RESPONSE, PathDir, thirtyDaysFromNow, fiveSecFromNow, expire } from '@constant'
 
 /**
  * @path {baseUrl}/auth
@@ -32,11 +26,7 @@ class AuthController {
    * @param res - Response
    * @returns void
    */
-  private static _sendTokenResponse = (
-    user: any,
-    statusCode: number,
-    res: any
-  ) => {
+  private static _sendTokenResponse = (user: any, statusCode: number, res: any) => {
     const token = user.getSignedJwtToken()
     const options = {
       expires: thirtyDaysFromNow,
@@ -59,34 +49,19 @@ class AuthController {
   //@route  POST /register
   //@access PUBLIC
   @use(LogRequest)
-  public static async register(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  public static async register(req: Request, res: Response, next: NextFunction) {
     const { email, username } = req.body
     const emailExist = await User.findOne({ email })
     const usernameExist = await User.findOne({ username })
 
     if (emailExist) {
-      res
-        .status(Code.FORBIDDEN)
-        .json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-      return next(
-        new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), Code.FORBIDDEN)
-      )
+      res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
+      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), Code.FORBIDDEN))
     }
 
     if (usernameExist) {
-      res
-        .status(Code.FORBIDDEN)
-        .json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-      return next(
-        new ErrorResponse(
-          RESPONSE.error.ALREADY_EXISTS(username),
-          Code.FORBIDDEN
-        )
-      )
+      res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
+      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), Code.FORBIDDEN))
     }
 
     const user = await User.create(req.body)
@@ -102,25 +77,19 @@ class AuthController {
     const { email, password } = req.body
 
     if (!email || !password) {
-      return next(
-        new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST)
-      )
+      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST))
     }
 
     const user = await User.findOne({ email }).select(Key.Password)
 
     if (!user) {
-      return next(
-        new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED)
-      )
+      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
     }
 
     const isMatch = await user.matchPassword(password)
 
     if (!isMatch) {
-      return next(
-        new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED)
-      )
+      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
     }
 
     AuthController._sendTokenResponse(user, Code.OK, res)
@@ -130,11 +99,7 @@ class AuthController {
   //@route    GET /auth/log-out
   //@access   PRIVATE
   @use(LogRequest)
-  public static async logout(
-    _req: Request,
-    res: Response,
-    _next: NextFunction
-  ) {
+  public static async logout(_req: Request, res: Response, _next: NextFunction) {
     res.cookie(Key.Token, Key.None, {
       expires: fiveSecFromNow,
       httpOnly: true,
@@ -165,11 +130,7 @@ class AuthController {
   //@route  PUT /update
   //@access PRIVATE
   @use(LogRequest)
-  public static async updateAccount(
-    req: any,
-    res: Response,
-    _next: NextFunction
-  ) {
+  public static async updateAccount(req: any, res: Response, _next: NextFunction) {
     AuthController.setUserId(req)
 
     const fieldsToUpdate = {
@@ -183,14 +144,10 @@ class AuthController {
       location: req.body.location,
     }
 
-    const user = await User.findByIdAndUpdate(
-      AuthController._userId,
-      fieldsToUpdate,
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
+    const user = await User.findByIdAndUpdate(AuthController._userId, fieldsToUpdate, {
+      new: true,
+      runValidators: true,
+    })
 
     res.status(Code.OK).json({
       success: true,
@@ -203,21 +160,13 @@ class AuthController {
   //@route  PUT /update-password
   //@access PRIVATE
   @use(LogRequest)
-  public static async updatePassword(
-    req: any,
-    res: Response,
-    next: NextFunction
-  ) {
+  public static async updatePassword(req: any, res: Response, next: NextFunction) {
     AuthController.setUserId(req)
 
-    const user = await User.findById(AuthController._userId).select(
-      Key.Password
-    )
+    const user = await User.findById(AuthController._userId).select(Key.Password)
 
     if (!(await user?.matchPassword(req.body.currentPassword))) {
-      return next(
-        new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED)
-      )
+      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
     }
 
     if (user) {
@@ -233,26 +182,18 @@ class AuthController {
   //@route  POST /forgot-password
   //@access PUBLIC
   @use(LogRequest)
-  public static async forgotPassword(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  public static async forgotPassword(req: Request, res: Response, next: NextFunction) {
     const userEmail = req.body.email
     const user = await User.findOne({ email: req.body.email })
 
     if (!user) {
-      return next(
-        new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), Code.NOT_FOUND)
-      )
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), Code.NOT_FOUND))
     }
     const resetToken = user.getResetPasswordToken()
 
     await user.save({ validateBeforeSave: false })
 
-    const message = RESPONSE.error.RESET_MESSAGE(
-      PathDir.RESET_FULL_EMAIL(req, resetToken)
-    )
+    const message = RESPONSE.error.RESET_MESSAGE(PathDir.RESET_FULL_EMAIL(req, resetToken))
     try {
       await sendEmail({
         email: user.email,
@@ -269,12 +210,7 @@ class AuthController {
           validateBeforeSave: false,
         })
 
-        return next(
-          new ErrorResponse(
-            RESPONSE.error.FAILED_EMAIL,
-            Code.INTERNAL_SERVER_ERROR
-          )
-        )
+        return next(new ErrorResponse(RESPONSE.error.FAILED_EMAIL, Code.INTERNAL_SERVER_ERROR))
       }
     }
 
@@ -289,15 +225,8 @@ class AuthController {
   //@route PUT /reset-password/:resetToken
   //@access PUBLIC
   @use(LogRequest)
-  public static async resetPassword(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    let resetPasswordToken = crypto
-      .createHash(Key.CryptoHash)
-      .update(req.params.resetToken)
-      .digest(Key.Hex)
+  public static async resetPassword(req: Request, res: Response, next: NextFunction) {
+    let resetPasswordToken = crypto.createHash(Key.CryptoHash).update(req.params.resetToken).digest(Key.Hex)
 
     const user = await User.findOne({
       resetPasswordToken,
@@ -305,9 +234,7 @@ class AuthController {
     })
 
     if (!user) {
-      return next(
-        new ErrorResponse(RESPONSE.error.INVALID_TOKEN, Code.ALREADY_REPORTED)
-      )
+      return next(new ErrorResponse(RESPONSE.error.INVALID_TOKEN, Code.ALREADY_REPORTED))
     }
 
     user.password = req.body.password
