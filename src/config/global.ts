@@ -1,8 +1,10 @@
-import { ObjectId } from 'mongoose'
 import path from 'path'
+import fs from 'fs'
 import { conNex } from '@util'
+import { ObjectId } from 'mongoose'
 import { oneDay, tenMin } from '@constant'
 import { TransportOptions } from 'nodemailer'
+import { IBootcamp, IUser } from '@interface/model'
 import { NumKey } from '@constant/enum'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -31,10 +33,22 @@ const GLOBAL = {
   PHOTO_UPLOAD_PATH: process.env.PHOTO_UPLOAD_PATH,
 
   PHOTO_FILENAME: (bootcampId: ObjectId, name: string) => `tccp-${bootcampId}${path.parse(name).ext}`,
+  BADGE_FILENAME: (bootcampId: ObjectId, name: string) => `tccp-b-${bootcampId}${path.parse(name).ext}`,
   AVATAR_FILENAME: (userId: ObjectId, name: string) => `tccp-av-${userId}${path.parse(name).ext}`,
 
-  PHOTO_UPLOAD_MV: (photo: any, cb: any) => photo.mv(`${process.env.FILE_UPLOAD_PATH}/${photo.name}`, cb),
-  AVATAR_UPLOAD_MV: (photo: any, cb: any) => photo.mv(`${process.env.AVATAR_UPLOAD_PATH}/${photo.name}`, cb),
+  // @file upload
+  PHOTO_UPLOAD_MV: (photo: any, bootcamp: IBootcamp, cb: any) => {
+    fs.mkdirSync(`${process.env.FILE_UPLOAD_PATH}/${bootcamp._id}`, { recursive: true })
+    photo.mv(`${process.env.FILE_UPLOAD_PATH}/${bootcamp._id}/${photo.name}`, cb)
+  },
+  BADGE_UPLOAD_MV: (badge: any, bootcamp: IBootcamp, cb: any) => {
+    fs.mkdirSync(`${process.env.BADGE_UPLOAD_PATH}/${bootcamp._id}`, { recursive: true })
+    badge.mv(`${process.env.BADGE_UPLOAD_PATH}/${bootcamp._id}/${badge.name}`, cb)
+  },
+  AVATAR_UPLOAD_MV: (avatar: any, user: IUser, cb: any) => {
+    fs.mkdirSync(`${process.env.AVATAR_UPLOAD_PATH}/${user._id}`, { recursive: true })
+    avatar.mv(`${process.env.AVATAR_UPLOAD_PATH}/${user._id}/${avatar.name}`, cb)
+  },
 
   // @mail - nodemailer - mailtrap
   MAIL_FROM: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
@@ -43,8 +57,8 @@ const GLOBAL = {
     port: process.env.SMTP_PORT,
     auth: {
       user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD,
-    },
+      pass: process.env.SMTP_PASSWORD
+    }
   } as TransportOptions,
 
   // @limiter - rate limiter
@@ -52,11 +66,11 @@ const GLOBAL = {
   RATE_LIMIT: NumKey.RATE_LIMIT,
   LIMITER: {
     windowMs: tenMin,
-    max: NumKey.RATE_LIMIT,
+    max: NumKey.RATE_LIMIT
   },
   // @geocoder
   GEOCODER_PROVIDER: process.env.GEOCODER_PROVIDER,
-  GEOCODER_API_KEY: process.env.GEOCODER_API_KEY,
+  GEOCODER_API_KEY: process.env.GEOCODER_API_KEY
 }
 
 export default GLOBAL
