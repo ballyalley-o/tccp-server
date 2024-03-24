@@ -1,5 +1,4 @@
-import { logger } from '@middleware'
-
+import goodlog from 'good-logs'
 /**
  *  A decorator that helps for debugging
  *  - Logs the method name and the time it was called
@@ -12,13 +11,9 @@ function debug(message?: string) {
     const originalMethod = desc.value
 
     desc.value = function (...args: any[]) {
-      logger.log(
-        `[${new Date().toISOString()}] Debugging ${key}${
-          message ? `: ${message}` : ''
-        }`
-      )
+      goodlog.log(`[${new Date().toISOString()}] Debugging ${key}${message ? `: ${message}` : ''}`)
       const result = originalMethod.apply(this, args)
-      logger.log(`[${new Date().toISOString()}] ${key} execution completed`)
+      goodlog.log(`[${new Date().toISOString()}] ${key} execution completed`)
       return result
     }
   }

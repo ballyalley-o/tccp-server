@@ -26,8 +26,7 @@ const RESPONSE = {
     204: 'NO CONTENT: The server successfully processed the request but there is no content to send in the response.',
     PHOTO_UPLOADED: 'OK: Photo Uploaded',
     AVATAR_UPLOADED: 'OK: Avatar Uploaded',
-    COURSES_DELETED: (data: string) =>
-      `Courses being deleted from bootcamp ID: ${data}. Reload page to see the effect`,
+    COURSES_DELETED: (data: string) => `Courses being deleted from bootcamp ID: ${data}. Reload page to see the effect`,
     COLLECTION_SEED: ' MOCK MIGRATION SUCCESSFUL 🌱 ',
     COLLECTION_DESTROYED: ' COLLECTION/s DESTROYED 💥 ',
     LOGOUT: `User logged out`,
@@ -49,28 +48,23 @@ const RESPONSE = {
     500: 'INTERNAL SERVER ERROR: Server encountered an Unhandled Exception',
     503: 'SERVICE UNAVAILABLE: The server is temporarily unable to handle the Request',
     504: 'GATEWAY TIMEOUT: The server acting as a gateway did not receive a timely response from an upstream server',
+    CORS_NOT_ALLOWED: 'CORS ERROR: Not allowed by Access-Control-Allow-Origin',
     ENTITY_EXISTS: 'Entity already exists',
     ALREADY_EXISTS: (data: string) => `${data} already exists`,
     NOT_FOUND_COURSE: (data: string) => `Course not found with id of ${data}`,
-    NOT_FOUND_BOOTCAMP: (data: string) =>
-      `Bootcamp not found with id of ${data}`,
-    NOT_FOUND_FEEDBACK: (data: string) =>
-      `No feedback found with the id ${data}`,
+    NOT_FOUND_BOOTCAMP: (data: string) => `Bootcamp not found with id of ${data}`,
+    NOT_FOUND_FEEDBACK: (data: string) => `No feedback found with the id ${data}`,
     NOT_FOUND: (data: string) => `There is no user with id ${data}`,
-    BOOTCAMP_ALREADY_PUBLISHED: (data: string) =>
-      `The user with ID ${data} has already published a bootcamp`,
+    BOOTCAMP_ALREADY_PUBLISHED: (data: string) => `The user with ID ${data} has already published a bootcamp`,
     FAILED_UPLOAD: ' Please upload a file ',
     FAILED_UPLOAD_AVATAR: ' Please upload an avatar ',
-    FAILED_FILESIZE: (fileSize: number) =>
-      `File size cannot exceed ${fileSize}`,
+    FAILED_FILESIZE: (fileSize: number) => `File size cannot exceed ${fileSize}`,
     FAILED_SEED: ' FAILED TO SEED COLLECTION/s SEED ',
     FAILED_DESTROY: ' FAILED TO DESTROY COLLECTION/s ',
     INVALID_CREDENTIAL: 'Please provide a valid email and password',
     INVALID_TOKEN: 'Invalid token',
-    NOT_OWNER: (user: string, course: string) =>
-      `User ${user} is unauthorized to update course ${course}`,
-    ROLE_NOT_ALLOWED: (data: string) =>
-      `Current role ${data} is unauthorized to access this route`,
+    NOT_OWNER: (user: string, course: string) => `User ${user} is unauthorized to update course ${course}`,
+    ROLE_NOT_ALLOWED: (data: string) => `Current role ${data} is unauthorized to access this route`,
     parseErr: (err: any) => `Error parsing JSON: ${err}`,
     NotInstance: 'This class cannot be instantiated',
     STATIC_CLASS: 'This is a static class',

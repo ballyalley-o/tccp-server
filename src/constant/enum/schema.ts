@@ -3,7 +3,7 @@ enum SCHEMA {
   NAME = 'Please add a bootcamp name/title',
   MAX_LENGTH_NAME = 'Name can not be more than 50 characters',
   DESCRIPTION = 'Please add a description',
-  MAX_LENGTH_DESCRIPTION = 'Description can not be more than 500 characters',
+  MAX_LENGTH_DESCRIPTION = 'Description can not be more than 250 characters',
   URL = 'Please use a valid URL with HTTP or HTTPS',
   MAX_LENGTH_PHONE = 'Phone number can not be longer than 20 characters',
   EMAIL = 'Please add a valid email',
@@ -27,7 +27,7 @@ enum SCHEMA {
   // @user
   FIRST_NAME = 'Please provide your first name',
   LAST_NAME = 'Please provide your family/last name',
-  PASSWORD = 'Please add a password',
+  PASSWORD = 'Please add a password'
 }
 
-export default SCHEMA
+export default SCHEMA;

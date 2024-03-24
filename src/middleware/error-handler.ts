@@ -17,12 +17,7 @@ class ErrorCallback extends Error {
   }
 }
 
-const errorHandler = (
-  err: ErrorCallback,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const errorHandler = (err: ErrorCallback, req: Request, res: Response, next: NextFunction) => {
   let statusCode = res.statusCode === 0 ? 500 : res.statusCode
   let message = err.message
   let errors = err.errors
