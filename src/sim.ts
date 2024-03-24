@@ -1,12 +1,7 @@
 import goodlog from 'good-logs'
 import { App } from '@config'
 // @datas
-import {
-  userCollection,
-  feedbackCollection,
-  bootcampCollection,
-  courseCollection,
-} from '@mock'
+import { userCollection, feedbackCollection, bootcampCollection, courseCollection } from '@mock'
 // @models
 import { User, Course, Bootcamp, Feedback } from '@model'
 import { COLOR } from '@constant/enum'
