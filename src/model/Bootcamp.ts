@@ -127,19 +127,11 @@ BootcampSchema.pre(Key.Save, async function (next) {
   this.address = ''
 })
 
-BootcampSchema.pre(
-  new RegExp(Key.Remove),
-  async function (this: IBootcamp, next) {
-    goodlog.custom(
-      COLOR.INVERSE,
-      RESPONSE.success.COURSES_DELETED(this.name as string)
-    )
-    await mongoose
-      .model(Key.Course)
-      .deleteMany({ bootcamp: this?._id as Schema.Types.ObjectId })
-    next()
-  }
-)
+BootcampSchema.pre(new RegExp(Key.Remove), async function (this: IBootcamp, next) {
+  goodlog.custom(COLOR.INVERSE, RESPONSE.success.COURSES_DELETED(this.name as string))
+  await mongoose.model(Key.Course).deleteMany({ bootcamp: this?._id as Schema.Types.ObjectId })
+  next()
+})
 
 BootcampSchema.virtual(Key.CourseVirtual, {
   ref: Key.Course,
