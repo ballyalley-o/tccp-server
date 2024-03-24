@@ -231,7 +231,7 @@ class BootcampController {
       return next(new ErrorResponse(RESPONSE.error.FAILED_FILESIZE(NumKey.ONE_MB), Code.BAD_REQUEST))
     }
 
-    badge.name = GLOBAL.PHOTO_FILENAME(bootcamp._id, badge.name)
+    badge.name = GLOBAL.BADGE_FILENAME(bootcamp._id, badge.name)
     GLOBAL.BADGE_UPLOAD_MV(badge, bootcamp, async (error: any) => {
       goodlog.error(error?.message)
       if (error) {
