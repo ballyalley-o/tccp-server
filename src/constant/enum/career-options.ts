@@ -18,7 +18,13 @@ enum CareerOptions {
   IBMDataScience = 'IBM Data Science',
   AppleiOSWebAppsDevelopment = 'Apple iOS Web Apps Development',
   BackEnd = 'Back-end',
-  Other = 'Other',
+  AI = 'AI',
+  MachineLearning = 'Machine Learning',
+  CloudComputing = 'Cloud Computing',
+  CyberSecurity = 'Cyber Security',
+  Blockchain = 'Blockchain',
+  ArtificialIntelligence = 'Artificial Intelligence',
+  Other = 'Other'
 }
 
 export default CareerOptions
