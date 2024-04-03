@@ -17,7 +17,7 @@ import rateLimit from 'express-rate-limit'
 import { connectDb } from '@config'
 import { AppRouter } from '@app-router'
 import { mainRoute } from '@route'
-import { xssHandler, errorHandler, notFound, corsConfig } from '@middleware'
+import { xssHandler, errorHandler, notFound, corsConfig, setHeader } from '@middleware'
 import { LogInitRequest, ServerStatus } from '@decorator'
 import { Key } from '@constant/enum'
 import options from '@util/geocoder'
@@ -96,17 +96,14 @@ class App {
     this._app.use(morgan(Key.MorganDev))
     this._app.use(cookieParser())
     this._app.use(fileupload())
-    this._app.use(
-      cors({
-        origin: '*'
-      })
-    )
+    // this._app.use(cors(corsConfig))
     this._app.use(mongoSanitize())
     this._app.use(helmet())
     this._app.use(xssHandler)
     this._app.use(rateLimit(GLOBAL.LIMITER))
     this._app.use(hpp())
     this.registerRoute()
+    this._app.use(setHeader)
     this._app.use(errorHandler)
     this._app.use(notFound)
   }
