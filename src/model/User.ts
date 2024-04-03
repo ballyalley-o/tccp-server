@@ -17,52 +17,51 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: [true, SCHEMA.FIRST_NAME],
       min: 3,
-      max: 60,
+      max: 60
     },
     lastname: {
       type: String,
       required: [true, SCHEMA.LAST_NAME],
       min: 3,
-      max: 60,
+      max: 60
     },
     email: {
       type: String,
       required: [true, SCHEMA.EMAIL],
       unique: true,
-      match: [REGEX.EMAIL, SCHEMA.EMAIL],
+      match: [REGEX.EMAIL, SCHEMA.EMAIL]
     },
     password: {
       type: String,
       required: [true, SCHEMA.PASSWORD],
       minlength: 6,
-      select: false,
+      select: false
     },
     username: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     role: {
       type: String,
       enum: Object.values(Role),
-      default: Role.STUDENT,
+      default: Role.STUDENT
     },
     avatar: {
       type: String,
-      default: SCHEMA.DEFAULT_AVATAR,
+      default: SCHEMA.DEFAULT_AVATAR
     },
     location: {
-      type: String,
-      required: true,
+      type: String
     },
     resetPasswordToken: String,
-    resetPasswordExpire: Date,
+    resetPasswordExpire: Date
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
     collection: TAG,
-    timestamps: true,
+    timestamps: true
   }
 )
 
@@ -76,7 +75,7 @@ UserSchema.pre(Key.Save, async function (next) {
 
 UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id }, GLOBAL.JWT_SECRET || '', {
-    expiresIn: GLOBAL.JWT_EXP,
+    expiresIn: GLOBAL.JWT_EXP
   })
 }
 
@@ -87,10 +86,7 @@ UserSchema.methods.matchPassword = async function (enteredPassword: string) {
 UserSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString(Key.Hex)
 
-  this.resetPasswordToken = crypto
-    .createHash(Key.CryptoHash)
-    .update(resetToken)
-    .digest(Key.Hex)
+  this.resetPasswordToken = crypto.createHash(Key.CryptoHash).update(resetToken).digest(Key.Hex)
 
   this.resetPasswordExpire = oneDayFromNow
 
