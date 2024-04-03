@@ -50,9 +50,13 @@ class AuthController {
   //@access PUBLIC
   @use(LogRequest)
   public static async register(req: Request, res: Response, next: NextFunction) {
-    const { email, username } = req.body
+    const { email, username, password } = req.body
     const emailExist = await User.findOne({ email })
     const usernameExist = await User.findOne({ username })
+
+    if (!email || !username || !password) {
+      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST))
+    }
 
     if (emailExist) {
       res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
