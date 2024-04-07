@@ -10,7 +10,7 @@ const router = Router()
  */
 router.post(PathParam.REGISTER, AuthController.register)
 router.post(PathParam.LOG_IN, AuthController.login)
-router.get(PathParam.LOG_OUT, AuthController.logout)
+router.post(PathParam.LOG_OUT, AuthController.logout)
 router.get(PathParam.ACCOUNT, protect, AuthController.myAccount)
 router.put(PathParam.UPDATE, protect, AuthController.updateAccount)
 router.put(PathParam.UPDATE_PASSWORD, protect, AuthController.updatePassword)
