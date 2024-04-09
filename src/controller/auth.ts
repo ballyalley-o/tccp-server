@@ -54,10 +54,6 @@ class AuthController {
     const emailExist = await User.findOne({ email })
     const usernameExist = await User.findOne({ username })
 
-    if (!email || !username || !password) {
-      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST))
-    }
-
     if (emailExist) {
       res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
       return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), Code.FORBIDDEN))
@@ -70,7 +66,7 @@ class AuthController {
 
     const user = await User.create(req.body)
 
-    AuthController._sendTokenResponse(user, Code.OK, res)
+    AuthController._sendTokenResponse(user, Code.CREATED, res)
   }
 
   //@desc   Login user
