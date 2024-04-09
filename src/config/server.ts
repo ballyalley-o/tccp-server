@@ -96,7 +96,12 @@ class App {
     this._app.use(morgan(Key.MorganDev))
     this._app.use(cookieParser())
     this._app.use(fileupload())
-    this._app.use(cors())
+    this._app.use(
+      cors({
+        credentials: true,
+        origin: true
+      })
+    )
     this._app.use(mongoSanitize())
     this._app.use(helmet())
     this._app.use(xssHandler)
