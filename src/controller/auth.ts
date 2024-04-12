@@ -76,24 +76,31 @@ class AuthController {
   public static async login(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body
 
-    if (!email || !password) {
-      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST))
-    }
+    try {
+      if (!email || !password) {
+        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST))
+      }
 
-    const user = await User.findOne({ email }).select(Key.Password)
+      const user = await User.findOne({ email }).select(Key.Password)
 
-    if (!user) {
-      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
-    }
+      if (!user) {
+        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
+      }
 
-    const isMatch = await user.matchPassword(password)
+      const isMatch = await user.matchPassword(password)
 
-    if (!isMatch) {
-      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
-    }
+      if (!isMatch) {
+        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
+      }
 
-    if (user) {
-      AuthController._sendTokenResponse(user, Code.OK, res)
+      if (user) {
+        AuthController._sendTokenResponse(user, Code.OK, res)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        goodlog.log(error.message)
+        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST))
+      }
     }
   }
 
