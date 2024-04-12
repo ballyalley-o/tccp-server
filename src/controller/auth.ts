@@ -92,7 +92,9 @@ class AuthController {
       return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
     }
 
-    AuthController._sendTokenResponse(user, Code.OK, res)
+    if (user) {
+      AuthController._sendTokenResponse(user, Code.OK, res)
+    }
   }
 
   //@desc     Get Log out User
