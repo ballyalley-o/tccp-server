@@ -56,12 +56,12 @@ class AuthController {
 
     if (emailExist) {
       res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), Code.FORBIDDEN))
+      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), (res.statusCode = Code.FORBIDDEN)))
     }
 
     if (usernameExist) {
       res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), Code.FORBIDDEN))
+      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), (res.statusCode = Code.FORBIDDEN)))
     }
 
     const user = await User.create(req.body)
@@ -78,19 +78,19 @@ class AuthController {
 
     try {
       if (!email || !password) {
-        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST))
+        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
       }
 
       const user = await User.findOne({ email }).select(Key.Password)
 
       if (!user) {
-        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
+        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
       }
 
       const isMatch = await user.matchPassword(password)
 
       if (!isMatch) {
-        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
+        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
       }
 
       if (user) {
@@ -99,7 +99,7 @@ class AuthController {
     } catch (error) {
       if (error instanceof Error) {
         goodlog.log(error.message)
-        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.BAD_REQUEST))
+        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
       }
     }
   }
@@ -126,13 +126,23 @@ class AuthController {
   //@access PRIVATE
   @use(LogRequest)
   public static async myAccount(req: any, res: Response, _next: NextFunction) {
-    const user = (await User.findById(req.user.id)) || null
+    try {
+      const user = (await User.findById(req.user.id)) || null
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success[200],
-      data: user
-    })
+      if (!user) {
+        return new ErrorResponse(RESPONSE.error[404], (res.statusCode = Code.NOT_FOUND))
+      }
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success[200],
+        data: user
+      })
+    } catch (error) {
+      if (error instanceof Error) {
+        goodlog.log(error.message)
+        return new ErrorResponse(RESPONSE.error[500], (res.statusCode = Code.INTERNAL_SERVER_ERROR))
+      }
+    }
   }
 
   //@desc   Update user details
@@ -175,7 +185,7 @@ class AuthController {
     const user = await User.findById(AuthController._userId).select(Key.Password)
 
     if (!(await user?.matchPassword(req.body.currentPassword))) {
-      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, Code.UNAUTHORIZED))
+      return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
     }
 
     if (user) {
@@ -196,7 +206,7 @@ class AuthController {
     const user = await User.findOne({ email: req.body.email })
 
     if (!user) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), (res.statusCode = Code.NOT_FOUND)))
     }
     const resetToken = user.getResetPasswordToken()
 
@@ -219,7 +229,7 @@ class AuthController {
           validateBeforeSave: false
         })
 
-        return next(new ErrorResponse(RESPONSE.error.FAILED_EMAIL, Code.INTERNAL_SERVER_ERROR))
+        return next(new ErrorResponse(RESPONSE.error.FAILED_EMAIL, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
     }
 
@@ -243,7 +253,7 @@ class AuthController {
     })
 
     if (!user) {
-      return next(new ErrorResponse(RESPONSE.error.INVALID_TOKEN, Code.ALREADY_REPORTED))
+      return next(new ErrorResponse(RESPONSE.error.INVALID_TOKEN, (res.statusCode = Code.ALREADY_REPORTED)))
     }
 
     user.password = req.body.password
