@@ -96,19 +96,13 @@ class App {
     this._app.use(morgan(Key.MorganDev))
     this._app.use(cookieParser())
     this._app.use(fileupload())
-    this._app.use(
-      cors({
-        credentials: true,
-        origin: true
-      })
-    )
+    this._app.use(cors(corsConfig))
     this._app.use(mongoSanitize())
     this._app.use(helmet())
     this._app.use(xssHandler)
     this._app.use(rateLimit(GLOBAL.LIMITER))
     this._app.use(hpp())
     this.registerRoute()
-    // this._app.use(setHeader)
     this._app.use(errorHandler)
     this._app.use(notFound)
   }
