@@ -48,7 +48,7 @@ class BootcampController {
     const bootcamp = await Bootcamp.findById(BootcampController._bootcampId).populate(Key.UserVirtual, Key.BootcampPopulate)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
     res.status(Code.OK).json({ success: true, data: bootcamp })
   }
@@ -68,7 +68,7 @@ class BootcampController {
     })
 
     if (publishedBootcamp && BootcampController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(BootcampController._userId), Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(BootcampController._userId), (res.statusCode = Code.BAD_REQUEST)))
     }
 
     const bootcamp = await Bootcamp.create(req.body)
@@ -90,11 +90,11 @@ class BootcampController {
     let bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (bootcamp.user.toString() !== BootcampController._userRole && BootcampController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error[401], Code.UNAUTHORIZED))
+      return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
     bootcamp = await Bootcamp.findOneAndUpdate(req.params.id, req.body, {
@@ -120,11 +120,11 @@ class BootcampController {
     const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (bootcamp.user.toString() !== BootcampController._userId && BootcampController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error[401], Code.UNAUTHORIZED))
+      return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
     await Bootcamp.deleteOne({ _id: BootcampController._bootcampId })
@@ -168,26 +168,26 @@ class BootcampController {
     const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (!req.files) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
     if (!photo.mimetype.startsWith(Key.Image)) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
     if (photo.size > GLOBAL.MAX_FILE_UPLOAD) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_FILESIZE(NumKey.ONE_MB), Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_FILESIZE(NumKey.ONE_MB), (res.statusCode = Code.BAD_REQUEST)))
     }
 
     photo.name = GLOBAL.PHOTO_FILENAME(bootcamp._id, photo.name)
     GLOBAL.PHOTO_UPLOAD_MV(photo, bootcamp, async (error: any) => {
       goodlog.error(error?.message)
       if (error) {
-        return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.INTERNAL_SERVER_ERROR))
+        return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
 
       await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
@@ -216,26 +216,26 @@ class BootcampController {
     const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (!req.files) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
     if (!badge.mimetype.startsWith(Key.Image)) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
     if (badge.size > GLOBAL.MAX_FILE_UPLOAD) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_FILESIZE(NumKey.ONE_MB), Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_FILESIZE(NumKey.ONE_MB), (res.statusCode = Code.BAD_REQUEST)))
     }
 
     badge.name = GLOBAL.BADGE_FILENAME(bootcamp._id, badge.name)
     GLOBAL.BADGE_UPLOAD_MV(badge, bootcamp, async (error: any) => {
       goodlog.error(error?.message)
       if (error) {
-        return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.INTERNAL_SERVER_ERROR))
+        return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
 
       await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
