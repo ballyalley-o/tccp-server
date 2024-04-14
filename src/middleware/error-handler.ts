@@ -41,7 +41,7 @@ const errorHandler = (err: ErrorCallback, req: Request, res: Response, next: Nex
 
   res.status(statusCode).json({
     message: message || errors,
-    stack: GLOBAL.ENV === ENV ? err.stack : null,
+    stack: GLOBAL.ENV === ENV ? err.stack : null
   })
 }
 

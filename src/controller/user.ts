@@ -59,12 +59,12 @@ export class UserController {
 
     if (emailExist) {
       res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), Code.FORBIDDEN))
+      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), (res.statusCode = Code.FORBIDDEN)))
     }
 
     if (usernameExist) {
       res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), Code.FORBIDDEN))
+      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), (res.statusCode = Code.FORBIDDEN)))
     }
 
     res.status(Code.CREATED).json({
@@ -86,14 +86,14 @@ export class UserController {
 
     if (!user) {
       res.status(Code.NOT_FOUND).json({ message: RESPONSE.error.NOT_FOUND })
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(req.params.id), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(req.params.id), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (user.email !== req.body.email) {
       const emailExist = await User.findOne({ email: req.body.email })
       if (emailExist) {
         res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(req.body.email) })
-        return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(req.body.email), Code.FORBIDDEN))
+        return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(req.body.email), (res.statusCode = Code.FORBIDDEN)))
       }
     }
 
@@ -101,7 +101,7 @@ export class UserController {
       const usernameExist = await User.findOne({ username: req.body.username })
       if (usernameExist) {
         res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(req.body.username) })
-        return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(req.body.username), Code.FORBIDDEN))
+        return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(req.body.username), (res.statusCode = Code.FORBIDDEN)))
       }
     }
 
@@ -136,26 +136,26 @@ export class UserController {
     const user = await User.findById(UserController._userId)
 
     if (!user) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(UserController._userId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(UserController._userId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (!req.files) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
     if (!avatar.mimetype.startsWith(Key.Image)) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD_AVATAR, Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD_AVATAR, (res.statusCode = Code.BAD_REQUEST)))
     }
 
     if (avatar.size > GLOBAL.MAX_AVATAR_UPLOAD) {
-      return next(new ErrorResponse(RESPONSE.error.FAILED_FILESIZE(NumKey.FIVE_HUNDRED_KB), Code.BAD_REQUEST))
+      return next(new ErrorResponse(RESPONSE.error.FAILED_FILESIZE(NumKey.FIVE_HUNDRED_KB), (res.statusCode = Code.BAD_REQUEST)))
     }
 
     avatar.name = GLOBAL.AVATAR_FILENAME(user._id, avatar.name)
     GLOBAL.AVATAR_UPLOAD_MV(avatar, user, async (error: any) => {
       goodlog.error(error?.message)
       if (error) {
-        return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, Code.INTERNAL_SERVER_ERROR))
+        return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
 
       await User.findByIdAndUpdate(UserController._userId, {

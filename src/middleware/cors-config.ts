@@ -5,13 +5,15 @@ import { RESPONSE } from '@constant'
 const allowedOrigins = GLOBAL.CORS_ALLOWED_ORIGIN
 
 const corsConfig = {
+  credentials: true,
   origin: (origin: string, callback: (err: Error | null, allow?: boolean) => void) => {
     if (allowedOrigins.indexOf(origin || '') !== -1 || !origin) {
+      console.log(origin)
       callback(null, true)
     } else {
       callback(new Error(RESPONSE.error.CORS_NOT_ALLOWED))
     }
-  },
+  }
 } as CorsOptions
 
 export default corsConfig

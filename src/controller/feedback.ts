@@ -46,7 +46,7 @@ class FeedbackController {
         success: true,
         message: RESPONSE.success[200],
         count: feedbacks.length,
-        data: feedbacks,
+        data: feedbacks
       })
     } else {
       res.status(Code.OK).json((res as IResponseExtended).advancedResult)
@@ -62,17 +62,17 @@ class FeedbackController {
 
     const feedback = await Feedback.findById(FeedbackController._feedbackId).populate({
       path: Key.BootcampVirtual,
-      select: Key.DefaultSelect,
+      select: Key.DefaultSelect
     })
 
     if (!feedback) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     res.status(Code.OK).json({
       success: true,
       message: RESPONSE.success[200],
-      data: feedback,
+      data: feedback
     })
   }
 
@@ -90,7 +90,7 @@ class FeedbackController {
     const bootcamp = await Bootcamp.findById(FeedbackController._bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(FeedbackController._bootcampId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(FeedbackController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     const feedback = await Feedback.create(req.body)
@@ -98,7 +98,7 @@ class FeedbackController {
     res.status(Code.CREATED).json({
       success: true,
       message: RESPONSE.success[201],
-      data: feedback,
+      data: feedback
     })
   }
 
@@ -113,22 +113,24 @@ class FeedbackController {
     let feedback = await Feedback.findById(FeedbackController._feedbackId)
 
     if (!feedback) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (feedback.user.toString() !== FeedbackController._userId && FeedbackController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(FeedbackController._userId, FeedbackController._feedbackId), Code.UNAUTHORIZED))
+      return next(
+        new ErrorResponse(RESPONSE.error.NOT_OWNER(FeedbackController._userId, FeedbackController._feedbackId), (res.statusCode = Code.UNAUTHORIZED))
+      )
     }
 
     feedback = await Feedback.findByIdAndUpdate(FeedbackController._feedbackId, req.body, {
       new: true,
-      runValidators: true,
+      runValidators: true
     })
 
     res.status(Code.OK).json({
       success: true,
       message: RESPONSE.success.UPDATED,
-      data: feedback,
+      data: feedback
     })
   }
 
@@ -143,11 +145,13 @@ class FeedbackController {
     const feedback = await Feedback.findById(FeedbackController._feedbackId)
 
     if (!feedback) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (feedback.user.toString() !== FeedbackController._userId && FeedbackController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(FeedbackController._userId, FeedbackController._feedbackId), Code.UNAUTHORIZED))
+      return next(
+        new ErrorResponse(RESPONSE.error.NOT_OWNER(FeedbackController._userId, FeedbackController._feedbackId), (res.statusCode = Code.UNAUTHORIZED))
+      )
     }
 
     await Feedback.deleteOne({ _id: FeedbackController._feedbackId })
@@ -155,7 +159,7 @@ class FeedbackController {
     res.status(Code.OK).json({
       success: true,
       message: RESPONSE.success.DELETED,
-      data: {},
+      data: {}
     })
   }
 }
