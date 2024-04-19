@@ -31,7 +31,7 @@ enum Key {
   CourseVirtual = 'course',
   BootcampVirtual = 'bootcamp',
 
-  CourseSelect = 'bootcamp_title description',
+  CourseSelect = 'name description',
   DefaultSelect = 'name description',
   PasswordSelect = '-password',
   BootcampPopulate = 'firstname email',
@@ -77,7 +77,7 @@ enum Key {
   // @geocoder
   Google = 'google',
   MapQuest = 'mapquest',
-  GeocoderType = 'Point',
+  GeocoderType = 'Point'
 }
 
 export default Key
