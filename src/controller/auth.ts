@@ -64,9 +64,18 @@ class AuthController {
       return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), (res.statusCode = Code.FORBIDDEN)))
     }
 
-    const user = await User.create(req.body)
+    try {
+      const user = await User.create(req.body)
 
-    AuthController._sendTokenResponse(user, Code.CREATED, res)
+      AuthController._sendTokenResponse(user, Code.CREATED, res)
+    } catch (error: any) {
+      goodlog.error(error?.message)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_REGISTER,
+        error
+      })
+    }
   }
 
   //@desc   Login user
@@ -114,11 +123,20 @@ class AuthController {
       httpOnly: true
     })
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success.LOGOUT,
-      data: {}
-    })
+    try {
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.LOGOUT,
+        data: {}
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_LOGOUT,
+        error
+      })
+    }
   }
 
   //@desc   Get current logged in user
@@ -163,16 +181,25 @@ class AuthController {
       location: req.body.location
     }
 
-    const user = await User.findByIdAndUpdate(AuthController._userId, fieldsToUpdate, {
-      new: true,
-      runValidators: true
-    })
+    try {
+      const user = await User.findByIdAndUpdate(AuthController._userId, fieldsToUpdate, {
+        new: true,
+        runValidators: true
+      })
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success.UPDATED,
-      data: user
-    })
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.UPDATED,
+        data: user
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_UPDATE,
+        error
+      })
+    }
   }
 
   //@desc   Update Password
@@ -188,13 +215,22 @@ class AuthController {
       return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
     }
 
-    if (user) {
-      user.password = req.body.password
+    try {
+      if (user) {
+        user.password = req.body.password
+      }
+
+      await user?.save()
+
+      AuthController._sendTokenResponse(user, Code.OK, res)
+    } catch (error: any) {
+      goodlog.error(error?.message)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_UPDATE,
+        error
+      })
     }
-
-    await user?.save()
-
-    AuthController._sendTokenResponse(user, Code.OK, res)
   }
 
   //@desc   Forgot Password
@@ -233,11 +269,20 @@ class AuthController {
       }
     }
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success.EMAIL_SENT,
-      data: user
-    })
+    try {
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.EMAIL_SENT,
+        data: user
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_EMAIL,
+        error
+      })
+    }
   }
 
   //@desc   Reset Password
