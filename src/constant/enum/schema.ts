@@ -3,6 +3,7 @@ enum SCHEMA {
   NAME = 'Please add a bootcamp name/title',
   MAX_LENGTH_NAME = 'Name can not be more than 50 characters',
   DESCRIPTION = 'Please add a description',
+  MIN_LENGTH_DESCRIPTION = 'Description can not be less than 20 characters',
   MAX_LENGTH_DESCRIPTION = 'Description can not be more than 250 characters',
   URL = 'Please use a valid URL with HTTP or HTTPS',
   MAX_LENGTH_PHONE = 'Phone number can not be longer than 20 characters',
