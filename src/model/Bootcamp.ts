@@ -8,42 +8,24 @@ import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 
 const TAG = Key.Bootcamp
 
-const BootcampSchema = new Schema<IBootcamp>(
+const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
   {
     name: {
       type: String,
       required: [true, SCHEMA.NAME],
       unique: true,
       trim: true,
-      maxlength: [50, SCHEMA.MAX_LENGTH_NAME],
-      validate: {
-        validator: function (v: string) {
-          return v.length <= 50
-        },
-        message: (props) => `Name length (${props.value.length}) exceeds the limit of 50 characters`
-      }
+      maxlength: [50, SCHEMA.MAX_LENGTH_NAME]
     },
     slug: String,
     description: {
       type: String,
       required: [true, SCHEMA.DESCRIPTION],
-      maxlength: [250, SCHEMA.MAX_LENGTH_DESCRIPTION],
-      validate: {
-        validator: function (v: string) {
-          return v.length <= 250
-        },
-        message: (props) => `Description length (${props.value.length}) exceeds the limit of 250 characters`
-      }
+      maxlength: [250, SCHEMA.MAX_LENGTH_DESCRIPTION]
     },
     website: {
       type: String,
-      match: [REGEX.URL, SCHEMA.URL],
-      validate: {
-        validator: function (v: string) {
-          return v.startsWith('http://') || v.startsWith('https://')
-        },
-        message: (props) => `Invalid URL: ${props.value}`
-      }
+      match: [REGEX.URL, SCHEMA.URL]
     },
     phone: {
       type: String,
@@ -86,13 +68,7 @@ const BootcampSchema = new Schema<IBootcamp>(
     averageRating: {
       type: Number,
       min: [1, SCHEMA.AVERAGE_RATING_MIN],
-      max: [10, SCHEMA.AVERAGE_RATING_MAX],
-      validate: {
-        validator: function (v: number) {
-          return v >= 1 && v <= 10
-        },
-        message: (props) => `Rating must be between 1 and 10`
-      }
+      max: [10, SCHEMA.AVERAGE_RATING_MAX]
     },
     averageCost: Number,
     photo: {
