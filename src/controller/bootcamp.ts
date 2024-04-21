@@ -35,7 +35,16 @@ class BootcampController {
   //@access   PUBLIC
   @use(LogRequest)
   public static async getBootcamps(_req: Request, res: Response, _next: NextFunction) {
-    res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+    try {
+      res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_FIND,
+        error
+      })
+    }
   }
 
   //@desc     Get single bootcamp
@@ -50,7 +59,17 @@ class BootcampController {
     if (!bootcamp) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
-    res.status(Code.OK).json({ success: true, data: bootcamp })
+
+    try {
+      res.status(Code.OK).json({ success: true, data: bootcamp })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId),
+        error
+      })
+    }
   }
 
   //@desc     Create NEW bootcamp
@@ -71,12 +90,21 @@ class BootcampController {
       return next(new ErrorResponse(RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(BootcampController._userId), (res.statusCode = Code.BAD_REQUEST)))
     }
 
-    const bootcamp = await Bootcamp.create(req.body)
+    try {
+      const bootcamp = await Bootcamp.create(req.body)
 
-    res.status(Code.CREATED).json({
-      success: true,
-      data: bootcamp
-    })
+      res.status(Code.CREATED).json({
+        success: true,
+        data: bootcamp
+      })
+    } catch (error: any) {
+      goodlog.error(error.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_CREATE,
+        error
+      })
+    }
   }
 
   //@desc     UPDATE bootcamp
@@ -97,16 +125,25 @@ class BootcampController {
       return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
-    bootcamp = await Bootcamp.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-      runValidators: true
-    })
+    try {
+      bootcamp = await Bootcamp.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+        runValidators: true
+      })
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success.UPDATED,
-      data: bootcamp
-    })
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.UPDATED,
+        data: bootcamp
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_UPDATE,
+        error
+      })
+    }
   }
 
   //@desc     DELETE bootcamp
@@ -127,9 +164,18 @@ class BootcampController {
       return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
-    await Bootcamp.deleteOne({ _id: BootcampController._bootcampId })
+    try {
+      await Bootcamp.deleteOne({ _id: BootcampController._bootcampId })
 
-    res.status(Code.OK).json({ success: true, message: RESPONSE.success.DELETED, data: {} })
+      res.status(Code.OK).json({ success: true, message: RESPONSE.success.DELETED, data: {} })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_DELETE,
+        error
+      })
+    }
   }
 
   //@desc     Get bootcamps within a radius
@@ -190,17 +236,26 @@ class BootcampController {
         return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
 
-      await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
-        photo: photo.name
-      })
+      try {
+        await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
+          photo: photo.name
+        })
 
-      const response = DataResponse.success({ photo: photo.name, bootcampName: bootcamp.name }, BootcampController._bootcampId)
+        const response = DataResponse.success({ photo: photo.name, bootcampName: bootcamp.name }, BootcampController._bootcampId)
 
-      res.status(Code.OK).json({
-        success: true,
-        message: RESPONSE.success.PHOTO_UPLOADED,
-        response
-      })
+        res.status(Code.OK).json({
+          success: true,
+          message: RESPONSE.success.PHOTO_UPLOADED,
+          response
+        })
+      } catch (error: any) {
+        goodlog.error(error?.message || error)
+        res.status(Code.BAD_REQUEST).json({
+          success: false,
+          message: error?.message || RESPONSE.error.FAILED_UPLOAD,
+          error
+        })
+      }
     })
   }
 
@@ -238,17 +293,26 @@ class BootcampController {
         return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
 
-      await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
-        badge: badge.name
-      })
+      try {
+        await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
+          badge: badge.name
+        })
 
-      const response = DataResponse.success({ photo: badge.name, bootcampName: bootcamp.name }, BootcampController._bootcampId)
+        const response = DataResponse.success({ photo: badge.name, bootcampName: bootcamp.name }, BootcampController._bootcampId)
 
-      res.status(Code.OK).json({
-        success: true,
-        message: RESPONSE.success.BADGE_UPLOADED,
-        response
-      })
+        res.status(Code.OK).json({
+          success: true,
+          message: RESPONSE.success.BADGE_UPLOADED,
+          response
+        })
+      } catch (error: any) {
+        goodlog.error(error?.message || error)
+        res.status(Code.BAD_REQUEST).json({
+          success: false,
+          message: error?.message || RESPONSE.error.FAILED_UPLOAD,
+          error
+        })
+      }
     })
   }
 }
