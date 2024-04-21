@@ -6,7 +6,7 @@ import { DATABASE_INDEX } from '@constant'
 
 const TAG = Key.Course
 
-const CourseSchema = new Schema<ICourseExtended>(
+const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
   {
     title: {
       type: String,
@@ -15,7 +15,10 @@ const CourseSchema = new Schema<ICourseExtended>(
     },
     description: {
       type: String,
+      trim: true,
       required: [true, SCHEMA.DESCRIPTION]
+      // minlength: [20, SCHEMA.MIN_LENGTH_DESCRIPTION],
+      // maxlength: [250, SCHEMA.MAX_LENGTH_DESCRIPTION]
     },
     duration: {
       type: String,

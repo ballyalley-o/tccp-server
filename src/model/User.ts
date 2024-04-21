@@ -17,13 +17,24 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: [true, SCHEMA.FIRST_NAME],
       min: 3,
-      max: 60
+      max: 60,
+      validate: {
+        validator: function (v: string) {
+          return v.length >= 3 && v.length <= 60
+        },
+        message: (props) => `Firstname length (${props.value.length}) exceeds the limit of 60 characters`
+      }
     },
     lastname: {
       type: String,
-      required: [true, SCHEMA.LAST_NAME],
       min: 3,
-      max: 60
+      max: 60,
+      validate: {
+        validator: function (v: string) {
+          return v.length >= 3 && v.length <= 60
+        },
+        message: (props) => `Lastname length (${props.value.length}) exceeds the limit of 60 characters`
+      }
     },
     email: {
       type: String,
