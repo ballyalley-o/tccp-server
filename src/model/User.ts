@@ -11,7 +11,7 @@ import { SCHEMA, Role } from '@constant/enum'
 
 const TAG = Key.User
 
-const UserSchema = new Schema<IUser>(
+const UserSchema: Schema<IUser> = new Schema<IUser>(
   {
     firstname: {
       type: String,

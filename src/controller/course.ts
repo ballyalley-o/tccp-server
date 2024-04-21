@@ -1,3 +1,4 @@
+import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
 import { IResponseExtended } from '@interface'
 import { IUserRequest } from '@interface/middleware'
@@ -70,11 +71,20 @@ class CourseController {
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), (res.statusCode = Code.NOT_FOUND)))
     }
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success[200],
-      data: course
-    })
+    try {
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success[200],
+        data: course
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId),
+        error
+      })
+    }
   }
 
   //@desc   Add a course
@@ -98,12 +108,21 @@ class CourseController {
       return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(req.user.id, CourseController._bootcampId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
-    const course = await Course.create(req.body)
+    try {
+      const course = await Course.create(req.body)
 
-    res.status(Code.CREATED).json({
-      success: true,
-      data: course
-    })
+      res.status(Code.CREATED).json({
+        success: true,
+        data: course
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_CREATE,
+        error
+      })
+    }
   }
 
   //@desc     Update a course
@@ -128,16 +147,25 @@ class CourseController {
       )
     }
 
-    course = await Course.findByIdAndUpdate(CourseController._courseId, req.body, {
-      new: true,
-      runValidators: true
-    })
+    try {
+      course = await Course.findByIdAndUpdate(CourseController._courseId, req.body, {
+        new: true,
+        runValidators: true
+      })
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success.UPDATED,
-      data: course
-    })
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.UPDATED,
+        data: course
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_UPDATE,
+        error
+      })
+    }
   }
   //@desc     Delete a course
   //@route    DELETE /course/:id
@@ -159,13 +187,22 @@ class CourseController {
       )
     }
 
-    await Course.deleteOne({ _id: CourseController._courseId })
+    try {
+      await Course.deleteOne({ _id: CourseController._courseId })
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success.DELETED,
-      data: {}
-    })
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.DELETED,
+        data: {}
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_DELETE,
+        error
+      })
+    }
   }
 }
 
