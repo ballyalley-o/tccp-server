@@ -16,9 +16,9 @@ const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
     description: {
       type: String,
       trim: true,
-      required: [true, SCHEMA.DESCRIPTION]
-      // minlength: [20, SCHEMA.MIN_LENGTH_DESCRIPTION],
-      // maxlength: [250, SCHEMA.MAX_LENGTH_DESCRIPTION]
+      required: [true, SCHEMA.DESCRIPTION],
+      minlength: [20, SCHEMA.MIN_LENGTH_DESCRIPTION],
+      maxlength: [250, SCHEMA.MAX_LENGTH_DESCRIPTION]
     },
     duration: {
       type: String,
