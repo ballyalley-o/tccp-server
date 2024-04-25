@@ -35,10 +35,6 @@ const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
       type: String,
       match: [REGEX.EMAIL, SCHEMA.EMAIL]
     },
-    address: {
-      type: String,
-      required: [true, SCHEMA.ADDRESS]
-    },
     location: {
       // GeoJSON Point
       type: {
