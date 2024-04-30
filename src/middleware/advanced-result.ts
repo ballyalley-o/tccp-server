@@ -5,7 +5,7 @@ import { IUser } from '@interface/model'
 import { RESPONSE, REGEX, REMOVE_FIELDS } from '@constant'
 import { Key, TYPE } from '@constant/enum'
 
-const advancedResult = (model: any, populate?: any) => async (req: Request, res: Response | IResponseExtended, next: NextFunction) => {
+const advancedResult = (model: any, populate?: any) => async (req: Request, res: Response, next: NextFunction) => {
   let query
   let queryStr = JSON.stringify(req.query)
 
@@ -59,7 +59,7 @@ const advancedResult = (model: any, populate?: any) => async (req: Request, res:
     }
   }
 
-  ;(res as IResponseExtended).advancedResult = {
+  res.advancedResult = {
     success: true,
     message: RESPONSE.success[200],
     count: results.length,
