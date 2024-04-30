@@ -36,7 +36,7 @@ class BootcampController {
   @use(LogRequest)
   public static async getBootcamps(_req: Request, res: Response, _next: NextFunction) {
     try {
-      res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+      res.status(Code.OK).json(res.advancedResult)
     } catch (error: any) {
       goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
