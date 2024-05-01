@@ -5,4 +5,4 @@ rm -rf dist
 
 npm run build
 
-npm start:run
+npm run start:run

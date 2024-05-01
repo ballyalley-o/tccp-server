@@ -36,6 +36,7 @@ class BootcampController {
   @use(LogRequest)
   public static async getBootcamps(_req: Request, res: Response, _next: NextFunction) {
     try {
+      console.log('GET BOOTCAMPs: ', res)
       res.status(Code.OK).json(res.advancedResult)
     } catch (error: any) {
       goodlog.error(error?.message || error)
