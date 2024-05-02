@@ -30,7 +30,16 @@ export class UserController {
   //@access   PRIVATE/Admin
   @use(LogRequest)
   public static async getUsers(_req: Request, res: Response, _next: NextFunction) {
-    res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+    try {
+      res.status(Code.OK).json(res.advancedResult)
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_FIND,
+        error
+      })
+    }
   }
 
   //@desc     Get a user

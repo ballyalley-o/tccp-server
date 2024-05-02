@@ -52,7 +52,7 @@ class CourseController {
         data: course
       })
     } else {
-      res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+      res.status(Code.OK).json(res.advancedResult)
     }
   }
 
