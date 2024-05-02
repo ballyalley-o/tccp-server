@@ -1,6 +1,5 @@
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
-import { IResponseExtended } from '@interface'
 import { IUserRequest } from '@interface/middleware'
 import { Feedback, Bootcamp } from '@model'
 import { ErrorResponse } from '@util'
@@ -60,7 +59,7 @@ class FeedbackController {
       }
     } else {
       try {
-        res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+        res.status(Code.OK).json(res.advancedResult)
       } catch (error: any) {
         goodlog.error(error?.message || error)
         res.status(Code.BAD_REQUEST).json({

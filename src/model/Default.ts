@@ -1,5 +1,4 @@
 import { Schema } from 'mongoose'
-import { IDefault } from '@interface/model'
 import { Key } from '@constant'
 
 const DefaultSchema: Schema<IDefault> = new Schema<IDefault>({

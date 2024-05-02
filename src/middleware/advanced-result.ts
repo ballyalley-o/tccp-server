@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
-import { IPagination } from '@interface'
+import { Document, Model as MongooseModel } from 'mongoose'
 import { RESPONSE, REGEX, REMOVE_FIELDS } from '@constant'
 import { Key } from '@constant/enum'
 
-const advancedResult = (model: Model, populate: any) => async (req: Request, res: Response, next: NextFunction) => {
+interface Model<T extends Document> extends MongooseModel<T> {}
+
+const advancedResult = (model: Model<any>, populate: any) => async (req: Request, res: Response, next: NextFunction) => {
   let query = model.find()
 
   const reqQuery = { ...req.query }

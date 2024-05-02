@@ -4,7 +4,6 @@ import { conNex } from '@util'
 import { ObjectId } from 'mongoose'
 import { oneDay, tenMin } from '@constant'
 import { TransportOptions } from 'nodemailer'
-import { IBootcamp, IUser } from '@interface/model'
 import { NumKey } from '@constant/enum'
 import dotenv from 'dotenv'
 dotenv.config()

@@ -1,6 +1,5 @@
 import { HTML, CONTENT } from '@constant'
 import { PathParam, Key } from '@constant/enum'
-import { IUser } from '@interface/model'
 import { GLOBAL } from '@config'
 import writeSync from 'clipboardy'
 

@@ -1,8 +1,8 @@
-export interface IConNex {
+declare interface IConNex {
   (...params: any[]): string
 }
 
-export interface IIsConnected {
+declare interface IIsConnected {
   isConnected: boolean
   [key: string]: any
 }

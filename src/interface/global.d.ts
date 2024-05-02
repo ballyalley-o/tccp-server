@@ -12,3 +12,25 @@ declare interface AdvancedResults {
   pagination: Pagination
   data: any[]
 }
+
+declare interface IPagination {
+  next?: {
+    page: number
+    limit: number
+  }
+  prev?: {
+    page: number
+    limit: number
+  }
+}
+
+declare interface IHTMLContent {
+  (user: IUser, resetToken: string): string
+}
+
+declare interface IEmailOptions {
+  email: string
+  subject: string
+  message?: string
+  html?: string | IHTMLContent
+}

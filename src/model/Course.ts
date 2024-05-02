@@ -1,6 +1,5 @@
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
-import { ICourse, ICourseExtended } from '@interface/model'
 import { SCHEMA, LOCALE, MinimumSkill, Key, Aggregate } from '@constant/enum'
 import { DATABASE_INDEX } from '@constant'
 

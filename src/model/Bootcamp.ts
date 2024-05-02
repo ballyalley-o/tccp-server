@@ -2,7 +2,6 @@ import { App } from '@config'
 import slugify from 'slugify'
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
-import { IBootcamp } from '@interface/model'
 import { REGEX, RESPONSE, DATABASE_INDEX } from '@constant'
 import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 
