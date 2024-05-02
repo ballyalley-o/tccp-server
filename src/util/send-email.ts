@@ -1,7 +1,6 @@
 import { App } from '@config'
 import goodlog from 'good-logs'
 import { SentMessageInfo } from 'nodemailer'
-import { IEmailOptions } from '@interface'
 import { Key } from '@constant/enum'
 import dotenv from 'dotenv'
 dotenv.config()
