@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 import { Request, Response, NextFunction } from 'express'
 import goodlog from 'good-logs'
-import { IResponseExtended } from '@interface'
 import { Key, Code, NumKey } from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { GLOBAL } from '@config'
