@@ -1,6 +1,5 @@
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
-import { IResponseExtended } from '@interface'
 import { IUserRequest } from '@interface/middleware'
 import { use, LogRequest } from '@decorator'
 import { Course, Bootcamp } from '@model'
