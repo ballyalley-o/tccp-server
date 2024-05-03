@@ -13,7 +13,7 @@ router
   .get(
     advancedResult(Course, {
       path: Key.BootcampVirtual,
-      select: Key.DefaultSelect,
+      select: Key.DefaultSelect
     }),
     CourseController.getCourses
   )
@@ -22,16 +22,8 @@ router
 router
   .route(PathParam.ID)
   .get(CourseController.getCourse)
-  .put(
-    protect,
-    authorize(Key.Trainer, Key.Admin),
-    CourseController.updateCourse
-  )
-  .delete(
-    protect,
-    authorize(Key.Trainer, Key.Admin),
-    CourseController.deleteCourse
-  )
+  .put(protect, authorize(Key.Trainer, Key.Admin), CourseController.updateCourse)
+  .delete(protect, authorize(Key.Trainer, Key.Admin), CourseController.deleteCourse)
 
 const courseRoute = router
 export default courseRoute
