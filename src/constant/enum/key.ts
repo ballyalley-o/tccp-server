@@ -33,6 +33,7 @@ enum Key {
 
   CourseSelect = 'name description',
   DefaultSelect = 'name description',
+  OrganizationSelect = 'firstname email organization',
   PasswordSelect = '-password',
   BootcampPopulate = 'firstname email',
 

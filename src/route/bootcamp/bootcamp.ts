@@ -18,7 +18,13 @@ router.use(PathParam.REDIR_FEEDBACK, feedbackRoute)
 router.route(PathParam.DISTANCE).get(bootcampController.getBootcampsInRadius)
 router
   .route(PathParam.F_SLASH)
-  .get(advancedResult(Bootcamp, Key.UserVirtual), bootcampController.getBootcamps)
+  .get(
+    advancedResult(Bootcamp, {
+      path: Key.UserVirtual,
+      select: Key.OrganizationSelect
+    }),
+    bootcampController.getBootcamps
+  )
   .post(bootcampController.createBootcamp)
 router.route(PathParam.CREATE).post(protect, authorize(Key.Trainer, Key.Admin), bootcampController.createBootcamp)
 router
