@@ -47,6 +47,13 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
       minlength: 6,
       select: false
     },
+    // TODO: #68
+    organization: {
+      type: String,
+      required: function () {
+        return this.role === 'admin'
+      }
+    },
     username: {
       type: String,
       required: true,
