@@ -71,7 +71,7 @@ export class UserController {
   public static async createUser(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await User.create(req.body)
-      const { email, username } = req.body
+      const { email, username, role } = req.body
       const emailExist = await User.findOne({ email })
       const usernameExist = await User.findOne({ username })
 
@@ -83,6 +83,11 @@ export class UserController {
       if (usernameExist) {
         res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
         return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), (res.statusCode = Code.FORBIDDEN)))
+      }
+
+      if (role === Key.Admin && !req.body.organization) {
+        res.status(Code.BAD_REQUEST).json({ message: RESPONSE.error.ORG_REQUIRED })
+        return next(new ErrorResponse(RESPONSE.error.ORG_REQUIRED, (res.statusCode = Code.BAD_REQUEST)))
       }
 
       res.status(Code.CREATED).json({
@@ -130,6 +135,11 @@ export class UserController {
           res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(req.body.username) })
           return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(req.body.username), (res.statusCode = Code.FORBIDDEN)))
         }
+      }
+
+      if (req.body.role === Key.Admin && !req.body.organization) {
+        res.status(Code.BAD_REQUEST).json({ message: RESPONSE.error.ORG_REQUIRED })
+        return next(new ErrorResponse(RESPONSE.error.ORG_REQUIRED, (res.statusCode = Code.BAD_REQUEST)))
       }
 
       res.status(Code.OK).json({
