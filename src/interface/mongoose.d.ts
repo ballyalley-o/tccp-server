@@ -95,5 +95,6 @@ declare interface IBootcamp {
   jobGuarantee: boolean
   acceptGi: boolean
   createdAt: Date
+  course: Schema.Types.ObjectId
   user: Schema.Types.ObjectId
 }

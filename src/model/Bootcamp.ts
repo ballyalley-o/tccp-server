@@ -90,6 +90,10 @@ const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
       type: Boolean,
       default: false
     },
+    course: {
+      type: Schema.Types.ObjectId,
+      ref: Key.Course
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: Key.User,
