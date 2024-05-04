@@ -27,7 +27,7 @@ enum Key {
   Cohort = 'Cohort',
   Feedback = 'Feedback',
 
-  UserVirtual = 'user',
+  UserVirtual = 'user course',
   CourseVirtual = 'course',
   BootcampVirtual = 'bootcamp',
 
