@@ -29,6 +29,7 @@ declare interface IUser {
   avatar: string
   cohort: Schema.Types.ObjectId
   progress: Schema.Types.ObjectId
+  organization?: string
   resetPasswordToken: string
   resetPasswordExpire: Date
   getSignedJwtToken(): string
