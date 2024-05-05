@@ -2,18 +2,10 @@ import 'colors'
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
 
-function LogInitRequest(
-  target: any,
-  key: string,
-  descriptor: PropertyDescriptor
-) {
+function LogInitRequest(target: any, key: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value
 
-  descriptor.value = function (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  descriptor.value = function (req: Request, res: Response, next: NextFunction) {
     console.log('')
     goodlog.warn(` [${new Date().toISOString()}] ${'MOUNTED 🔗'.green} ${key} `)
     console.log('')

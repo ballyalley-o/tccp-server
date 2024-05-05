@@ -53,7 +53,9 @@ class BootcampController {
   public static async getBootcamp(req: Request, res: Response, next: NextFunction) {
     BootcampController.setRequest(req)
 
-    const bootcamp = await Bootcamp.findById(BootcampController._bootcampId).populate(Key.UserVirtual, Key.BootcampPopulate)
+    const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
+      .populate(Key.UserVirtual, Key.BootcampPopulate)
+      .populate(Key.CourseVirtual)
 
     if (!bootcamp) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
