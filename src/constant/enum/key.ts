@@ -27,7 +27,8 @@ enum Key {
   Cohort = 'Cohort',
   Feedback = 'Feedback',
 
-  UserVirtual = 'user course',
+  UserVirtual = 'user',
+  UserCourseVirtual = 'user course',
   CourseVirtual = 'course',
   BootcampVirtual = 'bootcamp',
 
@@ -35,7 +36,7 @@ enum Key {
   DefaultSelect = 'name description',
   OrganizationSelect = 'firstname email organization',
   PasswordSelect = '-password',
-  BootcampPopulate = 'firstname email',
+  BootcampPopulate = 'firstname email organization',
 
   Cookie = 'cookie',
   Token = 'token',
