@@ -105,7 +105,7 @@ class AuthController {
       if (user) {
         AuthController._sendTokenResponse(user, Code.OK, res)
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof Error) {
         goodlog.log(error.message)
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
