@@ -27,14 +27,17 @@ const errorHandler = (err: ErrorCallback, req: Request, res: Response, next: Nex
   if (err.name === Key.CastError && err.kind === Key.ObjectId) {
     statusCode = 404
     message = RESPONSE.error[404]
-  } else if (err.code === 11000) {
+  }
+
+  if (err.code === 11000) {
     statusCode = 403
-    message = RESPONSE.error.ENTITY_EXISTS
-  } else if (err instanceof (ValidationError as any)) {
-    statusCode = 400
+    throw new Error(RESPONSE.error.ENTITY_EXISTS)
+  }
+
+  if (err.errors) {
     const errorArr = Object.values(err.errors).map((err: any) => err.message)
+    statusCode = 400
     errors = errorArr
-    throw new Error(errors.join(', '))
   }
 
   res.status(statusCode).json({
