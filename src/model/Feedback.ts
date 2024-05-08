@@ -23,10 +23,6 @@ const FeedbackSchema: Schema<IFeedbackExtended> = new Schema<IFeedbackExtended>(
       max: 10,
       required: [true, SCHEMA.FEEDBACK_RATING]
     },
-    createdAt: {
-      type: Date,
-      default: Date.now
-    },
     bootcamp: {
       type: Schema.Types.ObjectId,
       ref: Key.Bootcamp,
