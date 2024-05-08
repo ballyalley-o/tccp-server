@@ -60,12 +60,10 @@ const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
       required: true,
       enum: Object.values(CareerOptions)
     },
-    averageRating: {
+    averageCost: {
       type: Number,
-      min: [1, SCHEMA.AVERAGE_RATING_MIN],
-      max: [10, SCHEMA.AVERAGE_RATING_MAX]
+      default: 8000
     },
-    averageCost: Number,
     photo: {
       type: String,
       default: SCHEMA.DEFAULT_PHOTO
@@ -89,6 +87,18 @@ const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
     acceptGi: {
       type: Boolean,
       default: false
+    },
+    totalFeedback: {
+      type: Number,
+      default: 0
+    },
+    rating: {
+      type: Number,
+      default: 0
+    },
+    feedback: {
+      type: [Schema.Types.ObjectId],
+      ref: Key.Feedback
     },
     user: {
       type: Schema.Types.ObjectId,
