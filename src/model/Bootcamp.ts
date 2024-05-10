@@ -88,17 +88,9 @@ const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
       type: Boolean,
       default: false
     },
-    totalFeedback: {
-      type: Number,
-      default: 0
-    },
     rating: {
       type: Number,
       default: 0
-    },
-    feedback: {
-      type: [Schema.Types.ObjectId],
-      ref: Key.Feedback
     },
     user: {
       type: Schema.Types.ObjectId,
@@ -114,6 +106,33 @@ const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
     toObject: { virtuals: true }
   }
 )
+
+BootcampSchema.statics.getTotalFeedback = async function (bootcampId: Schema.Types.ObjectId) {
+  const obj = await this.aggregate([
+    {
+      $match: { bootcamp: bootcampId }
+    },
+    {
+      $group: {
+        _id: '$bootcamp',
+        totalFeedback: { $sum: 1 }
+      }
+    }
+  ])
+  try {
+    await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
+      totalFeedback: obj[0].totalFeedback
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      goodlog.error(error.message)
+    }
+  }
+}
+
+BootcampSchema.post(Key.Save, function () {
+  ;(this.constructor as any as IBootcampExtended).getTotalFeedback(this._id)
+})
 
 BootcampSchema.pre(Key.Save, function (next) {
   this.slug = slugify(this.name, { lower: true })
@@ -149,7 +168,18 @@ BootcampSchema.virtual(Key.CourseVirtual, {
   justOne: false
 })
 
+BootcampSchema.virtual(Key.FeedbackVirtual, {
+  ref: Key.Feedback,
+  localField: Key.id,
+  foreignField: Key.BootcampVirtual,
+  justOne: false
+})
+
 BootcampSchema.index(DATABASE_INDEX.BOOTCAMP)
+
+BootcampSchema.virtual(Key.TotalFeedback, {}).get(function (this: IBootcamp) {
+  return this.feedback.length
+})
 
 const Bootcamp = model(TAG, BootcampSchema)
 export default Bootcamp
