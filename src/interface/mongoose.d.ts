@@ -98,3 +98,7 @@ declare interface IBootcamp {
   course: Schema.Types.ObjectId
   user: Schema.Types.ObjectId
 }
+
+declare interface IBootcampExtended extends IBootcamp {
+  getTotalFeedback(bootcampId: Schema.Types.ObjectId): Promise<void>
+}
