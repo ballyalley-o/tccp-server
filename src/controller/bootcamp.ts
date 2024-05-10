@@ -210,32 +210,44 @@ class BootcampController {
   public static async createBootcampFeedback(req: Request, res: Response, next: NextFunction) {
     BootcampController.setRequest(req)
     BootcampController.setUserId(req)
-    const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
-    const { title, body, rating } = req.body
+    try {
+      const bootcamp = await Bootcamp.findById(req.params.bootcampId)
+      const { title, body, rating } = req.body
 
-    if (bootcamp) {
-      const feedbacked = bootcamp.feedback.find((f) => f.user.toString() === BootcampController._userId)
-      if (feedbacked && BootcampController._userRole !== Key.Admin) {
-        return next(new ErrorResponse(RESPONSE.error.ONE_FEEDBACK, (res.statusCode = Code.BAD_REQUEST)))
+      if (bootcamp) {
+        if (bootcamp.feedback) {
+          const feedbacked = bootcamp.feedback.find((f) => f.user.toString() === BootcampController._userId)
+
+          if (feedbacked && BootcampController._userRole !== Key.Admin) {
+            return next(new ErrorResponse(RESPONSE.error.ONE_FEEDBACK, (res.statusCode = Code.BAD_REQUEST)))
+          }
+        }
+
+        const feedback = {
+          title,
+          body,
+          rating,
+          user: BootcampController._userId
+        }
+
+        bootcamp.feedback.push(feedback)
+        bootcamp.totalFeedback = bootcamp.feedback.length
+        bootcamp.rating = bootcamp.feedback.reduce((acc, rev) => acc + rev.rating, 0) / bootcamp.feedback.length
+
+        await bootcamp.save()
+
+        res.status(Code.CREATED).json({
+          success: true,
+          message: RESPONSE.success[201],
+          data: bootcamp
+        })
       }
-
-      const feedback = {
-        title,
-        body,
-        rating,
-        user: BootcampController._userId
-      }
-
-      bootcamp.feedback.push(feedback)
-      bootcamp.totalFeedback = bootcamp.feedback.length
-      bootcamp.rating = bootcamp.feedback.reduce((acc, rev) => acc + rev.rating, 0) / bootcamp.feedback.length
-
-      await bootcamp.save()
-
-      res.status(Code.CREATED).json({
-        success: true,
-        message: RESPONSE.success[201],
-        data: bootcamp
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_CREATE,
+        error
       })
     }
   }
@@ -245,17 +257,26 @@ class BootcampController {
   //@access   PUBLIC
   @use(LogRequest)
   public static async getTopBootcamps(_req: Request, res: Response, next: NextFunction) {
-    const bootcamps = await Bootcamp.find().sort({ 'feedback.rating': 1 }).limit(5)
+    try {
+      const bootcamps = await Bootcamp.find({}).sort({ rating: -1 }).limit(5)
 
-    if (!bootcamps) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_TOP_BOOTCAMPS, (res.statusCode = Code.NOT_FOUND)))
+      if (!bootcamps) {
+        return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_TOP_BOOTCAMPS, (res.statusCode = Code.NOT_FOUND)))
+      }
+
+      res.status(Code.ACCEPTED).json({
+        success: true,
+        count: bootcamps.length,
+        data: bootcamps
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_FIND,
+        error
+      })
     }
-
-    res.status(Code.ACCEPTED).json({
-      success: true,
-      count: bootcamps.length,
-      data: bootcamps
-    })
   }
 
   //@desc     Upload photo for bootcamp
