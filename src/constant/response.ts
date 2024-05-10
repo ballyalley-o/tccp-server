@@ -53,6 +53,8 @@ const RESPONSE = {
     ENTITY_EXISTS: 'Entity already exists',
     ORG_REQUIRED: 'Organization is required for Admin',
     ALREADY_EXISTS: (data: string) => `${data} already exists`,
+    ONE_FEEDBACK: 'Only one feedback per user is allowed',
+    NOT_FOUND_TOP_BOOTCAMPS: 'Top bootcamps not found',
     NOT_FOUND_COURSE: (data: string) => `Course not found with id of ${data}`,
     NOT_FOUND_BOOTCAMP: (data: string) => `Bootcamp not found with id of ${data}`,
     NOT_FOUND_FEEDBACK: (data: string) => `No feedback found with the id ${data}`,

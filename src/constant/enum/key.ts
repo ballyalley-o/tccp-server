@@ -28,15 +28,17 @@ enum Key {
   Feedback = 'Feedback',
 
   UserVirtual = 'user',
-  UserCourseVirtual = 'user course',
+  UserCourseVirtual = 'user course feedback',
   CourseVirtual = 'course',
   BootcampVirtual = 'bootcamp',
+  FeedbackVirtual = 'feedback',
 
   CourseSelect = 'name description',
   DefaultSelect = 'name description',
   OrganizationSelect = 'firstname email organization',
   PasswordSelect = '-password',
   BootcampPopulate = 'firstname email organization',
+  TotalFeedback = 'totalFeedback',
 
   Cookie = 'cookie',
   Token = 'token',

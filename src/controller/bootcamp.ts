@@ -180,7 +180,7 @@ class BootcampController {
   }
 
   //@desc     Get bootcamps within a radius
-  //@route    GET /api/v1/bootcamps/radius/:zipcode/:distance
+  //@route    GET /bootcamp/radius/:zipcode/:distance
   //@access   PRIVATE
   @use(LogRequest)
   public static async getBootcampsInRadius(req: Request, res: Response, _next: NextFunction) {
@@ -201,6 +201,82 @@ class BootcampController {
       count: bootcamps.length,
       data: bootcamps
     })
+  }
+
+  //@desc     Create Bootcamp Feedback
+  //@route    GET /bootcamp/:id/feedback
+  //@access   PRIVATE
+  @use(LogRequest)
+  public static async createBootcampFeedback(req: Request, res: Response, next: NextFunction) {
+    BootcampController.setRequest(req)
+    BootcampController.setUserId(req)
+    try {
+      const bootcamp = await Bootcamp.findById(req.params.bootcampId)
+      const { title, body, rating } = req.body
+
+      if (bootcamp) {
+        if (bootcamp.feedback) {
+          const feedbacked = bootcamp.feedback.find((f) => f.user.toString() === BootcampController._userId)
+
+          if (feedbacked && BootcampController._userRole !== Key.Admin) {
+            return next(new ErrorResponse(RESPONSE.error.ONE_FEEDBACK, (res.statusCode = Code.BAD_REQUEST)))
+          }
+        }
+
+        const feedback = {
+          title,
+          body,
+          rating,
+          user: BootcampController._userId
+        }
+
+        bootcamp.feedback.push(feedback)
+        bootcamp.totalFeedback = bootcamp.feedback.length
+        bootcamp.rating = bootcamp.feedback.reduce((acc, rev) => acc + rev.rating, 0) / bootcamp.feedback.length
+
+        await bootcamp.save()
+
+        res.status(Code.CREATED).json({
+          success: true,
+          message: RESPONSE.success[201],
+          data: bootcamp
+        })
+      }
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_CREATE,
+        error
+      })
+    }
+  }
+
+  //@desc     Get top Bootcamps
+  //@route    GET /bootcamp/top
+  //@access   PUBLIC
+  @use(LogRequest)
+  public static async getTopBootcamps(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const bootcamps = await Bootcamp.find({}).sort({ rating: -1 }).limit(5)
+
+      if (!bootcamps) {
+        return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_TOP_BOOTCAMPS, (res.statusCode = Code.NOT_FOUND)))
+      }
+
+      res.status(Code.ACCEPTED).json({
+        success: true,
+        count: bootcamps.length,
+        data: bootcamps
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_FIND,
+        error
+      })
+    }
   }
 
   //@desc     Upload photo for bootcamp

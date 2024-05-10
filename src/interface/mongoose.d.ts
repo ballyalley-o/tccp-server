@@ -41,7 +41,6 @@ declare interface IFeedback {
   title: string
   body: string
   rating: number
-  createdAt: Date
   bootcamp: Schema.Types.ObjectId
   user: Schema.Types.ObjectId
 }
@@ -86,7 +85,6 @@ declare interface IBootcamp {
   }
   careers: [string]
   duration: string
-  averageRating: number
   averageCost: number
   photo: string
   badge: string
@@ -94,7 +92,13 @@ declare interface IBootcamp {
   jobAssistance: boolean
   jobGuarantee: boolean
   acceptGi: boolean
-  createdAt: Date
+  rating: number
+  totalFeedback: number
+  feedback: [Schema.Types.ObjectId]
   course: Schema.Types.ObjectId
   user: Schema.Types.ObjectId
+}
+
+declare interface IBootcampExtended extends IBootcamp {
+  getTotalFeedback(bootcampId: Schema.Types.ObjectId): Promise<void>
 }

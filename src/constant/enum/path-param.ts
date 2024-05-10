@@ -6,6 +6,7 @@ enum PathParam {
   CREATE = '/create',
   HOME = '/home',
   DASHBOARD = '/dashboard',
+  TOP = '/top',
   API = '/api',
   AUTH = '/auth',
   USER = '/user',

@@ -21,6 +21,8 @@ router
   .get(advancedResult(Bootcamp, Key.UserCourseVirtual), bootcampController.getBootcamps)
   .post(bootcampController.createBootcamp)
 router.route(PathParam.CREATE).post(protect, authorize(Key.Trainer, Key.Admin), bootcampController.createBootcamp)
+
+router.get(PathParam.TOP, bootcampController.getTopBootcamps)
 router
   .route(PathParam.ID)
   .get(bootcampController.getBootcamp)

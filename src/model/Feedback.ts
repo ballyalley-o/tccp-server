@@ -5,7 +5,7 @@ import { DATABASE_INDEX } from '@constant'
 
 const TAG = Key.Feedback
 
-const FeedbackSchema: Schema<IFeedbackExtended> = new Schema<IFeedbackExtended>(
+export const FeedbackSchema: Schema<IFeedbackExtended> = new Schema<IFeedbackExtended>(
   {
     title: {
       type: String,
@@ -22,10 +22,6 @@ const FeedbackSchema: Schema<IFeedbackExtended> = new Schema<IFeedbackExtended>(
       min: 1,
       max: 10,
       required: [true, SCHEMA.FEEDBACK_RATING]
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
     },
     bootcamp: {
       type: Schema.Types.ObjectId,
@@ -52,14 +48,20 @@ FeedbackSchema.statics.getAverageRating = async function (bootcampId) {
     },
     {
       $group: {
-        _id: Aggregate.Bootcamp,
-        averageRating: { $avg: Aggregate.Rating }
+        _id: '$bootcamp',
+        rating: { $avg: '$rating' }
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        rating: { $round: ['$rating', 2] }
       }
     }
   ])
   try {
     await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
-      averageRating: obj[0].averageRating
+      rating: obj[0].rating
     })
   } catch (error) {
     if (error instanceof Error) {
