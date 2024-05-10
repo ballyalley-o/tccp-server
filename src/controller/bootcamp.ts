@@ -56,6 +56,7 @@ class BootcampController {
     const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
       .populate(Key.UserVirtual, Key.BootcampPopulate)
       .populate(Key.CourseVirtual)
+      .populate(Key.FeedbackVirtual, 'title body rating user')
 
     if (!bootcamp) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
