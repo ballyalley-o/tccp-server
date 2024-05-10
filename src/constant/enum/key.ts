@@ -28,13 +28,17 @@ enum Key {
   Feedback = 'Feedback',
 
   UserVirtual = 'user',
+  UserCourseVirtual = 'user course feedback',
   CourseVirtual = 'course',
   BootcampVirtual = 'bootcamp',
+  FeedbackVirtual = 'feedback',
 
-  CourseSelect = 'bootcamp_title description',
+  CourseSelect = 'name description',
   DefaultSelect = 'name description',
+  OrganizationSelect = 'firstname email organization',
   PasswordSelect = '-password',
-  BootcampPopulate = 'firstname email',
+  BootcampPopulate = 'firstname email organization',
+  TotalFeedback = 'totalFeedback',
 
   Cookie = 'cookie',
   Token = 'token',
@@ -77,7 +81,7 @@ enum Key {
   // @geocoder
   Google = 'google',
   MapQuest = 'mapquest',
-  GeocoderType = 'Point',
+  GeocoderType = 'Point'
 }
 
 export default Key

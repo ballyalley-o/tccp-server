@@ -24,7 +24,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
   }
 
   if (!token) {
-    return next(new ErrorResponse(RESPONSE.error[401], Code.UNAUTHORIZED))
+    return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
   }
   try {
     const decoded = jwt.verify(token, GLOBAL.JWT_SECRET as string) as any
@@ -32,7 +32,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
 
     next()
   } catch (err) {
-    return next(new ErrorResponse(RESPONSE.error[401], Code.UNAUTHORIZED))
+    return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
   }
 })
 
@@ -52,7 +52,7 @@ const authorize = (...roles: string[]): MiddlewareFunction => {
   return async (req: any, res: Response, next: NextFunction): Promise<void> => {
     const role = req.user.role
     if (!roles.includes(role)) {
-      return next(new ErrorResponse(RESPONSE.error.ROLE_NOT_ALLOWED(role), 403))
+      return next(new ErrorResponse(RESPONSE.error.ROLE_NOT_ALLOWED(role), (res.statusCode = Code.FORBIDDEN)))
     }
     next()
   }

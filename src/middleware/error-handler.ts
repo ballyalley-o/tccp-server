@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import ValidationError from 'mongoose'
 import { RESPONSE } from '@constant'
 import { GLOBAL } from '@config'
 import { Key } from '@constant/enum'
@@ -41,7 +42,7 @@ const errorHandler = (err: ErrorCallback, req: Request, res: Response, next: Nex
 
   res.status(statusCode).json({
     message: message || errors,
-    stack: GLOBAL.ENV === ENV ? err.stack : null,
+    stack: GLOBAL.ENV === ENV ? err.stack : null
   })
 }
 

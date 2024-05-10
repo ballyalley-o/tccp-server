@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import express, { Router } from 'express'
 import courseRoute from '@route/course/course'
 import feedbackRoute from '@route/feedback/feedback'
 import { bootcampController } from '@controller'
@@ -7,17 +7,22 @@ import { Bootcamp } from '@model'
 import { Key, PathParam } from '@constant/enum'
 import { protect, authorize } from '@middleware'
 
-const router = Router({ mergeParams: true })
+const router = express.Router()
 
 /**
- * @path - {baseUrl}/api/v0.1/bootcamp
+ * @path - {baseUrl}/api/v{verNo}/bootcamp
  */
 router.use(PathParam.REDIR_COURSE, courseRoute)
 router.use(PathParam.REDIR_FEEDBACK, feedbackRoute)
 
 router.route(PathParam.DISTANCE).get(bootcampController.getBootcampsInRadius)
-router.route(PathParam.F_SLASH).get(advancedResult(Bootcamp), bootcampController.getBootcamps).post(bootcampController.createBootcamp)
+router
+  .route(PathParam.F_SLASH)
+  .get(advancedResult(Bootcamp, Key.UserCourseVirtual), bootcampController.getBootcamps)
+  .post(bootcampController.createBootcamp)
 router.route(PathParam.CREATE).post(protect, authorize(Key.Trainer, Key.Admin), bootcampController.createBootcamp)
+
+router.get(PathParam.TOP, bootcampController.getTopBootcamps)
 router
   .route(PathParam.ID)
   .get(bootcampController.getBootcamp)

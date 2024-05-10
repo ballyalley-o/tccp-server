@@ -2,13 +2,12 @@ import { App } from '@config'
 import slugify from 'slugify'
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
-import { IBootcamp } from '@interface/model'
 import { REGEX, RESPONSE, DATABASE_INDEX } from '@constant'
 import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 
 const TAG = Key.Bootcamp
 
-const BootcampSchema = new Schema<IBootcamp>(
+const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
   {
     name: {
       type: String,
@@ -34,10 +33,6 @@ const BootcampSchema = new Schema<IBootcamp>(
     email: {
       type: String,
       match: [REGEX.EMAIL, SCHEMA.EMAIL]
-    },
-    address: {
-      type: String,
-      required: [true, SCHEMA.ADDRESS]
     },
     location: {
       // GeoJSON Point
@@ -65,12 +60,10 @@ const BootcampSchema = new Schema<IBootcamp>(
       required: true,
       enum: Object.values(CareerOptions)
     },
-    averageRating: {
+    averageCost: {
       type: Number,
-      min: [1, SCHEMA.AVERAGE_RATING_MIN],
-      max: [10, SCHEMA.AVERAGE_RATING_MAX]
+      default: 8000
     },
-    averageCost: Number,
     photo: {
       type: String,
       default: SCHEMA.DEFAULT_PHOTO
@@ -95,6 +88,10 @@ const BootcampSchema = new Schema<IBootcamp>(
       type: Boolean,
       default: false
     },
+    rating: {
+      type: Number,
+      default: 0
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: Key.User,
@@ -109,6 +106,33 @@ const BootcampSchema = new Schema<IBootcamp>(
     toObject: { virtuals: true }
   }
 )
+
+BootcampSchema.statics.getTotalFeedback = async function (bootcampId: Schema.Types.ObjectId) {
+  const obj = await this.aggregate([
+    {
+      $match: { bootcamp: bootcampId }
+    },
+    {
+      $group: {
+        _id: '$bootcamp',
+        totalFeedback: { $sum: 1 }
+      }
+    }
+  ])
+  try {
+    await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
+      totalFeedback: obj[0].totalFeedback
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      goodlog.error(error.message)
+    }
+  }
+}
+
+BootcampSchema.post(Key.Save, function () {
+  ;(this.constructor as any as IBootcampExtended).getTotalFeedback(this._id)
+})
 
 BootcampSchema.pre(Key.Save, function (next) {
   this.slug = slugify(this.name, { lower: true })
@@ -144,7 +168,18 @@ BootcampSchema.virtual(Key.CourseVirtual, {
   justOne: false
 })
 
+BootcampSchema.virtual(Key.FeedbackVirtual, {
+  ref: Key.Feedback,
+  localField: Key.id,
+  foreignField: Key.BootcampVirtual,
+  justOne: false
+})
+
 BootcampSchema.index(DATABASE_INDEX.BOOTCAMP)
+
+BootcampSchema.virtual(Key.TotalFeedback, {}).get(function (this: IBootcamp) {
+  return this.feedback.length
+})
 
 const Bootcamp = model(TAG, BootcampSchema)
 export default Bootcamp

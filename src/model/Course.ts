@@ -1,12 +1,11 @@
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
-import { ICourse, ICourseExtended } from '@interface/model'
 import { SCHEMA, LOCALE, MinimumSkill, Key, Aggregate } from '@constant/enum'
 import { DATABASE_INDEX } from '@constant'
 
 const TAG = Key.Course
 
-const CourseSchema = new Schema<ICourseExtended>(
+const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
   {
     title: {
       type: String,
@@ -15,7 +14,10 @@ const CourseSchema = new Schema<ICourseExtended>(
     },
     description: {
       type: String,
-      required: [true, SCHEMA.DESCRIPTION]
+      trim: true,
+      required: [true, SCHEMA.DESCRIPTION],
+      minlength: [20, SCHEMA.MIN_LENGTH_DESCRIPTION],
+      maxlength: [250, SCHEMA.MAX_LENGTH_DESCRIPTION]
     },
     duration: {
       type: String,

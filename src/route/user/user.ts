@@ -9,7 +9,7 @@ const router = Router({ mergeParams: true })
 /**
  * @path - {baseUrl}/api/v0.1/auth/user
  */
-router.get(PathParam.F_SLASH, advancedResult(User), UserController.getUsers)
+router.get(PathParam.F_SLASH, advancedResult(User, 'email'), UserController.getUsers)
 router.get(PathParam.ID, UserController.getUser)
 router.post(PathParam.F_SLASH, UserController.createUser)
 router.put(PathParam.ID, UserController.updateUser)

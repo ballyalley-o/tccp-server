@@ -1,5 +1,5 @@
+import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
-import { IResponseExtended } from '@interface'
 import { IUserRequest } from '@interface/middleware'
 import { use, LogRequest } from '@decorator'
 import { Course, Bootcamp } from '@model'
@@ -42,16 +42,16 @@ class CourseController {
 
     if (CourseController._bootcampId) {
       const course = await Course.find({
-        bootcamp: CourseController._bootcampId,
+        bootcamp: CourseController._bootcampId
       })
 
       res.status(Code.OK).json({
         success: true,
         count: course.length,
-        data: course,
+        data: course
       })
     } else {
-      res.status(Code.OK).json((res as IResponseExtended).advancedResult)
+      res.status(Code.OK).json(res.advancedResult)
     }
   }
 
@@ -64,17 +64,26 @@ class CourseController {
 
     const course = await Course.findById(CourseController._courseId).populate({
       path: Key.BootcampVirtual,
-      select: Key.CourseSelect,
+      select: Key.CourseSelect
     })
 
     if (!course) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), (res.statusCode = Code.NOT_FOUND)))
     }
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success[200],
-      data: course,
-    })
+    try {
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success[200],
+        data: course
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId),
+        error
+      })
+    }
   }
 
   //@desc   Add a course
@@ -91,19 +100,28 @@ class CourseController {
     const bootcamp = await Bootcamp.findById(CourseController._bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(CourseController._bootcampId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(CourseController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (bootcamp.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(req.user.id, CourseController._bootcampId), 401))
+      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(req.user.id, CourseController._bootcampId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
-    const course = await Course.create(req.body)
+    try {
+      const course = await Course.create(req.body)
 
-    res.status(Code.CREATED).json({
-      success: true,
-      data: course,
-    })
+      res.status(Code.CREATED).json({
+        success: true,
+        data: course
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_CREATE,
+        error
+      })
+    }
   }
 
   //@desc     Update a course
@@ -117,23 +135,36 @@ class CourseController {
     let course = await Course.findById(CourseController._courseId)
 
     if (!course) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), Code.UNAUTHORIZED))
+      return next(
+        new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), (res.statusCode = Code.NOT_FOUND))
+      )
     }
 
     if (course.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), Code.UNAUTHORIZED))
+      return next(
+        new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), (res.statusCode = Code.UNAUTHORIZED))
+      )
     }
 
-    course = await Course.findByIdAndUpdate(CourseController._courseId, req.body, {
-      new: true,
-      runValidators: true,
-    })
+    try {
+      course = await Course.findByIdAndUpdate(CourseController._courseId, req.body, {
+        new: true,
+        runValidators: true
+      })
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success.UPDATED,
-      data: course,
-    })
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.UPDATED,
+        data: course
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_UPDATE,
+        error
+      })
+    }
   }
   //@desc     Delete a course
   //@route    DELETE /course/:id
@@ -146,29 +177,32 @@ class CourseController {
     const course = await Course.findById(CourseController._courseId)
 
     if (!course) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), Code.NOT_FOUND))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (course.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), Code.UNAUTHORIZED))
+      return next(
+        new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), (res.statusCode = Code.UNAUTHORIZED))
+      )
     }
 
-    await Course.deleteOne({ _id: CourseController._courseId })
+    try {
+      await Course.deleteOne({ _id: CourseController._courseId })
 
-    res.status(Code.OK).json({
-      success: true,
-      message: RESPONSE.success.DELETED,
-      data: {},
-    })
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.DELETED,
+        data: {}
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message || error)
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_DELETE,
+        error
+      })
+    }
   }
 }
-
-// const courseController = {
-//   getCourses: asyncHandler(CourseController.getCourses),
-//   getCourse: asyncHandler(CourseController.getCourse),
-//   addCourse: asyncHandler(CourseController.addCourse),
-//   updateCourse: asyncHandler(CourseController.updateCourse),
-//   deleteCourse: asyncHandler(CourseController.deleteCourse),
-// }
 
 export default CourseController
