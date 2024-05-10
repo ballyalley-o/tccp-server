@@ -38,10 +38,18 @@ class FeedbackController {
   //@route    GET /feedback
   //@route    GET /bootcamp/:bootcampId/feedback
   //@access   PUBLIC
-  public static async getFeedbacks(req: Request, res: Response, next: NextFunction) {
+  public static async getFeedbacks(req: Request, res: Response, _next: NextFunction) {
     if (req.params.bootcampId) {
       try {
         const feedbacks = await Feedback.find({ bootcamp: req.params.bootcampId })
+          .populate({
+            path: Key.BootcampVirtual,
+            select: Key.DefaultSelect
+          })
+          .populate({
+            path: Key.User,
+            select: 'email role'
+          })
 
         res.status(Code.OK).json({
           success: true,
@@ -115,6 +123,7 @@ class FeedbackController {
     req.body.user = FeedbackController._userId
 
     const bootcamp = await Bootcamp.findById(FeedbackController._bootcampId)
+    // const feedbackUser = await Feedback.find({ user: FeedbackController._userId })
 
     if (!bootcamp) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(FeedbackController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
