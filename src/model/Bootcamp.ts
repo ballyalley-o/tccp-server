@@ -178,7 +178,7 @@ BootcampSchema.virtual(Key.FeedbackVirtual, {
 BootcampSchema.index(DATABASE_INDEX.BOOTCAMP)
 
 BootcampSchema.virtual(Key.TotalFeedback, {}).get(function (this: IBootcamp) {
-  return this.feedback.length
+  return this.feedback?.length
 })
 
 const Bootcamp = model(TAG, BootcampSchema)
