@@ -47,8 +47,8 @@ class FeedbackController {
             select: Key.DefaultSelect
           })
           .populate({
-            path: Key.User,
-            select: 'email role'
+            path: Key.UserVirtual,
+            select: 'firstname email role avatar'
           })
 
         res.status(Code.OK).json({
