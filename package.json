@@ -63,7 +63,7 @@
     "bson-objectid": "^2.0.4",
     "nodemon": "^3.0.3",
     "reflect-metadata": "^0.2.1",
-    "tsc-alias": "^1.8.8",
+    "tsc-alias": "^1.8.10",
     "typedoc": "^0.25.8"
   }
 }
