@@ -32,7 +32,7 @@ const maxAge: IMaxAge = {
   1: 24 * 60 * 60 * 1000,
   2: 2 * 24 * 60 * 60 * 1000,
   15: 15 * 24 * 60 * 60 * 1000,
-  30: 30 * 24 * 60 * 60 * 1000,
+  30: 30 * 24 * 60 * 60 * 1000
 }
 
 const expire = new Date(0)
@@ -74,5 +74,5 @@ export {
   oneDayFromNow,
   twoDaysFromNow,
   fifteenDaysFromNow,
-  thirtyDaysFromNow,
+  thirtyDaysFromNow
 }
