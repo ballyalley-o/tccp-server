@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import goodlog from 'good-logs'
 import { Request, Response } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 import { ParsedQs } from 'qs'
