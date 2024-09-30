@@ -217,7 +217,7 @@ class BootcampController {
 
       if (bootcamp) {
         if (bootcamp.feedback) {
-          const feedbacked = bootcamp.feedback.find((f) => f.user.toString() === BootcampController._userId)
+          const feedbacked = bootcamp.feedback.find((f: any) => f.user.toString() === BootcampController._userId)
 
           if (feedbacked && BootcampController._userRole !== Key.Admin) {
             return next(new ErrorResponse(RESPONSE.error.ONE_FEEDBACK, (res.statusCode = Code.BAD_REQUEST)))
@@ -233,7 +233,7 @@ class BootcampController {
 
         bootcamp.feedback.push(feedback)
         bootcamp.totalFeedback = bootcamp.feedback.length
-        bootcamp.rating = bootcamp.feedback.reduce((acc, rev) => acc + rev.rating, 0) / bootcamp.feedback.length
+        bootcamp.rating = bootcamp.feedback.reduce((acc: number, rev: any) => acc + rev.rating, 0) / bootcamp.feedback.length
 
         await bootcamp.save()
 
