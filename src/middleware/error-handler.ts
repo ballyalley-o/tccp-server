@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express'
-import ValidationError from 'mongoose'
 import { RESPONSE } from '@constant'
 import { GLOBAL } from '@config'
 import { Key } from '@constant/enum'
