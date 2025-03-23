@@ -3,6 +3,7 @@ import { GLOBAL } from '@config'
 import { RESPONSE } from '@constant'
 
 const allowedOrigins = GLOBAL.CORS_ALLOWED_ORIGIN
+console.log('allowedOrigins: ', allowedOrigins)
 
 const corsConfig = {
   credentials: true,
