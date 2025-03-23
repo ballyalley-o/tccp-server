@@ -86,6 +86,7 @@ class AuthController {
   @use(LogRequest)
   public static async login(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body
+    console.log('REQ BODY: ', req.body)
 
     try {
       if (!email || !password) {
