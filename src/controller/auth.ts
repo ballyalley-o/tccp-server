@@ -38,6 +38,8 @@ class AuthController {
       options.secure = true
     }
 
+    console.log('response: ', user)
+
     res.status(statusCode).cookie(Key.Token, token, options).json({
       success: true,
       token,
@@ -91,12 +93,15 @@ class AuthController {
       }
 
       const user = await User.findOne({ email }).select(Key.Password)
+      console.log('USER: ', user)
 
       if (!user) {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
       }
 
       const isMatch = await user.matchPassword(password)
+      console.log('Is Match ?: ', isMatch)
+
 
       if (!isMatch) {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
