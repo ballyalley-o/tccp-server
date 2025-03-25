@@ -17,7 +17,7 @@ const GLOBAL = {
   CORS_ALLOWED_ORIGIN: process.env.CORS_ALLOWED_ORIGIN?.split(',') || [],
   API_VERSION        : process.env.API_VERSION || '',
   PORT               : process.env.PORT || 3005,
-  ENV                : process.env.NODE_ENV || '',
+  ENV                : process.env.NODE_ENV || 'development',
   // jwt
   JWT_SECRET         : process.env.JWT_SECRET,
   JWT_EXP            : oneDay,
