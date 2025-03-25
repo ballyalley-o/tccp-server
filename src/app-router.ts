@@ -23,7 +23,9 @@ class AppRouter {
         res.sendFile(path.join(__dirname, 'public', 'index.api.html'))
       })
     } else {
-      this._router?.get(PathDir.API_ROOT, RESPONSE.server)
+      this._router?.get(PathDir.API_ROOT, (req: Request, res: Response) => {
+        res.sendFile(path.join(__dirname, 'public', 'index.api.html'))
+      })
     }
   }
 }
