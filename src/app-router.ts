@@ -19,12 +19,9 @@ class AppRouter {
 
   static serverRouter() {
     if (GLOBAL.ENV === ENV) {
-      // when frontend is ready
-      // this._router.use(express.static(PathDir.BUILD_LOC))
-      // this._router?.get(PathParam.ALL, (req: Request, res: Response) =>
-      //   res.sendFile(PathDir.BUILD_VIEW)
-      // )
-      this._router?.get(PathDir.API_ROOT, RESPONSE.server)
+      this._router?.get(PathDir.API_ROOT, (req: Request, res: Response) => {
+        res.sendFile(path.join(__dirname, 'public', 'index.api.html'))
+      })
     } else {
       this._router?.get(PathDir.API_ROOT, RESPONSE.server)
     }
