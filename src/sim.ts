@@ -19,9 +19,9 @@ const seeder = async () => {
     await Feedback.deleteMany()
 
     const createdUserCollection = await User.insertMany(userCollection)
-    const createdCourse = await Course.insertMany(courseCollection)
-    const createdBootcamp = await Bootcamp.insertMany(bootcampCollection)
-    const createdFeedback = await Feedback.insertMany(feedbackCollection)
+    const createdCourse         = await Course.insertMany(courseCollection)
+    const createdBootcamp       = await Bootcamp.insertMany(bootcampCollection)
+    const createdFeedback       = await Feedback.insertMany(feedbackCollection)
 
     goodlog.warn(RESPONSE.success.COLLECTION_SEED)
     process.exit()
