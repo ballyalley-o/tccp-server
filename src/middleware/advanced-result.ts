@@ -25,12 +25,12 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
     query = query.sort(Key.Name)
   }
 
-  const page = parseInt(req.query.page as any, 10) || 1
-  const limit = parseInt(req.query.limit as any, 10) || 25
+  const page       = parseInt(req.query.page as any, 10) || 1
+  const limit      = parseInt(req.query.limit as any, 10) || 25
   const startIndex = (page - 1) * limit
-  const endIndex = page * limit
-  const total = await model.countDocuments(reqQuery)
-  query = query.skip(startIndex).limit(limit)
+  const endIndex   = page * limit
+  const total      = await model.countDocuments(reqQuery)
+        query      = query.skip(startIndex).limit(limit)
 
   if (populate) {
     query = query.populate(populate)
