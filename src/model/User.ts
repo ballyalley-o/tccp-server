@@ -75,8 +75,8 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     resetPasswordExpire: Date
   },
   {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
+    toJSON    : { virtuals: true },
+    toObject  : { virtuals: true },
     collection: TAG,
     timestamps: true
   }
