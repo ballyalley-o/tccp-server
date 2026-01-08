@@ -9,10 +9,10 @@ const createIndex = <T extends Record<string, number>>(
 const DATABASE_INDEX = {
   FEEDBACK: createIndex({
     bootcamp: 1,
-    user: 1,
+    user    : 1,
   }),
   USER: createIndex({
-    username: 1,
+    username : 1,
     firstname: 1,
   }),
   BOOTCAMP: createIndex({
@@ -20,7 +20,7 @@ const DATABASE_INDEX = {
   }),
   COURSE: createIndex({
     duration: 1,
-    tuition: 1,
+    tuition : 1,
   }),
 }
 
