@@ -49,7 +49,7 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
   res.advancedResult = {
     success: true,
     message: RESPONSE.success[200],
-    count: results.length,
+    count  : results.length,
     pagination,
     data: results
   }
