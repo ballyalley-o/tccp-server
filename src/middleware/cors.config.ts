@@ -3,7 +3,7 @@ import { GLOBAL } from '@config'
 import { RESPONSE } from '@constant'
 
 const allowedOrigins = GLOBAL.CORS_ALLOWED_ORIGIN
-const corsConfig = {
+const corsConfig     = {
   credentials: true,
   origin: (origin: string, callback: (err: Error | null, allow?: boolean) => void) => {
     if (allowedOrigins.indexOf(origin || '') !== -1 || !origin) {
