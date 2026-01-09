@@ -8,48 +8,54 @@ const TAG = Key.Course
 const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
   {
     title: {
-      type: String,
-      trim: true,
+      type    : String,
+      trim    : true,
       required: [true, SCHEMA.COURSE_TITLE]
     },
+    slug: {
+      type    : String,
+      unique  : true,
+      required: true,
+      index   : true
+    },
     description: {
-      type: String,
-      trim: true,
-      required: [true, SCHEMA.DESCRIPTION],
+      type     : String,
+      trim     : true,
+      required : [true, SCHEMA.DESCRIPTION],
       minlength: [20, SCHEMA.MIN_LENGTH_DESCRIPTION],
       maxlength: [250, SCHEMA.MAX_LENGTH_DESCRIPTION]
     },
     duration: {
-      type: String,
+      type    : String,
       required: [true, SCHEMA.COURSE_WEEK]
     },
     tuition: {
-      type: Number,
+      type    : Number,
       required: [true, SCHEMA.COURSE_TUITION]
     },
     minimumSkill: {
-      type: String,
+      type    : String,
       required: [true, SCHEMA.MINIMUM_SKILL],
-      enum: Object.values(MinimumSkill)
+      enum    : Object.values(MinimumSkill)
     },
     scholarshipAvailable: {
-      type: Boolean,
+      type   : Boolean,
       default: false
     },
     bootcamp: {
-      type: Schema.ObjectId,
-      ref: Key.Bootcamp,
+      type    : Schema.ObjectId,
+      ref     : Key.Bootcamp,
       required: true
     },
     user: {
-      type: Schema.ObjectId,
-      ref: Key.User,
+      type    : Schema.ObjectId,
+      ref     : Key.User,
       required: true
     }
   },
   {
     timestamps: true,
-    collation: { locale: LOCALE.EN, strength: 2 },
+    collation : { locale: LOCALE.EN, strength: 2 },
     collection: TAG
   }
 )
@@ -61,7 +67,7 @@ CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.O
     },
     {
       $group: {
-        _id: Aggregate.Bootcamp,
+        _id        : Aggregate.Bootcamp,
         averageCost: { $avg: Aggregate.Tuition }
       }
     }
