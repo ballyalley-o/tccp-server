@@ -12,9 +12,10 @@ import { ErrorResponse, DataResponse } from '@util'
  * @path {baseUrl}/api/{apiVer}/bootcamp
  */
 class BootcampController {
-  private static _bootcampId: string
-  private static _userId: string
-  private static _userRole: string
+  private static _bootcampId  : string
+  private static _bootcampSlug: string
+  private static _userId      : string
+  private static _userRole    : string
 
   /**
    *  setRequest - Set request parameters
@@ -23,10 +24,11 @@ class BootcampController {
    * @returns void
    */
   static setRequest(req: Request) {
-    this._bootcampId = req.params.id
+    this._bootcampId   = req.params.id
+    this._bootcampSlug = req.params.slug
   }
   static setUserId(req: any) {
-    this._userId = req.user.id
+    this._userId   = req.user.id
     this._userRole = req.user.role
   }
   //@desc     Get ALL bootcamps
@@ -53,7 +55,7 @@ class BootcampController {
   public static async getBootcamp(req: Request, res: Response, next: NextFunction) {
     BootcampController.setRequest(req)
 
-    const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
+    const bootcamp = await Bootcamp.findOne({ slug: req.params.slug })
       .populate(Key.UserVirtual, Key.BootcampPopulate)
       .populate(Key.CourseVirtual)
       .populate(Key.FeedbackVirtual, 'title body rating user')
