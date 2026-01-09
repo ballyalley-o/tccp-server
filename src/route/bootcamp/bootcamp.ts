@@ -40,7 +40,7 @@ router.route(PathParam.CREATE).post(protect, authorize(Key.Trainer, Key.Admin), 
 
 router.get(PathParam.TOP, bootcampController.getTopBootcamps)
 router
-  .route(PathParam.ID)
+  .route(PathParam.SLUG)
   .get(bootcampController.getBootcamp)
   .put(protect, authorize(Key.Trainer, Key.Admin), bootcampController.updateBootcamp)
   .delete(protect, authorize(Key.Trainer, Key.Admin), bootcampController.deleteBootcamp)
