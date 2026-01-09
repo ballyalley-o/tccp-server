@@ -2,7 +2,7 @@ import { App } from '@config'
 import slugify from 'slugify'
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
-import { DATABASE_INDEX } from 'db'
+import { DATABASE_INDEX } from '@db'
 import { REGEX, RESPONSE } from '@constant'
 import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 
@@ -15,9 +15,14 @@ const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
       required : [true, SCHEMA.NAME],
       unique   : true,
       trim     : true,
-      maxlength: [50, SCHEMA.MAX_LENGTH_NAME]
+      maxlength: [30, SCHEMA.MAX_LENGTH_NAME]
     },
-    slug       : String,
+    slug       : {
+      type    : String,
+      unique  : true,
+      required: true,
+      index   : true
+    },
     description: {
       type     : String,
       required : [true, SCHEMA.DESCRIPTION],
