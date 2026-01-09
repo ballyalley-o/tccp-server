@@ -1,7 +1,7 @@
 import goodlog from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
 import { SCHEMA, LOCALE, Key } from '@constant/enum'
-import { DATABASE_INDEX } from '@constant'
+import { DATABASE_INDEX } from '@db'
 
 const TAG = Key.Feedback
 

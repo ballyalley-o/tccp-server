@@ -3,9 +3,10 @@ import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { Schema, model } from 'mongoose'
 import { GLOBAL } from '@config'
+import { DATABASE_INDEX } from '@db'
+import { REGEX } from '@constant'
 import { Key } from '@constant/enum'
 import { oneDayFromNow } from '@constant/max-age'
-import { REGEX, DATABASE_INDEX } from '@constant'
 import { SCHEMA, Role } from '@constant/enum'
 
 const TAG = Key.User
