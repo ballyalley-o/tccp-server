@@ -50,14 +50,15 @@ declare interface IFeedbackExtended extends IFeedback {
 }
 
 declare interface ICourse extends Document {
-  title: string
-  description: string
-  duration: string
-  tuition: number
-  minimumSkill: string
+  title               : string
+  description         : string
+  duration            : string
+  tuition             : number
+  minimumSkill        : string
   scholarshipAvailable: boolean
-  bootcamp: Schema.Types.ObjectId
-  user: Schema.Types.ObjectId
+  slug                : string
+  bootcamp            : Schema.Types.ObjectId
+  user                : Schema.Types.ObjectId
 }
 
 declare interface ICourseExtended extends ICourse {
