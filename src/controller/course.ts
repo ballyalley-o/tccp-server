@@ -13,9 +13,9 @@ import { ErrorResponse } from '@util'
  */
 class CourseController {
   private static _bootcampId: string
-  private static _courseId: string
-  private static _userId: string
-  private static _userRole: string
+  private static _courseId  : string
+  private static _userId    : string
+  private static _userRole  : string
 
   /**
    * setRequest - Set request parameters
@@ -25,10 +25,10 @@ class CourseController {
    */
   static setRequest(req: Request) {
     this._bootcampId = req.params.bootcampId
-    this._courseId = req.params.id
+    this._courseId   = req.params.id
   }
   static setUserId(req: IUserRequest) {
-    this._userId = req.user.id
+    this._userId   = req.user.id
     this._userRole = req.user.role
   }
 
@@ -63,7 +63,7 @@ class CourseController {
     CourseController.setRequest(req)
 
     const course = await Course.findById(CourseController._courseId).populate({
-      path: Key.BootcampVirtual,
+      path  : Key.BootcampVirtual,
       select: Key.CourseSelect
     })
 
