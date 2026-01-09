@@ -55,7 +55,7 @@ class BootcampController {
   public static async getBootcamp(req: Request, res: Response, next: NextFunction) {
     BootcampController.setRequest(req)
 
-    const bootcamp = await Bootcamp.findOne({ slug: req.params.slug })
+    const bootcamp = await Bootcamp.findOne({ slug: BootcampController._bootcampSlug })
       .populate(Key.UserVirtual, Key.BootcampPopulate)
       .populate(Key.CourseVirtual)
       .populate(Key.FeedbackVirtual, 'title body rating user')
