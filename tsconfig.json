@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "ESNext"],
-    "target": "ESNext",
-    "module": "ESNext",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "baseUrl": "./src",
-    "paths": {
+    "moduleResolution"  : "node",
+    "lib"               : ["dom", "dom.iterable", "ESNext"],
+    "target"            : "ESNext",
+    "module"            : "ESNext",
+    "ignoreDeprecations": "6.0",
+    "outDir"            : "./dist",
+    "rootDir"           : "./src",
+    "baseUrl"           : "src",
+    "paths"             : {
       "@*": ["./*"],
       "@enum": ["@constant/enum"]
     },
@@ -30,6 +31,6 @@
       "outputCheck": ["js", "json", "jsx", "mjs"]
     }
   },
-  "include": ["**/*.ts", "**/*.js"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "src/**/*.js"],
+  "exclude": ["node_modules", "client", "dist"]
 }
