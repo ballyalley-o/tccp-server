@@ -4,7 +4,7 @@
     "lib"               : ["dom", "dom.iterable", "ESNext"],
     "target"            : "ESNext",
     "module"            : "ESNext",
-    "ignoreDeprecations": "6.0",
+    // "ignoreDeprecations": "6.0",
     "outDir"            : "./dist",
     "rootDir"           : "./src",
     "baseUrl"           : "src",
@@ -24,9 +24,9 @@
     "typeRoots"             : ["types"]
   },
   "tsc-alias": {
-    "verbose"         : false,
+    "verbose": false,
     "resolveFullPaths": true,
-    "fileExtensions"  : {
+    "fileExtensions": {
       "inputGlob"  : "{js,jsx,mjs}",
       "outputCheck": ["js", "json", "jsx", "mjs"]
     }
