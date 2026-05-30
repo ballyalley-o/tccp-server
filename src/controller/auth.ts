@@ -27,11 +27,11 @@ class AuthController {
    * @returns void
    */
   private static _sendTokenResponse = (user: any, statusCode: number, res: any) => {
-    const token = user.getSignedJwtToken()
+    const token   = user.getSignedJwtToken()
     const options = {
-      expires: thirtyDaysFromNow,
+      expires : thirtyDaysFromNow,
       httpOnly: true,
-      secure: false
+      secure  : false
     }
 
     if (process.env.NODE_ENV === Key.Production) {
@@ -51,8 +51,8 @@ class AuthController {
   @use(LogRequest)
   public static async register(req: Request, res: Response, next: NextFunction) {
     const { email, username, password } = req.body
-    const emailExist = await User.findOne({ email })
-    const usernameExist = await User.findOne({ username })
+    const emailExist                    = await User.findOne({ email })
+    const usernameExist                 = await User.findOne({ username })
 
     if (emailExist) {
       res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
