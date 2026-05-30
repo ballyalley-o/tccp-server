@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3003:3003"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: 3003
+    volumes:
+      - ./public/upload:/app/public/upload
+    restart: unless-stopped
