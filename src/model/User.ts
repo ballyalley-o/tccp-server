@@ -87,8 +87,9 @@ UserSchema.pre(Key.Save, async function (next) {
   if (!this.isModified(Key.Password)) {
     next()
   }
-  const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
+  const salt          = await bcrypt.genSalt(10)
+        this.password = await bcrypt.hash(this.password, salt)
+  next()
 })
 
 UserSchema.methods.getSignedJwtToken = function () {
@@ -104,8 +105,7 @@ UserSchema.methods.matchPassword = async function (enteredPassword: string) {
 UserSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString(Key.Hex)
 
-  this.resetPasswordToken = crypto.createHash(Key.CryptoHash).update(resetToken).digest(Key.Hex)
-
+  this.resetPasswordToken  = crypto.createHash(Key.CryptoHash).update(resetToken).digest(Key.Hex)
   this.resetPasswordExpire = oneDayFromNow
 
   return resetToken
