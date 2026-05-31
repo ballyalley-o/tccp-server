@@ -25,15 +25,16 @@ class FeedbackController {
             select: Key.DefaultSelect
           })
           .populate({
-            path: Key.UserVirtual,
+            path  : Key.UserVirtual,
             select: 'firstname email role avatar'
           })
+          .lean()
 
         res.status(Code.OK).json({
           success: true,
           message: RESPONSE.success[200],
-          count: feedbacks.length,
-          data: feedbacks
+          count  : feedbacks.length,
+          data   : feedbacks
         })
       } catch (error: any) {
         res.status(Code.BAD_REQUEST).json({
@@ -62,10 +63,12 @@ class FeedbackController {
   public static async getFeedback(req: Request, res: Response, next: NextFunction) {
     const feedbackId = req.params.id
 
-    const feedback = await Feedback.findById(feedbackId).populate({
+    const feedback = await Feedback.findById(feedbackId)
+    .populate({
       path  : Key.BootcampVirtual,
       select: Key.DefaultSelect
     })
+    .lean()
 
     if (!feedback) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), (res.statusCode = Code.NOT_FOUND)))
