@@ -12,43 +12,21 @@ import { ErrorResponse } from '@util'
  * @path {baseUrl}/api/{apiVer}/course
  */
 class CourseController {
-  private static _bootcampId: string
-  private static _courseId  : string
-  private static _userId    : string
-  private static _userRole  : string
-
-  /**
-   * setRequest - Set request parameters
-   *
-   * @param req - Request
-   * @returns void
-   */
-  static setRequest(req: Request) {
-    this._bootcampId = req.params.bootcampId
-    this._courseId   = req.params.id
-  }
-  static setUserId(req: IUserRequest) {
-    this._userId   = req.user.id
-    this._userRole = req.user.role
-  }
-
   //@desc     Get ALL courses
   //@route    GET /course
   //@route    GET /bootcamp/:bootcampId/course
   //@access   PUBLIC
   @use(LogRequest)
   public static async getCourses(req: Request, res: Response, _next: NextFunction) {
-    CourseController.setRequest(req)
+    const bootcampId =  req.params.bootcampId
 
-    if (CourseController._bootcampId) {
-      const course = await Course.find({
-        bootcamp: CourseController._bootcampId
-      })
+    if (bootcampId) {
+      const course = await Course.find({ bootcamp: bootcampId })
 
       res.status(Code.OK).json({
         success: true,
-        count: course.length,
-        data: course
+        count  : course.length,
+        data   : course
       })
     } else {
       res.status(Code.OK).json(res.advancedResult)
@@ -60,27 +38,27 @@ class CourseController {
   //@access   PUBLIC
   @use(LogRequest)
   public static async getCourse(req: Request, res: Response, next: NextFunction) {
-    CourseController.setRequest(req)
+    const courseId = req.params.id
 
-    const course = await Course.findById(CourseController._courseId).populate({
+    const course = await Course.findById(courseId).populate({
       path  : Key.BootcampVirtual,
       select: Key.CourseSelect
-    })
+    }).lean()
 
     if (!course) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
     try {
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success[200],
-        data: course
+        data   : course
       })
     } catch (error: any) {
       goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
-        message: error?.message || RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId),
+        message: error?.message || RESPONSE.error.NOT_FOUND_COURSE(courseId),
         error
       })
     }
@@ -91,20 +69,18 @@ class CourseController {
   //a@ccess PRIVATE
   @use(LogRequest)
   public static async addCourse(req: any, res: Response, next: NextFunction) {
-    CourseController.setRequest(req)
-    CourseController.setUserId(req)
+    const bootcampId = req.params.bootcampId
+    const userId     = req.user.id
+    const userRole   = req.user.role
 
-    req.body.bootcamp = CourseController._bootcampId
-    req.body.user = CourseController._userId
-
-    const bootcamp = await Bootcamp.findById(CourseController._bootcampId)
+    const bootcamp = await Bootcamp.findById(bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(CourseController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (bootcamp.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(req.user.id, CourseController._bootcampId), (res.statusCode = Code.UNAUTHORIZED)))
+    if (bootcamp.user.toString() !== userId && userRole !== Key.Admin) {
+      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, bootcampId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
     try {
@@ -112,7 +88,7 @@ class CourseController {
 
       res.status(Code.CREATED).json({
         success: true,
-        data: course
+        data   : course
       })
     } catch (error: any) {
       goodlog.error(error?.message || error)
@@ -129,33 +105,32 @@ class CourseController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async updateCourse(req: any, res: Response, next: NextFunction) {
-    CourseController.setRequest(req)
-    CourseController.setUserId(req)
+    const courseId   = req.params.id
+    const userId     = req.user.id
+    const userRole   = req.user.role
 
-    let course = await Course.findById(CourseController._courseId)
+    let course = await Course.findById(courseId)
 
     if (!course) {
-      return next(
-        new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), (res.statusCode = Code.NOT_FOUND))
-      )
+      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (course.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
+    if (course.user.toString() !== userId && userRole !== Key.Admin) {
       return next(
-        new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), (res.statusCode = Code.UNAUTHORIZED))
+        new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), (res.statusCode = Code.UNAUTHORIZED))
       )
     }
 
     try {
-      course = await Course.findByIdAndUpdate(CourseController._courseId, req.body, {
-        new: true,
+      course = await Course.findByIdAndUpdate(courseId, req.body, {
+        new          : true,
         runValidators: true
       })
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.UPDATED,
-        data: course
+        data   : course
       })
     } catch (error: any) {
       goodlog.error(error?.message || error)
@@ -171,28 +146,27 @@ class CourseController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async deleteCourse(req: any, res: Response, next: NextFunction) {
-    CourseController.setRequest(req)
-    CourseController.setUserId(req)
+    const courseId = req.params.id
+    const userId   = req.user.id
+    const userRole = req.user.role
 
-    const course = await Course.findById(CourseController._courseId)
+    const course   = await Course.findById(courseId)
 
     if (!course) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(CourseController._courseId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (course.user.toString() !== CourseController._userId && CourseController._userRole !== Key.Admin) {
-      return next(
-        new ErrorResponse(RESPONSE.error.NOT_OWNER(CourseController._userId, CourseController._courseId), (res.statusCode = Code.UNAUTHORIZED))
-      )
+    if (course.user.toString() !== userId && userRole !== Key.Admin) {
+      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
     try {
-      await Course.deleteOne({ _id: CourseController._courseId })
+      await Course.deleteOne({ _id: courseId })
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.DELETED,
-        data: {}
+        data   : {}
       })
     } catch (error: any) {
       goodlog.error(error?.message || error)
