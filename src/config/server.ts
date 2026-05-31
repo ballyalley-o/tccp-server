@@ -3,24 +3,25 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import express, { Application } from 'express'
-import nodemailer from 'nodemailer'
-import goodlog from 'good-logs'
-import cors from 'cors'
-import morgan from 'morgan'
-import NodeGeocoder from 'node-geocoder'
-import cookieParser from 'cookie-parser'
-import fileupload from 'express-fileupload'
-import mongoSanitize from 'express-mongo-sanitize'
-import helmet from 'helmet'
-import hpp from 'hpp'
-import rateLimit from 'express-rate-limit'
-import { connectDb } from '@config'
-import { AppRouter } from '@app-router'
-import { mainRoute } from '@route'
-import { xssHandler, errorHandler, notFound, corsConfig, setHeader } from '@middleware'
-import { LogInitRequest, ServerStatus } from '@decorator'
-import { Key } from '@constant/enum'
-import options from '@util/geocoder'
+import nodemailer                                         from 'nodemailer'
+import goodlog                                            from 'good-logs'
+import cors                                               from 'cors'
+import morgan                                             from 'morgan'
+import NodeGeocoder                                       from 'node-geocoder'
+import cookieParser                                       from 'cookie-parser'
+import fileupload                                         from 'express-fileupload'
+import mongoSanitize                                      from 'express-mongo-sanitize'
+import helmet                                             from 'helmet'
+import hpp                                                from 'hpp'
+import rateLimit                                          from 'express-rate-limit'
+import compression                                        from 'compression'
+import { connectDb }                                      from '@config'
+import { AppRouter }                                      from '@app-router'
+import { mainRoute }                                      from '@route'
+import { xssHandler, errorHandler, notFound, corsConfig } from '@middleware'
+import { LogInitRequest, ServerStatus }                   from '@decorator'
+import { Key }                                            from '@constant/enum'
+import options                                            from '@util/geocoder'
 import '@controller/user'
 
 const TAG_env = Key.Production
@@ -44,11 +45,11 @@ class App {
   public static geocoder = NodeGeocoder(options(GLOBAL.GEOCODER_API_KEY || ''))
   public static message = (options: any) => {
     return {
-      from: GLOBAL.MAIL_FROM,
-      to: options.email,
+      from   : GLOBAL.MAIL_FROM,
+      to     : options.email,
       subject: options.subject,
-      text: options.message,
-      html: options.html
+      text   : options.message,
+      html   : options.html
     }
   }
 
@@ -93,6 +94,7 @@ class App {
     this._app.use(express.json())
     this._app.use(express.urlencoded({ extended: true }))
     this._app.use(express.static(Key.Public))
+    this._app.use(compression())
     this._app.use(morgan('combined'))
     this._app.use(cookieParser())
     this._app.use(fileupload())
