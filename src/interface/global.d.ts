@@ -6,20 +6,20 @@ declare interface Pagination {
 }
 
 declare interface AdvancedResults {
-  success: boolean
-  message?: string
-  count: number
-  pagination: Pagination
-  data: any[]
+  success    : boolean
+  message   ?: string
+  count      : number
+  pagination : Pagination
+  data       : any[]
 }
 
 declare interface IPagination {
   next?: {
-    page: number
+    page : number
     limit: number
   }
   prev?: {
-    page: number
+    page : number
     limit: number
   }
 }
@@ -29,8 +29,8 @@ declare interface IHTMLContent {
 }
 
 declare interface IEmailOptions {
-  email: string
-  subject: string
+  email   : string
+  subject : string
   message?: string
-  html?: string | IHTMLContent
+  html   ?: string | IHTMLContent
 }
