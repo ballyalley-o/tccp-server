@@ -39,9 +39,7 @@ class BootcampController {
     const bootcampId   = req.params.id
 
     const bootcamp = await Bootcamp.findOne({ slug: bootcampSlug })
-      .populate(Key.UserVirtual, Key.BootcampPopulate)
-      .populate(Key.CourseVirtual)
-      .populate(Key.FeedbackVirtual, 'title body rating user')
+      .populate({ path: Key.CourseVirtual, select: 'title description' })
       .lean()
 
     if (!bootcamp) {
@@ -64,7 +62,7 @@ class BootcampController {
   //@route    POST /bootcamp
   //@access   PRIVATE
   @use(LogRequest)
-  public static async createBootcamp(req: any, res: Response, next: NextFunction) {
+  public static async createBootcamp(req: Request, res: Response, next: NextFunction) {
     const userId   = req.user.id
     const userRole = req.user.role
 
@@ -134,7 +132,7 @@ class BootcampController {
   //@route    DELETE /api/{apiVer}/bootcamp/:id
   //@access   PRIVATE
   @use(LogRequest)
-  public static async deleteBootcamp(req: any, res: Response, next: NextFunction) {
+  public static async deleteBootcamp(req: Request, res: Response, next: NextFunction) {
     const bootcampId = req.params.id
     const userId     = req.user.id
     const userRole   = req.user.role
