@@ -1,7 +1,6 @@
 import crypto from 'crypto'
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
-import { IUserRequest } from '@interface/middleware'
 import { ErrorResponse, htmlContent } from '@util'
 import { sendEmail } from '@util'
 import { User } from '@model'
@@ -13,11 +12,6 @@ import { RESPONSE, PathDir, thirtyDaysFromNow, fiveSecFromNow, expire } from '@c
  * @path {baseUrl}/auth
  */
 class AuthController {
-  private static _userId: string
-
-  static setUserId(req: IUserRequest) {
-    this._userId = req.user.id
-  }
   /**
    * _sendTokenResponse - Send Token Response
    *
@@ -166,8 +160,8 @@ class AuthController {
   //@route  PUT /update
   //@access PRIVATE
   @use(LogRequest)
-  public static async updateAccount(req: any, res: Response, _next: NextFunction) {
-    AuthController.setUserId(req)
+  public static async updateAccount(req: Request, res: Response, _next: NextFunction) {
+    const userId = req.user.id
 
     const fieldsToUpdate = {
       firstname: req.body.firstname,
@@ -181,8 +175,8 @@ class AuthController {
     }
 
     try {
-      const user = await User.findByIdAndUpdate(AuthController._userId, fieldsToUpdate, {
-        new: true,
+      const user = await User.findByIdAndUpdate(userId, fieldsToUpdate, {
+        new          : true,
         runValidators: true
       })
 
@@ -205,10 +199,9 @@ class AuthController {
   //@route  PUT /update-password
   //@access PRIVATE
   @use(LogRequest)
-  public static async updatePassword(req: any, res: Response, next: NextFunction) {
-    AuthController.setUserId(req)
-
-    const user = await User.findById(AuthController._userId).select(Key.Password)
+  public static async updatePassword(req: Request, res: Response, next: NextFunction) {
+    const userId = req.user.id
+    const user   = await User.findById(userId).select(Key.Password)
 
     if (!(await user?.matchPassword(req.body.currentPassword))) {
       return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
@@ -238,7 +231,7 @@ class AuthController {
   @use(LogRequest)
   public static async forgotPassword(req: Request, res: Response, next: NextFunction) {
     const userEmail = req.body.email
-    const user = await User.findOne({ email: req.body.email })
+    const user      = await User.findOne({ email: req.body.email })
 
     if (!user) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userEmail), (res.statusCode = Code.NOT_FOUND)))
@@ -250,9 +243,9 @@ class AuthController {
     const message = RESPONSE.error.RESET_MESSAGE(PathDir.RESET_FULL_EMAIL(req, resetToken))
     try {
       await sendEmail({
-        email: user.email,
+        email  : user.email,
         subject: RESPONSE.error.RESET_SUBJECT,
-        html: htmlContent(user, resetToken)
+        html   : htmlContent(user, resetToken)
       })
     } catch (error) {
       if (error instanceof Error) {
@@ -272,7 +265,7 @@ class AuthController {
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.EMAIL_SENT,
-        data: user
+        data   : user
       })
     } catch (error: any) {
       goodlog.error(error?.message)
@@ -300,8 +293,8 @@ class AuthController {
       return next(new ErrorResponse(RESPONSE.error.INVALID_TOKEN, (res.statusCode = Code.ALREADY_REPORTED)))
     }
 
-    user.password = req.body.password
-    user.resetPasswordToken = ''
+    user.password            = req.body.password
+    user.resetPasswordToken  = ''
     user.resetPasswordExpire = expire
     await user.save()
 
