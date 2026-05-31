@@ -29,7 +29,7 @@ class CourseController {
         data   : course
       })
     } else {
-      res.status(Code.OK).json(res.advancedResult)
+      res.status(Code.OK).json(res.advanceResult)
     }
   }
 
