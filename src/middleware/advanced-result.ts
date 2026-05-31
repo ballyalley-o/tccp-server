@@ -15,12 +15,12 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
 
   if (req.query.select) {
     const fields = (req.query.select as string).split(',').join(' ')
-    query = query.select(fields)
+          query  = query.select(fields)
   }
 
   if (req.query.sort) {
     const sortBy = (req.query.sort as string).split(',').join(' ')
-    query = query.sort(sortBy)
+          query  = query.sort(sortBy)
   } else {
     query = query.sort(Key.Name)
   }
@@ -33,7 +33,7 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
         query      = query.skip(startIndex).limit(limit)
 
   if (populate) {
-    query = query.populate(populate)
+    query = query.populate(populate).lean()
   }
 
   const results = await query
@@ -46,7 +46,7 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
     pagination.prev = { page: page - 1, limit }
   }
 
-  res.advancedResult = {
+  res.advanceResult = {
     success: true,
     message: RESPONSE.success[200],
     count  : results.length,
