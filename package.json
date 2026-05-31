@@ -39,6 +39,7 @@
     "bcryptjs": "^2.4.3",
     "clipboardy": "^4.0.0",
     "colors": "^1.4.0",
+    "compression": "^1.8.1",
     "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -60,6 +61,7 @@
     "xss": "^1.0.14"
   },
   "devDependencies": {
+    "@types/compression": "^1.8.1",
     "bson-objectid": "^2.0.4",
     "nodemon": "^3.0.3",
     "reflect-metadata": "^0.2.1",
