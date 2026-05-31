@@ -1,6 +1,4 @@
-import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
-import { IUserRequest } from '@interface/middleware'
 import { Feedback, Bootcamp } from '@model'
 import { ErrorResponse } from '@util'
 import { Key, Code } from '@constant/enum'
@@ -13,26 +11,6 @@ import { LogRequest, use } from '@decorator'
  *
  */
 class FeedbackController {
-  private static _feedbackId: string
-  private static _bootcampId: string
-  private static _userId: string
-  private static _userRole: string
-
-  /**
-   * setRequest - Set request parameters
-   *
-   * @param req - Request
-   * @returns void
-   */
-  static setRequest(req: Request) {
-    this._feedbackId = req.params.id
-    this._bootcampId = req.params.bootcampId
-  }
-
-  static setUserId(req: IUserRequest) {
-    this._userId = req.user.id
-    this._userRole = req.user.role
-  }
 
   //@desc     Get ALL Feedbacks
   //@route    GET /feedback
@@ -43,7 +21,7 @@ class FeedbackController {
       try {
         const feedbacks = await Feedback.find({ bootcamp: req.params.bootcampId })
           .populate({
-            path: Key.BootcampVirtual,
+            path  : Key.BootcampVirtual,
             select: Key.DefaultSelect
           })
           .populate({
@@ -58,7 +36,6 @@ class FeedbackController {
           data: feedbacks
         })
       } catch (error: any) {
-        goodlog.error(error?.message || error)
         res.status(Code.BAD_REQUEST).json({
           success: false,
           message: error?.message || RESPONSE.error.FAILED_FIND,
@@ -67,9 +44,8 @@ class FeedbackController {
       }
     } else {
       try {
-        res.status(Code.OK).json(res.advancedResult)
+        res.status(Code.OK).json(res.advanceResult)
       } catch (error: any) {
-        goodlog.error(error?.message || error)
         res.status(Code.BAD_REQUEST).json({
           success: false,
           message: error?.message || RESPONSE.error.FAILED_FIND,
@@ -84,28 +60,27 @@ class FeedbackController {
   //@access   PUBLIC
   @use(LogRequest)
   public static async getFeedback(req: Request, res: Response, next: NextFunction) {
-    FeedbackController.setRequest(req)
+    const feedbackId = req.params.id
 
-    const feedback = await Feedback.findById(FeedbackController._feedbackId).populate({
-      path: Key.BootcampVirtual,
+    const feedback = await Feedback.findById(feedbackId).populate({
+      path  : Key.BootcampVirtual,
       select: Key.DefaultSelect
     })
 
     if (!feedback) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     try {
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success[200],
-        data: feedback
+        data   : feedback
       })
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
-        message: error?.message || RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId),
+        message: error?.message || RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId),
         error
       })
     }
@@ -115,18 +90,14 @@ class FeedbackController {
   //@route    POST  /bootcamp/:bootcampId/feedback
   //@access   PUBLIC
   @use(LogRequest)
-  public static async addFeedback(req: any, res: Response, next: NextFunction) {
-    FeedbackController.setRequest(req)
-    FeedbackController.setUserId(req)
-
-    req.body.bootcamp = FeedbackController._bootcampId
-    req.body.user = FeedbackController._userId
-
-    const bootcamp = await Bootcamp.findById(FeedbackController._bootcampId)
+  public static async addFeedback(req: Request, res: Response, next: NextFunction) {
+    const bootcampId = req.params.bootcampId
+    const userId     = req.user.id
+    const bootcamp   = await Bootcamp.findById(bootcampId)
     // const feedbackUser = await Feedback.find({ user: FeedbackController._userId })
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(FeedbackController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     try {
@@ -135,10 +106,9 @@ class FeedbackController {
       res.status(Code.CREATED).json({
         success: true,
         message: RESPONSE.success[201],
-        data: feedback
+        data   : feedback
       })
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_UPLOAD,
@@ -151,35 +121,35 @@ class FeedbackController {
   //@route    PUT /feedback/:id
   //@access   PUBLIC
   @use(LogRequest)
-  public static async updateFeedback(req: any, res: Response, next: NextFunction) {
-    FeedbackController.setRequest(req)
-    FeedbackController.setUserId(req)
+  public static async updateFeedback(req: Request, res: Response, next: NextFunction) {
+    const feedbackId = req.params.id
+    const userId     = req.user.id
+    const userRole   = req.user.role
 
-    let feedback = await Feedback.findById(FeedbackController._feedbackId)
+    let   feedback   = await Feedback.findById(feedbackId)
 
     if (!feedback) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (feedback.user.toString() !== FeedbackController._userId && FeedbackController._userRole !== Key.Admin) {
+    if (feedback.user.toString() !== userId && userRole !== Key.Admin) {
       return next(
-        new ErrorResponse(RESPONSE.error.NOT_OWNER(FeedbackController._userId, FeedbackController._feedbackId), (res.statusCode = Code.UNAUTHORIZED))
+        new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, feedbackId), (res.statusCode = Code.UNAUTHORIZED))
       )
     }
 
     try {
-      feedback = await Feedback.findByIdAndUpdate(FeedbackController._feedbackId, req.body, {
-        new: true,
+      feedback = await Feedback.findByIdAndUpdate(feedbackId, req.body, {
+        new          : true,
         runValidators: true
       })
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.UPDATED,
-        data: feedback
+        data   : feedback
       })
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_UPDATE,
@@ -192,32 +162,31 @@ class FeedbackController {
   //@route     DELETE /feedback/:id
   //@access    PUBLIC
   @use(LogRequest)
-  public static async deleteFeedback(req: any, res: Response, next: NextFunction) {
-    FeedbackController.setRequest(req)
-    FeedbackController.setUserId(req)
-
-    const feedback = await Feedback.findById(FeedbackController._feedbackId)
+  public static async deleteFeedback(req: Request, res: Response, next: NextFunction) {
+    const feedbackId = req.params.id
+    const userId     = req.user.id
+    const userRole   = req.user.role
+    const feedback   = await Feedback.findById(feedbackId)
 
     if (!feedback) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(FeedbackController._feedbackId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (feedback.user.toString() !== FeedbackController._userId && FeedbackController._userRole !== Key.Admin) {
+    if (feedback.user.toString() !== userId && userRole !== Key.Admin) {
       return next(
-        new ErrorResponse(RESPONSE.error.NOT_OWNER(FeedbackController._userId, FeedbackController._feedbackId), (res.statusCode = Code.UNAUTHORIZED))
+        new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, feedbackId), (res.statusCode = Code.UNAUTHORIZED))
       )
     }
 
     try {
-      await Feedback.deleteOne({ _id: FeedbackController._feedbackId })
+      await Feedback.deleteOne({ _id: feedbackId })
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.DELETED,
-        data: {}
+        data   : {}
       })
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_DELETE,
