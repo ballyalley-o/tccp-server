@@ -12,32 +12,14 @@ import { ErrorResponse, DataResponse } from '@util'
  * @path {baseUrl}/api/{apiVer}/bootcamp
  */
 class BootcampController {
-  private static _bootcampId  : string
-  private static _bootcampSlug: string
-  private static _userId      : string
-  private static _userRole    : string
 
-  /**
-   *  setRequest - Set request parameters
-   *
-   * @param req - Request
-   * @returns void
-   */
-  static setRequest(req: Request) {
-    this._bootcampId   = req.params.id
-    this._bootcampSlug = req.params.slug
-  }
-  static setUserId(req: any) {
-    this._userId   = req.user.id
-    this._userRole = req.user.role
-  }
   //@desc     Get ALL bootcamps
   //@route    GET /bootcamp
   //@access   PUBLIC
   @use(LogRequest)
   public static async getBootcamps(_req: Request, res: Response, _next: NextFunction) {
     try {
-      res.status(Code.OK).json(res.advancedResult)
+      res.status(Code.OK).json(res.advanceResult)
     } catch (error: any) {
       goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
@@ -53,15 +35,17 @@ class BootcampController {
   //@access   PUBLIC
   @use(LogRequest)
   public static async getBootcamp(req: Request, res: Response, next: NextFunction) {
-    BootcampController.setRequest(req)
+    const bootcampSlug = req.params.slug
+    const bootcampId   = req.params.id
 
-    const bootcamp = await Bootcamp.findOne({ slug: BootcampController._bootcampSlug })
+    const bootcamp = await Bootcamp.findOne({ slug: bootcampSlug })
       .populate(Key.UserVirtual, Key.BootcampPopulate)
       .populate(Key.CourseVirtual)
       .populate(Key.FeedbackVirtual, 'title body rating user')
+      .lean()
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     try {
@@ -70,7 +54,7 @@ class BootcampController {
       goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
-        message: error?.message || RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId),
+        message: error?.message || RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId),
         error
       })
     }
@@ -81,17 +65,13 @@ class BootcampController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async createBootcamp(req: any, res: Response, next: NextFunction) {
-    // this._userId = req.user.id
-    BootcampController.setUserId(req)
+    const userId   = req.user.id
+    const userRole = req.user.role
 
-    req.body.user = BootcampController._userId
+    const publishedBootcamp = await Bootcamp.findOne({ user: userId })
 
-    const publishedBootcamp = await Bootcamp.findOne({
-      user: BootcampController._userId
-    })
-
-    if (publishedBootcamp && BootcampController._userRole !== Key.Admin) {
-      return next(new ErrorResponse(RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(BootcampController._userId), (res.statusCode = Code.BAD_REQUEST)))
+    if (publishedBootcamp && userRole !== Key.Admin) {
+      return next(new ErrorResponse(RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(userId), (res.statusCode = Code.BAD_REQUEST)))
     }
 
     try {
@@ -99,7 +79,7 @@ class BootcampController {
 
       res.status(Code.CREATED).json({
         success: true,
-        data: bootcamp
+        data   : bootcamp
       })
     } catch (error: any) {
       goodlog.error(error.message || error)
@@ -115,30 +95,30 @@ class BootcampController {
   //@route    PUT /api/{apiVer}/bootcamps/:id
   //@access   PRIVATE
   @use(LogRequest)
-  public static async updateBootcamp(req: any, res: Response, next: NextFunction) {
-    BootcampController.setRequest(req)
-    BootcampController.setUserId(req)
+  public static async updateBootcamp(req: Request, res: Response, next: NextFunction) {
+    const bootcampId = req.params.id
+    const userId     = req.user.id
+    const userRole   = req.user.role
 
-    let bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
+    let bootcamp = await Bootcamp.findOneAndUpdate({ _id: bootcampId }, req.body, {
+        new          : true,
+        runValidators: true
+      })
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (bootcamp.user.toString() !== BootcampController._userRole && BootcampController._userRole !== Key.Admin) {
+    if (bootcamp.user.toString() !== userId && userRole !== Key.Admin) {
       return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
     try {
-      bootcamp = await Bootcamp.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,
-        runValidators: true
-      })
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.UPDATED,
-        data: bootcamp
+        data   : bootcamp
       })
     } catch (error: any) {
       goodlog.error(error?.message || error)
@@ -151,25 +131,26 @@ class BootcampController {
   }
 
   //@desc     DELETE bootcamp
-  //@route    DELETE /api/{apiVer}/bootcamps/:id
+  //@route    DELETE /api/{apiVer}/bootcamp/:id
   //@access   PRIVATE
   @use(LogRequest)
   public static async deleteBootcamp(req: any, res: Response, next: NextFunction) {
-    BootcampController.setRequest(req)
-    BootcampController.setUserId(req)
+    const bootcampId = req.params.id
+    const userId     = req.user.id
+    const userRole   = req.user.role
 
-    const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
+    const bootcamp   = await Bootcamp.findById(bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (bootcamp.user.toString() !== BootcampController._userId && BootcampController._userRole !== Key.Admin) {
+    if (bootcamp.user.toString() !== userId && userRole !== Key.Admin) {
       return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
     try {
-      await Bootcamp.deleteOne({ _id: BootcampController._bootcampId })
+      await Bootcamp.deleteOne({ _id: bootcampId })
 
       res.status(Code.OK).json({ success: true, message: RESPONSE.success.DELETED, data: {} })
     } catch (error: any) {
@@ -189,10 +170,9 @@ class BootcampController {
   public static async getBootcampsInRadius(req: Request, res: Response, _next: NextFunction) {
     const { zipcode, distance } = req.params
 
-    const loc = await App.geocoder.geocode(zipcode)
-    const lat = loc[0].latitude
-    const lng = loc[0].longitude
-
+    const loc    = await App.geocoder.geocode(zipcode)
+    const lat    = loc[0].latitude
+    const lng    = loc[0].longitude
     const radius = Number(distance) / NumKey.EarthRadius
 
     const bootcamps = await Bootcamp.find({
@@ -201,8 +181,8 @@ class BootcampController {
 
     res.status(Code.ACCEPTED).json({
       success: true,
-      count: bootcamps.length,
-      data: bootcamps
+      count  : bootcamps.length,
+      data   : bootcamps
     })
   }
 
@@ -211,31 +191,28 @@ class BootcampController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async createBootcampFeedback(req: Request, res: Response, next: NextFunction) {
-    BootcampController.setRequest(req)
-    BootcampController.setUserId(req)
+    const bootcampId = req.params.id
+    const userId     = req.user.id
+    const userRole   = req.user.role
+
     try {
-      const bootcamp = await Bootcamp.findById(req.params.bootcampId)
+      const bootcamp = await Bootcamp.findById(bootcampId)
       const { title, body, rating } = req.body
 
       if (bootcamp) {
         if (bootcamp.feedback) {
-          const feedbacked = bootcamp.feedback.find((f: any) => f.user.toString() === BootcampController._userId)
+          const feedbacked = bootcamp.feedback.find((f: any) => f.user.toString() === userId)
 
-          if (feedbacked && BootcampController._userRole !== Key.Admin) {
+          if (feedbacked && userRole !== Key.Admin) {
             return next(new ErrorResponse(RESPONSE.error.ONE_FEEDBACK, (res.statusCode = Code.BAD_REQUEST)))
           }
         }
 
-        const feedback = {
-          title,
-          body,
-          rating,
-          user: BootcampController._userId
-        }
+        const feedback = { title, body, rating, user: userId }
 
         bootcamp.feedback.push(feedback)
         bootcamp.totalFeedback = bootcamp.feedback.length
-        bootcamp.rating = bootcamp.feedback.reduce((acc: number, rev: any) => acc + rev.rating, 0) / bootcamp.feedback.length
+        bootcamp.rating        = bootcamp.feedback.reduce((acc: number, rev: any) => acc + rev.rating, 0) / bootcamp.feedback.length
 
         await bootcamp.save()
 
@@ -287,14 +264,13 @@ class BootcampController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async uploadBootcampPhoto(req: any, res: Response, next: NextFunction) {
-    BootcampController.setRequest(req)
+    const bootcampId = req.params.id
+    const photo      = req.files.photo
 
-    const photo = req.files.photo
-
-    const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
+    const bootcamp = await Bootcamp.findById(bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (!req.files) {
@@ -317,11 +293,9 @@ class BootcampController {
       }
 
       try {
-        await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
-          photo: photo.name
-        })
+        await Bootcamp.findByIdAndUpdate(bootcampId, { photo: photo.name })
 
-        const response = DataResponse.success({ photo: photo.name, bootcampName: bootcamp.name }, BootcampController._bootcampId)
+        const response = DataResponse.success({ photo: photo.name, bootcampName: bootcamp.name }, bootcampId)
 
         res.status(Code.OK).json({
           success: true,
@@ -344,14 +318,13 @@ class BootcampController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async uploadBootcampBadge(req: any, res: Response, next: NextFunction) {
-    BootcampController.setRequest(req)
+    const bootcampId = req.params.id
+    const badge      = req.files.badge
 
-    const badge = req.files.badge
-
-    const bootcamp = await Bootcamp.findById(BootcampController._bootcampId)
+    const bootcamp = await Bootcamp.findById(bootcampId)
 
     if (!bootcamp) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(BootcampController._bootcampId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (!req.files) {
@@ -374,11 +347,9 @@ class BootcampController {
       }
 
       try {
-        await Bootcamp.findByIdAndUpdate(BootcampController._bootcampId, {
-          badge: badge.name
-        })
+        await Bootcamp.findByIdAndUpdate(bootcampId, { badge: badge.name })
 
-        const response = DataResponse.success({ photo: badge.name, bootcampName: bootcamp.name }, BootcampController._bootcampId)
+        const response = DataResponse.success({ photo: badge.name, bootcampName: bootcamp.name }, bootcampId)
 
         res.status(Code.OK).json({
           success: true,
