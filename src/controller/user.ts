@@ -12,7 +12,7 @@ import { use, LogRequest } from '@decorator'
  * User Controller
  * @path {baseUrl}/api/{apiVer}/auth/user
  */
-export class UserController {
+class UserController {
   private static _userId: string
 
   /**
@@ -30,7 +30,7 @@ export class UserController {
   @use(LogRequest)
   public static async getUsers(_req: Request, res: Response, _next: NextFunction) {
     try {
-      res.status(Code.OK).json(res.advancedResult)
+      res.status(Code.OK).json(res.advanceResult)
     } catch (error: any) {
       goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
@@ -238,3 +238,5 @@ export class UserController {
     })
   }
 }
+
+export default UserController
