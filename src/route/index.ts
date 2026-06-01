@@ -1,9 +1,10 @@
-import { linkUserRoute } from '@route/user'
-import { linkBootcampRoute } from '@route/bootcamp'
-import { linkFeedbackRoute } from '@route/feedback'
-import { linkCourseRoute } from '@route/course'
-import { linkAuthRoute } from './auth'
 import { Application } from 'express'
+import { linkUserRoute } from './user'
+import { linkBootcampRoute } from './bootcamp'
+import { linkFeedbackRoute } from './feedback'
+import { linkCourseRoute } from './course'
+import { linkAuthRoute } from './auth'
+import { linkSystemRoute } from './system'
 
 const mainRoute = (app: Application) => {
   linkAuthRoute(app)
@@ -11,6 +12,7 @@ const mainRoute = (app: Application) => {
   linkBootcampRoute(app)
   linkFeedbackRoute(app)
   linkCourseRoute(app)
+  linkSystemRoute(app)
 }
 
 export { mainRoute }
