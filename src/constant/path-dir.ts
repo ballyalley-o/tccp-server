@@ -17,20 +17,23 @@ class PathDir {
   }
 
   // path parameters
-  static readonly ORIGIN_PARAM = PathParam.F_SLASH
-  static readonly HOME_PARAM = PathParam.HOME
-  static readonly DASHBOARD_PARAM = PathParam.DASHBOARD
-  static readonly API_PARAM = PathParam.API
-  static readonly AUTH_PARAM = PathParam.AUTH
-  static readonly USER_PARAM = PathParam.USER
-  static readonly COURSE_PARAM = PathParam.COURSE
-  static readonly FEEDBACK_PARAM = PathParam.FEEDBACK
-  static readonly BOOTCAMP_PARAM = PathParam.BOOTCAMP
-  static readonly PHOTO_PARAM = PathParam.PHOTO
-  static readonly LOG_IN_PARAM = PathParam.LOG_IN
-  static readonly LOG_OUT_PARAM = PathParam.LOG_OUT
+  static readonly ORIGIN_PARAM         = PathParam.F_SLASH
+  static readonly HOME_PARAM           = PathParam.HOME
+  static readonly DASHBOARD_PARAM      = PathParam.DASHBOARD
+  static readonly API_PARAM            = PathParam.API
+  static readonly AUTH_PARAM           = PathParam.AUTH
+  static readonly USER_PARAM           = PathParam.USER
+  static readonly COURSE_PARAM         = PathParam.COURSE
+  static readonly FEEDBACK_PARAM       = PathParam.FEEDBACK
+  static readonly BOOTCAMP_PARAM       = PathParam.BOOTCAMP
+  static readonly SYSTEM_PARAM         = PathParam.SYSTEM
+  static readonly PHOTO_PARAM          = PathParam.PHOTO
+  static readonly INFO_PARAM           = PathParam.INFO
+  static readonly HEALTH_PARAM         = PathParam.HEALTH
+  static readonly LOG_IN_PARAM         = PathParam.LOG_IN
+  static readonly LOG_OUT_PARAM        = PathParam.LOG_OUT
   static readonly RESET_PASSWORD_PARAM = PathParam.RESET_PASSWORD
-  static readonly RESET_TOKEN_PARAM = PathParam.RESET_TOKEN
+  static readonly RESET_TOKEN_PARAM    = PathParam.RESET_TOKEN
 
   /**
    * Connect the path
@@ -57,6 +60,10 @@ class PathDir {
   static BOOTCAMP = this._connex(PathDir.API_ROOT, this.BOOTCAMP_PARAM)
   // /course
   static COURSE = this._connex(PathDir.API_ROOT, this.COURSE_PARAM)
+  // /system
+  static SYSTEM        = this._connex(PathDir.API_ROOT, this.SYSTEM_PARAM)
+  static SYSTEM_INFO   = this._connex(PathDir.API_ROOT, this.SYSTEM_PARAM, this.INFO_PARAM)
+  static SYSTEM_HEALTH = this._connex(PathDir.API_ROOT, this.SYSTEM_PARAM, this.HEALTH_PARAM)
   // /feedback
   static FEEDBACK = this._connex(PathDir.API_ROOT, this.FEEDBACK_PARAM)
   // /auth/log-in
