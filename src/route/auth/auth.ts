@@ -1,21 +1,21 @@
 import { Router } from 'express'
 import { AuthController } from '@controller'
 import { protect } from '@middleware'
-import { PathParam } from '@constant/enum'
+import { PathDir } from '@route/dir'
 
 const router = Router()
 
 /**
  * @path - {baseUrl}/api/v0.1/auth
  */
-router.post(PathParam.REGISTER, AuthController.register)
-router.post(PathParam.LOG_IN, AuthController.login)
-router.post(PathParam.LOG_OUT, AuthController.logout)
-router.get(PathParam.ACCOUNT, protect, AuthController.myAccount)
-router.put(PathParam.UPDATE, protect, AuthController.updateAccount)
-router.put(PathParam.UPDATE_PASSWORD, protect, AuthController.updatePassword)
-router.post(PathParam.FORGOT_PASSWORD, AuthController.forgotPassword)
-router.put(PathParam.RESET_URL, AuthController.resetPassword)
+router.post(PathDir.REGISTER, AuthController.register)
+router.post(PathDir.LOG_IN, AuthController.login)
+router.post(PathDir.LOG_OUT, AuthController.logout)
+router.get(PathDir.ACCOUNT, protect, AuthController.myAccount)
+router.put(PathDir.ACCOUNT_UPDATE, protect, AuthController.updateAccount)
+router.put(PathDir.UPDATE_PASSWORD, protect, AuthController.updatePassword)
+router.post(PathDir.FORGOT_PASSWORD, AuthController.forgotPassword)
+router.put(PathDir.RESET_PASSWORD, AuthController.resetPassword)
 
 const authRoute = router
 export default authRoute
