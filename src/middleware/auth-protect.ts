@@ -1,14 +1,14 @@
-import jwt from 'jsonwebtoken'
-import { Request, Response } from 'express'
+import { GLOBAL } from '@config'
+import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 import { ParsedQs } from 'qs'
+import jwt from 'jsonwebtoken'
+import type { AppUserRoleType } from '@typings/app'
 import { asyncHandler } from '@middleware'
-import { ErrorResponse } from '@util'
 import { User } from '@model'
 import { Key, Code } from '@constant/enum'
-import { GLOBAL } from '@config'
 import { RESPONSE } from '@constant'
-import { NextFunction } from 'express'
+import { ErrorResponse } from '@util'
 
 /**
  * Protect routes
@@ -47,7 +47,7 @@ type MiddlewareFunction = (
  * @param roles - roles to be granted access
  * @returns {Function} - middleware function
  */
-const authorize = (...roles: string[]): MiddlewareFunction => {
+const authorize = (...roles: AppUserRoleType[]): MiddlewareFunction => {
   return async (req: any, res: Response, next: NextFunction): Promise<void> => {
     const role = req.user.role
     if (!roles.includes(role)) {
