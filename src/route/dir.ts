@@ -77,22 +77,31 @@ export class PathDir {
     return pathBuilder(API, GLOBAL.API_VERSION || 'v0')
   }
 
+  static ROOT = ROOT
+  static SLUG = pathBuilder(SLUG)
+  static ID   = pathBuilder(ID)
+
   static DASHBOARD = pathBuilder(PathDir.API_ROOT, DASHBOARD)
 
   static AUTH = pathBuilder(PathDir.API_ROOT, AUTH)
   static USER = pathBuilder(PathDir.AUTH, USER)
 
   static BOOTCAMP       = pathBuilder(PathDir.API_ROOT, BOOTCAMP)
-    static REDIR_FEEDBACK = pathBuilder(BOOTCAMP_ID, FEEDBACK)
-    static REDIR_COURSE   = pathBuilder(BOOTCAMP_ID, COURSE)
-    static GET_DISTANCE   = pathBuilder(RADIUS, ZIPCODE, DISTANCE)
-    static UPLOAD_PHOTO   = pathBuilder(ID, PHOTO)
-    static UPLOAD_BADGE   = pathBuilder(ID, BADGE)
-    static UPLOAD_AVATAR  = pathBuilder(ID, AVATAR)
+  static CREATE         = pathBuilder(CREATE)
+  static DISTANCE       = pathBuilder(DISTANCE)
+  static TOP            = pathBuilder(TOP)
+  static REDIR_FEEDBACK = pathBuilder(BOOTCAMP_ID, FEEDBACK)
+  static REDIR_COURSE   = pathBuilder(BOOTCAMP_ID, COURSE)
+  static GET_DISTANCE   = pathBuilder(RADIUS, ZIPCODE, DISTANCE)
+  static UPLOAD_PHOTO   = pathBuilder(ID, PHOTO)
+  static UPLOAD_BADGE   = pathBuilder(ID, BADGE)
+  static UPLOAD_AVATAR  = pathBuilder(ID, AVATAR)
 
   static COURSE   = pathBuilder(PathDir.API_ROOT, COURSE)
 
   static SYSTEM        = pathBuilder(PathDir.API_ROOT, SYSTEM)
+  static INFO          = pathBuilder(INFO)
+  static HEALTH        = pathBuilder(HEALTH)
   static SYSTEM_INFO   = pathBuilder(PathDir.API_ROOT, SYSTEM, INFO)
   static SYSTEM_HEALTH = pathBuilder(PathDir.API_ROOT, SYSTEM, HEALTH)
 

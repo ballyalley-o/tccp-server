@@ -1,7 +1,7 @@
 import express from 'express'
 import { FeedbackController, bootcampController } from '@controller'
 import { advancedResult, protect, authorize } from '@middleware'
-import * as PathParam from '@route/dir'
+import { PathDir } from '@route/dir'
 import { Key } from '@constant/enum'
 import { Feedback } from '@model'
 
@@ -11,7 +11,7 @@ const router = express.Router({ mergeParams: true })
  * @path - {baseUrl}/api/v{apiVer}/feedback
  */
 router
-  .route(PathParam.ROOT)
+  .route(PathDir.ROOT)
   .get(
     advancedResult(Feedback, [
       {
@@ -28,7 +28,7 @@ router
   .post(protect, authorize('user', 'admin'), FeedbackController.addFeedback)
 
 router
-  .route(PathParam.ID)
+  .route(PathDir.ID)
   .get(FeedbackController.getFeedback)
   .put(protect, authorize('user', 'admin'), FeedbackController.updateFeedback)
   .delete(protect, authorize('user', 'admin'), FeedbackController.deleteFeedback)

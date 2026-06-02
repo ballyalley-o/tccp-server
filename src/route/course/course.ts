@@ -4,6 +4,7 @@ import { advancedResult, authorize, protect } from '@middleware'
 import { Course } from '@model'
 import * as PathParam from '@route/dir'
 import { Key } from '@constant/enum'
+import { pathBuilder } from '@util'
 
 const router = Router({ mergeParams: true })
 
@@ -19,7 +20,7 @@ router
   .post(protect, authorize('trainer', 'admin'), CourseController.addCourse)
 
 router
-  .route(PathParam.ID)
+  .route(pathBuilder(PathParam.ID))
   .get(CourseController.getCourse)
   .put(protect, authorize('trainer', 'admin'), CourseController.updateCourse)
   .delete(protect, authorize('trainer', 'admin'), CourseController.deleteCourse)

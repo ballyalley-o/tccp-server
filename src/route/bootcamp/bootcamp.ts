@@ -17,32 +17,32 @@ const router = express.Router()
 router.use(PathDir.REDIR_COURSE, courseRoute)
 router.use(PathDir.REDIR_FEEDBACK, feedbackRoute)
 
-router.route(PathParam.DISTANCE).get(bootcampController.getBootcampsInRadius)
+router.route(PathDir.DISTANCE).get(bootcampController.getBootcampsInRadius)
 router
   .route(PathParam.ROOT)
   .get(
     advancedResult(Bootcamp, [
       {
-        path: Key.UserVirtual,
+        path  : Key.UserVirtual,
         select: 'firstname email role'
       },
       {
-        path: Key.CourseVirtual,
+        path  : Key.CourseVirtual,
         select: 'title duration'
       },
       {
-        path: Key.FeedbackVirtual,
+        path  : Key.FeedbackVirtual,
         select: 'title rating user'
       }
     ]),
     bootcampController.getBootcamps
   )
   .post(bootcampController.createBootcamp)
-router.route(PathParam.CREATE).post(protect, authorize(Key.Trainer, Key.Admin), bootcampController.createBootcamp)
+router.route(PathDir.CREATE).post(protect, authorize(Key.Trainer, Key.Admin), bootcampController.createBootcamp)
 
-router.get(PathParam.TOP, bootcampController.getTopBootcamps)
+router.get(PathDir.TOP, bootcampController.getTopBootcamps)
 router
-  .route(PathParam.SLUG)
+  .route(PathDir.SLUG)
   .get(bootcampController.getBootcamp)
   .put(protect, authorize(Key.Trainer, Key.Admin), bootcampController.updateBootcamp)
   .delete(protect, authorize(Key.Trainer, Key.Admin), bootcampController.deleteBootcamp)
