@@ -1,19 +1,15 @@
 import path from 'path'
 import fs from 'fs'
-import { conNex } from '@util'
 import { ObjectId } from 'mongoose'
-import { oneDay, tenMin } from '@constant'
-import { TransportOptions } from 'nodemailer'
-import { NumKey } from '@constant/enum'
+
 import dotenv from 'dotenv'
 dotenv.config()
 
 const GLOBAL = {
-  APP_NAME           : 'The CodeCoach Projct',
+  APP_NAME           : process.env.APP_NAME || 'TCC Projct',
   APP_SERVER_NAME    : 'tccp-server',
-  API_HOST           : conNex(process.env.API_HOST?.replace('{PORT}', process.env.PORT ?? '') || ''),
-  API_URL            : conNex(process.env.API_URL?.replace('{PORT}', process.env.PORT ?? '') || '', process.env.API_VERSION || ''),
-  CLIENT_DEV_URL     : conNex(process.env.API_HOST?.replace('{PORT}', process.env.DEV_CLIENT_PORT ?? '') || ''),
+  API_HOST           : process.env.API_HOST || '',
+  API_URL            : process.env.API_URL,
   CORS_ALLOWED_ORIGIN: process.env.CORS_ALLOWED_ORIGIN?.split(',') || [],
   API_VERSION        : process.env.API_VERSION || '',
   PORT               : process.env.PORT || 3005,
@@ -21,15 +17,15 @@ const GLOBAL = {
 
   // jwt
   JWT_SECRET         : process.env.JWT_SECRET,
-  JWT_EXP            : oneDay,
+  JWT_EXP            : process.env.JWT_EXP,
   // @db
   DB_URI             : process.env.DB_URI,
   DB_HOST            : (db: any) => db.connection.host,
   DB_NAME            : (db: any) => db.connection.name,
 
   //@photo upload / avatar
-  MAX_AVATAR_UPLOAD  : process.env.MAX_AVATAR_UPLOAD || NumKey.FIVE_HUNDRED_KB,
-  MAX_FILE_UPLOAD    : process.env.MAX_FILE_UPLOAD || NumKey.ONE_MB,
+  MAX_AVATAR_UPLOAD  : process.env.MAX_AVATAR_UPLOAD || 500000,
+  MAX_FILE_UPLOAD    : process.env.MAX_FILE_UPLOAD || 1000000,
   PHOTO_UPLOAD_PATH  : process.env.PHOTO_UPLOAD_PATH,
   PHOTO_FILENAME     : (bootcampId: ObjectId, name: string) => `tccp-${bootcampId}${path.parse(name).ext}`,
   BADGE_FILENAME     : (bootcampId: ObjectId, name: string) => `tccp-b-${bootcampId}${path.parse(name).ext}`,
@@ -58,14 +54,12 @@ const GLOBAL = {
                             user: process.env.SMTP_EMAIL,
                             pass: process.env.SMTP_PASSWORD
                           }
-                        } as TransportOptions,
-
+                        } as {  component?: string | undefined },
   // @limiter - rate limiter
-  RATE_LIMIT_WINDOW   : tenMin,
-  RATE_LIMIT          : NumKey.RATE_LIMIT,
+  RATE_LIMIT          : 100,
   LIMITER             : {
-                          windowMs: tenMin,
-                          max: NumKey.RATE_LIMIT
+                          windowMs: 10 * 60 * 1000, // ten min,
+                          max: 100
                         },
   // @geocoder
   GEOCODER_PROVIDER   : process.env.GEOCODER_PROVIDER,
