@@ -1,5 +1,5 @@
 import { Application } from 'express'
-import { PathDir } from '@constant'
+import { PathDir } from '@route/dir'
 import authRoute from '@route/auth/auth'
 
 const linkAuthRoute = (app: Application) => {
