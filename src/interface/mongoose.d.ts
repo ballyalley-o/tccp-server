@@ -11,38 +11,38 @@ declare global {
 type Model = IBootcamp | IUser | IDefault | ICourse | ICourseExtended | IFeedback | IFeedbackExtended
 
 declare interface IDefault {
-  createdBy: Schema.Types.ObjectId
-  updatedBy: Schema.Types.ObjectId
+  createdBy : Schema.Types.ObjectId
+  updatedBy : Schema.Types.ObjectId
   isArchived: boolean
-  isActive: boolean
+  isActive  : boolean
 }
 
 declare interface IUser {
-  _id?: Mongoose.Schema.Types.ObjectId
-  firstname: string
-  lastname: string
-  email: string
-  role: Schema.Types.ObjectId
-  password: string
-  location: string
-  username: string
-  avatar: string
-  cohort: Schema.Types.ObjectId
-  progress: Schema.Types.ObjectId
-  organization?: string
-  resetPasswordToken: string
-  resetPasswordExpire: Date
-  getSignedJwtToken(): string
-  getResetPasswordToken(): string
-  matchPassword(enteredPassword: string): Promise<boolean>
+  _id                                   ?: Mongoose.Schema.Types.ObjectId
+  firstname                              : string
+  lastname                               : string
+  email                                  : string
+  role                                   : Schema.Types.ObjectId
+  password                               : string
+  location                               : string
+  username                               : string
+  avatar                                 : string
+  cohort                                 : Schema.Types.ObjectId
+  progress                               : Schema.Types.ObjectId
+  organization                          ?: string
+  resetPasswordToken                     : string
+  resetPasswordExpire                    : Date
+  getSignedJwtToken()                    : string
+  getResetPasswordToken()                : string
+  matchPassword(enteredPassword: string) : Promise<boolean>
 }
 
 declare interface IFeedback {
-  title: string
-  body: string
-  rating: number
+  title   : string
+  body    : string
+  rating  : number
   bootcamp: Schema.Types.ObjectId
-  user: Schema.Types.ObjectId
+  user    : Schema.Types.ObjectId
 }
 
 declare interface IFeedbackExtended extends IFeedback {
@@ -66,38 +66,38 @@ declare interface ICourseExtended extends ICourse {
 }
 
 declare interface IBootcamp {
-  _id: Mongoose.Schema.Types.ObjectId
-  name: string
-  slug: string
+  _id        : Mongoose.Schema.Types.ObjectId
+  name       : string
+  slug       : string
   description: string
-  website: string
-  phone: string
-  email: string
-  address: string
-  location: {
-    type: string
-    coordinates: [number | undefined, number | undefined]
+  website    : string
+  phone      : string
+  email      : string
+  address    : string
+  location   : {
+    type            : string
+    coordinates     : [number | undefined, number | undefined]
     formattedAddress: string
-    street: string
-    city: string
-    state: string
-    zipcode: string
-    country: string
+    street          : string
+    city            : string
+    state           : string
+    zipcode         : string
+    country         : string
   }
-  careers: [string]
-  duration: string
-  averageCost: number
-  photo: string
-  badge: string
-  housing: boolean
+  careers      : [string]
+  duration     : string
+  averageCost  : number
+  photo        : string
+  badge        : string
+  housing      : boolean
   jobAssistance: boolean
-  jobGuarantee: boolean
-  acceptGi: boolean
-  rating: number
+  jobGuarantee : boolean
+  acceptGi     : boolean
+  rating       : number
   totalFeedback: number
-  feedback: [Schema.Types.ObjectId]
-  course: Schema.Types.ObjectId
-  user: Schema.Types.ObjectId
+  feedback     : [Schema.Types.ObjectId]
+  course       : Schema.Types.ObjectId
+  user         : Schema.Types.ObjectId
 }
 
 declare interface IBootcampExtended extends IBootcamp {
