@@ -1,5 +1,5 @@
 import { Application } from 'express'
-import { PathDir } from '@constant'
+import { PathDir } from '@route/dir'
 import courseRoute from '@route/course/course'
 
 const linkCourseRoute = (app: Application) => {

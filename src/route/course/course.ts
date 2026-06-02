@@ -2,28 +2,29 @@ import { Router } from 'express'
 import { CourseController } from '@controller'
 import { advancedResult, authorize, protect } from '@middleware'
 import { Course } from '@model'
-import { Key, PathParam } from '@constant/enum'
+import * as PathParam from '@route/dir'
+import { Key } from '@constant/enum'
 
 const router = Router({ mergeParams: true })
-/**
- * @path - {baseUrl}/api/v0.1/course
- */
+
 router
-  .route(PathParam.F_SLASH)
+  .route(PathParam.ROOT)
   .get(
     advancedResult(Course, {
-      path: Key.BootcampVirtual,
+      path  : Key.BootcampVirtual,
       select: Key.DefaultSelect
     }),
     CourseController.getCourses
   )
-  .post(protect, authorize(Key.Trainer, Key.Admin), CourseController.addCourse)
+  .post(protect, authorize('trainer', 'admin'), CourseController.addCourse)
 
 router
   .route(PathParam.ID)
   .get(CourseController.getCourse)
-  .put(protect, authorize(Key.Trainer, Key.Admin), CourseController.updateCourse)
-  .delete(protect, authorize(Key.Trainer, Key.Admin), CourseController.deleteCourse)
+  .put(protect, authorize('trainer', 'admin'), CourseController.updateCourse)
+  .delete(protect, authorize('trainer', 'admin'), CourseController.deleteCourse)
 
-const courseRoute = router
-export default courseRoute
+/**
+ * @path - {baseUrl}/api/v0.1/course
+ */
+export default router
