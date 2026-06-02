@@ -6,3 +6,7 @@ declare interface IIsConnected {
   isConnected: boolean
   [key: string]: any
 }
+
+declare interface UrlBuilderType {
+  (base: string, ...parts: string[])
+}
