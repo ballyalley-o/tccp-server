@@ -1,10 +1,9 @@
-export { default as RESPONSE } from '@constant/response'
-export { default as CONTENT } from '@constant/content'
-export { default as HTML } from '@constant/html'
-export { default as Key } from '@constant/enum/key'
-export { default as PathDir } from '@constant/path-dir'
-export { REGEX, RegexKey } from '@constant/regex'
-export { REMOVE_FIELDS } from '@constant/remove-fields'
+export { default as RESPONSE } from './response'
+export { default as CONTENT } from './content'
+export { default as HTML } from './html'
+export { default as Key } from './enum/key'
+export { REGEX, RegexKey } from './regex'
+export { REMOVE_FIELDS } from './remove-fields'
 export {
   expire,
   fiveSecFromNow,
@@ -22,4 +21,4 @@ export {
   twoDaysFromNow,
   fifteenDaysFromNow,
   thirtyDaysFromNow,
-} from '@constant/max-age'
+} from './max-age'
