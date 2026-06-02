@@ -14,10 +14,10 @@ const TAG = Key.User
 const UserSchema: Schema<IUser> = new Schema<IUser>(
   {
     firstname: {
-      type: String,
+      type    : String,
       required: [true, SCHEMA.FIRST_NAME],
-      min: 3,
-      max: 60,
+      min     : 3,
+      max     : 60,
       validate: {
         validator: function (v: string) {
           return v.length >= 3 && v.length <= 60
@@ -27,8 +27,8 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     },
     lastname: {
       type: String,
-      min: 3,
-      max: 60,
+      min     : 3,
+      max     : 60,
       validate: {
         validator: function (v: string) {
           return v.length >= 3 && v.length <= 60
@@ -37,42 +37,42 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
       }
     },
     email: {
-      type: String,
+      type    : String,
       required: [true, SCHEMA.EMAIL],
-      unique: true,
-      match: [REGEX.EMAIL, SCHEMA.EMAIL]
+      unique  : true,
+      match   : [REGEX.EMAIL, SCHEMA.EMAIL]
     },
     password: {
-      type: String,
-      required: [true, SCHEMA.PASSWORD],
+      type     : String,
+      required : [true, SCHEMA.PASSWORD],
       minlength: 6,
-      select: false
+      select   : false
     },
     // TODO: #68
     organization: {
-      type: String,
+      type    : String,
       required: function () {
         return this.role === 'admin'
       }
     },
     username: {
-      type: String,
+      type    : String,
       required: true,
-      unique: true
+      unique  : true
     },
     role: {
-      type: String,
-      enum: Object.values(Role),
-      default: Role.STUDENT
+      type   : String,
+      enum   : Object.values(Role),
+      default: 'user'
     },
     avatar: {
-      type: String,
+      type   : String,
       default: SCHEMA.DEFAULT_AVATAR
     },
     location: {
       type: String
     },
-    resetPasswordToken: String,
+    resetPasswordToken : String,
     resetPasswordExpire: Date
   },
   {
