@@ -1,86 +1,86 @@
 enum Key {
-  Save = 'save',
+  Save   = 'save',
   Remove = 'remove',
-  Name = 'name',
-  Host = 'host',
-  Image = 'image',
+  Name   = 'name',
+  Host   = 'host',
+  Image  = 'image',
   Script = 'script',
 
   MorganShort = 'short',
-  MorganDev = 'dev',
+  MorganDev   = 'dev',
 
-  // Roles
+    // Roles
   Trainer = 'trainer',
-  Admin = 'admin',
+  Admin   = 'admin',
   Student = 'student',
 
-  Client = 'client',
-  Server = 'server',
-  Public = 'public',
+  Client    = 'client',
+  Server    = 'server',
+  Public    = 'public',
   IndexHtml = 'index.html',
 
-  // @tag
-  id = '_id',
-  User = 'User',
-  Course = 'Course',
+    // @tag
+  id       = '_id',
+  User     = 'User',
+  Course   = 'Course',
   Bootcamp = 'Bootcamp',
-  Cohort = 'Cohort',
+  Cohort   = 'Cohort',
   Feedback = 'Feedback',
 
-  UserVirtual = 'user',
+  UserVirtual       = 'user',
   UserCourseVirtual = 'user course feedback',
-  CourseVirtual = 'course',
-  BootcampVirtual = 'bootcamp',
-  FeedbackVirtual = 'feedback',
+  CourseVirtual     = 'course',
+  BootcampVirtual   = 'bootcamp',
+  FeedbackVirtual   = 'feedback',
 
-  CourseSelect = 'name description',
-  DefaultSelect = 'name description',
+  CourseSelect       = 'name description',
+  DefaultSelect      = 'name description',
   OrganizationSelect = 'firstname email organization',
-  PasswordSelect = '-password',
-  BootcampPopulate = 'firstname email organization',
-  TotalFeedback = 'totalFeedback',
+  PasswordSelect     = '-password',
+  BootcampPopulate   = 'firstname email organization',
+  TotalFeedback      = 'totalFeedback',
 
   Cookie = 'cookie',
-  Token = 'token',
+  Token  = 'token',
   Bearer = 'Bearer',
-  None = 'none',
+  None   = 'none',
 
   HTTPAdapter = 'https',
 
-  Hex = 'hex',
+  Hex        = 'hex',
   CryptoHash = 'sha256',
-  // @error keys
-  ObjectId = 'ObjectId',
-  CastError = 'CastError',
-  Connected = 'CONNECTED 🟢',
-  NotConnected = 'NOT CONNECTED 🔴',
-  Environment = ' ENVIRONMENT: ',
-  Production = 'production',
-  Development = 'development',
-  Password = '+password',
+    // @error keys
+  ObjectId           = 'ObjectId',
+  CastError          = 'CastError',
+  Connected          = 'CONNECTED 🟢',
+  NotConnected       = 'NOT CONNECTED 🔴',
+  Environment        = ' ENVIRONMENT: ',
+  Production         = 'production',
+  Development        = 'development',
+  Password           = '+password',
   UnhandledRejection = 'unhandledRejection',
 
-  // @logger - req
+    // @logger - req
   ReqMethod = ' Request Method: ',
-  ReqURL = ' Request URL: ',
-  ReqTime = ' Request Time: ',
-  // @logger - server
-  ServerPort = ' SERVER PORT: ',
+  ReqURL    = ' Request URL: ',
+  ReqTime   = ' Request Time: ',
+    // @logger - server
+  ServerPort       = ' SERVER PORT: ',
   ServerAPIVersion = ' API VERSION: ',
-  ServerStatus = ' SERVER STATUS: ',
+  ServerStatus     = ' SERVER STATUS: ',
 
-  // template params
-  ResetLink = '{{resetLink}}',
-  Username = '{{username}}',
+    // template params
+  ResetLink    = '{{resetLink}}',
+  Username     = '{{username}}',
   EmailContent = '{{emailContent}}',
 
-  // @nodemailer - mailtrap
-  MessageSent = ' Message sent: %s ',
+    // @nodemailer - mailtrap
+  MessageSent  = ' Message sent: %s ',
   MessageError = ' Error occurred: %s ',
 
-  // @geocoder
-  Google = 'google',
-  MapQuest = 'mapquest',
+    // @geocoder
+  Google       = 'google',
+  MapQuest     = 'mapquest',
   GeocoderType = 'Point'
 }
 
