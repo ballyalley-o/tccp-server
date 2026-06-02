@@ -1,11 +1,11 @@
 import 'reflect-metadata'
-import { PathDir } from '@constant'
-import { conNex } from '@util'
-import { AppRouter } from '@app-router'
+import { PathDir }         from '@route/dir'
+import { pathBuilder }     from '@util'
+import { AppRouter }       from '@app-router'
 import { Method, MetaKey } from '@constant/enum'
-import { autoValidate } from '@decorator/body-validator'
+import { autoValidate }    from '@decorator/body-validator'
 
-/**
+  /**
  *
  * @param routePrefix - The prefix for the route
  * @returns - A function that takes in a target and assigns the routeHandler to the router
@@ -15,8 +15,8 @@ function controller(routePrefix: string) {
     const router = AppRouter.instance
 
     Object.getOwnPropertyNames(target.prototype).forEach((key) => {
-      const routeHandler = target.prototype[key]
-      const path = Reflect.getMetadata(MetaKey.path, target.prototype, key)
+      const routeHandler   = target.prototype[key]
+      const path           = Reflect.getMetadata(MetaKey.path, target.prototype, key)
       const method: Method = Reflect.getMetadata(
         MetaKey.method,
         target.prototype,
@@ -30,7 +30,7 @@ function controller(routePrefix: string) {
       const validator = autoValidate(requiredKeys)
 
       if (path) {
-        let connectedPath = conNex(PathDir.API_ROOT, routePrefix, path)
+        let connectedPath = pathBuilder(PathDir.API_ROOT, routePrefix, path)
         router[method](connectedPath, ...middlewares, validator, routeHandler)
       }
     })
