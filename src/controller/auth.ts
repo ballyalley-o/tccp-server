@@ -1,12 +1,12 @@
+import { Request, Response, NextFunction } from 'express'
 import crypto from 'crypto'
 import goodlog from 'good-logs'
-import { Request, Response, NextFunction } from 'express'
-import { ErrorResponse, htmlContent } from '@util'
-import { sendEmail } from '@util'
 import { User } from '@model'
-import { Key, Code } from '@constant/enum'
 import { use, LogRequest } from '@decorator'
-import { RESPONSE, PathDir, thirtyDaysFromNow, fiveSecFromNow, expire } from '@constant'
+import { PathDir } from '@route/dir'
+import { Key, Code } from '@constant/enum'
+import { RESPONSE, thirtyDaysFromNow, fiveSecFromNow, expire } from '@constant'
+import { ErrorResponse, htmlContent, sendEmail } from '@util'
 
 /**
  * @path {baseUrl}/auth
