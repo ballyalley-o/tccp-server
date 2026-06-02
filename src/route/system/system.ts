@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import { SystemController } from '@controller/system'
-import { PathParam } from '@constant/enum'
+import { PathDir } from '@route/dir'
 
 const router = Router({ mergeParams: true })
 
-router.get(PathParam.INFO, SystemController.getInfo)
-router.get(PathParam.HEALTH, SystemController.getHealth)
+router.get(PathDir.SYSTEM_INFO, SystemController.getInfo)
+router.get(PathDir.SYSTEM_HEALTH, SystemController.getHealth)
 
 /**
  * @path - {baseUrl}/api/{API_VERSION}/system
