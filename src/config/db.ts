@@ -38,7 +38,17 @@ const connectDb = async (isConnected: boolean) => {
     return dbConnect
   } catch (error: any) {
     goodlog.error(error.message)
-    process.exit()
+    process.on('SIGINT', async () => {
+      await mongoose.connection.close()
+      goodlog.info('MongoDB connection closed')
+      process.exit(0)
+    })
+
+    process.on('SIGTERM', async () => {
+      await mongoose.connection.close()
+      goodlog.info('MongoDB connection closed')
+      process.exit(0)
+    })
   }
 }
 
