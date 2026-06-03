@@ -12,15 +12,20 @@ const DATABASE_INDEX = {
     user    : 1,
   }),
   USER: createIndex({
+    email    : 1,
     username : 1,
     firstname: 1,
   }),
   BOOTCAMP: createIndex({
     averageRating: 1,
+    user: 1,
+    location: '2dsphere'
   }),
   COURSE: createIndex({
     duration: 1,
     tuition : 1,
+    bootcamp: 1,
+    user: 1
   }),
 }
 

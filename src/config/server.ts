@@ -89,13 +89,22 @@ class App {
    */
   constructor() {
     this._app = express()
-    this._app.use(express.json())
-    this._app.use(express.urlencoded({ extended: true }))
+    this._app.use(compression({
+      threshold: 1024,
+      level: 6,
+      filter: (req, res) => {
+        if (req.headers['x-no-compression']) {
+          return false
+        }
+        return compression.filter(req, res)
+      }
+    }))
+    this._app.use(express.json({ limit: '10mb' }))
+    this._app.use(express.urlencoded({ extended: true, limit: '10mb' }))
     this._app.use(express.static(Key.Public))
-    this._app.use(compression())
     this._app.use(morgan('combined'))
     this._app.use(cookieParser())
-    this._app.use(fileupload())
+    this._app.use(fileupload({ limits: { fileSize: 50 * 1024 * 1024 } }))
     this._app.use(cors(corsConfig))
     this._app.use(mongoSanitize())
     this._app.use(helmet())

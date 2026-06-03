@@ -45,22 +45,22 @@ class AuthController {
   @use(LogRequest)
   public static async register(req: Request, res: Response, next: NextFunction) {
     const { email, username, password } = req.body
-    const emailExist                    = await User.findOne({ email })
-    const usernameExist                 = await User.findOne({ username })
-
-    if (emailExist) {
-      res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), (res.statusCode = Code.FORBIDDEN)))
-    }
-
-    if (usernameExist) {
-      res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-      return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), (res.statusCode = Code.FORBIDDEN)))
-    }
 
     try {
-      const user = await User.create(req.body)
+      const [emailExists, usernameExists] = await Promise.all([
+        User.findOne({ email }).lean(),
+        User.findOne({ username }).lean()
+      ])
 
+      if (emailExists) {
+        return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), (res.statusCode = Code.FORBIDDEN)))
+      }
+
+      if (usernameExists) {
+        return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), (res.statusCode = Code.FORBIDDEN)))
+      }
+
+      const user = await User.create(req.body)
       AuthController._sendTokenResponse(user, Code.CREATED, res)
     } catch (error: any) {
       goodlog.error(error?.message)
@@ -78,6 +78,7 @@ class AuthController {
   @use(LogRequest)
   public static async login(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body
+    
     try {
       if (!email || !password) {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
@@ -85,19 +86,11 @@ class AuthController {
 
       const user = await User.findOne({ email }).select(Key.Password)
 
-      if (!user) {
+      if (!user || !(await user.matchPassword(password))) {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
       }
 
-      const isMatch = await user.matchPassword(password)
-
-      if (!isMatch) {
-        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
-      }
-
-      if (user) {
-        AuthController._sendTokenResponse(user, Code.OK, res)
-      }
+      AuthController._sendTokenResponse(user, Code.OK, res)
     } catch (error: any) {
       if (error instanceof Error) {
         goodlog.log(error.message)

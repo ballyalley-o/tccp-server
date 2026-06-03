@@ -20,12 +20,12 @@ class CourseController {
     const bootcampId =  req.params.bootcampId
 
     if (bootcampId) {
-      const course = await Course.find({ bootcamp: bootcampId })
+      const courses = await Course.find({ bootcamp: bootcampId }).lean()
 
       res.status(Code.OK).json({
         success: true,
-        count  : course.length,
-        data   : course
+        count  : courses.length,
+        data   : courses
       })
     } else {
       res.status(Code.OK).json(res.advanceResult)
@@ -47,20 +47,12 @@ class CourseController {
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
-    try {
-      res.status(Code.OK).json({
-        success: true,
-        message: RESPONSE.success[200],
-        data   : course
-      })
-    } catch (error: any) {
-      goodlog.error(error?.message || error)
-      res.status(Code.BAD_REQUEST).json({
-        success: false,
-        message: error?.message || RESPONSE.error.NOT_FOUND_COURSE(courseId),
-        error
-      })
-    }
+
+    res.status(Code.OK).json({
+      success: true,
+      message: RESPONSE.success[200],
+      data   : course
+    })
   }
 
   //@desc   Add a course
@@ -72,7 +64,7 @@ class CourseController {
     const userId     = req.user.id
     const userRole   = req.user.role
 
-    const bootcamp = await Bootcamp.findById(bootcampId)
+    const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
 
     if (!bootcamp) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
@@ -108,10 +100,10 @@ class CourseController {
     const userId     = req.user.id
     const userRole   = req.user.role
 
-    let course = await Course.findById(courseId)
+    const course = await Course.findById(courseId).select('user').lean()
 
     if (!course) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (course.user.toString() !== userId && userRole !== Key.Admin) {
@@ -121,7 +113,7 @@ class CourseController {
     }
 
     try {
-      course = await Course.findByIdAndUpdate(courseId, req.body, {
+      const updatedCourse = await Course.findByIdAndUpdate(courseId, req.body, {
         new          : true,
         runValidators: true
       })
@@ -129,7 +121,7 @@ class CourseController {
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.UPDATED,
-        data   : course
+        data   : updatedCourse
       })
     } catch (error: any) {
       goodlog.error(error?.message || error)
@@ -149,7 +141,7 @@ class CourseController {
     const userId   = req.user.id
     const userRole = req.user.role
 
-    const course   = await Course.findById(courseId)
+    const course = await Course.findById(courseId).select('user').lean()
 
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))

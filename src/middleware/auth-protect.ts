@@ -9,6 +9,7 @@ import { User } from '@model'
 import { Key, Code } from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { ErrorResponse } from '@util'
+import { cache } from '@util/cache'
 
 /**
  * Protect routes
@@ -25,10 +26,25 @@ const protect = asyncHandler(async (req: any, res, next) => {
   if (!token) {
     return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
   }
+
   try {
     const decoded = jwt.verify(token, GLOBAL.JWT_SECRET as string) as any
-    req.user = await User.findById(decoded.id).select(Key.PasswordSelect)
+    const cacheKey = `user:${decoded.id}`
 
+    // Try to get user from cache first
+    let user = cache.get(cacheKey)
+
+    if (!user) {
+      // Cache miss - fetch from database
+      user = await User.findById(decoded.id).select(Key.PasswordSelect)
+
+      if (user) {
+        // Cache the user for 5 minutes
+        cache.set(cacheKey, user, 5 * 60 * 1000)
+      }
+    }
+
+    req.user = user
     next()
   } catch (err) {
     return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))

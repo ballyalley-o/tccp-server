@@ -98,10 +98,7 @@ class BootcampController {
     const userId     = req.user.id
     const userRole   = req.user.role
 
-    let bootcamp = await Bootcamp.findOneAndUpdate({ _id: bootcampId }, req.body, {
-        new          : true,
-        runValidators: true
-      })
+    const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
 
     if (!bootcamp) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
@@ -112,11 +109,15 @@ class BootcampController {
     }
 
     try {
+      const updatedBootcamp = await Bootcamp.findByIdAndUpdate(bootcampId, req.body, {
+        new          : true,
+        runValidators: true
+      })
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.UPDATED,
-        data   : bootcamp
+        data   : updatedBootcamp
       })
     } catch (error: any) {
       goodlog.error(error?.message || error)
@@ -137,7 +138,7 @@ class BootcampController {
     const userId     = req.user.id
     const userRole   = req.user.role
 
-    const bootcamp   = await Bootcamp.findById(bootcampId)
+    const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
 
     if (!bootcamp) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
@@ -175,7 +176,7 @@ class BootcampController {
 
     const bootcamps = await Bootcamp.find({
       location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
-    })
+    }).lean()
 
     res.status(Code.ACCEPTED).json({
       success: true,
