@@ -4,21 +4,6 @@ import GLOBAL from '@config/global'
 
 mongoose.set('strictQuery', true)
 
-mongoose.connection.on('connected', () => {
-  goodlog.info('DB CONNECTED')
-})
-
-mongoose.connection.on('disconnected', () => {
-  goodlog.warn('DB DISCONNECTED')
-})
-
-mongoose.connection.on('reconnected', () => {
-  goodlog.info('DB RECONNECTED')
-})
-
-mongoose.connection.on('error', (err) => {
-  goodlog.error(`DB ERR: ${err.message}`)
-})
 
 const connectDb = async (isConnected: boolean) => {
   try {
