@@ -99,8 +99,8 @@ class App {
         return compression.filter(req, res)
       }
     }))
-    this._app.use(express.json({ limit: '10mb' }))
-    this._app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+    this._app.use(express.json({ limit: GLOBAL.EXPRESS_MAX_BODY_SIZE }))
+    this._app.use(express.urlencoded({ extended: true, limit: GLOBAL.EXPRESS_MAX_BODY_SIZE }))
     this._app.use(express.static(Key.Public))
     this._app.use(morgan('combined'))
     this._app.use(cookieParser())

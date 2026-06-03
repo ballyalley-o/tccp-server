@@ -23,7 +23,7 @@ const GLOBAL = {
   DB_HOST            : (db: any) => db.connection.host,
   DB_NAME            : (db: any) => db.connection.name,
 
-  //@photo upload / avatar
+  // photo upload / avatar
   MAX_AVATAR_UPLOAD  : process.env.MAX_AVATAR_UPLOAD || 500000,
   MAX_FILE_UPLOAD    : process.env.MAX_FILE_UPLOAD || 1000000,
   PHOTO_UPLOAD_PATH  : process.env.PHOTO_UPLOAD_PATH,
@@ -55,9 +55,10 @@ const GLOBAL = {
                             pass: process.env.SMTP_PASSWORD
                           }
                         } as {  component?: string | undefined },
-  // @limiter - rate limiter
-  RATE_LIMIT          : 100,
-  LIMITER             : {
+  // limiter - rate limiter
+  EXPRESS_MAX_BODY_SIZE: '10mb',
+  RATE_LIMIT           : 100,
+  LIMITER              : {
                           windowMs: 10 * 60 * 1000, // ten min,
                           max: 100
                         },
