@@ -1,8 +1,6 @@
-import GLOBAL from '@config/global'
-import dotenv from 'dotenv'
-dotenv.config()
-
-import express, { Application } from 'express'
+import GLOBAL                                             from '@config/global'
+import dotenv                                             from 'dotenv'
+import express   ,                                            { Application } from 'express'
 import nodemailer                                         from 'nodemailer'
 import goodlog                                            from 'good-logs'
 import cors                                               from 'cors'
@@ -24,7 +22,7 @@ import { Key }                                            from '@constant/enum'
 import options                                            from '@util/geocoder'
 import '@controller/user'
 
-const TAG_env = Key.Production
+dotenv.config()
 
 /**
  * @class App
@@ -142,7 +140,7 @@ class App {
   @ServerStatus
   public start(): void {
     let prod: boolean = false
-    if (this._env === TAG_env) {
+    if (this._env === Key.Production) {
       prod = true
     }
 
