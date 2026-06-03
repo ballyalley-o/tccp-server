@@ -107,15 +107,15 @@ export class PathDir {
 
   static FEEDBACK = pathBuilder(PathDir.API_ROOT, FEEDBACK)
 
-  static REGISTER         = pathBuilder(PathDir.AUTH, REGISTER)
-  static LOG_IN           = pathBuilder(PathDir.AUTH, LOG_IN)
-  static LOG_OUT          = pathBuilder(PathDir.AUTH, LOG_OUT)
-  static ACCOUNT          = pathBuilder(PathDir.AUTH, ACCOUNT)
-  static ACCOUNT_UPDATE   = pathBuilder(PathDir.AUTH, ACCOUNT, UPDATE)
-  static UPDATE_PASSWORD  = pathBuilder(PathDir.AUTH, UPDATE_PASSWORD)
-  static FORGOT_PASSWORD  = pathBuilder(PathDir.AUTH, FORGOT_PASSWORD)
-  static RESET_URL        = pathBuilder(PathDir.AUTH, RESET_PASSWORD)
-  static RESET_PASSWORD   = pathBuilder(PathDir.AUTH, RESET_PASSWORD, RESET_TOKEN)
+  static REGISTER         = pathBuilder(REGISTER)
+  static LOG_IN           = pathBuilder(LOG_IN)
+  static LOG_OUT          = pathBuilder(LOG_OUT)
+  static ACCOUNT          = pathBuilder(ACCOUNT)
+  static ACCOUNT_UPDATE   = pathBuilder(ACCOUNT, UPDATE)
+  static UPDATE_PASSWORD  = pathBuilder(UPDATE_PASSWORD)
+  static FORGOT_PASSWORD  = pathBuilder(FORGOT_PASSWORD)
+  static RESET_URL        = pathBuilder(RESET_PASSWORD)
+  static RESET_PASSWORD   = pathBuilder(RESET_PASSWORD, RESET_TOKEN)
   static RESET_FULL_EMAIL = (req: any, resetToken: string) => pathBuilder(`${req.protocol}://${req.get(Key.Host)}`, RESET_PASSWORD, resetToken)
 
     // @production
