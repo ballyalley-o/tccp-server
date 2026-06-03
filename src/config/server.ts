@@ -34,14 +34,14 @@ dotenv.config()
  * @returns void
  */
 class App {
-  private _app: Application
-  private _env: string = GLOBAL.ENV
-  isConnected: boolean = false
+  private _app       : Application
+  private _env       : string = GLOBAL.ENV
+          isConnected: boolean = false
 
   public static globalConfig = GLOBAL
-  public static transporter = nodemailer.createTransport(GLOBAL.MAIL)
-  public static geocoder = NodeGeocoder(options(GLOBAL.GEOCODER_API_KEY || ''))
-  public static message = (options: any) => {
+  public static transporter  = nodemailer.createTransport(GLOBAL.MAIL)
+  public static geocoder     = NodeGeocoder(options(GLOBAL.GEOCODER_API_KEY || ''))
+  public static message      = (options: any) => {
     return {
       from   : GLOBAL.MAIL_FROM,
       to     : options.email,
