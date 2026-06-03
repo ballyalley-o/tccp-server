@@ -1,4 +1,3 @@
-import goodlog from 'good-logs'
 import { App, GLOBAL } from '@config'
 import { Bootcamp } from '@model'
 import { Request, Response, NextFunction } from 'express'
@@ -21,7 +20,6 @@ class BootcampController {
     try {
       res.status(Code.OK).json(res.advanceResult)
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_FIND,
@@ -49,7 +47,6 @@ class BootcampController {
     try {
       res.status(Code.OK).json({ success: true, data: bootcamp })
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId),
@@ -80,7 +77,6 @@ class BootcampController {
         data   : bootcamp
       })
     } catch (error: any) {
-      goodlog.error(error.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_CREATE,
@@ -119,7 +115,6 @@ class BootcampController {
         data   : bootcamp
       })
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_UPDATE,
@@ -152,7 +147,6 @@ class BootcampController {
 
       res.status(Code.OK).json({ success: true, message: RESPONSE.success.DELETED, data: {} })
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_DELETE,
@@ -221,7 +215,6 @@ class BootcampController {
         })
       }
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_CREATE,
@@ -248,7 +241,6 @@ class BootcampController {
         data: bootcamps
       })
     } catch (error: any) {
-      goodlog.error(error?.message || error)
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_FIND,
@@ -285,7 +277,6 @@ class BootcampController {
 
     photo.name = GLOBAL.PHOTO_FILENAME(bootcamp._id, photo.name)
     GLOBAL.PHOTO_UPLOAD_MV(photo, bootcamp, async (error: any) => {
-      goodlog.error(error?.message)
       if (error) {
         return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
@@ -301,7 +292,6 @@ class BootcampController {
           response
         })
       } catch (error: any) {
-        goodlog.error(error?.message || error)
         res.status(Code.BAD_REQUEST).json({
           success: false,
           message: error?.message || RESPONSE.error.FAILED_UPLOAD,
@@ -339,7 +329,6 @@ class BootcampController {
 
     badge.name = GLOBAL.BADGE_FILENAME(bootcamp._id, badge.name)
     GLOBAL.BADGE_UPLOAD_MV(badge, bootcamp, async (error: any) => {
-      goodlog.error(error?.message)
       if (error) {
         return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
@@ -355,7 +344,6 @@ class BootcampController {
           response
         })
       } catch (error: any) {
-        goodlog.error(error?.message || error)
         res.status(Code.BAD_REQUEST).json({
           success: false,
           message: error?.message || RESPONSE.error.FAILED_UPLOAD,
