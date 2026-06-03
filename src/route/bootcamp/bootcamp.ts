@@ -16,7 +16,7 @@ const router = express.Router()
 router.use(PathDir.REDIR_COURSE, courseRoute)
 router.use(PathDir.REDIR_FEEDBACK, feedbackRoute)
 
-router.route(PathDir.DISTANCE).get(bootcampController.getBootcampsInRadius)
+router.route(PathDir.GET_DISTANCE).get(bootcampController.getBootcampsInRadius)
 router
   .route(PathDir.ROOT)
   .get(
