@@ -5,7 +5,6 @@ import { Bootcamp }           from '@model'
 import courseRoute            from '@route/course/course'
 import feedbackRoute          from '@route/feedback/feedback'
 import { PathDir }            from '@route/dir'
-import * as PathParam         from '@route/dir'
 import { Key }                from '@constant/enum'
 import { protect, authorize } from '@middleware'
 
@@ -19,7 +18,7 @@ router.use(PathDir.REDIR_FEEDBACK, feedbackRoute)
 
 router.route(PathDir.DISTANCE).get(bootcampController.getBootcampsInRadius)
 router
-  .route(PathParam.ROOT)
+  .route(PathDir.ROOT)
   .get(
     advancedResult(Bootcamp, [
       {
