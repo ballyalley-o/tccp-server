@@ -31,7 +31,7 @@ const GLOBAL = {
   BADGE_FILENAME     : (bootcampId: ObjectId, name: string) => `tccp-b-${bootcampId}${path.parse(name).ext}`,
   AVATAR_FILENAME    : (userId: ObjectId, name: string) => `tccp-av-${userId}${path.parse(name).ext}`,
 
-  // @file upload
+  // file upload
   PHOTO_UPLOAD_MV    : (photo: any, bootcamp: IBootcamp, cb: any) => {
     fs.mkdirSync(`${process.env.FILE_UPLOAD_PATH}/${bootcamp._id}`, { recursive: true })
     photo.mv(`${process.env.FILE_UPLOAD_PATH}/${bootcamp._id}/${photo.name}`, cb)
@@ -45,7 +45,7 @@ const GLOBAL = {
     avatar.mv(`${process.env.AVATAR_UPLOAD_PATH}/${user._id}/${avatar.name}`, cb)
   },
 
-  // @mail - nodemailer - mailtrap
+  // mail - nodemailer - mailtrap
   MAIL_FROM           : `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
   MAIL                : {
                           host: process.env.SMTP_HOST,
@@ -62,7 +62,7 @@ const GLOBAL = {
                           windowMs: 10 * 60 * 1000, // ten min,
                           max: 100
                         },
-  // @geocoder
+  // geocoder
   GEOCODER_PROVIDER   : process.env.GEOCODER_PROVIDER,
   GEOCODER_API_KEY    : process.env.GEOCODER_API_KEY
 }
