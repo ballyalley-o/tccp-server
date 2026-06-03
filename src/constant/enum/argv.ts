@@ -1,5 +1,5 @@
 enum ARGV {
-  SEED = '-i',
+  SEED    = '-i',
   DESTROY = '-d',
 }
 
