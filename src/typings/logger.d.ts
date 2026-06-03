@@ -1,4 +1,4 @@
-import { IExpressController } from '@interface/middleware'
+import { IExpressController } from '@typings/middleware'
 
 interface ILogger {
   /**
