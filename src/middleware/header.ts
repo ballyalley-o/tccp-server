@@ -1,4 +1,4 @@
-import { IExpressController } from '@interface/middleware'
+import { IExpressController } from '@typings/middleware'
 
 const setHeader: IExpressController = (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')

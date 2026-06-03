@@ -1,6 +1,5 @@
 import goodlog from 'good-logs'
 import { Request, Response, NextFunction } from 'express'
-import { IUserRequest } from '@interface/middleware'
 import { use, LogRequest } from '@decorator'
 import { Course, Bootcamp } from '@model'
 import { Key, Code } from '@constant/enum'
