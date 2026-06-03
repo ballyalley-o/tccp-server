@@ -1,6 +1,6 @@
 import GLOBAL                                             from '@config/global'
 import dotenv                                             from 'dotenv'
-import express   ,                                            { Application } from 'express'
+import express, { Application }                           from 'express'
 import nodemailer                                         from 'nodemailer'
 import goodlog                                            from 'good-logs'
 import cors                                               from 'cors'
