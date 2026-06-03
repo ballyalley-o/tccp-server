@@ -2,20 +2,40 @@ import mongoose from 'mongoose'
 import goodlog from 'good-logs'
 import GLOBAL from '@config/global'
 
+mongoose.set('strictQuery', true)
+
+mongoose.connection.on('connected', () => {
+  goodlog.info('DB CONNECTED')
+})
+
+mongoose.connection.on('disconnected', () => {
+  goodlog.warn('DB DISCONNECTED')
+})
+
+mongoose.connection.on('reconnected', () => {
+  goodlog.info('DB RECONNECTED')
+})
+
+mongoose.connection.on('error', (err) => {
+  goodlog.error(`DB ERR: ${err.message}`)
+})
+
 const connectDb = async (isConnected: boolean) => {
   try {
     const dbConnect = await mongoose.connect(String(GLOBAL.DB_URI), {
-      maxPoolSize: 10,
-      minPoolSize: 5,
-      socketTimeoutMS: 45000,
+      maxPoolSize             : 10,
+      minPoolSize             : 5,
       serverSelectionTimeoutMS: 5000,
-      socketKeepAliveMS: 10000,
+      socketTimeoutMS         : 45000
     })
+
     goodlog.db(
       GLOBAL.DB_HOST(dbConnect),
       dbConnect.connection.name,
       isConnected
     )
+
+    return dbConnect
   } catch (error: any) {
     goodlog.error(error.message)
     process.exit()
