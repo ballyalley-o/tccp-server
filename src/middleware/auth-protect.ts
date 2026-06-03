@@ -31,15 +31,12 @@ const protect = asyncHandler(async (req: any, res, next) => {
     const decoded = jwt.verify(token, GLOBAL.JWT_SECRET as string) as any
     const cacheKey = `user:${decoded.id}`
 
-    // Try to get user from cache first
     let user = cache.get(cacheKey)
 
     if (!user) {
-      // Cache miss - fetch from database
       user = await User.findById(decoded.id).select(Key.PasswordSelect)
 
       if (user) {
-        // Cache the user for 5 minutes
         cache.set(cacheKey, user, 5 * 60 * 1000)
       }
     }
