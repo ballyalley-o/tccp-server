@@ -8,7 +8,7 @@ import { Key }                                from '@constant/enum'
 const router = Router({ mergeParams: true })
 
 router
-  .route(PathParam.ROOT)
+  .route(PathDir.ROOT)
   .get(
     advancedResult(Course, {
       path  : Key.BootcampVirtual,
@@ -19,7 +19,7 @@ router
   .post(protect, authorize('trainer', 'admin'), CourseController.addCourse)
 
 router
-  .route(pathBuilder(PathParam.ID))
+  .route(PathDir.ID)
   .get(CourseController.getCourse)
   .put(protect, authorize('trainer', 'admin'), CourseController.updateCourse)
   .delete(protect, authorize('trainer', 'admin'), CourseController.deleteCourse)
