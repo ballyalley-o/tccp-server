@@ -88,7 +88,6 @@ export class PathDir {
 
   static BOOTCAMP       = pathBuilder(PathDir.API_ROOT, BOOTCAMP)
   static CREATE         = pathBuilder(CREATE)
-  static DISTANCE       = pathBuilder(DISTANCE)
   static TOP            = pathBuilder(TOP)
   static REDIR_FEEDBACK = pathBuilder(BOOTCAMP_ID, FEEDBACK)
   static REDIR_COURSE   = pathBuilder(BOOTCAMP_ID, COURSE)
