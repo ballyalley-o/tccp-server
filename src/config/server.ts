@@ -91,8 +91,8 @@ class App {
     this._app = express()
     this._app.use(compression({
       threshold: 1024,
-      level: 6,
-      filter: (req, res) => {
+      level    : 6,
+      filter   : (req, res) => {
         if (req.headers['x-no-compression']) {
           return false
         }
