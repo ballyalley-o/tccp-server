@@ -2,7 +2,7 @@ import GLOBAL                                             from '@config/global'
 import dotenv                                             from 'dotenv'
 import express, { Application }                           from 'express'
 import session                                            from 'express-session'
-import RedisStore                                         from 'connect-redis'
+import { RedisStore }                                     from 'connect-redis'
 import type { Redis }                                     from 'ioredis'
 import nodemailer                                         from 'nodemailer'
 import goodlog                                            from 'good-logs'
@@ -108,7 +108,7 @@ class App {
     this._app.use(express.static(Key.Public))
     this._app.use(morgan('combined'))
     this._app.use(cookieParser())
-    
+
     // Redis session configuration
     const redisStore = new (RedisStore as any)({ client: redis as Redis })
     this._app.use(session({
@@ -123,7 +123,7 @@ class App {
         sameSite: 'lax'
       }
     }))
-    
+
     this._app.use(fileupload({ limits: { fileSize: 50 * 1024 * 1024 } }))
     this._app.use(cors(corsConfig))
     this._app.use(mongoSanitize())
