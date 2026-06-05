@@ -18,3 +18,9 @@ export declare interface IUserRequest {
 export interface RouteHandlerDescriptor extends PropertyDescriptor {
   value?: RequestHandler
 }
+
+declare type MiddlewareFunction = (
+  req : Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+  res : Response<any, Record<string, any>>,
+  next: NextFunction
+) => Promise<void>
