@@ -64,7 +64,9 @@ const GLOBAL = {
                         },
   // geocoder
   GEOCODER_PROVIDER   : process.env.GEOCODER_PROVIDER,
-  GEOCODER_API_KEY    : process.env.GEOCODER_API_KEY
+  GEOCODER_API_KEY    : process.env.GEOCODER_API_KEY,
+  // session
+  SESSION_SECRET: process.env.SESSION_SECRET
 }
 
 export default GLOBAL
