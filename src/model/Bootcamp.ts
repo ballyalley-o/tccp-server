@@ -145,7 +145,7 @@ BootcampSchema.pre(Key.Save, function (next) {
   next()
 })
 
-BootcampSchema.pre(Key.Save, async function (next) {
+BootcampSchema.pre(Key.Save, async function (_next) {
   const loc           = await App.geocoder.geocode(this.address)
         this.location = {
     type            : Key.GeocoderType,
