@@ -61,7 +61,7 @@ class App {
     app.start()
   }
 
-  /**
+        /**
    * Initialize the app and middlewares
    *
    * @param app
@@ -123,7 +123,7 @@ class App {
     mainRoute(this._app)
   }
 
-  /**
+        /**
    * Connects to the database.
    * @returns A promise that resolves when the database connection is established.
    */
@@ -138,7 +138,7 @@ class App {
     }
   }
 
-  /**
+        /**
    * Start the server
    * @returns void
    */
