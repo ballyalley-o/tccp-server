@@ -5,8 +5,8 @@ import { protect, authorize } from '@route/guard';
 
 const router = Router({ mergeParams: true })
 
-router.get(PathDir.INFO, SystemController.getInfo)
-router.get(PathDir.HEALTH, SystemController.getHealth)
+router.get(PathDir.INFO, protect, authorize('admin'), SystemController.getInfo)
+router.get(PathDir.HEALTH, protect, authorize('admin'), SystemController.getHealth)
 
 /**
  * @path - {baseUrl}/api/{API_VERSION}/system
