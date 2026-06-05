@@ -1,4 +1,4 @@
-import redis from '@config/redis'
+import redis from '@config/redis.config'
 
 export interface CacheOptions {
   ttl?: number
