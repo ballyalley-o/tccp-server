@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { AuthController } from '@controller'
-import { protect } from '@middleware'
 import { PathDir } from '@route/dir'
+import { protect } from '@route/guard'
 
 const router = Router()
 
