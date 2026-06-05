@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { advancedResult, protect } from '@middleware'
+import { advancedResult } from '@middleware'
 import { UserController } from '@controller'
 import { PathDir } from '@route/dir'
+import { protect } from '@route/guard'
 import { User } from '@model'
 
 const router = Router({ mergeParams: true })

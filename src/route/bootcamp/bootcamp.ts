@@ -2,11 +2,11 @@ import express                from 'express'
 import { bootcampController } from '@controller'
 import { advancedResult }     from '@middleware'
 import { Bootcamp }           from '@model'
+import { protect, authorize } from '@route/guard'
 import courseRoute            from '@route/course/course'
 import feedbackRoute          from '@route/feedback/feedback'
 import { PathDir }            from '@route/dir'
 import { Key }                from '@constant/enum'
-import { protect, authorize } from '@middleware'
 
 const router = express.Router()
 
