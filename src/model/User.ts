@@ -83,12 +83,13 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
   }
 )
 
-UserSchema.pre(Key.Save, async function (next) {
-  if (!this.isModified(Key.Password)) {
-    next()
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    return next()
   }
-  const salt          = await bcrypt.genSalt(10)
-        this.password = await bcrypt.hash(this.password, salt)
+
+  const salt    = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
   next()
 })
 
