@@ -1,0 +1,14 @@
+.git
+.github
+.DS_Store
+.env
+node_modules
+dist
+client/node_modules
+client/dist
+docs
+tsconfig.tsbuildinfo
+*.log
+npm-debug.log*
+Dockerfile
+docker-compose.yml
