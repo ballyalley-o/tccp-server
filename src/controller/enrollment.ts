@@ -172,7 +172,7 @@ class EnrollmentController {
   //@route    DELETE /enrollment/:id
   //@access   PRIVATE
   @use(LogRequest)
-  public static async deleteCourse(req: any, res: Response, next: NextFunction) {
+  public static async deleteEnrollment(req: any, res: Response, next: NextFunction) {
     const enrollmentId = req.params.id
     const userId       = req.user.id
     const userRole     = req.user.role
