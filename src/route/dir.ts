@@ -7,12 +7,13 @@ import { pathBuilder }       from '@util/builder'
   /**
  * @module
  */
-export const AUTH     = 'auth'
-export const BOOTCAMP = 'bootcamp'
-export const COURSE   = 'course'
-export const USER     = 'user'
-export const FEEDBACK = 'feedback'
-export const SYSTEM   = 'system'
+export const AUTH       = 'auth'
+export const BOOTCAMP   = 'bootcamp'
+export const COURSE     = 'course'
+export const ENROLLMENT = 'enrollment'
+export const USER       = 'user'
+export const FEEDBACK   = 'feedback'
+export const SYSTEM     = 'system'
 
   /**
  * @submodule
@@ -96,7 +97,8 @@ export class PathDir {
   static UPLOAD_BADGE   = pathBuilder(ID, BADGE)
   static UPLOAD_AVATAR  = pathBuilder(ID, AVATAR)
 
-  static COURSE   = pathBuilder(PathDir.API_ROOT, COURSE)
+  static COURSE     = pathBuilder(PathDir.API_ROOT, COURSE)
+  static ENROLLMENT = pathBuilder(PathDir.API_ROOT, ENROLLMENT)
 
   static SYSTEM        = pathBuilder(PathDir.API_ROOT, SYSTEM)
   static INFO          = pathBuilder(INFO)
