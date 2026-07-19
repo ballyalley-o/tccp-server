@@ -11,7 +11,6 @@ router
   .route(PathDir.ROOT)
   .get(
     advancedResult(Enrollment, {
-      path: 'bootcamp',
       select: 'user bootcamp course'
     }),
     EnrollmentController.getEnrollments
