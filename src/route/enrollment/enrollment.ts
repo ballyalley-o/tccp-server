@@ -9,12 +9,20 @@ const router = Router({ mergeParams: true })
 
 router
   .route(PathDir.ROOT)
-  .get(
-    advancedResult(Enrollment, {
-      select: 'user bootcamp course'
-    }),
-    EnrollmentController.getEnrollments
-  )
+  .get(advancedResult(Enrollment, [
+            {
+                path  : 'user',
+                select: '_id firstname email'
+            },
+            {
+                path  : 'bootcamp',
+                select: '_id name email',
+            },
+            {
+                path  : 'course',
+                select: '_id title duration'
+            }
+        ]), EnrollmentController.getEnrollments)
   .post(protect, authorize('user', 'admin'), EnrollmentController.createEnrollment)
 
 router
