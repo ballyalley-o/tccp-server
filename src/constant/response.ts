@@ -51,6 +51,8 @@ const RESPONSE = {
     504                       : 'GATEWAY TIMEOUT: The server acting as a gateway did not receive a timely response from an upstream server',
     CORS_NOT_ALLOWED          : 'CORS ERROR: Not allowed by Access-Control-Allow-Origin',
     ENTITY_EXISTS             : 'Entity already exists',
+    INVALID_START_DATE        : 'Please select a valid start date',
+    INVALID_START_DATE_PAST   : 'Start date cannont be in the past',
     ORG_REQUIRED              : 'Organization is required for Admin',
     ALREADY_EXISTS            : (data: string) => `${data} already exists`,
     ONE_FEEDBACK              : 'Only one feedback per user is allowed',
