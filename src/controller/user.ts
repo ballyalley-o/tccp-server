@@ -13,17 +13,6 @@ import { use, LogRequest } from '@decorator'
  * @path {baseUrl}/api/{apiVer}/auth/user
  */
 class UserController {
-  private static _userId: string
-
-  /**
-   *  setUserId - Set request id  parameters
-   *
-   * @param req - Request
-   * @returns void
-   */
-  static setUserId(req: any) {
-    this._userId = req.user.id
-  }
   //@desc     Get all users
   //@route    GET /
   //@access   PRIVATE/Admin
@@ -183,12 +172,12 @@ class UserController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async uploadUserAvatar(req: any, res: Response, next: NextFunction) {
-    UserController.setUserId(req)
+    const userId = req.user.id
     const avatar = req.files.avatar
-    const user = await User.findById(UserController._userId)
+    const user   = await User.findById(userId)
 
     if (!user) {
-      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(UserController._userId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userId), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (!req.files) {
@@ -210,16 +199,16 @@ class UserController {
         return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.INTERNAL_SERVER_ERROR)))
       }
       try {
-        await User.findByIdAndUpdate(UserController._userId, {
+        await User.findByIdAndUpdate(userId, {
           avatar: avatar.name
         })
 
         const response = DataResponse.success(
           {
             photo: avatar.name,
-            user: user.firstname
+            user : user.firstname
           },
-          UserController._userId
+          userId
         )
 
         res.status(Code.OK).json({
