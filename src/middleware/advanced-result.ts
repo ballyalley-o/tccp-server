@@ -17,16 +17,16 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
 
   // Batch countDocuments and find query to avoid N+1 pattern
   let countQuery = model.countDocuments(reqQuery)
-  let dataQuery = model.find(reqQuery)
+  let dataQuery  = model.find(reqQuery)
 
   if (req.query.select) {
-    const fields = (req.query.select as string).split(',').join(' ')
-    dataQuery = dataQuery.select(fields)
+    const fields    = (req.query.select as string).split(',').join(' ')
+          dataQuery = dataQuery.select(fields)
   }
 
   if (req.query.sort) {
-    const sortBy = (req.query.sort as string).split(',').join(' ')
-    dataQuery = dataQuery.sort(sortBy)
+    const sortBy    = (req.query.sort as string).split(',').join(' ')
+          dataQuery = dataQuery.sort(sortBy)
   } else {
     dataQuery = dataQuery.sort(Key.Name)
   }
