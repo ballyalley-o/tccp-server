@@ -12,15 +12,13 @@ import { ErrorResponse } from '@util'
  */
 class EnrollmentController {
   //@desc     Get ALL enrollment
-  //@route    GET /enrollment/me
+  //@route    GET /enrollment
   //@access   PRIVATE
   @use(LogRequest)
   public static async getEnrollments(req: Request, res: Response, _next: NextFunction) {
-    const userId = req.user.id
-
+    const userId = req.user?.id
     if (userId) {
-      const enrollments = await Enrollment.find({ user: userId }).lean()
-
+        const enrollments = await Enrollment.find({ user: userId }).lean()
       res.status(Code.OK).json({
         success: true,
         count  : enrollments.length,
@@ -85,13 +83,14 @@ class EnrollmentController {
   //a@ccess PRIVATE
   @use(LogRequest)
   public static async createEnrollment(req: any, res: Response, next: NextFunction) {
-    const bootcampId = req.params.bootcampId
-    const courseId   = req.params.courseId
-    const userId     = req.user.id
-    const userRole   = req.user.role
+    const bootcampId        = req.body.bootcamp
+    const courseId          = req.body.course
+    const userId            = req.user.id
+    const userRole          = req.user.role
+    const selectedStartDate = new Date(req.body.startDate)
 
     const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
-    const course   = await Course.findById(courseId).select('bootcamp').lean()
+    const course   = await Course.findById(courseId).lean()
 
     if (!course) {
         return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
@@ -105,13 +104,24 @@ class EnrollmentController {
         return next(new ErrorResponse(RESPONSE.error.NOT_STUDENT(userId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
+    if (!req.body.startDate || Number.isNaN(selectedStartDate.getTime())) {
+        return next(new ErrorResponse(RESPONSE.error.INVALID_START_DATE, (res.statusCode = Code.BAD_REQUEST)))
+    }
+
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    if (selectedStartDate < today) {
+        return next(new ErrorResponse(RESPONSE.error.INVALID_START_DATE_PAST, (res.statusCode = Code.BAD_REQUEST)))
+    }
+
     try {
       const enrollment = await Enrollment.create({
-        student       : req.user.id,
+        user          : userId,
         course        : course._id,
         bootcamp      : course.bootcamp,
         status        : 'enrolled',
-        startedAt     : new Date(),
+        startDate     : selectedStartDate,
         lastAccessedAt: new Date()
       })
 
@@ -134,9 +144,10 @@ class EnrollmentController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async updateEnrollment(req: any, res: Response, next: NextFunction) {
-    const enrollmentId = req.params.id
-    const userId       = req.user.id
-    const userRole     = req.user.role
+    const enrollmentId     = req.params.id
+    const userId           = req.user.id
+    const userRole         = req.user.role
+    let   enrollmentStatus = req.body.status
 
     const enrollment = await Enrollment.findById(enrollmentId).select('user').lean()
 
@@ -148,8 +159,17 @@ class EnrollmentController {
       return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
+    let   startDate = req.body.startDate
+    const today     = new Date()
+    today.setHours(0, 0 , 0, 0)
+
+    if (req.body.status && enrollmentStatus === 'enrolled' && req.body.startDate > today) {
+        enrollmentStatus = 'in_progress'
+        startDate        = today
+    }
+
     try {
-      const updatedEnrollment = await Enrollment.findByIdAndUpdate(enrollmentId, req.body, {
+      const updatedEnrollment = await Enrollment.findByIdAndUpdate(enrollmentId, { status: enrollmentStatus, startDate,...req.body}, {
         new          : true,
         runValidators: true
       })
