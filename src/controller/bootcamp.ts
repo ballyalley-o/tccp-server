@@ -11,13 +11,53 @@ import { ErrorResponse, DataResponse } from '@util'
  * @path {baseUrl}/api/{apiVer}/bootcamp
  */
 class BootcampController {
+  private static shouldIncludeAverageCost(req: Request): boolean {
+    const select = req.query.select
+
+    if (!select || typeof select !== 'string') {
+      return true
+    }
+
+    return select.split(',').map((field) => field.trim()).includes('averageCost')
+  }
+
+  private static calculateAverageCostFromCourses(courses: unknown): number | undefined {
+    if (!Array.isArray(courses)) {
+      return undefined
+    }
+
+    const tuitions = courses
+      .map((course) => Number((course as { tuition?: number }).tuition))
+      .filter(Number.isFinite)
+
+    if (!tuitions.length) {
+      return undefined
+    }
+
+    const averageCost = tuitions.reduce((total, tuition) => total + tuition, 0) / tuitions.length
+
+    return Math.ceil(averageCost / 10) * 10
+  }
+
+  private static withAverageCost<T extends { averageCost?: number, course?: unknown }>(bootcamp: T): T & { averageCost: number } {
+    const calculatedAverageCost = BootcampController.calculateAverageCostFromCourses(bootcamp.course)
+
+    return {
+      ...bootcamp,
+      averageCost: calculatedAverageCost ?? bootcamp.averageCost ?? 0
+    }
+  }
 
   //@desc     Get ALL bootcamps
   //@route    GET /bootcamp
   //@access   PUBLIC
   @use(LogRequest)
-  public static async getBootcamps(_req: Request, res: Response, _next: NextFunction) {
+  public static async getBootcamps(req: Request, res: Response, _next: NextFunction) {
     try {
+      if (BootcampController.shouldIncludeAverageCost(req)) {
+        res.advanceResult.data = res.advanceResult.data.map(BootcampController.withAverageCost)
+      }
+
       res.status(Code.OK).json(res.advanceResult)
     } catch (error: any) {
       res.status(Code.BAD_REQUEST).json({
@@ -37,7 +77,7 @@ class BootcampController {
     const bootcampId   = req.params.id
 
     const bootcamp = await Bootcamp.findOne({ slug: bootcampSlug })
-      .populate({ path: Key.CourseVirtual, select: 'title description' })
+      .populate({ path: 'course', select: 'title description tuition' })
       .lean()
 
     if (!bootcamp) {
@@ -45,7 +85,7 @@ class BootcampController {
     }
 
     try {
-      res.status(Code.OK).json({ success: true, data: bootcamp })
+      res.status(Code.OK).json({ success: true, data: BootcampController.withAverageCost(bootcamp) })
     } catch (error: any) {
       res.status(Code.BAD_REQUEST).json({
         success: false,
@@ -175,7 +215,7 @@ class BootcampController {
     res.status(Code.ACCEPTED).json({
       success: true,
       count  : bootcamps.length,
-      data   : bootcamps
+      data   : bootcamps.map(BootcampController.withAverageCost)
     })
   }
 
@@ -230,7 +270,7 @@ class BootcampController {
   @use(LogRequest)
   public static async getTopBootcamps(_req: Request, res: Response, next: NextFunction) {
     try {
-      const bootcamps = await Bootcamp.find({}).sort({ rating: -1 }).limit(5)
+      const bootcamps = await Bootcamp.find({}).sort({ rating: -1 }).limit(5).lean()
 
       if (!bootcamps) {
         return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_TOP_BOOTCAMPS, (res.statusCode = Code.NOT_FOUND)))
@@ -239,7 +279,7 @@ class BootcampController {
       res.status(Code.ACCEPTED).json({
         success: true,
         count: bootcamps.length,
-        data: bootcamps
+        data: bootcamps.map(BootcampController.withAverageCost)
       })
     } catch (error: any) {
       res.status(Code.BAD_REQUEST).json({
