@@ -26,7 +26,7 @@ router
       },
       {
         path  : 'course',
-        select: 'title duration tuition minimumSkill'
+        select: 'title duration tuition'
       },
       {
         path  : 'feedback',
