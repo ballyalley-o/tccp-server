@@ -61,9 +61,13 @@ const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
 )
 
 CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.ObjectId): Promise<void> {
+  const bootcampObjectId = mongoose.Types.ObjectId.isValid(String(bootcampId))
+    ? new mongoose.Types.ObjectId(String(bootcampId))
+    : bootcampId
+
   const obj = await this.aggregate([
     {
-      $match: { bootcamp: bootcampId }
+      $match: { bootcamp: bootcampObjectId }
     },
     {
       $group: {
@@ -74,7 +78,7 @@ CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.O
   ])
   try {
     await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
-      averageCost: Math.ceil(obj[0].averageCost / 10) * 10
+      averageCost: obj[0]?.averageCost ? Math.ceil(obj[0].averageCost / 10) * 10 : 0
     })
   } catch (error) {
     if (error instanceof Error) {
@@ -83,8 +87,8 @@ CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.O
   }
 }
 
-CourseSchema.post(Key.Save, function () {
-  ;(this.constructor as any as ICourseExtended).getAverageCost(this.bootcamp)
+CourseSchema.post(Key.Save, async function () {
+  await (this.constructor as any as ICourseExtended).getAverageCost(this.bootcamp)
 })
 
 CourseSchema.pre(new RegExp(Key.Remove), function (this: ICourse, next: any) {
