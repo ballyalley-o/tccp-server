@@ -77,7 +77,7 @@ class BootcampController {
     const bootcampId   = req.params.id
 
     const bootcamp = await Bootcamp.findOne({ slug: bootcampSlug })
-      .populate({ path: 'course', select: 'title description tuition' })
+      .populate({ path: 'course', select: 'title description tuition minimumSkill' })
       .lean()
 
     if (!bootcamp) {
