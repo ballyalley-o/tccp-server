@@ -75,6 +75,9 @@ class CourseController {
     }
 
     try {
+      req.body.bootcamp = bootcampId
+      req.body.user     = userId
+
       const course = await Course.create(req.body)
 
       res.status(Code.CREATED).json({
@@ -118,6 +121,10 @@ class CourseController {
         runValidators: true
       })
 
+      if (updatedCourse) {
+        await (Course as any).getAverageCost(updatedCourse.bootcamp)
+      }
+
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.UPDATED,
@@ -141,7 +148,7 @@ class CourseController {
     const userId   = req.user.id
     const userRole = req.user.role
 
-    const course = await Course.findById(courseId).select('user').lean()
+    const course = await Course.findById(courseId).select('user bootcamp').lean()
 
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
@@ -153,6 +160,7 @@ class CourseController {
 
     try {
       await Course.deleteOne({ _id: courseId })
+      await (Course as any).getAverageCost(course.bootcamp)
 
       res.status(Code.OK).json({
         success: true,
