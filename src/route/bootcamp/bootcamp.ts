@@ -6,7 +6,6 @@ import { protect, authorize } from '@route/guard'
 import courseRoute            from '@route/course/course'
 import feedbackRoute          from '@route/feedback/feedback'
 import { PathDir }            from '@route/dir'
-import { Key }                from '@constant/enum'
 
 const router = express.Router()
 
@@ -22,29 +21,29 @@ router
   .get(
     advancedResult(Bootcamp, [
       {
-        path  : Key.UserVirtual,
+        path  : 'user',
         select: 'firstname email role'
       },
       {
-        path  : Key.CourseVirtual,
-        select: 'title duration'
+        path  : 'course',
+        select: 'title duration tuition'
       },
       {
-        path  : Key.FeedbackVirtual,
+        path  : 'feedback',
         select: 'title rating user'
       }
     ]),
     bootcampController.getBootcamps
   )
   .post(bootcampController.createBootcamp)
-router.route(PathDir.CREATE).post(protect, authorize(Key.Trainer, Key.Admin), bootcampController.createBootcamp)
+router.route(PathDir.CREATE).post(protect, authorize('trainer', 'admin'), bootcampController.createBootcamp)
 
 router.get(PathDir.TOP, bootcampController.getTopBootcamps)
 router
   .route(PathDir.SLUG)
   .get(bootcampController.getBootcamp)
-  .put(protect, authorize(Key.Trainer, Key.Admin), bootcampController.updateBootcamp)
-  .delete(protect, authorize(Key.Trainer, Key.Admin), bootcampController.deleteBootcamp)
+  .put(protect, authorize('trainer', 'admin'), bootcampController.updateBootcamp)
+  .delete(protect, authorize('trainer', 'admin'), bootcampController.deleteBootcamp)
 
 router.put(PathDir.UPLOAD_PHOTO, protect, bootcampController.uploadBootcampPhoto)
 router.put(PathDir.UPLOAD_BADGE, protect, bootcampController.uploadBootcampBadge)
