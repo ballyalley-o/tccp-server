@@ -1,6 +1,8 @@
 import { Schema, model } from 'mongoose'
 import { Key }           from '@constant/enum'
 
+const TAG = 'Enrollment'
+
 const EnrollmentSchema = new Schema(
   {
     user: {
@@ -39,10 +41,10 @@ const EnrollmentSchema = new Schema(
     completedAt   : Date,
     lastAccessedAt: Date
   },
-  { timestamps: true }
+  { timestamps: true, collection: TAG  }
 )
 
 EnrollmentSchema.index({ user: 1, course: 1 }, { unique: true })
 EnrollmentSchema.index({ user: 1, updatedAt: -1 })
 
-export default model('Enrollment', EnrollmentSchema)
+export default model(TAG, EnrollmentSchema)
