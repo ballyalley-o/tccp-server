@@ -8,29 +8,29 @@ const TAG = Key.Feedback
 export const FeedbackSchema: Schema<IFeedbackExtended> = new Schema<IFeedbackExtended>(
   {
     title: {
-      type: String,
-      trim: true,
-      required: [true, SCHEMA.FEEDBACK_TITLE],
+      type     : String,
+      trim     : true,
+      required : [true, SCHEMA.FEEDBACK_TITLE],
       maxlength: 100
     },
     body: {
-      type: String,
+      type    : String,
       required: [true, SCHEMA.DESCRIPTION]
     },
     rating: {
-      type: Number,
-      min: 1,
-      max: 10,
+      type    : Number,
+      min     : 1,
+      max     : 10,
       required: [true, SCHEMA.FEEDBACK_RATING]
     },
     bootcamp: {
-      type: Schema.Types.ObjectId,
-      ref: Key.Bootcamp,
+      type    : Schema.Types.ObjectId,
+      ref     : Key.Bootcamp,
       required: true
     },
     user: {
-      type: Schema.Types.ObjectId,
-      ref: Key.User,
+      type    : Schema.Types.ObjectId,
+      ref     : Key.User,
       required: true
     }
   },
