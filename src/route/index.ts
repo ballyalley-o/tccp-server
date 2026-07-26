@@ -6,6 +6,7 @@ import { linkCourseRoute } from './course'
 import { linkAuthRoute } from './auth'
 import { linkSystemRoute } from './system'
 import { linkEnrollmentRoute } from './enrollment'
+import { linkDashboardRoute } from './dashboard'
 
 const mainRoute = (app: Application) => {
   linkAuthRoute(app)
@@ -15,6 +16,7 @@ const mainRoute = (app: Application) => {
   linkCourseRoute(app)
   linkSystemRoute(app)
   linkEnrollmentRoute(app)
+  linkDashboardRoute(app)
 }
 
 export { mainRoute }
