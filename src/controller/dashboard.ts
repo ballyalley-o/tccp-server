@@ -7,55 +7,55 @@ import { Bootcamp, Course, Enrollment, Feedback, User } from '@model'
 import { Code, Key, LOCALE } from '@constant/enum'
 import { RESPONSE } from '@constant'
 
-type DashboardAudience = 'guest' | 'user' | 'trainer' | 'admin'
+// type DashboardAudience = 'guest' | 'user' | 'trainer' | 'admin'
 
-type DashboardCountSummary = {
-  users: number
-  trainers: number
-  admins: number
-  bootcamps: number
-  courses: number
-  feedback: number
-}
+// type DashboardCountSummary = {
+//   users    : number
+//   trainers : number
+//   admins   : number
+//   bootcamps: number
+//   courses  : number
+//   feedback : number
+// }
 
-type DashboardRecommendation = {
-  id: string
-  title: string
-  meta: string
-  action: string
-  path: string
-}
+// type DashboardRecommendation = {
+//   id    : string
+//   title : string
+//   meta  : string
+//   action: string
+//   path  : string
+// }
 
-type DashboardCard = {
-  id: string
-  label: string
-  value: string | number
-  tone: 'primary' | 'success' | 'info' | 'warning' | 'error'
-  subtitle: string
-}
+// type DashboardCard = {
+//   id      : string
+//   label   : string
+//   value   : string | number
+//   tone    : 'primary' | 'success' | 'info' | 'warning' | 'error'
+//   subtitle: string
+// }
 
-type DashboardAction = {
-  id: string
-  icon: string
-  label: string
-  path: string
-  variant: 'contained' | 'outlined' | 'text'
-}
+// type DashboardAction = {
+//   id     : string
+//   icon   : string
+//   label  : string
+//   path   : string
+//   variant: 'contained' | 'outlined' | 'text'
+// }
 
-type DashboardCourse = {
-  id: string
-  title: string
-  meta: string
-  status: string
-  progress: number
-  tone: 'primary' | 'success' | 'info' | 'warning' | 'error'
-  subtitle: string
-}
+// type DashboardCourse = {
+//   id      : string
+//   title   : string
+//   meta    : string
+//   status  : string
+//   progress: number
+//   tone    : 'primary' | 'success' | 'info' | 'warning' | 'error'
+//   subtitle: string
+// }
 
 class DashboardController {
   private static async getAuthenticatedUser(req: Request) {
     const request = req as any
-    const token = request.cookies?.token ?? (typeof request.headers?.authorization === 'string' && request.headers.authorization.startsWith(Key.Bearer)
+    const token   = request.cookies?.token ?? (typeof request.headers?.authorization === 'string' && request.headers.authorization.startsWith(Key.Bearer)
       ? request.headers.authorization.split(' ')[1]
       : undefined)
 
@@ -85,11 +85,11 @@ class DashboardController {
     }
   }
 
-  private static getAudience(req: Request, authUser: any): DashboardAudience {
+  private static getAudience(req: Request, authUser: any): DashboardAudienceType {
     const roleQuery = String(req.query.role ?? '').toLowerCase()
 
     if (roleQuery === 'guest' || roleQuery === 'user' || roleQuery === 'trainer' || roleQuery === 'admin') {
-      return roleQuery as DashboardAudience
+      return roleQuery as DashboardAudienceType
     }
 
     if (authUser?.role === 'user' || authUser?.role === 'trainer' || authUser?.role === 'admin') {
@@ -105,42 +105,42 @@ class DashboardController {
     return Object.values(LOCALE).includes(localeQuery as LOCALE) ? localeQuery : LOCALE.EN
   }
 
-  private static buildTopBootcampRecommendations(bootcamps: any[]): DashboardRecommendation[] {
+  private static buildTopBootcampRecommendations(bootcamps: any[]): DashboardRecommendationType[] {
     return bootcamps.map((bootcamp, index) => ({
-      id: bootcamp._id?.toString() ?? `bootcamp-${index}`,
-      title: bootcamp.name ?? `dashboard.bootcamp_${index + 1}`,
-      meta: 'dashboard.similar_bootcamps_in_market',
+      id    : bootcamp._id?.toString() ?? `bootcamp-${index}`,
+      title : bootcamp.name ?? `dashboard.bootcamp_${index + 1}`,
+      meta  : 'dashboard.similar_bootcamps_in_market',
       action: 'dashboard.explore',
-      path: '/bootcamp'
+      path  : '/bootcamp'
     }))
   }
 
   private static buildFeaturedBootcamps(bootcamps: any[]) {
     return bootcamps.map((bootcamp, index) => ({
-      id: bootcamp._id?.toString() ?? `featured-${index}`,
-      title: bootcamp.name ?? `dashboard.bootcamp_${index + 1}`,
-      meta: 'dashboard.featured_description',
-      rating: bootcamp.rating ?? 0,
+      id         : bootcamp._id?.toString() ?? `featured-${index}`,
+      title      : bootcamp.name ?? `dashboard.bootcamp_${index + 1}`,
+      meta       : 'dashboard.featured_description',
+      rating     : bootcamp.rating ?? 0,
       averageCost: bootcamp.averageCost ?? 0,
-      path: '/bootcamp'
+      path       : '/bootcamp'
     }))
   }
 
-  private static buildGuestDashboard(counts: DashboardCountSummary, recommendations: DashboardRecommendation[], featured: any[]) {
+  private static buildGuestDashboard(counts: DashboardCountSummaryType, recommendations: DashboardRecommendationType[], featured: any[]) {
     return {
-      audience: 'guest',
+      audience            : 'guest',
       welcomeTitleFallback: 'dashboard.welcome_back',
-      welcomeMessage: 'dashboard.welcome_message_user',
-      currentCourseTitle: 'dashboard.your_current_courses',
-      featuredTitle: 'dashboard.featured_bootcamps',
-      featuredDescription: 'dashboard.featured_description',
-      recommendationTitle: 'dashboard.recommendation_title',
-      stat: [
+      welcomeMessage      : 'dashboard.welcome_message_user',
+      currentCourseTitle  : 'dashboard.your_current_courses',
+      featuredTitle       : 'dashboard.featured_bootcamps',
+      featuredDescription : 'dashboard.featured_description',
+      recommendationTitle : 'dashboard.recommendation_title',
+      stat                : [
         { id: 'users', label: 'dashboard.total_users', value: counts.users, tone: 'primary', subtitle: 'dashboard.all_users' },
         { id: 'bootcamps', label: 'dashboard.total_bootcamps', value: counts.bootcamps, tone: 'success', subtitle: 'dashboard.bootcamp_count' },
         { id: 'courses', label: 'dashboard.total_courses', value: counts.courses, tone: 'info', subtitle: 'dashboard.course_count' },
         { id: 'feedback', label: 'dashboard.total_feedback', value: counts.feedback, tone: 'warning', subtitle: 'dashboard.feedback_count' }
-      ] as DashboardCard[],
+      ] as DashboardCardType[],
       recommendation: recommendations,
       featured,
       action: [
@@ -165,34 +165,34 @@ class DashboardController {
     }
   }
 
-  private static buildUserDashboard(counts: DashboardCountSummary, recommendations: DashboardRecommendation[], featured: any[], enrollments: any[]) {
+  private static buildUserDashboard(counts: DashboardCountSummaryType, recommendations: DashboardRecommendationType[], featured: any[], enrollments: any[]) {
     const completedCourses = enrollments.filter((enrollment) => enrollment.status === 'completed').length
     const activeCourses = enrollments.filter((enrollment) => enrollment.status === 'in_progress').length
     const progressValue = enrollments.length ? Math.round(enrollments.reduce((sum, enrollment) => sum + Number(enrollment.progress || 0), 0) / enrollments.length) : 0
 
     const courseItems = enrollments.slice(0, 2).map((enrollment) => ({
-      id: enrollment._id?.toString() ?? String(enrollment.course?._id ?? enrollment.course ?? ''),
-      title: enrollment.course?.title ?? 'dashboard.course_title',
-      meta: enrollment.course?.description ?? 'dashboard.course_meta',
-      status: enrollment.status,
+      id      : enrollment._id?.toString() ?? String(enrollment.course?._id ?? enrollment.course ?? ''),
+      title   : enrollment.course?.title ?? 'dashboard.course_title',
+      meta    : enrollment.course?.description ?? 'dashboard.course_meta',
+      status  : enrollment.status,
       progress: Number(enrollment.progress ?? 0),
-      tone: 'success' as const,
+      tone    : 'success' as const,
       subtitle: 'dashboard.keep_it_up'
     }))
 
     return {
-      audience: 'user',
+      audience            : 'user',
       welcomeTitleFallback: 'dashboard.welcome_back',
-      welcomeMessage: 'dashboard.welcome_message_user',
-      currentCourseTitle: 'dashboard.your_current_courses',
-      featuredTitle: 'dashboard.featured_bootcamps',
-      featuredDescription: 'dashboard.featured_description',
-      recommendationTitle: 'dashboard.recommendation_title',
-      stat: [
+      welcomeMessage      : 'dashboard.welcome_message_user',
+      currentCourseTitle  : 'dashboard.your_current_courses',
+      featuredTitle       : 'dashboard.featured_bootcamps',
+      featuredDescription : 'dashboard.featured_description',
+      recommendationTitle : 'dashboard.recommendation_title',
+      stat                : [
         { id: 'completed', label: 'dashboard.courses_completed', value: completedCourses, tone: 'success', subtitle: 'dashboard.keep_it_up' },
         { id: 'streak', label: 'dashboard.study_streak', value: activeCourses ? activeCourses + 1 : 1, tone: 'warning', subtitle: 'dashboard.days_row' },
         { id: 'pace', label: 'dashboard.average_speed', value: `${progressValue}%`, tone: 'info', subtitle: 'dashboard.of_target_pace' }
-      ] as DashboardCard[],
+      ] as DashboardCardType[],
       recommendation: recommendations,
       featured,
       action: [
@@ -218,25 +218,25 @@ class DashboardController {
     }
   }
 
-  private static buildTrainerDashboard(counts: DashboardCountSummary, recommendations: DashboardRecommendation[], featured: any[], trainerBootcamps: any[], studentCount: number) {
+  private static buildTrainerDashboard(counts: DashboardCountSummaryType, recommendations: DashboardRecommendationType[], featured: any[], trainerBootcamps: any[], studentCount: number) {
     const averageRating = trainerBootcamps.length
       ? Math.round(trainerBootcamps.reduce((sum, bootcamp) => sum + Number(bootcamp.rating || 0), 0) / trainerBootcamps.length)
       : 0
 
     return {
-      audience: 'trainer',
+      audience            : 'trainer',
       welcomeTitleFallback: 'dashboard.welcome_back',
-      welcomeMessage: 'dashboard.welcome_message_user',
-      currentCourseTitle: 'dashboard.your_current_courses',
-      featuredTitle: 'dashboard.featured_bootcamps',
-      featuredDescription: 'dashboard.featured_description',
-      recommendationTitle: 'dashboard.recommendation_title',
-      stat: [
+      welcomeMessage      : 'dashboard.welcome_message_user',
+      currentCourseTitle  : 'dashboard.your_current_courses',
+      featuredTitle       : 'dashboard.featured_bootcamps',
+      featuredDescription : 'dashboard.featured_description',
+      recommendationTitle : 'dashboard.recommendation_title',
+      stat                : [
         { id: 'active-courses', label: 'dashboard.active_courses', value: trainerBootcamps.length || 0, tone: 'primary', subtitle: 'dashboard.published_now' },
         { id: 'students', label: 'dashboard.total_students', value: studentCount, tone: 'success', subtitle: 'dashboard.across_all_courses' },
         { id: 'rating', label: 'dashboard.average_rating', value: `${averageRating}%`, tone: 'warning', subtitle: 'dashboard.out_of_max_rate' },
         { id: 'completion', label: 'dashboard.completion_rate', value: '87%', tone: 'info', subtitle: 'dashboard.last_cohort' }
-      ] as DashboardCard[],
+      ] as DashboardCardType[],
       recommendation: recommendations,
       featured,
       action: [
@@ -262,21 +262,21 @@ class DashboardController {
     }
   }
 
-  private static buildAdminDashboard(counts: DashboardCountSummary, recommendations: DashboardRecommendation[], featured: any[]) {
+  private static buildAdminDashboard(counts: DashboardCountSummaryType, recommendations: DashboardRecommendationType[], featured: any[]) {
     return {
-      audience: 'admin',
+      audience            : 'admin',
       welcomeTitleFallback: 'dashboard.welcome_back',
-      welcomeMessage: 'dashboard.welcome_message_user',
-      currentCourseTitle: 'dashboard.your_current_courses',
-      featuredTitle: 'dashboard.featured_bootcamps',
-      featuredDescription: 'dashboard.featured_description',
-      recommendationTitle: 'dashboard.recommendation_title',
-      stat: [
+      welcomeMessage      : 'dashboard.welcome_message_user',
+      currentCourseTitle  : 'dashboard.your_current_courses',
+      featuredTitle       : 'dashboard.featured_bootcamps',
+      featuredDescription : 'dashboard.featured_description',
+      recommendationTitle : 'dashboard.recommendation_title',
+      stat                : [
         { id: 'active-courses', label: 'dashboard.active_courses', value: counts.courses, tone: 'primary', subtitle: 'dashboard.published_now' },
         { id: 'students', label: 'dashboard.total_students', value: counts.users, tone: 'success', subtitle: 'dashboard.across_all_courses' },
         { id: 'rating', label: 'dashboard.average_rating', value: '4.8', tone: 'warning', subtitle: 'dashboard.out_of_max_rate' },
         { id: 'completion', label: 'dashboard.completion_rate', value: '87%', tone: 'info', subtitle: 'dashboard.last_cohort' }
-      ] as DashboardCard[],
+      ] as DashboardCardType[],
       recommendation: recommendations,
       featured,
       action: [
@@ -321,19 +321,19 @@ class DashboardController {
         DashboardController.getAuthenticatedUser(req)
       ])
 
-      const counts: DashboardCountSummary = {
-        users: userCount,
-        trainers: trainerCount,
-        admins: adminCount,
+      const counts: DashboardCountSummaryType = {
+        users    : userCount,
+        trainers : trainerCount,
+        admins   : adminCount,
         bootcamps: bootcampCount,
-        courses: courseCount,
-        feedback: feedbackCount
+        courses  : courseCount,
+        feedback : feedbackCount
       }
 
-      const locale = DashboardController.getLocale(req)
-      const audience = DashboardController.getAudience(req, authUser)
+      const locale          = DashboardController.getLocale(req)
+      const audience        = DashboardController.getAudience(req, authUser)
       const recommendations = DashboardController.buildTopBootcampRecommendations(topBootcamps)
-      const featured = DashboardController.buildFeaturedBootcamps(topBootcamps)
+      const featured        = DashboardController.buildFeaturedBootcamps(topBootcamps)
 
       const dashboardData = await (async () => {
         if (audience === 'user' && authUser) {
