@@ -7,51 +7,6 @@ import { Bootcamp, Course, Enrollment, Feedback, User } from '@model'
 import { Code, Key, LOCALE } from '@constant/enum'
 import { RESPONSE } from '@constant'
 
-// type DashboardAudience = 'guest' | 'user' | 'trainer' | 'admin'
-
-// type DashboardCountSummary = {
-//   users    : number
-//   trainers : number
-//   admins   : number
-//   bootcamps: number
-//   courses  : number
-//   feedback : number
-// }
-
-// type DashboardRecommendation = {
-//   id    : string
-//   title : string
-//   meta  : string
-//   action: string
-//   path  : string
-// }
-
-// type DashboardCard = {
-//   id      : string
-//   label   : string
-//   value   : string | number
-//   tone    : 'primary' | 'success' | 'info' | 'warning' | 'error'
-//   subtitle: string
-// }
-
-// type DashboardAction = {
-//   id     : string
-//   icon   : string
-//   label  : string
-//   path   : string
-//   variant: 'contained' | 'outlined' | 'text'
-// }
-
-// type DashboardCourse = {
-//   id      : string
-//   title   : string
-//   meta    : string
-//   status  : string
-//   progress: number
-//   tone    : 'primary' | 'success' | 'info' | 'warning' | 'error'
-//   subtitle: string
-// }
-
 class DashboardController {
   private static async getAuthenticatedUser(req: Request) {
     const request = req as any
@@ -127,6 +82,7 @@ class DashboardController {
   }
 
   private static buildGuestDashboard(counts: DashboardCountSummaryType, recommendations: DashboardRecommendationType[], featured: any[]) {
+    // get the value
     return {
       audience            : 'guest',
       welcomeTitleFallback: 'dashboard.welcome_back',
@@ -167,8 +123,8 @@ class DashboardController {
 
   private static buildUserDashboard(counts: DashboardCountSummaryType, recommendations: DashboardRecommendationType[], featured: any[], enrollments: any[]) {
     const completedCourses = enrollments.filter((enrollment) => enrollment.status === 'completed').length
-    const activeCourses = enrollments.filter((enrollment) => enrollment.status === 'in_progress').length
-    const progressValue = enrollments.length ? Math.round(enrollments.reduce((sum, enrollment) => sum + Number(enrollment.progress || 0), 0) / enrollments.length) : 0
+    const activeCourses    = enrollments.filter((enrollment) => enrollment.status === 'in_progress').length
+    const progressValue    = enrollments.length ? Math.round(enrollments.reduce((sum, enrollment) => sum + Number(enrollment.progress || 0), 0) / enrollments.length) : 0
 
     const courseItems = enrollments.slice(0, 2).map((enrollment) => ({
       id      : enrollment._id?.toString() ?? String(enrollment.course?._id ?? enrollment.course ?? ''),
@@ -343,7 +299,7 @@ class DashboardController {
 
         if (audience === 'trainer' && authUser) {
           const trainerBootcamps = await Bootcamp.find({ user: authUser._id }).lean()
-          const studentIds = await Enrollment.distinct('user', { bootcamp: { $in: trainerBootcamps.map((bootcamp) => bootcamp._id) } })
+          const studentIds       = await Enrollment.distinct('user', { bootcamp: { $in: trainerBootcamps.map((bootcamp) => bootcamp._id) } })
           return DashboardController.buildTrainerDashboard(counts, recommendations, featured, trainerBootcamps, studentIds.length)
         }
 
