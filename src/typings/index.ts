@@ -1,3 +1,3 @@
-export type { ExpressCallback } from '@typings/express-callback'
-export type { AsyncHandler } from '@typings/async-handler'
-export type { IndexType } from '@typings/record-index'
+export type { ExpressCallback } from './express-callback'
+export type { AsyncHandler } from './async-handler'
+export type { IndexType } from './record-index'
