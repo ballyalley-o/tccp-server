@@ -34,3 +34,5 @@ declare interface IEmailOptions {
   message?: string
   html   ?: string | IHTMLContent
 }
+
+declare type AppThemeType= 'primary' | 'success' | 'info' | 'warning' | 'error'
