@@ -42,6 +42,25 @@ const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
       type   : Boolean,
       default: false
     },
+    skills: {
+      type: [{
+        id: {
+          type    : String,
+          required: true,
+          trim    : true
+        },
+        labelKey: {
+          type    : String,
+          required: true,
+          trim    : true
+        },
+        category: {
+          type: String,
+          trim: true
+        }
+      }],
+      default: []
+    },
     bootcamp: {
       type    : Schema.ObjectId,
       ref     : Key.Bootcamp,

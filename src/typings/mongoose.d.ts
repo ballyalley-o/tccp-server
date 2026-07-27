@@ -57,8 +57,20 @@ declare interface ICourse extends Document {
   minimumSkill        : string
   scholarshipAvailable: boolean
   slug                : string
+  skills              : Array<{ id: string; labelKey: string; category?: string }>
   bootcamp            : Schema.Types.ObjectId
   user                : Schema.Types.ObjectId
+}
+
+declare interface ILearningEvent {
+  _id?: Mongoose.Schema.Types.ObjectId
+  user: Schema.Types.ObjectId
+  course?: Schema.Types.ObjectId
+  bootcamp?: Schema.Types.ObjectId
+  eventType: string
+  occurredAt: Date
+  metadata?: Record<string, any>
+  source?: string
 }
 
 declare interface ICourseExtended extends ICourse {
