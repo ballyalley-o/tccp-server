@@ -38,6 +38,25 @@ const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
       required: [true, SCHEMA.MINIMUM_SKILL],
       enum    : Object.values(MinimumSkill)
     },
+     skills: {
+      type: [{
+        id: {
+          type    : String,
+          required: true,
+          trim    : true
+        },
+        labelKey: {
+          type    : String,
+          required: true,
+          trim    : true
+        },
+        category: {
+          type: String,
+          trim: true
+        }
+      }],
+      default: []
+    },
     scholarshipAvailable: {
       type   : Boolean,
       default: false
