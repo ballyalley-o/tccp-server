@@ -19,13 +19,16 @@ enum Key {
   Public    = 'public',
   IndexHtml = 'index.html',
 
-    // @tag
-  id       = '_id',
-  User     = 'User',
-  Course   = 'Course',
-  Bootcamp = 'Bootcamp',
-  Cohort   = 'Cohort',
-  Feedback = 'Feedback',
+    // @module
+  id            = '_id',
+  User          = 'User',
+  Course        = 'Course',
+  Bootcamp      = 'Bootcamp',
+  Cohort        = 'Cohort',
+  Feedback      = 'Feedback',
+  Skill         = 'Skill',
+  LearningEvent = 'LearningEvent',
+  Category      = 'Category',
 
   UserVirtual       = 'user',
   UserCourseVirtual = 'user course feedback',
