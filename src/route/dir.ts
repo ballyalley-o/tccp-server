@@ -32,6 +32,7 @@ export const BADGE           = 'badge'
 export const CREATE          = 'create'
 export const DASHBOARD       = 'dashboard'
 export const DIST            = 'dist'
+export const EVENT           = 'event'
 export const FORGOT_PASSWORD = 'forgot-password'
 export const HOME            = 'home'
 export const PHOTO           = 'photo'
@@ -107,6 +108,8 @@ export class PathDir {
   static SYSTEM_HEALTH = pathBuilder(PathDir.API_ROOT, SYSTEM, HEALTH)
 
   static FEEDBACK = pathBuilder(PathDir.API_ROOT, FEEDBACK)
+
+  static EVENT = pathBuilder(EVENT)
 
   static REGISTER         = pathBuilder(REGISTER)
   static LOG_IN           = pathBuilder(LOG_IN)
