@@ -49,6 +49,33 @@ declare interface IFeedbackExtended extends IFeedback {
   getAverageRating: (bootcampId: Schema.Types.ObjectId) => Promise<void>
 }
 
+declare interface ILearningEvent {
+  _id       ?: Mongoose.Schema.Types.ObjectId
+  user       : Schema.Types.ObjectId
+  course    ?: Schema.Types.ObjectId
+  bootcamp  ?: Schema.Types.ObjectId
+  eventType  : string
+  occurredAt : Date
+  metadata  ?: Record<string, any>
+  source    ?: string
+}
+
+declare interface ICategory {
+  _id      ?: Mongoose.Schema.Types.ObjectId
+  name      : string
+  createdBy : Schema.Types.ObjectId
+}
+
+declare interface ISkill {
+  _id      ?: Mongoose.Schema.Types.ObjectId
+  name      : string
+  course    : Schema.Types.ObjectId
+  category  : Schema.Types.ObjectId
+  createdBy : Schema.Types.ObjectId
+  metadata ?: Record<string, any>
+}
+
+
 declare interface ICourse extends Document {
   title               : string
   description         : string
@@ -57,6 +84,7 @@ declare interface ICourse extends Document {
   minimumSkill        : string
   scholarshipAvailable: boolean
   slug                : string
+  skills              : Array<{ id: string; labelKey: string; category?: string }>
   bootcamp            : Schema.Types.ObjectId
   user                : Schema.Types.ObjectId
 }

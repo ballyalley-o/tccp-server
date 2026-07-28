@@ -1,5 +1,3 @@
-declare type DashboardAudienceType = 'guest' | 'user' | 'trainer' | 'admin'
-
 declare type DashboardCountSummaryType = {
   users    : number
   trainers : number
@@ -25,7 +23,7 @@ declare type DashboardCardType = {
   subtitle: string
 }
 
-declare type DashboardAction = {
+declare type DashboardActionType = {
   id     : string
   icon   : string
   label  : string
