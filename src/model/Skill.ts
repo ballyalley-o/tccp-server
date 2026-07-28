@@ -11,9 +11,9 @@ const SkillSchema = new Schema<ISkill>(
       required: true,
       index   : true
     },
-    course: {
+    category: {
       type: Schema.Types.ObjectId,
-      ref: Key.Course,
+      ref: Key.Category,
       index: true
     },
     bootcamp: {
