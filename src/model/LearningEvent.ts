@@ -1,18 +1,7 @@
-import { Schema, model } from 'mongoose'
-import { Key } from '@constant/enum'
+import { Schema, model }       from 'mongoose'
+import { Key, LEARNING_EVENT } from '@constant/enum'
 
 const TAG = 'LearningEvent'
-
-const learningEvent: LearningEventType[] = [
-  'lesson_started',
-  'lesson_completed',
-  'quiz_passed',
-  'assignment_submitted',
-  'resource_viewed',
-  'discussion_posted',
-  'login',
-  'badge_earned'
-]
 
 const LearningEventSchema = new Schema<ILearningEvent>(
   {
@@ -35,7 +24,7 @@ const LearningEventSchema = new Schema<ILearningEvent>(
     eventType: {
       type    : String,
       required: true,
-      enum    : learningEvent,
+      enum    : LEARNING_EVENT,
       index   : true
     },
     occurredAt: {
