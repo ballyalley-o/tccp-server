@@ -1,7 +1,7 @@
 enum LOCALE {
   EN = 'en',
   TH = 'th',
-  JP = 'jp',
+  JA = 'ja',
   KR = 'kr',
   CN = 'cn',
   VN = 'vn',
