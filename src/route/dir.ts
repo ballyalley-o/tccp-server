@@ -25,6 +25,13 @@ export const LOG_IN   = 'log-in'
 export const LOG_OUT  = 'log-out'
 export const REGISTER = 'register'
 
+export const LECTURE = 'lecture'
+export const MODULE  = 'module'
+export const QUIZ    = 'quiz'
+
+export const SKILL    = 'skill'
+export const CATEGORY = 'category'
+
 export const ALL             = '*'
 export const ROOT            = '/'
 export const AVATAR          = 'avatar'
@@ -98,8 +105,14 @@ export class PathDir {
   static UPLOAD_BADGE   = pathBuilder(ID, BADGE)
   static UPLOAD_AVATAR  = pathBuilder(ID, AVATAR)
 
-  static COURSE     = pathBuilder(PathDir.API_ROOT, COURSE)
-  static ENROLLMENT = pathBuilder(PathDir.API_ROOT, ENROLLMENT)
+  static COURSE         = pathBuilder(PathDir.API_ROOT, COURSE)
+  static COURSE_LECTURE = pathBuilder(PathDir.API_ROOT, COURSE, LECTURE)
+  static COURSE_MODULE  = pathBuilder(PathDir.API_ROOT, COURSE, MODULE)
+  static COURSE_QUIZ    = pathBuilder(PathDir.API_ROOT, COURSE, QUIZ)
+  static ENROLLMENT     = pathBuilder(PathDir.API_ROOT, ENROLLMENT)
+
+  static SKILL          = pathBuilder(PathDir.API_ROOT, SKILL)
+  static SKILL_CATEGORY = pathBuilder(PathDir.API_ROOT, SKILL, CATEGORY)
 
   static SYSTEM        = pathBuilder(PathDir.API_ROOT, SYSTEM)
   static INFO          = pathBuilder(INFO)
