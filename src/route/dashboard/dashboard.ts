@@ -1,7 +1,7 @@
-import { Router } from 'express'
-import { PathDir } from '@route/dir'
-import DashboardController from '@controller/dashboard'
-import { protect } from '@route/guard'
+import { Router }              from 'express'
+import { DashboardController } from '@controller/dashboard'
+import { protect }             from '@route/guard'
+import { PathDir }             from '@route/dir'
 
 const router = Router({ mergeParams: true })
 
