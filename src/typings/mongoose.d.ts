@@ -84,13 +84,87 @@ declare interface ICourse extends Document {
   minimumSkill        : string
   scholarshipAvailable: boolean
   slug                : string
-  skills              : Array<{ id: string; labelKey: string; category?: string }>
+  skills              : Schema.Types.ObjectId[]
+  modules             : Schema.Types.ObjectId[]
   bootcamp            : Schema.Types.ObjectId
   user                : Schema.Types.ObjectId
 }
 
 declare interface ICourseExtended extends ICourse {
   getAverageCost(bootcampId: Schema.Types.ObjectId): Promise<void>
+}
+
+declare interface ILearningEvent {
+  _id       ?: Mongoose.Schema.Types.ObjectId
+  user       : Schema.Types.ObjectId
+  course    ?: Schema.Types.ObjectId
+  bootcamp  ?: Schema.Types.ObjectId
+  eventType  : string
+  occurredAt : Date
+  metadata  ?: Record<string, any>
+  source    ?: string
+}
+
+
+declare interface ISkillCategory {
+  _id        ?: Mongoose.Schema.Types.ObjectId
+  name        : string
+  labelKey    : string
+  description?: string
+  slug        : string
+  order       : number
+}
+
+declare interface ISkill {
+  _id        ?: Mongoose.Schema.Types.ObjectId
+  name        : string
+  labelKey    : string
+  description?: string
+  category    : Schema.Types.ObjectId
+  slug        : string
+  order       : number
+}
+
+declare interface ICourseModule {
+  _id        ?: Mongoose.Schema.Types.ObjectId
+  course      : Schema.Types.ObjectId
+  title       : string
+  labelKey    : string
+  description?: string
+  order       : number
+}
+
+declare interface ICourseLecture {
+  _id            ?: Mongoose.Schema.Types.ObjectId
+  course          : Schema.Types.ObjectId
+  module          : Schema.Types.ObjectId
+  title           : string
+  labelKey        : string
+  description    ?: string
+  content        ?: string
+  resources      ?: string[]
+  durationMinutes : number
+  order           : number
+}
+
+declare interface ICourseQuizQuestion {
+  prompt  : string
+  type   ?: string
+  options?: string[]
+  answer ?: any
+  points ?: number
+}
+
+declare interface ICourseQuiz {
+  _id         ?: Mongoose.Schema.Types.ObjectId
+  course       : Schema.Types.ObjectId
+  module       : Schema.Types.ObjectId
+  title        : string
+  labelKey     : string
+  description ?: string
+  questions    : ICourseQuizQuestion[]
+  passingScore : number
+  order        : number
 }
 
 declare interface IBootcamp {
