@@ -40,20 +40,15 @@ const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
     },
      skills: {
       type: [{
-        id: {
-          type    : String,
-          required: true,
-          trim    : true
-        },
-        labelKey: {
-          type    : String,
-          required: true,
-          trim    : true
-        },
-        category: {
-          type: String,
-          trim: true
-        }
+        type: Schema.Types.ObjectId,
+        ref : Key.Skill
+      }],
+      default: []
+    },
+    modules: {
+      type: [{
+        type: Schema.Types.ObjectId,
+        ref : Key.CourseModule
       }],
       default: []
     },
