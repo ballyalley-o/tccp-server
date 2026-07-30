@@ -31,7 +31,7 @@ declare type DashboardActionType = {
   variant: 'contained' | 'outlined' | 'text'
 }
 
-declare type DashboardCourse = {
+declare type DashboardCourseType = {
   id      : string
   title   : string
   meta    : string
