@@ -53,6 +53,7 @@ const RESPONSE = {
     ENTITY_EXISTS             : 'Entity already exists',
     INVALID_START_DATE        : 'Please select a valid start date',
     INVALID_START_DATE_PAST   : 'Start date cannont be in the past',
+    IS_REQUIRED               : (param: string) => `${param} is required.`,
     ORG_REQUIRED              : 'Organization is required for Admin',
     ALREADY_EXISTS            : (data: string) => `${data} already exists`,
     ONE_FEEDBACK              : 'Only one feedback per user is allowed',
