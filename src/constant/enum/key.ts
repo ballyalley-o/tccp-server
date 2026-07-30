@@ -29,6 +29,10 @@ enum Key {
   Skill         = 'Skill',
   LearningEvent = 'LearningEvent',
   Category      = 'Category',
+  SkillCategory = 'SkillCategory',
+  CourseModule  = 'CourseModule',
+  CourseLecture = 'CourseLecture',
+  CourseQuiz    = 'CourseQuiz',
 
   UserVirtual       = 'user',
   UserCourseVirtual = 'user course feedback',
