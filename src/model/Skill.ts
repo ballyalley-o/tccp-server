@@ -1,45 +1,42 @@
 import { Schema, model } from 'mongoose'
-import { Key } from '@constant/enum'
+import { Key, SCHEMA }   from '@constant/enum'
 
-const TAG = 'Skill'
+const TAG = Key.Skill
 
 const SkillSchema = new Schema<ISkill>(
   {
-    course: {
+    name: {
+      type    : String,
+      required: [true, SCHEMA.NAME],
+      trim    : true,
+      unique  : true
+    },
+    labelKey: {
+      type    : String,
+      required: [true, SCHEMA.NAME],
+      trim    : true,
+      unique  : true
+    },
+    description: {
+      type   : String,
+      trim   : true,
+      default: ''
+    },
+    category: {
       type    : Schema.Types.ObjectId,
-      ref     : Key.Course,
+      ref     : Key.SkillCategory,
       required: true,
       index   : true
     },
-    category: {
-      type: Schema.Types.ObjectId,
-      ref: Key.Category,
-      index: true
-    },
-    bootcamp: {
-      type: Schema.Types.ObjectId,
-      ref: Key.Bootcamp,
-      index: true
-    },
-    eventType: {
-      type: String,
+    slug: {
+      type    : String,
       required: true,
-      enum: learningEvent,
-      index: true
+      unique  : true,
+      index   : true
     },
-    occurredAt: {
-      type: Date,
-      default: Date.now,
-      index: true
-    },
-    metadata: {
-      type: Schema.Types.Mixed,
-      default: {}
-    },
-    source: {
-      type: String,
-      default: 'web',
-      enum: ['web', 'mobile', 'api']
+    order: {
+      type   : Number,
+      default: 0
     }
   },
   {
@@ -48,8 +45,12 @@ const SkillSchema = new Schema<ISkill>(
   }
 )
 
-SkillSchema.index({ user: 1, occurredAt: -1 })
-SkillSchema.index({ course: 1, occurredAt: -1 })
+SkillSchema.pre(Key.Save, function (next) {
+  this.slug = String(this.name).toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-_]/g, '')
+  next()
+})
+
+SkillSchema.index({ category: 1, order: 1 })
 
 const Skill = model(TAG, SkillSchema)
 export default Skill
