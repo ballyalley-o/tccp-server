@@ -1,12 +1,13 @@
-import { Application } from 'express'
-import { linkUserRoute } from './user'
-import { linkBootcampRoute } from './bootcamp'
-import { linkFeedbackRoute } from './feedback'
-import { linkCourseRoute } from './course'
-import { linkAuthRoute } from './auth'
-import { linkSystemRoute } from './system'
+import { Application }         from 'express'
+import { linkAuthRoute }       from './auth'
+import { linkBootcampRoute }   from './bootcamp'
+import { linkCourseRoute }     from './course'
+import { linkDashboardRoute }  from './dashboard'
 import { linkEnrollmentRoute } from './enrollment'
-import { linkDashboardRoute } from './dashboard'
+import { linkFeedbackRoute }   from './feedback'
+import { linkSkillRoute }      from './skill'
+import { linkSystemRoute }     from './system'
+import { linkUserRoute }       from './user'
 
 const mainRoute = (app: Application) => {
   linkAuthRoute(app)
@@ -17,6 +18,7 @@ const mainRoute = (app: Application) => {
   linkSystemRoute(app)
   linkEnrollmentRoute(app)
   linkDashboardRoute(app)
+  linkSkillRoute(app)
 }
 
 export { mainRoute }
