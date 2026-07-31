@@ -1,8 +1,8 @@
-import { GLOBAL } from '@config'
-import writeSync from 'clipboardy'
-import * as PathParam from '@route/dir'
+import GLOBAL            from '@config/global'
+import writeSync         from 'clipboardy'
+import * as PathParam    from '@route/dir'
 import { HTML, CONTENT } from '@constant'
-import { Key } from '@constant/enum'
+import { Key }           from '@constant/enum'
 
 /**
  *  HTML content for password reset

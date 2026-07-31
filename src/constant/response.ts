@@ -1,5 +1,5 @@
-import { Request, Response } from 'express'
-import { GLOBAL } from '@config'
+import type { Request, Response } from 'express'
+import GLOBAL                     from '@config/global'
 
 const RESPONSE = {
   server: (req: Request, res: Response) => {

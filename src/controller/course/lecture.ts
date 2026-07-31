@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction }     from 'express'
-import { use, LogRequest }                     from '@decorator'
-import { CourseLecture, CourseModule, Course } from '@model'
-import { Code }                                from '@constant/enum'
-import { RESPONSE }                            from '@constant'
-import { ErrorResponse }                       from '@util'
+import type { Request, Response, NextFunction } from 'express'
+import { use, LogRequest }                      from '@decorator'
+import { CourseLecture, CourseModule, Course }  from '@model'
+import { Code }                                 from '@constant/enum'
+import { RESPONSE }                             from '@constant'
+import { ErrorResponse }                        from '@util'
 
 class CourseLectureController {
   @use(LogRequest)

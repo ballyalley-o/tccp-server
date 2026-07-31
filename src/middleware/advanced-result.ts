@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from 'express'
-import { Document, Model as MongooseModel } from 'mongoose'
-import { RESPONSE, REGEX, REMOVE_FIELDS } from '@constant'
-import { Key } from '@constant/enum'
+import type { Request, Response, NextFunction } from 'express'
+import { Document, Model as MongooseModel }     from 'mongoose'
+import RESPONSE                                 from '@constant/response'
+import { REMOVE_FIELDS }                        from '@constant/remove-fields'
+import { Key }                                  from '@constant/enum'
 
 interface Model<T extends Document> extends MongooseModel<T> {}
 

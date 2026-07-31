@@ -1,9 +1,10 @@
-import { App } from '@config'
-import slugify from 'slugify'
-import goodlog from 'good-logs'
-import mongoose, { Schema, model } from 'mongoose'
-import { DATABASE_INDEX } from '@db'
-import { REGEX, RESPONSE } from '@constant'
+import geocoder                                      from '@config/geocoder'
+import slugify                                       from 'slugify'
+import goodlog                                       from 'good-logs'
+import mongoose, { Schema, model }                   from 'mongoose'
+import { DATABASE_INDEX }                            from '@db'
+import { REGEX }                                     from '@constant/regex'
+import RESPONSE                                      from '@constant/response'
 import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 
 const TAG = Key.Bootcamp
@@ -114,20 +115,21 @@ const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
 )
 
 BootcampSchema.statics.getTotalFeedback = async function (bootcampId: Schema.Types.ObjectId) {
-  const obj = await this.aggregate([
-    {
-      $match: { bootcamp: bootcampId }
-    },
-    {
-      $group: {
-        _id          : '$bootcamp',
-        totalFeedback: { $sum: 1 }
-      }
-    }
-  ])
   try {
+    const [result] = await this.aggregate([
+      {
+        $match: { bootcamp: bootcampId }
+      },
+      {
+        $group: {
+          _id          : '$bootcamp',
+          totalFeedback: { $sum: 1 }
+        }
+      }
+    ])
+
     await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
-      totalFeedback: obj[0].totalFeedback
+      totalFeedback: result?.totalFeedback ?? 0
     })
   } catch (error) {
     if (error instanceof Error) {
@@ -140,14 +142,21 @@ BootcampSchema.post(Key.Save, function () {
   ;(this.constructor as any as IBootcampExtended).getTotalFeedback(this._id)
 })
 
-BootcampSchema.pre(Key.Save, function (next) {
+// Set slug before validation so required validator for slug passes
+BootcampSchema.pre('validate', function (next) {
   this.slug = slugify(this.name, { lower: true })
   next()
 })
 
 BootcampSchema.pre(Key.Save, async function (_next) {
-  const loc           = await App.geocoder.geocode(this.address)
-        this.location = {
+  // Only geocode when an address is provided to avoid network calls in tests
+  if (!this.address) {
+    this.address = ''
+    return
+  }
+
+  const loc = await geocoder.geocode(this.address)
+  this.location = {
     type            : Key.GeocoderType,
     coordinates     : [loc[0].longitude, loc[0].latitude],
     formattedAddress: loc[0].formattedAddress || '',

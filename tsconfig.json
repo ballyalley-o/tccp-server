@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "moduleResolution"  : "node",
-    "lib"               : ["dom", "dom.iterable", "ESNext"],
-    "target"            : "ESNext",
-    "module"            : "ESNext",
+    "lib"               : ["dom", "dom.iterable", "esnext"],
+    "target"            : "esnext",
+    "module"            : "esnext",
     // "ignoreDeprecations": "6.0",
     "outDir"            : "./dist",
     "rootDir"           : "./src",
@@ -21,8 +21,10 @@
     "esModuleInterop"       : true,
     "resolveJsonModule"     : true,
     "strict"                : true,
-    "typeRoots"             : ["types"]
+    "isolatedModules"       : true,
+    "typeRoots"             : ["node_modules/@types", "types"]
   },
+
   "tsc-alias": {
     "verbose": false,
     "resolveFullPaths": true,

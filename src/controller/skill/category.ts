@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express'
-import { use, LogRequest }                 from '@decorator'
-import { SkillCategory }                   from '@model'
-import { Code, Key }                       from '@constant/enum'
-import { RESPONSE }                        from '@constant'
-import { ErrorResponse }                   from '@util'
+import type { Request, Response, NextFunction } from 'express'
+import { use, LogRequest }                      from '@decorator'
+import { SkillCategory }                        from '@model'
+import { Code, Key }                            from '@constant/enum'
+import { RESPONSE }                             from '@constant'
+import { ErrorResponse }                        from '@util'
 
 class SkillCategoryController {
   @use(LogRequest)
@@ -24,7 +24,7 @@ class SkillCategoryController {
   @use(LogRequest)
   public static async createSkillCategory(req: Request, res: Response) {
     const { name, labelKey, description, order } = req.body
-    const skillCategory = await SkillCategory.create({ name, labelKey, description, order })
+    const skillCategory                          = await SkillCategory.create({ name, labelKey, description, order })
     res.status(Code.CREATED).json({ success: true, data: skillCategory })
   }
 

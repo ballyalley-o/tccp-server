@@ -1,6 +1,6 @@
 import 'colors'
-import goodlog from 'good-logs'
-import { Request, Response, NextFunction } from 'express'
+import goodlog                                  from 'good-logs'
+import type { Request, Response, NextFunction } from 'express'
 
 function LogInitRequest(target: any, key: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value

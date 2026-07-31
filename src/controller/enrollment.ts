@@ -1,10 +1,10 @@
-import goodlog from 'good-logs'
-import { Request, Response, NextFunction } from 'express'
-import { use, LogRequest } from '@decorator'
-import { Enrollment, Bootcamp, Course } from '@model'
-import { Key, Code } from '@constant/enum'
-import { RESPONSE } from '@constant'
-import { ErrorResponse } from '@util'
+import goodlog                                  from 'good-logs'
+import type { Request, Response, NextFunction } from 'express'
+import { use, LogRequest }                      from '@decorator'
+import { Enrollment, Bootcamp, Course }         from '@model'
+import { Key, Code }                            from '@constant/enum'
+import { RESPONSE }                             from '@constant'
+import { ErrorResponse }                        from '@util'
 
 /**
  * Enrollment Controller

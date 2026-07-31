@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express'
-import { use, LogRequest }                 from '@decorator'
-import { Skill, SkillCategory }            from '@model'
-import { Code, Key }                       from '@constant/enum'
-import { RESPONSE }                        from '@constant'
-import { ErrorResponse }                   from '@util'
+import type { Request, Response, NextFunction } from 'express'
+import { use, LogRequest }                      from '@decorator'
+import { Skill, SkillCategory }                 from '@model'
+import { Code, Key }                            from '@constant/enum'
+import { RESPONSE }                             from '@constant'
+import { ErrorResponse }                        from '@util'
 
 class SkillController {
   @use(LogRequest)

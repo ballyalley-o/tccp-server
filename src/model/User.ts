@@ -1,13 +1,13 @@
-import bcrypt from 'bcryptjs'
-import crypto from 'crypto'
-import jwt from 'jsonwebtoken'
-import { Schema, model } from 'mongoose'
-import { GLOBAL } from '@config'
+import bcrypt             from 'bcryptjs'
+import crypto             from 'crypto'
+import jwt                from 'jsonwebtoken'
+import { Schema, model }  from 'mongoose'
+import GLOBAL             from '@config/global'
 import { DATABASE_INDEX } from '@db'
-import { REGEX } from '@constant'
-import { Key } from '@constant/enum'
-import { oneDayFromNow } from '@constant/max-age'
-import { SCHEMA, Role } from '@constant/enum'
+import { REGEX }          from '@constant/regex'
+import { Key }            from '@constant/enum'
+import { oneDayFromNow }  from '@constant/max-age'
+import { SCHEMA, Role }   from '@constant/enum'
 
 const TAG = Key.User
 

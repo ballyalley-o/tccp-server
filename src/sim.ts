@@ -1,12 +1,10 @@
-import goodlog from 'good-logs'
-import { App } from '@config'
-// @datas
+import goodlog                                                                      from 'good-logs'
+import App                                                                          from '@config/server'
 import { userCollection, feedbackCollection, bootcampCollection, courseCollection } from '@mock'
-// @models
-import { User, Course, Bootcamp, Feedback } from '@model'
-import { COLOR } from '@constant/enum'
-import { RESPONSE } from '@constant'
-import { ARGV } from '@constant/enum'
+import { User, Course, Bootcamp, Feedback }                                         from '@model'
+import { COLOR }                                                                    from '@constant/enum'
+import { RESPONSE }                                                                 from '@constant'
+import { ARGV }                                                                     from '@constant/enum'
 
 const app = new App()
 app.connectDb()

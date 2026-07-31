@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express'
-import { Feedback, Bootcamp } from '@model'
-import { ErrorResponse } from '@util'
-import { Key, Code } from '@constant/enum'
-import { RESPONSE } from '@constant'
-import { LogRequest, use } from '@decorator'
+import type { Request, Response, NextFunction } from 'express'
+import { Feedback, Bootcamp }                   from '@model'
+import { ErrorResponse }                        from '@util'
+import { Key, Code }                            from '@constant/enum'
+import { RESPONSE }                             from '@constant'
+import { LogRequest, use }                      from '@decorator'
 
 /**
  * Feedback Controller
