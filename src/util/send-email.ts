@@ -1,8 +1,8 @@
-import { App } from '@config'
-import goodlog from 'good-logs'
+import App                 from '@config/server'
+import goodlog             from 'good-logs'
 import { SentMessageInfo } from 'nodemailer'
-import { Key } from '@constant/enum'
-import dotenv from 'dotenv'
+import { Key }             from '@constant/enum'
+import dotenv              from 'dotenv'
 dotenv.config()
 
 const sendEmail = async (options: IEmailOptions) => {

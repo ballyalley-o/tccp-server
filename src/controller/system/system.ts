@@ -1,8 +1,8 @@
-import GLOBAL from '@config/global'
-import { Request, Response } from 'express'
-import { use, LogRequest } from '@decorator'
-import { Code } from '@constant/enum'
-import packageJson from '../../../package.json' with { type: 'json' }
+import GLOBAL                     from '@config/global'
+import type { Request, Response } from 'express'
+import { use, LogRequest }        from '@decorator'
+import { Code }                   from '@constant/enum'
+import packageJson                from '../../../package.json' with { type: 'json' }
 
 class SystemController {
 
@@ -39,8 +39,6 @@ class SystemController {
     if (heapUsedPercent > 95) {
         status = 'unhealthy'
     }
-
-    const statusCode = status === 'unhealthy' ? Code.INTERNAL_SERVER_ERROR : Code.OK
 
     res.status(Code.OK).json({
       success: true,

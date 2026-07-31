@@ -1,9 +1,10 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
-import express, { Router, Request, Response } from 'express'
-import { GLOBAL } from '@config'
-import { PathDir } from '@route/dir'
-import { Key } from '@constant/enum'
+import path                       from 'path'
+import { fileURLToPath }          from 'url'
+import express, { Router }        from 'express'
+import type { Request, Response } from 'express'
+import GLOBAL                     from '@config/global'
+import { PathDir }                from '@route/dir'
+import { Key }                    from '@constant/enum'
 
 const ENV        = Key.Production
 const __filename = fileURLToPath(import.meta.url)

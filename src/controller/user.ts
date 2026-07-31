@@ -1,12 +1,12 @@
 import 'reflect-metadata'
-import { Request, Response, NextFunction } from 'express'
-import goodlog from 'good-logs'
-import { Key, Code, NumKey } from '@constant/enum'
-import { RESPONSE } from '@constant'
-import { GLOBAL } from '@config'
-import { ErrorResponse, DataResponse } from '@util'
-import { User } from '@model'
-import { use, LogRequest } from '@decorator'
+import type { Request, Response, NextFunction } from 'express'
+import goodlog                                  from 'good-logs'
+import { Key, Code, NumKey }                    from '@constant/enum'
+import { RESPONSE }                             from '@constant'
+import GLOBAL                                   from '@config/global'
+import { ErrorResponse, DataResponse }          from '@util'
+import { User }                                 from '@model'
+import { use, LogRequest }                      from '@decorator'
 
 /**
  * User Controller

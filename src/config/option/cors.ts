@@ -1,6 +1,6 @@
 import { CorsOptions } from 'cors'
-import { GLOBAL } from '@config'
-import { RESPONSE } from '@constant'
+import GLOBAL          from '@config/global'
+import { RESPONSE }    from '@constant'
 
 const  allowedOrigins   = GLOBAL.CORS_ALLOWED_ORIGIN
 export const corsOption = {

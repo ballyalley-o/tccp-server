@@ -1,8 +1,9 @@
-import path                  from 'path'
-import { __dirname, GLOBAL } from '@config'
-import { RESPONSE }          from '@constant'
-import { Key }               from '@constant/enum'
-import { pathBuilder }       from '@util/builder'
+import path            from 'path'
+import GLOBAL          from '@config/global'
+import { __dirname }   from '@config/paths'
+import { RESPONSE }    from '@constant'
+import { Key }         from '@constant/enum'
+import { pathBuilder } from '@util/builder'
 
   /**
  * @module

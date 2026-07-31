@@ -1,12 +1,12 @@
-import { Request, Response, NextFunction } from 'express'
-import crypto from 'crypto'
-import goodlog from 'good-logs'
-import { User } from '@model'
-import { use, LogRequest } from '@decorator'
-import { PathDir } from '@route/dir'
-import { Key, Code } from '@constant/enum'
+import type { Request, Response, NextFunction }                from 'express'
+import crypto                                                  from 'crypto'
+import goodlog                                                 from 'good-logs'
+import { User }                                                from '@model'
+import { use, LogRequest }                                     from '@decorator'
+import { PathDir }                                             from '@route/dir'
+import { Key, Code }                                           from '@constant/enum'
 import { RESPONSE, thirtyDaysFromNow, fiveSecFromNow, expire } from '@constant'
-import { ErrorResponse, htmlContent, sendEmail } from '@util'
+import { ErrorResponse, htmlContent, sendEmail }               from '@util'
 
 /**
  * @path {baseUrl}/auth
@@ -78,7 +78,7 @@ class AuthController {
   @use(LogRequest)
   public static async login(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body
-    
+
     try {
       if (!email || !password) {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
