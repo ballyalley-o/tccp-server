@@ -7,6 +7,8 @@ import { Bootcamp, Course, Enrollment, Feedback, LearningEvent, User } from '@mo
 import { Code, Key, LOCALE, LEARNING_EVENT }                           from '@constant/enum'
 import { RESPONSE }                                                    from '@constant'
 
+import { buildSkillDistribution }                                      from './util'
+
 class DashboardController {
   private static async getAuthenticatedUser(req: Request) {
     const request = req as any
@@ -139,34 +141,8 @@ class DashboardController {
     }
   }
 
-  private static buildSkillDistribution(courseItems: Array<{ course?: any; progress?: number }>) {
-    const valueMap = new Map<string, number>()
+  // skill distribution logic moved to util/dashboard-utils to avoid circular imports in tests
 
-    courseItems.forEach((item) => {
-      const course = item.course
-      const skills = Array.isArray(course?.skills) ? course.skills : []
-      const weight = typeof item.progress === 'number' && item.progress > 0 ? Math.max(1, Math.round((item.progress / 100) * 10)) : 1
-
-      skills.forEach((skill: any) => {
-        let label = 'skills.unknown'
-        if (skill?.labelKey) {
-          label = skill.labelKey
-        } else if (skill?.id) {
-          label = skill.id
-        } else if (typeof skill === 'string') {
-          label = `skills.${skill}`
-        }
-
-        const nextValue = (valueMap.get(label) ?? 0) + weight
-        valueMap.set(label, nextValue)
-      })
-    })
-
-    return Array.from(valueMap.entries())
-      .sort((left, right) => right[1] - left[1])
-      .slice(0, 6)
-      .map(([label, value]) => ({ label, value }))
-  }
 
   private static buildGuestDashboard(
     counts           : DashboardCountSummaryType,
@@ -422,7 +398,7 @@ class DashboardController {
           const enrollments       = await Enrollment.find({ user: authUser._id }).populate({ path: 'course', select: 'title description skills' }).lean()
           const userEvents        = await LearningEvent.find({ user: authUser._id, occurredAt: { $gte: activityWindowStart } }).lean()
           const activityData      = DashboardController.buildActivitySeries(userEvents, locale)
-          const skillDistribution = DashboardController.buildSkillDistribution(
+          const skillDistribution = buildSkillDistribution(
             enrollments.map((enrollment) => ({ course: enrollment.course, progress: Number(enrollment.progress ?? 0) }))
           )
           return DashboardController.buildUserDashboard(counts, recommendations, featured, enrollments, activityData, skillDistribution)
@@ -433,7 +409,7 @@ class DashboardController {
           const studentIds        = await Enrollment.distinct('user', { bootcamp: { $in: trainerBootcamps.map((bootcamp) => bootcamp._id) } })
           const platformEvents    = await LearningEvent.find({ occurredAt: { $gte: activityWindowStart } }).lean()
           const activityData      = DashboardController.buildActivitySeries(platformEvents, locale)
-          const skillDistribution = DashboardController.buildSkillDistribution(platformCourses.map((course) => ({ course })))
+          const skillDistribution = buildSkillDistribution(platformCourses.map((course) => ({ course })))
           return DashboardController.buildTrainerDashboard(
             counts,
             recommendations,
@@ -448,13 +424,13 @@ class DashboardController {
         if (audience === 'admin') {
           const platformEvents    = await LearningEvent.find({ occurredAt: { $gte: activityWindowStart } }).lean()
           const activityData      = DashboardController.buildActivitySeries(platformEvents, locale)
-          const skillDistribution = DashboardController.buildSkillDistribution(platformCourses.map((course) => ({ course })))
+          const skillDistribution = buildSkillDistribution(platformCourses.map((course) => ({ course })))
           return DashboardController.buildAdminDashboard(counts, recommendations, featured, activityData, skillDistribution)
         }
 
         const platformEvents    = await LearningEvent.find({ occurredAt: { $gte: activityWindowStart } }).lean()
         const activityData      = DashboardController.buildActivitySeries(platformEvents, locale)
-        const skillDistribution = DashboardController.buildSkillDistribution(platformCourses.map((course) => ({ course })))
+        const skillDistribution = buildSkillDistribution(platformCourses.map((course) => ({ course })))
         return DashboardController.buildGuestDashboard(counts, recommendations, featured, activityData, skillDistribution)
       })()
 
