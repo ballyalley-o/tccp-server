@@ -9,28 +9,29 @@
     "rootDir"           : "./src",
     "baseUrl"           : "src",
     "paths"             : {
-      "@*": ["./*"],
+      "@*"   : ["./*"],
       "@enum": ["@constant/enum"]
     },
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata" : true,
-    "noResolve"             : false,
-    "skipLibCheck"          : true,
-    "jsx"                   : "preserve",
-    "incremental"           : true,
-    "esModuleInterop"       : true,
-    "resolveJsonModule"     : true,
-    "strict"                : true,
-    "isolatedModules"       : true,
-    "typeRoots"             : ["node_modules/@types", "types"]
+    "experimentalDecorators"      : true,
+    "emitDecoratorMetadata"       : true,
+    "noResolve"                   : false,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck"                : true,
+    "jsx"                         : "preserve",
+    "incremental"                 : true,
+    "esModuleInterop"             : true,
+    "resolveJsonModule"           : true,
+    "strict"                      : true,
+    "isolatedModules"             : true,
+    "typeRoots"                   : ["node_modules/@types", "types"]
   },
 
   "tsc-alias": {
     "verbose": false,
     "resolveFullPaths": true,
     "fileExtensions": {
-      "inputGlob"  : "{js,jsx,mjs}",
-      "outputCheck": ["js", "json", "jsx", "mjs"]
+      "inputGlob"  : "{ts, js,jsx,mjs}",
+      "outputCheck": ["ts", "js", "json", "jsx", "mjs"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.js"],
