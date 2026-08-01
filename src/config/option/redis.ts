@@ -1,10 +1,10 @@
-import GLOBAL from '@config/global'
+import GLOBAL         from '@config/global'
 import type { Redis } from 'ioredis'
-import session from 'express-session'
+import session        from 'express-session'
 import { RedisStore } from 'connect-redis'
 import redis          from '@config/redis.config'
 
-const redisStore = new (RedisStore as any)({ client: redis as Redis })
+const redisStore = new RedisStore({ client: redis as Redis })
 export const redisOption: session.SessionOptions = {
     store            : redisStore,
     secret           : GLOBAL.SESSION_SECRET || 'your-secret-key',
