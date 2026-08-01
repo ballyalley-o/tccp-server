@@ -1,4 +1,4 @@
-import Redis from 'ioredis'
+import Redis   from 'ioredis'
 import goodlog from 'good-logs'
 
 const redis = new Redis({
