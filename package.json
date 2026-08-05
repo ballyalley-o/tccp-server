@@ -5,14 +5,14 @@
   "main": "app.ts",
   "type": "module",
   "scripts": {
-    "start:run": "nodemon dist/app.js",
+    "start:run" : "nodemon dist/app.js",
     "start:prod": "node dist/app.js",
-    "start": "concurrently npm:start:*",
-    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "sim": "node dist/sim.js -i",
-    "destroy": "node dist/sim.js -d",
-    "doc": "typedoc --out docs '*/*.ts'",
-    "test": "node --no-warnings --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand"
+    "start"     : "concurrently npm:start:*",
+    "build"     : "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "sim"       : "node dist/sim.js -i",
+    "destroy"   : "node dist/sim.js -d",
+    "doc"       : "typedoc --out docs '*/*.ts'",
+    "test"      : "node --no-warnings --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand"
   },
   "repository": {
     "type": "git",
