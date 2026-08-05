@@ -12,7 +12,6 @@ enum Key {
     // Roles
   Trainer = 'trainer',
   Admin   = 'admin',
-  Student = 'student',
 
   Client    = 'client',
   Server    = 'server',
