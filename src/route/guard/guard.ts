@@ -32,7 +32,13 @@ export const protect = asyncHandler(async (req: any, res, next) => {
     let user = cache.get(cacheKey)
 
     if (!user) {
-      user = await User.findById(decoded.id).select(Key.PasswordSelect)
+      user = await User.findById(decoded.id).populate('role').select(Key.PasswordSelect)
+
+      // normalize role to role name (for backward compatibility with earlier string role checks)
+      if (user && user.role && typeof user.role === 'object') {
+        ;(user as any)._role = user.role
+        ;(user as any).role = (user as any)._role.name
+      }
 
       if (user) {
         cache.set(cacheKey, user, 5 * 60 * 1000)

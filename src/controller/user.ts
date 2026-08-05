@@ -74,9 +74,21 @@ class UserController {
         return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), (res.statusCode = Code.FORBIDDEN)))
       }
 
-      if (role === Key.Admin && !req.body.organization) {
-        res.status(Code.BAD_REQUEST).json({ message: RESPONSE.error.ORG_REQUIRED })
-        return next(new ErrorResponse(RESPONSE.error.ORG_REQUIRED, (res.statusCode = Code.BAD_REQUEST)))
+      if (role) {
+       // role may be a role id (object id) or a role name; resolve to name if possible
+       let roleName = role
+       try {
+         const { Role } = await import('@model')
+         const roleDoc = await Role.findById(role)
+         if (roleDoc) roleName = roleDoc.name
+       } catch (e) {
+         // ignore - fall back to provided value
+       }
+
+       if ((roleName as string) === Key.Admin && !req.body.organization) {
+         res.status(Code.BAD_REQUEST).json({ message: RESPONSE.error.ORG_REQUIRED })
+         return next(new ErrorResponse(RESPONSE.error.ORG_REQUIRED, (res.statusCode = Code.BAD_REQUEST)))
+       }
       }
 
       res.status(Code.CREATED).json({
@@ -126,9 +138,20 @@ class UserController {
         }
       }
 
-      if (req.body.role === Key.Admin && !req.body.organization) {
-        res.status(Code.BAD_REQUEST).json({ message: RESPONSE.error.ORG_REQUIRED })
-        return next(new ErrorResponse(RESPONSE.error.ORG_REQUIRED, (res.statusCode = Code.BAD_REQUEST)))
+      if (req.body.role) {
+        let roleName = req.body.role
+        try {
+          const { Role } = await import('@model')
+          const roleDoc = await Role.findById(req.body.role)
+          if (roleDoc) roleName = roleDoc.name
+        } catch (e) {
+          // ignore
+        }
+
+        if ((roleName as string) === Key.Admin && !req.body.organization) {
+          res.status(Code.BAD_REQUEST).json({ message: RESPONSE.error.ORG_REQUIRED })
+          return next(new ErrorResponse(RESPONSE.error.ORG_REQUIRED, (res.statusCode = Code.BAD_REQUEST)))
+        }
       }
 
       res.status(Code.OK).json({

@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express'
 import { asyncHandler }                         from '@middleware'
 import { ErrorResponse }                        from '@util'
 import { RESPONSE }                             from '@constant'
-import { Code, Role }                           from '@constant/enum'
+import { Code, Key }                           from '@constant/enum'
 
 /**
  * Role-based authorization for content management
@@ -30,7 +30,9 @@ const isInstructor = asyncHandler(
     }
 
     // Check if user is the course instructor or is admin
-    if (course.instructor?.toString() !== req.user._id.toString() && req.user.role !== Role.ADMIN) {
+    const userRoleName = typeof req.user.role === 'string' ? req.user.role : req.user.role?.name
+
+    if (course.instructor?.toString() !== req.user._id.toString() && userRoleName !== Key.Admin) {
       return next(
         new ErrorResponse(
           'Not authorized to access this course content',
@@ -92,12 +94,14 @@ const contentAccess = asyncHandler(
     }
 
     // Admin has access to everything
-    if (userRole === Role.ADMIN) {
+    const userRoleName = typeof req.user.role === 'string' ? req.user.role : req.user.role?.name
+
+    if (userRoleName === Key.Admin) {
       return next()
     }
 
     // Trainer can only access their own courses
-    if (userRole === Role.TRAINER) {
+    if (userRoleName === Key.Trainer) {
       const { Course } = await import('@model')
       const course = await Course.findById(courseId)
 
@@ -119,7 +123,7 @@ const contentAccess = asyncHandler(
     }
 
     // Regular users (learners) can only access enrolled courses
-    if (userRole === Role.USER) {
+    if (userRoleName === 'user' || userRoleName === 'student') {
       const { Enrollment } = await import('@model')
       const enrollment = await Enrollment.findOne({
         user: req.user._id,
