@@ -6,7 +6,7 @@ import redis             from '@config/redis.config'
 
 const RedisStore = (connectRedis as any).RedisStore || (connectRedis as any).default || connectRedis
 
-const redisStore = RedisStore({ client: redis as Redis })
+const redisStore = new RedisStore({ client: redis as Redis })
 export const redisOption: session.SessionOptions = {
     store            : redisStore,
     secret           : GLOBAL.SESSION_SECRET || 'your-secret-key',
