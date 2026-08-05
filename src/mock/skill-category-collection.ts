@@ -1,0 +1,66 @@
+import ObjectID from 'bson-objectid'
+
+const skillCategoryCollection = [
+  {
+    _id: ObjectID('65d44d6ef8e810489db6b001'),
+    name: 'Frontend Development',
+    labelKey: 'frontend_development',
+    description: 'Client-side web development technologies and frameworks',
+    slug: 'frontend-development',
+    order: 1,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
+  },
+  {
+    _id: ObjectID('65d44d6ef8e810489db6b002'),
+    name: 'Backend Development',
+    labelKey: 'backend_development',
+    description: 'Server-side development, APIs, and databases',
+    slug: 'backend-development',
+    order: 2,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
+  },
+  {
+    _id: ObjectID('65d44d6ef8e810489db6b003'),
+    name: 'DevOps & Infrastructure',
+    labelKey: 'devops_infrastructure',
+    description: 'Cloud, containerization, CI/CD, and infrastructure management',
+    slug: 'devops-infrastructure',
+    order: 3,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
+  },
+  {
+    _id: ObjectID('65d44d6ef8e810489db6b004'),
+    name: 'Data Science & ML',
+    labelKey: 'data_science_ml',
+    description: 'Data analysis, machine learning, and artificial intelligence',
+    slug: 'data-science-ml',
+    order: 4,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
+  },
+  {
+    _id: ObjectID('65d44d6ef8e810489db6b005'),
+    name: 'Mobile Development',
+    labelKey: 'mobile_development',
+    description: 'iOS, Android, and cross-platform mobile app development',
+    slug: 'mobile-development',
+    order: 5,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
+  },
+  {
+    _id: ObjectID('65d44d6ef8e810489db6b006'),
+    name: 'Design & UX',
+    labelKey: 'design_ux',
+    description: 'UI/UX design, web design, and user experience principles',
+    slug: 'design-ux',
+    order: 6,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
+  },
+]
+
+export default skillCategoryCollection
