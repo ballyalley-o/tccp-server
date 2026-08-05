@@ -11,10 +11,10 @@ app.connectDb()
 
 const seeder = async () => {
   try {
-    // await User.deleteMany()
+    await User.deleteMany()
     await Course.deleteMany()
-    // await Bootcamp.deleteMany()
-    // await Feedback.deleteMany()
+    await Bootcamp.deleteMany()
+    await Feedback.deleteMany()
     await CourseLecture.deleteMany()
     await CourseModule.deleteMany()
     await CourseQuiz.deleteMany()
@@ -41,10 +41,15 @@ const seeder = async () => {
 
 const destroy = async () => {
   try {
-    // await User.deleteMany()
+    await User.deleteMany()
     await Course.deleteMany()
-    // await Bootcamp.deleteMany()
-    // await Feedback.deleteMany()
+    await Bootcamp.deleteMany()
+    await Feedback.deleteMany()
+    await CourseLecture.deleteMany()
+    await CourseModule.deleteMany()
+    await CourseQuiz.deleteMany()
+    await Skill.deleteMany()
+    await SkillCategory.deleteMany()
 
     goodlog.custom(COLOR.BG_RED, RESPONSE.success.COLLECTION_DESTROYED)
     process.exit(1)
