@@ -66,11 +66,10 @@ const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
       ref     : Key.User,
       required: true
     },
-    instructor: {
+    trainer: {
       type    : Schema.ObjectId,
       ref     : Key.User,
       required: true,
-      // Should reference a user with role 'trainer'
       index   : true
     }
   },
