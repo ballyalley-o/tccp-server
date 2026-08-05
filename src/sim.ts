@@ -1,7 +1,7 @@
 import goodlog                                                                      from 'good-logs'
 import App                                                                          from '@config/server'
-import { userCollection, feedbackCollection, bootcampCollection, courseCollection } from '@mock'
-import { User, Course, Bootcamp, Feedback }                                         from '@model'
+import { userCollection, feedbackCollection, bootcampCollection, courseCollection, roleCollection } from '@mock'
+import { User, Course, Bootcamp, Feedback, Role }                                         from '@model'
 import { COLOR }                                                                    from '@constant/enum'
 import { RESPONSE }                                                                 from '@constant'
 import { ARGV }                                                                     from '@constant/enum'
@@ -11,12 +11,27 @@ app.connectDb()
 
 const seeder = async () => {
   try {
+    await Role.deleteMany()
     await User.deleteMany()
     await Course.deleteMany()
     await Bootcamp.deleteMany()
     await Feedback.deleteMany()
 
-    const createdUserCollection = await User.insertMany(userCollection)
+    // create roles first
+    const createdRoles = await Role.insertMany(roleCollection)
+
+    // map userCollection role (string) to role ObjectId
+    const roleByName: Record<string, any> = {}
+    createdRoles.forEach((r: any) => {
+      roleByName[r.name] = r._id
+    })
+
+    const usersToInsert = userCollection.map((u: any) => ({
+      ...u,
+      role: typeof u.role === 'string' ? (roleByName[u.role] ?? u.role) : u.role
+    }))
+
+    const createdUserCollection = await User.insertMany(usersToInsert)
     const createdCourse         = await Course.insertMany(courseCollection)
     const createdBootcamp       = await Bootcamp.insertMany(bootcampCollection)
     const createdFeedback       = await Feedback.insertMany(feedbackCollection)
