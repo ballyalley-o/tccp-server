@@ -1,7 +1,7 @@
 import goodlog                                                                      from 'good-logs'
 import App                                                                          from '@config/server'
-import { userCollection, feedbackCollection, bootcampCollection, courseCollection } from '@mock'
-import { User, Course, Bootcamp, Feedback }                                         from '@model'
+import { userCollection, feedbackCollection, bootcampCollection, courseCollection, courseLectureCollection, courseModuleCollection, courseQuizCollection, skillCollection, skillCategoryCollection } from '@mock'
+import { User, Course, Bootcamp, Feedback, CourseLecture, CourseModule, CourseQuiz, Skill, SkillCategory }                                         from '@model'
 import { COLOR }                                                                    from '@constant/enum'
 import { RESPONSE }                                                                 from '@constant'
 import { ARGV }                                                                     from '@constant/enum'
@@ -11,15 +11,25 @@ app.connectDb()
 
 const seeder = async () => {
   try {
-    await User.deleteMany()
+    // await User.deleteMany()
     await Course.deleteMany()
-    await Bootcamp.deleteMany()
-    await Feedback.deleteMany()
+    // await Bootcamp.deleteMany()
+    // await Feedback.deleteMany()
+    await CourseLecture.deleteMany()
+    await CourseModule.deleteMany()
+    await CourseQuiz.deleteMany()
+    await Skill.deleteMany()
+    await SkillCategory.deleteMany()
 
     const createdUserCollection = await User.insertMany(userCollection)
     const createdCourse         = await Course.insertMany(courseCollection)
     const createdBootcamp       = await Bootcamp.insertMany(bootcampCollection)
     const createdFeedback       = await Feedback.insertMany(feedbackCollection)
+    await CourseLecture.insertMany(courseLectureCollection)
+    await CourseModule.insertMany(courseModuleCollection)
+    await CourseQuiz.insertMany(courseQuizCollection)
+    await Skill.insertMany(skillCollection)
+    await SkillCategory.insertMany(skillCategoryCollection)
 
     goodlog.warn(RESPONSE.success.COLLECTION_SEED)
     process.exit()
@@ -31,10 +41,10 @@ const seeder = async () => {
 
 const destroy = async () => {
   try {
-    await User.deleteMany()
+    // await User.deleteMany()
     await Course.deleteMany()
-    await Bootcamp.deleteMany()
-    await Feedback.deleteMany()
+    // await Bootcamp.deleteMany()
+    // await Feedback.deleteMany()
 
     goodlog.custom(COLOR.BG_RED, RESPONSE.success.COLLECTION_DESTROYED)
     process.exit(1)
