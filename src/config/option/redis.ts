@@ -4,7 +4,7 @@ import session           from 'express-session'
 import * as connectRedis from 'connect-redis'
 import redis             from '@config/redis.config'
 
-const RedisStore = new (connectRedis as any).RedisStore()
+const RedisStore = (connectRedis as any).RedisStore || (connectRedis as any).default || connectRedis
 
 const redisStore = RedisStore({ client: redis as Redis })
 export const redisOption: session.SessionOptions = {
