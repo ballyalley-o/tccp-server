@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution"  : "node",
-    "lib"               : ["dom", "dom.iterable", "esnext"],
+    "lib"               : ["dom", "dom.iterable", "ESNext"],
     "target"            : "esnext",
     "module"            : "esnext",
     // "ignoreDeprecations": "6.0",
@@ -31,7 +31,7 @@
     "resolveFullPaths": true,
     "fileExtensions": {
       "inputGlob"  : "{ts, js,jsx,mjs}",
-      "outputCheck": ["ts", "js", "json", "jsx", "mjs"]
+      "outputCheck": ["js", "json", "jsx", "mjs"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.js"],
