@@ -30,7 +30,7 @@
     "verbose": false,
     "resolveFullPaths": true,
     "fileExtensions": {
-      "inputGlob"  : "{ts, js,jsx,mjs}",
+      "inputGlob"  : "{ts,js,jsx,mjs}",
       "outputCheck": ["js", "json", "jsx", "mjs"]
     }
   },
