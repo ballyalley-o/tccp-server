@@ -8,34 +8,29 @@ import { Code, Role }                           from '@constant/enum'
  * Role-based authorization for content management
  * Enforces role-specific access rules for courses, quizzes, lectures, etc.
  */
-
 type AuthCheckFn = (req: any) => Promise<boolean>
 
 /**
- * Check if user is course instructor
+ * Check if user is course trainer
  */
 const isInstructor = asyncHandler(
   async (req: any, res: Response, next: NextFunction): Promise<void> => {
     const { courseId } = req.params
 
     if (!courseId) {
-      return next(new ErrorResponse('Course ID required', (res.statusCode = Code.BAD_REQUEST)))
+      return next(new ErrorResponse(RESPONSE.error.IS_REQUIRED('course id'), (res.statusCode = Code.BAD_REQUEST)))
     }
 
     const { Course } = await import('@model')
-    const course = await Course.findById(courseId)
+    const course     = await Course.findById(courseId)
 
     if (!course) {
-      return next(new ErrorResponse('Course not found', (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    // Check if user is the course instructor or is admin
-    if (course.instructor?.toString() !== req.user._id.toString() && req.user.role !== Role.ADMIN) {
+    if (course.trainer?.toString() !== req.user._id.toString() && req.user.role !== Role.ADMIN) {
       return next(
-        new ErrorResponse(
-          'Not authorized to access this course content',
-          (res.statusCode = Code.FORBIDDEN)
-        )
+        new ErrorResponse(RESPONSE.error[403],(res.statusCode = Code.FORBIDDEN))
       )
     }
 
@@ -52,22 +47,19 @@ const isEnrolled = asyncHandler(
     const { courseId } = req.params
 
     if (!courseId) {
-      return next(new ErrorResponse('Course ID required', (res.statusCode = Code.BAD_REQUEST)))
+      return next(new ErrorResponse(RESPONSE.error.IS_REQUIRED('course id'), (res.statusCode = Code.BAD_REQUEST)))
     }
 
     const { Enrollment } = await import('@model')
-    const enrollment = await Enrollment.findOne({
-      user: req.user._id,
+    const enrollment     = await Enrollment.findOne({
+      user  : req.user._id,
       course: courseId,
       status: { $in: ['enrolled', 'in_progress', 'completed'] }
     })
 
     if (!enrollment) {
       return next(
-        new ErrorResponse(
-          'You are not enrolled in this course',
-          (res.statusCode = Code.FORBIDDEN)
-        )
+        new ErrorResponse(RESPONSE.error.NOT_ENROLLED_COURSE, (res.statusCode = Code.FORBIDDEN))
       )
     }
 
@@ -78,9 +70,9 @@ const isEnrolled = asyncHandler(
 
 /**
  * Content access control based on role
- * - Admin: can access all content
+ * - Admin  : can access all content
  * - Trainer: can access their own course content
- * - User: can access only enrolled course content
+ * - User   : can access only enrolled course content
  */
 const contentAccess = asyncHandler(
   async (req: any, res: Response, next: NextFunction): Promise<void> => {
@@ -88,29 +80,24 @@ const contentAccess = asyncHandler(
     const userRole = req.user.role
 
     if (!courseId) {
-      return next(new ErrorResponse('Course ID required', (res.statusCode = Code.BAD_REQUEST)))
+      return next(new ErrorResponse(RESPONSE.error.IS_REQUIRED('course id'), (res.statusCode = Code.BAD_REQUEST)))
     }
 
-    // Admin has access to everything
     if (userRole === Role.ADMIN) {
       return next()
     }
 
-    // Trainer can only access their own courses
     if (userRole === Role.TRAINER) {
       const { Course } = await import('@model')
-      const course = await Course.findById(courseId)
+      const course     = await Course.findById(courseId)
 
       if (!course) {
-        return next(new ErrorResponse('Course not found', (res.statusCode = Code.NOT_FOUND)))
+        return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
       }
 
-      if (course.instructor?.toString() !== req.user._id.toString()) {
+      if (course.trainer?.toString() !== req.user._id.toString()) {
         return next(
-          new ErrorResponse(
-            'Not authorized to access this course',
-            (res.statusCode = Code.FORBIDDEN)
-          )
+          new ErrorResponse(RESPONSE.error[403], (res.statusCode = Code.FORBIDDEN))
         )
       }
 
@@ -122,17 +109,14 @@ const contentAccess = asyncHandler(
     if (userRole === Role.USER) {
       const { Enrollment } = await import('@model')
       const enrollment = await Enrollment.findOne({
-        user: req.user._id,
+        user  : req.user._id,
         course: courseId,
         status: { $in: ['enrolled', 'in_progress', 'completed'] }
       })
 
       if (!enrollment) {
         return next(
-          new ErrorResponse(
-            'You are not enrolled in this course',
-            (res.statusCode = Code.FORBIDDEN)
-          )
+          new ErrorResponse(RESPONSE.error.NOT_ENROLLED_COURSE, (res.statusCode = Code.FORBIDDEN))
         )
       }
 
@@ -140,7 +124,7 @@ const contentAccess = asyncHandler(
       return next()
     }
 
-    next(new ErrorResponse('Unauthorized', (res.statusCode = Code.FORBIDDEN)))
+    next(new ErrorResponse(RESPONSE.error[403], (res.statusCode = Code.FORBIDDEN)))
   }
 )
 
