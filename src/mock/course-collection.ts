@@ -11,7 +11,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d713995b721c3bb38c1f5d0',
     user                : '5d7a514b5d2c12c7449be045',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59c'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59c'),
   },
   {
     title      : 'FRONT-END Web Development',
@@ -23,7 +23,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d713995b721c3bb38c1f5d0',
     user                : '5d7a514b5d2c12c7449be045',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59d'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59d'),
   },
   {
     title      : 'BACK-END Web Development',
@@ -35,7 +35,7 @@ const courseCollection = [
     scholarhipsAvailable: false,
     bootcamp            : '5d713995b721c3bb38c1f5d0',
     user                : '5d7a514b5d2c12c7449be045',
-    instructor          : ObjectID('65d44d6ef8e810489db6a5a1'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a5a1'),
   },
   {
     _id        : '5d725c84c4ded7bcb480eaa0',
@@ -48,7 +48,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d713995b721c3bb38c1f5d0',
     user                : '5d7a514b5d2c12c7449be045',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59c'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59c'),
   },
   {
     _id        : '5d725cb9c4ded7bcb480eaa1',
@@ -61,7 +61,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d713a66ec8f2b88b8f830b8',
     user                : '5d7a514b5d2c12c7449be046',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59d'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59d'),
   },
   {
     _id        : '5d725cd2c4ded7bcb480eaa2',
@@ -74,7 +74,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d713a66ec8f2b88b8f830b8',
     user                : '5d7a514b5d2c12c7449be046',
-    instructor          : ObjectID('65d44d6ef8e810489db6a5a1'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a5a1'),
   },
   {
     _id        : '5d725ce8c4ded7bcb480eaa3',
@@ -87,7 +87,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d725a037b292f5f8ceff787',
     user                : '5c8a1d5b0190b214360dc031',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59c'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59c'),
   },
   {
     _id        : '5d725cfec4ded7bcb480eaa4',
@@ -100,7 +100,7 @@ const courseCollection = [
     scholarhipsAvailable: false,
     bootcamp            : '5d725a037b292f5f8ceff787',
     user                : '5c8a1d5b0190b214360dc031',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59d'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59d'),
   },
   {
     _id        : '5d725cfec4ded7bcb480eaa5',
@@ -113,7 +113,7 @@ const courseCollection = [
     scholarhipsAvailable: false,
     bootcamp            : '5d725a1b7b292f5f8ceff788',
     user                : '5c8a1d5b0190b214360dc032',
-    instructor          : ObjectID('65d44d6ef8e810489db6a5a1'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a5a1'),
   },
   {
     _id        : '5d725cfec4ded7bcb480eaa6',
@@ -126,7 +126,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d725a1b7b292f5f8ceff788',
     user                : '5c8a1d5b0190b214360dc032',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59c'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59c'),
   },
   {
     _id        : '5d725cfec4ded7bcb480eaa7',
@@ -139,7 +139,7 @@ const courseCollection = [
     scholarhipsAvailable: false,
     bootcamp            : '5d725a1b7b292f5f8ceff788',
     user                : '5c8a1d5b0190b214360dc032',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59d'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59d'),
   },
   {
     title      : 'Mastering Web Designing',
@@ -151,7 +151,7 @@ const courseCollection = [
     scholarhipsAvailable: false,
     bootcamp            : '5d725a1b7b292f5f8ceff788',
     user                : '5c8a1d5b0190b214360dc032',
-    instructor          : ObjectID('65d44d6ef8e810489db6a5a1'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a5a1'),
   },
   {
     title      : 'Android App Web Development',
@@ -163,7 +163,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d725a1b7b292f5f8ceff788',
     user                : '5c8a1d5b0190b214360dc032',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59c'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59c'),
   },
   {
     title      : 'Meta',
@@ -175,7 +175,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d725a1b7b292f5f8ceff788',
     user                : '5c8a1d5b0190b214360dc032',
-    instructor          : ObjectID('65d44d6ef8e810489db6a59d'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a59d'),
   },
   {
     title      : 'IBM Data Science',
@@ -187,7 +187,7 @@ const courseCollection = [
     scholarhipsAvailable: true,
     bootcamp            : '5d725a1b7b292f5f8ceff788',
     user                : '5c8a1d5b0190b214360dc032',
-    instructor          : ObjectID('65d44d6ef8e810489db6a5a1'),
+    trainer             : ObjectID('65d44d6ef8e810489db6a5a1'),
   },
 ]
 
