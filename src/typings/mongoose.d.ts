@@ -88,6 +88,7 @@ declare interface ICourse extends Document {
   modules             : Schema.Types.ObjectId[]
   bootcamp            : Schema.Types.ObjectId
   user                : Schema.Types.ObjectId
+  trainer             : Schema.Types.ObjectId
 }
 
 declare interface ICourseExtended extends ICourse {
