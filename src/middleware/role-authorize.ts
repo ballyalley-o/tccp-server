@@ -1,8 +1,9 @@
-import type { Request, Response, NextFunction } from 'express'
-import { asyncHandler }                         from '@middleware'
-import { ErrorResponse }                        from '@util'
-import { RESPONSE }                             from '@constant'
-import { Code, Role }                           from '@constant/enum'
+import type { Response, NextFunction } from 'express'
+import { asyncHandler }                from '@middleware'
+import { Enrollment, Course }          from '@model'
+import { RESPONSE }                    from '@constant'
+import { Code, Key }                   from '@constant/enum'
+import { ErrorResponse }               from '@util'
 
 /**
  * Role-based authorization for content management
@@ -21,17 +22,15 @@ const isInstructor = asyncHandler(
       return next(new ErrorResponse(RESPONSE.error.IS_REQUIRED('course id'), (res.statusCode = Code.BAD_REQUEST)))
     }
 
-    const { Course } = await import('@model')
     const course     = await Course.findById(courseId)
 
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
+    const userRoleName = typeof req.user.role === 'string' ? req.user.role : req.user.role?.name
 
-    if (course.trainer?.toString() !== req.user._id.toString() && req.user.role !== Role.ADMIN) {
-      return next(
-        new ErrorResponse(RESPONSE.error[403],(res.statusCode = Code.FORBIDDEN))
-      )
+    if (course.trainer?.toString() !== req.user._id.toString() && userRoleName !== Key.Admin) {
+      return next(new ErrorResponse(RESPONSE.error[403], (res.statusCode = Code.FORBIDDEN)))
     }
 
     req.course = course
@@ -77,18 +76,19 @@ const isEnrolled = asyncHandler(
 const contentAccess = asyncHandler(
   async (req: any, res: Response, next: NextFunction): Promise<void> => {
     const { courseId } = req.params
-    const userRole = req.user.role
+    const userRole     = req.user.role
 
     if (!courseId) {
       return next(new ErrorResponse(RESPONSE.error.IS_REQUIRED('course id'), (res.statusCode = Code.BAD_REQUEST)))
     }
 
-    if (userRole === Role.ADMIN) {
+    const userRoleName = typeof req.user.role === 'string' ? req.user.role : req.user.role?.name
+    if (userRoleName === Key.Admin) {
       return next()
     }
 
-    if (userRole === Role.TRAINER) {
-      const { Course } = await import('@model')
+    if (userRoleName === Key.Trainer) {
+
       const course     = await Course.findById(courseId)
 
       if (!course) {
@@ -106,9 +106,8 @@ const contentAccess = asyncHandler(
     }
 
     // Regular users (learners) can only access enrolled courses
-    if (userRole === Role.USER) {
-      const { Enrollment } = await import('@model')
-      const enrollment = await Enrollment.findOne({
+    if (userRoleName === 'user' || userRoleName === 'student') {
+      const enrollment     = await Enrollment.findOne({
         user  : req.user._id,
         course: courseId,
         status: { $in: ['enrolled', 'in_progress', 'completed'] }
