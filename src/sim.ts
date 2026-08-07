@@ -33,6 +33,7 @@ app.connectDb()
 
 const seeder = async () => {
   try {
+    await Role.deleteMany()
     await User.deleteMany()
     await Course.deleteMany()
     await Bootcamp.deleteMany()
@@ -42,7 +43,6 @@ const seeder = async () => {
     await CourseQuiz.deleteMany()
     await Skill.deleteMany()
     await SkillCategory.deleteMany()
-    await Role.deleteMany()
 
     const createdRoles = await Role.insertMany(roleCollection)
     const roleByName: Record<string, any> = {}
