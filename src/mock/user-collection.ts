@@ -1,36 +1,34 @@
 import bcrypt   from 'bcryptjs'
 import ObjectID from 'bson-objectid'
 
-const userCollection = [
+const studentCollection = [
   {
     firstname: 'Tina',
     lastname : 'Marrero',
     username : '@tinamarrero',
-    role     : 'user',
+    role     : 'student',
     location : 'Chicago, Illinois, US',
     email    : 'tina@test.com',
-    cohort   : ObjectID('5c3b08cf6d663a3c4e8f3568'),
-    password : bcrypt.hashSync('123456', 10),
+    bootcamp : ObjectID('5c3b08cf6d663a3c4e8f3568'),
+    password : bcrypt.hashSync('123456', 10)
   },
   {
     firstname: 'John',
     lastname : 'Doe',
     username : '@johndoe',
-    role     : 'user',
+    role     : 'student',
     location : 'New York, NY, US',
     email    : 'john@example.com',
-      // cohort: '',
-    password: bcrypt.hashSync('123456', 10),
+    password : bcrypt.hashSync('123456', 10)
   },
   {
     firstname: 'Alice',
     lastname : 'Smith',
     username : '@alicesmith',
-    role     : 'user',
+    role     : 'student',
     location : 'Los Angeles, CA, US',
     email    : 'alice@example.com',
-      // cohort: '',
-    password: bcrypt.hashSync('123456', 10),
+    password : bcrypt.hashSync('123456', 10)
   },
   {
     _id      : ObjectID('65d44d6ef8e810489db6a59c'),
@@ -40,8 +38,7 @@ const userCollection = [
     role     : 'trainer',
     location : 'Houston, TX, US',
     email    : 'bob@example.com',
-      // cohort: '',
-    password: bcrypt.hashSync('123456', 10),
+    password : bcrypt.hashSync('123456', 10)
   },
   {
     _id      : ObjectID('65d44d6ef8e810489db6a59d'),
@@ -51,40 +48,36 @@ const userCollection = [
     role     : 'trainer',
     location : 'Miami, FL, US',
     email    : 'emily@example.com',
-      // cohort: '',
-    password: bcrypt.hashSync('123456', 10),
+    password : bcrypt.hashSync('123456', 10)
   },
   {
     _id      : ObjectID('65d44d6ef8e810489db6a59f'),
     firstname: 'David',
     lastname : 'Smith',
     username : '@davidsmith',
-    role     : 'user',
+    role     : 'student',
     location : 'San Francisco, CA, US',
     email    : 'david@example.com',
-      // cohort: '',
-    password: bcrypt.hashSync('123456', 10),
+    password : bcrypt.hashSync('123456', 10)
   },
   {
     _id      : ObjectID('65d44d6ef8e810489db6a59e'),
     firstname: 'Linda',
     lastname : 'Johnson',
     username : '@lindajohnson',
-    role     : 'user',
+    role     : 'student',
     location : 'Dallas, TX, US',
     email    : 'linda@example.com',
-      // cohort: '',
-    password: bcrypt.hashSync('123456', 10),
+    password : bcrypt.hashSync('123456', 10)
   },
   {
     firstname: 'Michael',
     lastname : 'Davis',
     username : '@michaeldavis',
-    role     : 'user',
+    role     : 'student',
     location : 'Seattle, WA, US',
-      // cohort: '',
-    email   : 'michael@example.com',
-    password: bcrypt.hashSync('123456', 10),
+    email    : 'michael@example.com',
+    password : bcrypt.hashSync('123456', 10)
   },
   {
     _id      : ObjectID('65d44d6ef8e810489db6a5a1'),
@@ -94,30 +87,28 @@ const userCollection = [
     role     : 'trainer',
     location : 'Denver, CO, US',
     email    : 'sophia@example.com',
-      // cohort: '',
-    password: bcrypt.hashSync('123456', 10),
+    password : bcrypt.hashSync('123456', 10)
   },
-    // {
-    //   firstname: 'Daniel',
-    //   lastname: 'Wilson',
-    //   username: '@danielwilson',
-    //   role: 'user',
-    //   location: 'Boston, MA, US',
-    //   email: 'daniel@example.com',
-    //   cohort: ObjectID('5c3b08cf6d663a3c4e8f3568'),
-    //   password: bcrypt.hashSync('123456', 10),
-    // },
-  // {
-  //   firstname: 'test',
-  //   lastname : 'TRUE',
-  //   email    : 'ballyalleydev@gmail.com',
-  //   username : '@beySaq',
-  //   role     : 'trainer',
-  //   avatar   : 'no-photo.jpg',
-  //   location : 'Auckland, NZ',
-  //   password : bcrypt.hashSync('123456', 10),
-  // },
-   {
+    {
+      firstname: 'Daniel',
+      lastname : 'Wilson',
+      username : '@danielwilson',
+      role     : 'student',
+      location : 'Boston, MA, US',
+      email    : 'daniel@example.com',
+      password : bcrypt.hashSync('123456', 10),
+    },
+      // {
+      //   firstname: 'test',
+      //   lastname : 'TRUE',
+      //   email    : 'ballyalleydev@gmail.com',
+      //   studentname : '@beySaq',
+      //   role     : 'trainer',
+      //   avatar   : 'no-photo.jpg',
+      //   location : 'Auckland, NZ',
+      //   password : bcrypt.hashSync('123456', 10),
+      // },
+  {
     firstname: 'admin_1',
     lastname : '1',
     email    : 'ballyalleydev@gmail.com',
@@ -125,8 +116,8 @@ const userCollection = [
     role     : 'admin',
     avatar   : 'no-photo.jpg',
     location : 'Auckland, NZ',
-    password : bcrypt.hashSync('123456', 10),
-  },
+    password : bcrypt.hashSync('123456', 10)
+  }
 ]
 
-export default userCollection
+export default studentCollection
