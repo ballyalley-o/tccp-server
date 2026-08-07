@@ -10,7 +10,6 @@ import { oneDayFromNow }  from '@constant/max-age'
 import { SCHEMA }         from '@constant/enum'
 
 const TAG = Key.User
-
 const UserSchema: Schema<IUser> = new Schema<IUser>(
   {
     firstname: {
@@ -26,12 +25,11 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
       }
     },
     lastname: {
-      type: String,
-      min     : 3,
+      type    : String,
       max     : 60,
       validate: {
         validator: function (v: string) {
-          return v.length >= 3 && v.length <= 60
+          return v.length <= 60
         },
         message: (props) => `Lastname length (${props.value.length}) exceeds the limit of 60 characters`
       }
