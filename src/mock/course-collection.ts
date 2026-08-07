@@ -4,7 +4,7 @@ const courseCollection = [
   {
     title      : 'Software Engineering',
     description:
-      'With this full course will provide you with all of the essentials to become a Software Engineer. From the very basics HTML, CSS and front end JavaScript, typescript, along with tools like Git, Visual Studio, VSCode and front end frameworks, and will also provide you with the ability to control the Backend, databasing, be involved and participate in the overall application lifecycle. Main focus on coding and debugging.',
+      'This complete course covers core software engineering essentials—from HTML, CSS, JS, TypeScript, and Git to front-end frameworks and full back-end/database management. Focus heavily on practical coding, debugging, and the application lifecycle.',
     duration            : 18,
     tuition             : 12000,
     minimumSkill        : 'beginner',
@@ -16,7 +16,7 @@ const courseCollection = [
   {
     title      : 'FRONT-END Web Development',
     description:
-      'This course will provide you with all of the essentials to become a successful frontend web developer. You will learn to master HTML, CSS and front end JavaScript, along with tools like Git, Visual Studi, VSCode and front end frameworks like Vue, Be a Frontier on FRONTEND Development',
+      'Master front-end web development with essential tools and technologies, including HTML, CSS, JavaScript, Git, VS Code, and Vue. Build in-demand skills and launch your career as a confident front-end developer.',
     duration            : 8,
     tuition             : 24000,
     minimumSkill        : 'beginner',
@@ -28,7 +28,7 @@ const courseCollection = [
   {
     title      : 'BACK-END Web Development',
     description:
-      "The behind-the-scenes functionality of a website is referred to as the 'back-end'. It is a combination of technology and programming that powers a website, consisting of three parts that a user never sees: a server, an application, and a database. The back-end runs a website — the user does not see it or interact with it, but it is always running in the background, delivering functionality and a desktop-like experience. Back-end developers play a critical role in web development teams, and make sure that data or services requested by the front-end system or software are delivered.",
+      "The 'back-end' is a website’s unseen engine, combining a server, application, and database. It runs continuously in the background to process requests, manage data, and power the front-end experience user-facing systems rely on.",
     duration            : 6,
     tuition             : 8000,
     minimumSkill        : 'intermediate',
@@ -156,7 +156,7 @@ const courseCollection = [
   {
     title      : 'Android App Web Development',
     description:
-      'Build a series of apps using Jetpack Compose, the modern way to create beautiful user interfaces in your Android apps. You will write these apps in the Kotlin programming language. This course is still under development, so more units are coming soon.',
+      'Build Android apps with Jetpack Compose and Kotlin in this hands-on course. Learn modern UI development while creating real projects as new units roll out.',
     duration            : 6,
     tuition             : 4000,
     minimumSkill        : 'beginner',
@@ -168,7 +168,7 @@ const courseCollection = [
   {
     title      : 'Meta',
     description:
-      'Get started in the in-demand field of database engineering with a Professional Certificate from Meta. Learn the skills you need to design, deploy, and manage structured and unstructured data and gain experience with key tools through hands-on projects.',
+      'Launch your database engineering career with Meta’s Professional Certificate. Master designing, deploying, and managing structured and unstructured data through hands-on projects with industry-standard tools.',
     duration            : 12,
     tuition             : 6000,
     minimumSkill        : 'beginner',
