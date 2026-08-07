@@ -1,10 +1,32 @@
-import goodlog                                                                      from 'good-logs'
-import App                                                                          from '@config/server'
-import { userCollection, feedbackCollection, bootcampCollection, courseCollection, courseLectureCollection, courseModuleCollection, courseQuizCollection, skillCollection, skillCategoryCollection } from '@mock'
-import { User, Course, Bootcamp, Feedback, CourseLecture, CourseModule, CourseQuiz, Skill, SkillCategory }                                         from '@model'
-import { COLOR }                                                                    from '@constant/enum'
-import { RESPONSE }                                                                 from '@constant'
-import { ARGV }                                                                     from '@constant/enum'
+import goodlog      from 'good-logs'
+import App          from '@config/server'
+import { COLOR }    from '@constant/enum'
+import { RESPONSE } from '@constant'
+import { ARGV }     from '@constant/enum'
+import {
+  userCollection,
+  feedbackCollection,
+  bootcampCollection,
+  courseCollection,
+  courseLectureCollection,
+  courseModuleCollection,
+  courseQuizCollection,
+  skillCollection,
+  skillCategoryCollection,
+  roleCollection
+} from '@mock'
+import {
+  User,
+  Course,
+  Bootcamp,
+  Feedback,
+  CourseLecture,
+  CourseModule,
+  CourseQuiz,
+  Skill,
+  SkillCategory,
+  Role
+} from '@model'
 
 const app = new App()
 app.connectDb()
@@ -20,11 +42,24 @@ const seeder = async () => {
     await CourseQuiz.deleteMany()
     await Skill.deleteMany()
     await SkillCategory.deleteMany()
+    await Role.deleteMany()
 
-    const createdUserCollection = await User.insertMany(userCollection)
-    const createdCourse         = await Course.insertMany(courseCollection)
-    const createdBootcamp       = await Bootcamp.insertMany(bootcampCollection)
-    const createdFeedback       = await Feedback.insertMany(feedbackCollection)
+    const createdRoles = await Role.insertMany(roleCollection)
+    const roleByName: Record<string, any> = {}
+
+    createdRoles.forEach((r: any) => {
+      roleByName[r.name] = r._id
+    })
+
+    const usersToInsert = userCollection.map((u: any) => ({
+      ...u,
+      role: typeof u.role === 'string' ? (roleByName[u.role] ?? u.role) : u.role
+    }))
+
+    await User.insertMany(usersToInsert)
+    await Course.insertMany(courseCollection)
+    await Bootcamp.insertMany(bootcampCollection)
+    await Feedback.insertMany(feedbackCollection)
     await CourseLecture.insertMany(courseLectureCollection)
     await CourseModule.insertMany(courseModuleCollection)
     await CourseQuiz.insertMany(courseQuizCollection)
@@ -50,6 +85,7 @@ const destroy = async () => {
     await CourseQuiz.deleteMany()
     await Skill.deleteMany()
     await SkillCategory.deleteMany()
+    await Role.deleteMany()
 
     goodlog.custom(COLOR.BG_RED, RESPONSE.success.COLLECTION_DESTROYED)
     process.exit(1)
