@@ -22,7 +22,6 @@ import { LogInitRequest, ServerStatus }               from '@decorator'
 import { Key }                                        from '@constant/enum'
 import options                                        from '@util/geocoder'
 import { corsOption, compressionOption, redisOption } from '@config/option'
-import '@controller/user'
 
 dotenv.config()
 
