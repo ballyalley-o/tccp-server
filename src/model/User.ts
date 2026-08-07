@@ -7,7 +7,7 @@ import { DATABASE_INDEX } from '@db'
 import { REGEX }          from '@constant/regex'
 import { Key }            from '@constant/enum'
 import { oneDayFromNow }  from '@constant/max-age'
-import { SCHEMA, Role }   from '@constant/enum'
+import { SCHEMA }         from '@constant/enum'
 
 const TAG = Key.User
 
@@ -61,9 +61,8 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
       unique  : true
     },
     role: {
-      type   : String,
-      enum   : Object.values(Role),
-      default: 'user'
+      type: Schema.Types.ObjectId,
+      ref : 'Role'
     },
     avatar: {
       type   : String,
