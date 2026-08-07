@@ -1,7 +1,8 @@
-import goodlog from 'good-logs'
-import mongoose, { Schema, model } from 'mongoose'
+import goodlog                                          from 'good-logs'
+import mongoose, { Schema, model }                      from 'mongoose'
+import slugify                                          from 'slugify'
 import { SCHEMA, LOCALE, MinimumSkill, Key, Aggregate } from '@constant/enum'
-import { DATABASE_INDEX } from '@db'
+import { DATABASE_INDEX }                               from '@db'
 
 const TAG = Key.Course
 
@@ -106,6 +107,31 @@ CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.O
     }
   }
 }
+
+CourseSchema.pre('validate', async function (next) {
+  if (!this.isModified('title') && this.slug) {
+    return next()
+  }
+
+  const baseSlug = slugify(this.title, { lower: true, strict: true })
+  let   slug     = baseSlug
+
+  const existingSlugs = await (this.constructor as mongoose.Model<ICourseExtended>).distinct('slug', {
+    slug: new RegExp(`^${baseSlug}(-[0-9]+)?$`, 'i'),
+    _id : { $ne: this._id }
+  })
+
+  if (existingSlugs.length > 0) {
+    let count = 1
+    while (existingSlugs.includes(slug)) {
+      slug = `${baseSlug}-${count}`
+      count++
+    }
+  }
+
+  this.slug = slug
+  next()
+})
 
 CourseSchema.post(Key.Save, async function () {
   await (this.constructor as any as ICourseExtended).getAverageCost(this.bootcamp)
