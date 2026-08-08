@@ -19,6 +19,6 @@ router.delete(PathDir.ID, protect, authorizeAction('delete:user'), UserControlle
 router.put(PathDir.UPLOAD_AVATAR, protect, UserController.uploadUserAvatar)
 
 /**
- * @path - {baseUrl}/api/v0.1/auth/user
+ * @path - {baseUrl}/api/{appVer}/auth/user
  */
 export default router
