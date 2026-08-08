@@ -5,8 +5,8 @@ import skillRoute         from './skill'
 import skillCategoryRoute from './category'
 
 const linkSkillRoute = (app: Application) => {
-  app.use(PathDir.SKILL, skillRoute)
   app.use(PathDir.SKILL_CATEGORY, skillCategoryRoute)
+  app.use(PathDir.SKILL, skillRoute)
 }
 
 export { linkSkillRoute }
