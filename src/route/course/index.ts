@@ -7,10 +7,10 @@ import courseModuleRoute  from './module'
 import courseQuizRoute    from './quiz'
 
 const linkCourseRoute = (app: Application) => {
-  app.use(PathDir.COURSE, courseRoute)
   app.use(PathDir.COURSE_LECTURE, courseLectureRoute)
   app.use(PathDir.COURSE_MODULE, courseModuleRoute)
   app.use(PathDir.COURSE_QUIZ, courseQuizRoute)
+  app.use(PathDir.COURSE, courseRoute)
 }
 
 export { linkCourseRoute }
