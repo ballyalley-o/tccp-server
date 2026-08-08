@@ -43,6 +43,7 @@ class CourseQuizController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(course || module), (res.statusCode = Code.NOT_FOUND)))
     }
 
+    const creatorId = (req as any).user?.id
     const quiz = await CourseQuiz.create({
       course,
       module,
@@ -51,7 +52,9 @@ class CourseQuizController {
       description,
       questions,
       passingScore,
-      order
+      order,
+      createdBy: creatorId,
+      updatedBy: creatorId
     })
     res.status(Code.CREATED).json({ success: true, data: quiz })
   }
@@ -73,7 +76,7 @@ class CourseQuizController {
       }
     }
 
-    const quiz = await CourseQuiz.findByIdAndUpdate(req.params.id, updates, {
+    const quiz = await CourseQuiz.findByIdAndUpdate(req.params.id, { ...updates, updatedBy: (req as any).user?.id }, {
       new: true,
       runValidators: true
     }).lean()

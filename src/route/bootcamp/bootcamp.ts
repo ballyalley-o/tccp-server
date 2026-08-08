@@ -2,7 +2,7 @@ import express                from 'express'
 import { bootcampController } from '@controller'
 import { advancedResult }     from '@middleware'
 import { Bootcamp }           from '@model'
-import { protect, authorize } from '@route/guard'
+import { protect, authorizeAction } from '@route/guard'
 import courseRoute            from '@route/course/course'
 import feedbackRoute          from '@route/feedback/feedback'
 import { PathDir }            from '@route/dir'
@@ -35,17 +35,17 @@ router
     ]),
     bootcampController.getBootcamps
   )
-  .post(bootcampController.createBootcamp)
-router.route(PathDir.CREATE).post(protect, authorize('trainer', 'admin'), bootcampController.createBootcamp)
+  .post(protect, authorizeAction('create:bootcamp'), bootcampController.createBootcamp)
+router.route(PathDir.CREATE).post(protect, authorizeAction('create:bootcamp'), bootcampController.createBootcamp)
 
 router.get(PathDir.TOP, bootcampController.getTopBootcamps)
 router
   .route(PathDir.SLUG)
   .get(bootcampController.getBootcamp)
-  .put(protect, authorize('trainer', 'admin'), bootcampController.updateBootcamp)
-  .delete(protect, authorize('trainer', 'admin'), bootcampController.deleteBootcamp)
-
-router.put(PathDir.UPLOAD_PHOTO, protect, bootcampController.uploadBootcampPhoto)
-router.put(PathDir.UPLOAD_BADGE, protect, bootcampController.uploadBootcampBadge)
+  .put(protect, authorizeAction('update:bootcamp'), bootcampController.updateBootcamp)
+  .delete(protect, authorizeAction('delete:bootcamp'), bootcampController.deleteBootcamp)
+ 
+router.put(PathDir.UPLOAD_PHOTO, protect, authorizeAction('update:bootcamp'), bootcampController.uploadBootcampPhoto)
+router.put(PathDir.UPLOAD_BADGE, protect, authorizeAction('update:bootcamp'), bootcampController.uploadBootcampBadge)
 
 export default router

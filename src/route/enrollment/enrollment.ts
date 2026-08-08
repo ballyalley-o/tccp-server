@@ -3,7 +3,7 @@ import { EnrollmentController } from '@controller'
 import { advancedResult } from '@middleware'
 import { Enrollment } from '@model'
 import { PathDir } from '@route/dir'
-import { protect, authorize } from '@route/guard'
+import { protect, authorizeAction } from '@route/guard'
 
 const router = Router({ mergeParams: true })
 
@@ -23,13 +23,13 @@ router
                 select: '_id title duration'
             }
         ]), EnrollmentController.getEnrollments)
-  .post(protect, authorize('user', 'admin'), EnrollmentController.createEnrollment)
+  .post(protect, authorizeAction('create:enrollment'), EnrollmentController.createEnrollment)
 
 router
   .route(PathDir.ID)
   .get(EnrollmentController.getEnrollment)
-  .put(protect, authorize('user', 'admin'), EnrollmentController.updateEnrollment)
-  .delete(protect, authorize('user', 'admin'), EnrollmentController.deleteEnrollment)
+  .put(protect, authorizeAction('update:enrollment'), EnrollmentController.updateEnrollment)
+  .delete(protect, authorizeAction('delete:enrollment'), EnrollmentController.deleteEnrollment)
 
 /**
  * @path - {baseUrl}/api/v0.1/enrollment

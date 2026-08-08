@@ -2,6 +2,7 @@ import bcrypt             from 'bcryptjs'
 import crypto             from 'crypto'
 import jwt                from 'jsonwebtoken'
 import { Schema, model }  from 'mongoose'
+import DefaultSchema       from './Default'
 import GLOBAL             from '@config/global'
 import { DATABASE_INDEX } from '@db'
 import { REGEX }          from '@constant/regex'
@@ -111,5 +112,10 @@ UserSchema.methods.getResetPasswordToken = function () {
 
 UserSchema.index(DATABASE_INDEX.USER)
 
+// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+UserSchema.add(DefaultSchema.obj)
+ 
 const User = model(TAG, UserSchema)
 export default User

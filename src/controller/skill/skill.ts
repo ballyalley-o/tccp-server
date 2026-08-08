@@ -39,7 +39,8 @@ class SkillController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(category), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    const skill = await Skill.create({ name, labelKey, description, category, order })
+    const creatorId = (req as any).user?.id
+    const skill = await Skill.create({ name, labelKey, description, category, order, createdBy: creatorId, updatedBy: creatorId })
     res.status(Code.CREATED).json({ success: true, data: skill })
   }
 
@@ -53,7 +54,7 @@ class SkillController {
       }
     }
 
-    const skill = await Skill.findByIdAndUpdate(req.params.id, updates, {
+    const skill = await Skill.findByIdAndUpdate(req.params.id, { ...updates, updatedBy: (req as any).user?.id }, {
       new          : true,
       runValidators: true
     })

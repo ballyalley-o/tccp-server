@@ -24,14 +24,15 @@ class SkillCategoryController {
   @use(LogRequest)
   public static async createSkillCategory(req: Request, res: Response) {
     const { name, labelKey, description, order } = req.body
-    const skillCategory                          = await SkillCategory.create({ name, labelKey, description, order })
+    const creatorId = (req as any).user?.id
+    const skillCategory = await SkillCategory.create({ name, labelKey, description, order, createdBy: creatorId, updatedBy: creatorId })
     res.status(Code.CREATED).json({ success: true, data: skillCategory })
   }
 
   @use(LogRequest)
   public static async updateSkillCategory(req: Request, res: Response, next: NextFunction) {
     const updates = req.body
-    const category = await SkillCategory.findByIdAndUpdate(req.params.id, updates, {
+    const category = await SkillCategory.findByIdAndUpdate(req.params.id, { ...updates, updatedBy: (req as any).user?.id }, {
       new: true,
       runValidators: true
     }).lean()

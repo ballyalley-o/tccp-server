@@ -43,6 +43,7 @@ class CourseLectureController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(course || module), (res.statusCode = Code.NOT_FOUND)))
     }
 
+    const creatorId = (req as any).user?.id
     const lecture = await CourseLecture.create({
       course,
       module,
@@ -52,7 +53,9 @@ class CourseLectureController {
       content,
       resources,
       durationMinutes,
-      order
+      order,
+      createdBy: creatorId,
+      updatedBy: creatorId
     })
     res.status(Code.CREATED).json({ success: true, data: lecture })
   }
@@ -74,7 +77,7 @@ class CourseLectureController {
       }
     }
 
-    const lecture = await CourseLecture.findByIdAndUpdate(req.params.id, updates, {
+    const lecture = await CourseLecture.findByIdAndUpdate(req.params.id, { ...updates, updatedBy: (req as any).user?.id }, {
       new: true,
       runValidators: true
     }).lean()

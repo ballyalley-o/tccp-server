@@ -4,6 +4,7 @@ import { ErrorResponse }                        from '@util'
 import { Key, Code }                            from '@constant/enum'
 import { RESPONSE }                             from '@constant'
 import { LogRequest, use }                      from '@decorator'
+import { hasAction }                            from '@route/guard'
 
 /**
  * Feedback Controller
@@ -104,6 +105,12 @@ class FeedbackController {
     }
 
     try {
+      // attach bootcamp and user and metadata
+      req.body.bootcamp  = bootcampId
+      req.body.user      = userId
+      req.body.createdBy = userId
+      req.body.updatedBy = userId
+
       const feedback = await Feedback.create(req.body)
 
       res.status(Code.CREATED).json({
@@ -127,7 +134,6 @@ class FeedbackController {
   public static async updateFeedback(req: Request, res: Response, next: NextFunction) {
     const feedbackId = req.params.id
     const userId     = req.user.id
-    const userRole   = req.user.role
 
     let   feedback   = await Feedback.findById(feedbackId)
 
@@ -135,14 +141,14 @@ class FeedbackController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (feedback.user.toString() !== userId && userRole !== Key.Admin) {
+    if (feedback.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(
         new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, feedbackId), (res.statusCode = Code.UNAUTHORIZED))
       )
     }
 
     try {
-      feedback = await Feedback.findByIdAndUpdate(feedbackId, req.body, {
+      feedback = await Feedback.findByIdAndUpdate(feedbackId, { ...req.body, updatedBy: req.user?.id }, {
         new          : true,
         runValidators: true
       })
@@ -168,14 +174,13 @@ class FeedbackController {
   public static async deleteFeedback(req: Request, res: Response, next: NextFunction) {
     const feedbackId = req.params.id
     const userId     = req.user.id
-    const userRole   = req.user.role
     const feedback   = await Feedback.findById(feedbackId)
 
     if (!feedback) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_FEEDBACK(feedbackId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (feedback.user.toString() !== userId && userRole !== Key.Admin) {
+    if (feedback.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(
         new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, feedbackId), (res.statusCode = Code.UNAUTHORIZED))
       )

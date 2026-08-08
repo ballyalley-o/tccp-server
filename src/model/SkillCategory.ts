@@ -1,4 +1,5 @@
 import mongoose   ,        { Schema, model } from 'mongoose'
+import DefaultSchema            from './Default'
 import { Key, SCHEMA } from '@constant/enum'
 
 const TAG = Key.SkillCategory
@@ -46,5 +47,10 @@ SkillCategorySchema.pre(Key.Save, function (next) {
 
 SkillCategorySchema.index({ order: 1 })
 
+// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+SkillCategorySchema.add(DefaultSchema.obj)
+ 
 const SkillCategory = model(TAG, SkillCategorySchema)
 export default SkillCategory

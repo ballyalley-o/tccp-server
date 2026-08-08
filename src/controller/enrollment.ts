@@ -5,6 +5,7 @@ import { Enrollment, Bootcamp, Course }         from '@model'
 import { Key, Code }                            from '@constant/enum'
 import { RESPONSE }                             from '@constant'
 import { ErrorResponse }                        from '@util'
+import { hasAction }                            from '@route/guard'
 
 /**
  * Enrollment Controller
@@ -86,7 +87,6 @@ class EnrollmentController {
     const bootcampId        = req.body.bootcamp
     const courseId          = req.body.course
     const userId            = req.user.id
-    const userRole          = req.user.role
     const selectedStartDate = new Date(req.body.startDate)
 
     const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
@@ -100,7 +100,7 @@ class EnrollmentController {
         return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (userRole !== 'user') {
+    if (!hasAction(req, 'create:enrollment') && !hasAction(req, 'manage:any')) {
         return next(new ErrorResponse(RESPONSE.error.NOT_STUDENT(userId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
@@ -122,7 +122,9 @@ class EnrollmentController {
         bootcamp      : course.bootcamp,
         status        : 'enrolled',
         startDate     : selectedStartDate,
-        lastAccessedAt: new Date()
+        lastAccessedAt: new Date(),
+        createdBy     : userId,
+        updatedBy     : userId
       })
 
       res.status(Code.CREATED).json({
@@ -146,7 +148,6 @@ class EnrollmentController {
   public static async updateEnrollment(req: any, res: Response, next: NextFunction) {
     const enrollmentId     = req.params.id
     const userId           = req.user.id
-    const userRole         = req.user.role
     let   enrollmentStatus = req.body.status
 
     const enrollment = await Enrollment.findById(enrollmentId).select('user').lean()
@@ -155,7 +156,7 @@ class EnrollmentController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_ENROLLMENT(enrollmentId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (enrollment.user.toString() !== userId && userRole !== Key.Admin) {
+    if (enrollment.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
@@ -169,7 +170,7 @@ class EnrollmentController {
     }
 
     try {
-      const updatedEnrollment = await Enrollment.findByIdAndUpdate(enrollmentId, { status: enrollmentStatus, startDate,...req.body}, {
+      const updatedEnrollment = await Enrollment.findByIdAndUpdate(enrollmentId, { status: enrollmentStatus, startDate, ...req.body, updatedBy: req.user?.id }, {
         new          : true,
         runValidators: true
       })
@@ -195,7 +196,6 @@ class EnrollmentController {
   public static async deleteEnrollment(req: any, res: Response, next: NextFunction) {
     const enrollmentId = req.params.id
     const userId       = req.user.id
-    const userRole     = req.user.role
 
     const enrollment = await Enrollment.findById(enrollmentId).select('user').lean()
 
@@ -203,7 +203,7 @@ class EnrollmentController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_ENROLLMENT(enrollmentId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (enrollment.user.toString() !== userId && userRole !== Key.Admin) {
+    if (enrollment.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, enrollmentId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
