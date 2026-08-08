@@ -1,15 +1,14 @@
+import mongoose, { Schema, model }                   from 'mongoose'
 import geocoder                                      from '@config/geocoder'
 import slugify                                       from 'slugify'
 import goodlog                                       from 'good-logs'
-import mongoose, { Schema, model }                   from 'mongoose'
-import DefaultSchema                                 from './Default'
 import { DATABASE_INDEX }                            from '@db'
 import { REGEX }                                     from '@constant/regex'
 import RESPONSE                                      from '@constant/response'
 import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
+import DefaultSchema                                 from './Default'
 
 const TAG = Key.Bootcamp
-
 const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
   {
     name: {
@@ -192,7 +191,7 @@ BootcampSchema.virtual(Key.FeedbackVirtual, {
 })
 
 BootcampSchema.index(DATABASE_INDEX.BOOTCAMP)
- 
+
 // attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -201,6 +200,6 @@ BootcampSchema.add(DefaultSchema.obj)
 BootcampSchema.virtual(Key.TotalFeedback, {}).get(function (this: IBootcamp) {
   return this.feedback?.length
 })
- 
+
 const Bootcamp = model(TAG, BootcampSchema)
 export default Bootcamp

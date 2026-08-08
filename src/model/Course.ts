@@ -1,12 +1,11 @@
-import goodlog                                          from 'good-logs'
 import mongoose, { Schema, model }                      from 'mongoose'
-import DefaultSchema                                    from './Default'
+import goodlog                                          from 'good-logs'
 import slugify                                          from 'slugify'
 import { SCHEMA, LOCALE, MinimumSkill, Key, Aggregate } from '@constant/enum'
 import { DATABASE_INDEX }                               from '@db'
+import DefaultSchema                                    from './Default'
 
 const TAG = Key.Course
-
 const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
   {
     title: {
@@ -145,10 +144,9 @@ CourseSchema.pre(new RegExp(Key.Remove), function (this: ICourse, next: any) {
 
 CourseSchema.index(DATABASE_INDEX.COURSE)
 
-// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 CourseSchema.add(DefaultSchema.obj)
- 
+
 const Course = model(TAG, CourseSchema)
 export default Course

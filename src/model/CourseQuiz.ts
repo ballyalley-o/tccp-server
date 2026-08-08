@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose'
-import DefaultSchema         from './Default'
 import { Key, SCHEMA }   from '@constant/enum'
+import DefaultSchema     from './Default'
 
 const TAG = Key.CourseQuiz
-
 const QuizQuestionSchema = new Schema(
   {
     prompt: {
@@ -82,10 +81,9 @@ const CourseQuizSchema = new Schema<ICourseQuiz>(
 
 CourseQuizSchema.index({ course: 1, module: 1, order: 1 })
 
-// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 CourseQuizSchema.add(DefaultSchema.obj)
- 
+
 const CourseQuiz = model(TAG, CourseQuizSchema)
 export default CourseQuiz

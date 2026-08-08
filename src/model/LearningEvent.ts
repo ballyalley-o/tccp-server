@@ -1,9 +1,8 @@
 import { Schema, model }       from 'mongoose'
-import DefaultSchema            from './Default'
 import { Key, LEARNING_EVENT } from '@constant/enum'
+import DefaultSchema           from './Default'
 
 const TAG = 'LearningEvent'
-
 const LearningEventSchema = new Schema<ILearningEvent>(
   {
     user: {
@@ -52,10 +51,9 @@ const LearningEventSchema = new Schema<ILearningEvent>(
 LearningEventSchema.index({ user: 1, occurredAt: -1 })
 LearningEventSchema.index({ course: 1, occurredAt: -1 })
 
-// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 LearningEventSchema.add(DefaultSchema.obj)
- 
+
 const LearningEvent = model(TAG, LearningEventSchema)
 export default LearningEvent

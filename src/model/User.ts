@@ -2,13 +2,13 @@ import bcrypt             from 'bcryptjs'
 import crypto             from 'crypto'
 import jwt                from 'jsonwebtoken'
 import { Schema, model }  from 'mongoose'
-import DefaultSchema       from './Default'
 import GLOBAL             from '@config/global'
 import { DATABASE_INDEX } from '@db'
 import { REGEX }          from '@constant/regex'
 import { Key }            from '@constant/enum'
 import { oneDayFromNow }  from '@constant/max-age'
 import { SCHEMA }         from '@constant/enum'
+import DefaultSchema       from './Default'
 
 const TAG = Key.User
 const UserSchema: Schema<IUser> = new Schema<IUser>(
@@ -102,6 +102,7 @@ UserSchema.methods.matchPassword = async function (enteredPassword: string) {
 }
 
 UserSchema.methods.getResetPasswordToken = function () {
+  // refactor this to bcrypt
   const resetToken = crypto.randomBytes(20).toString(Key.Hex)
 
   this.resetPasswordToken  = crypto.createHash(Key.CryptoHash).update(resetToken).digest(Key.Hex)
@@ -112,10 +113,9 @@ UserSchema.methods.getResetPasswordToken = function () {
 
 UserSchema.index(DATABASE_INDEX.USER)
 
-// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 UserSchema.add(DefaultSchema.obj)
- 
+
 const User = model(TAG, UserSchema)
 export default User

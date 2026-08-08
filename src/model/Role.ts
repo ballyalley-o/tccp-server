@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import DefaultSchema     from './Default'
 
 const TAG = 'Role'
 const RoleSchema: Schema = new Schema(
@@ -17,7 +18,6 @@ const RoleSchema: Schema = new Schema(
       type   : Object,
       default: {}
     },
-    // actions: list of actions this role can perform (e.g., 'create:user', 'create:role')
     actions: {
       type   : [String],
       default: []
@@ -29,9 +29,6 @@ const RoleSchema: Schema = new Schema(
   }
 )
 
-// attach default metadata fields (createdBy, updatedBy, isActive, isArchived) if available
-import DefaultSchema from './Default'
-// DefaultSchema is a mongoose Schema; use .obj to merge its definition into RoleSchema
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 RoleSchema.add(DefaultSchema.obj)

@@ -1,11 +1,10 @@
-import goodlog from 'good-logs'
+import goodlog                     from 'good-logs'
 import mongoose, { Schema, model } from 'mongoose'
-import DefaultSchema from './Default'
-import { SCHEMA, LOCALE, Key } from '@constant/enum'
-import { DATABASE_INDEX } from '@db'
+import { SCHEMA, LOCALE, Key }     from '@constant/enum'
+import { DATABASE_INDEX }          from '@db'
+import DefaultSchema               from './Default'
 
 const TAG = Key.Feedback
-
 export const FeedbackSchema: Schema<IFeedbackExtended> = new Schema<IFeedbackExtended>(
   {
     title: {
@@ -82,10 +81,9 @@ FeedbackSchema.pre(new RegExp(Key.Remove), function (this: IFeedback, next: any)
 
 FeedbackSchema.index(DATABASE_INDEX.FEEDBACK)
 
-// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 FeedbackSchema.add(DefaultSchema.obj)
- 
+
 const Feedback = model(TAG, FeedbackSchema)
 export default Feedback
