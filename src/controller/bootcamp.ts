@@ -4,6 +4,7 @@ import { Bootcamp }                             from '@model'
 import type { Request, Response, NextFunction } from 'express'
 import { use, LogRequest }                      from '@decorator'
 import { Key, NumKey, Code }                    from '@constant/enum'
+import { hasAction }                            from '@route/guard'
 import { RESPONSE }                             from '@constant'
 import { ErrorResponse, DataResponse }          from '@util'
 
@@ -102,11 +103,9 @@ class BootcampController {
   @use(LogRequest)
   public static async createBootcamp(req: Request, res: Response, next: NextFunction) {
     const userId   = req.user.id
-    const userRole = req.user.role
-
     const publishedBootcamp = await Bootcamp.findOne({ user: userId })
 
-    if (publishedBootcamp && userRole !== Key.Admin) {
+    if (publishedBootcamp && !hasAction(req, 'manage:any')) {
       return next(new ErrorResponse(RESPONSE.error.BOOTCAMP_ALREADY_PUBLISHED(userId), (res.statusCode = Code.BAD_REQUEST)))
     }
 
@@ -136,7 +135,6 @@ class BootcampController {
   public static async updateBootcamp(req: Request, res: Response, next: NextFunction) {
     const bootcampId = req.params.id
     const userId     = req.user.id
-    const userRole   = req.user.role
 
     const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
 
@@ -144,7 +142,7 @@ class BootcampController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (bootcamp.user.toString() !== userId && userRole !== Key.Admin) {
+    if (bootcamp.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
@@ -175,7 +173,6 @@ class BootcampController {
   public static async deleteBootcamp(req: Request, res: Response, next: NextFunction) {
     const bootcampId = req.params.id
     const userId     = req.user.id
-    const userRole   = req.user.role
 
     const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
 
@@ -183,7 +180,7 @@ class BootcampController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (bootcamp.user.toString() !== userId && userRole !== Key.Admin) {
+    if (bootcamp.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
     }
 
@@ -230,7 +227,6 @@ class BootcampController {
   public static async createBootcampFeedback(req: Request, res: Response, next: NextFunction) {
     const bootcampId = req.params.id
     const userId     = req.user.id
-    const userRole   = req.user.role
 
     try {
       const bootcamp = await Bootcamp.findById(bootcampId)
@@ -240,7 +236,7 @@ class BootcampController {
         if (bootcamp.feedback) {
           const feedbacked = bootcamp.feedback.find((f: any) => f.user.toString() === userId)
 
-          if (feedbacked && userRole !== Key.Admin) {
+          if (feedbacked && !hasAction(req, 'manage:any')) {
             return next(new ErrorResponse(RESPONSE.error.ONE_FEEDBACK, (res.statusCode = Code.BAD_REQUEST)))
           }
         }

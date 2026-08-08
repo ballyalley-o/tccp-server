@@ -4,7 +4,7 @@ import { advancedResult }      from '@middleware'
 import { Feedback }            from '@model'
 import { Key }                 from '@constant/enum'
 import { PathDir }             from '@route/dir'
-import { protect, authorize }  from '@route/guard'
+import { protect, authorizeAction }  from '@route/guard'
 
 const router = express.Router({ mergeParams: true })
 
@@ -26,12 +26,12 @@ router
     ]),
     FeedbackController.getFeedbacks
   )
-  .post(protect, authorize('user', 'admin'), FeedbackController.addFeedback)
+  .post(protect, authorizeAction('create:feedback'), FeedbackController.addFeedback)
 
 router
   .route(PathDir.ID)
   .get(FeedbackController.getFeedback)
-  .put(protect, authorize('user', 'admin'), FeedbackController.updateFeedback)
-  .delete(protect, authorize('user', 'admin'), FeedbackController.deleteFeedback)
+  .put(protect, authorizeAction('update:feedback'), FeedbackController.updateFeedback)
+  .delete(protect, authorizeAction('delete:feedback'), FeedbackController.deleteFeedback)
 
 export default router

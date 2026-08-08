@@ -3,7 +3,7 @@ import { CourseController }   from '@controller'
 import { advancedResult }     from '@middleware'
 import { Course }             from '@model'
 import { PathDir }            from '@route/dir'
-import { protect, authorize } from '@route/guard'
+import { protect, authorizeAction } from '@route/guard'
 import { Key }                from '@constant/enum'
 
 const router = Router({ mergeParams: true })
@@ -17,13 +17,13 @@ router
     }),
     CourseController.getCourses
   )
-  .post(protect, authorize('trainer', 'admin'), CourseController.addCourse)
+  .post(protect, authorizeAction('create:course'), CourseController.addCourse)
 
 router
   .route(PathDir.ID)
   .get(CourseController.getCourse)
-  .put(protect, authorize('trainer', 'admin'), CourseController.updateCourse)
-  .delete(protect, authorize('trainer', 'admin'), CourseController.deleteCourse)
+  .put(protect, authorizeAction('update:course'), CourseController.updateCourse)
+  .delete(protect, authorizeAction('delete:course'), CourseController.deleteCourse)
 
 /**
  * @path - {baseUrl}/api/v0.1/course

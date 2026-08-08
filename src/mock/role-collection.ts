@@ -24,8 +24,25 @@ const roleCollection = [
     actions : [
       'create:bootcamp',
       'update:bootcamp',
+      'delete:bootcamp',
       'create:course',
-      'update:course'
+      'update:course',
+      'delete:course',
+      'create:skill',
+      'update:skill',
+      'delete:skill',
+      'create:skill-category',
+      'update:skill-category',
+      'delete:skill-category',
+      'create:course-module',
+      'update:course-module',
+      'delete:course-module',
+      'create:course-lecture',
+      'update:course-lecture',
+      'delete:course-lecture',
+      'create:course-quiz',
+      'update:course-quiz',
+      'delete:course-quiz'
     ]
   },
   {
@@ -33,7 +50,14 @@ const roleCollection = [
     name    : 'student',
     label   : 'Student',
     metadata: { builtin: true },
-    actions : []
+    actions : [
+      'create:enrollment',
+      'update:enrollment',
+      'delete:enrollment',
+      'create:feedback',
+      'update:feedback',
+      'delete:feedback'
+    ]
   }
 ]
 

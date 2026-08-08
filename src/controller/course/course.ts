@@ -3,6 +3,7 @@ import type { Request, Response, NextFunction } from 'express'
 import { use, LogRequest }                      from '@decorator'
 import { Course, Bootcamp }                     from '@model'
 import { Key, Code }                            from '@constant/enum'
+import { hasAction }                            from '@route/guard'
 import { RESPONSE }                             from '@constant'
 import { ErrorResponse }                        from '@util'
 
@@ -62,15 +63,13 @@ class CourseController {
   public static async addCourse(req: any, res: Response, next: NextFunction) {
     const bootcampId = req.params.bootcampId
     const userId     = req.user.id
-    const userRole   = req.user.role
-
     const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
 
     if (!bootcamp) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (bootcamp.user.toString() !== userId && userRole !== Key.Admin) {
+    if (bootcamp.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, bootcampId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
@@ -104,15 +103,13 @@ class CourseController {
   public static async updateCourse(req: any, res: Response, next: NextFunction) {
     const courseId   = req.params.id
     const userId     = req.user.id
-    const userRole   = req.user.role
-
     const course = await Course.findById(courseId).select('user').lean()
 
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (course.user.toString() !== userId && userRole !== Key.Admin) {
+    if (course.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(
         new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), (res.statusCode = Code.UNAUTHORIZED))
       )
@@ -149,15 +146,13 @@ class CourseController {
   public static async deleteCourse(req: any, res: Response, next: NextFunction) {
     const courseId = req.params.id
     const userId   = req.user.id
-    const userRole = req.user.role
-
     const course = await Course.findById(courseId).select('user bootcamp').lean()
 
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (course.user.toString() !== userId && userRole !== Key.Admin) {
+    if (course.user.toString() !== userId && !hasAction(req, 'manage:any')) {
       return next(new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), (res.statusCode = Code.UNAUTHORIZED)))
     }
 
