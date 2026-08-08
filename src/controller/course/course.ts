@@ -77,6 +77,9 @@ class CourseController {
     try {
       req.body.bootcamp = bootcampId
       req.body.user     = userId
+      // creator metadata
+      req.body.createdBy = userId
+      req.body.updatedBy = userId
 
       const course = await Course.create(req.body)
 
@@ -116,7 +119,7 @@ class CourseController {
     }
 
     try {
-      const updatedCourse = await Course.findByIdAndUpdate(courseId, req.body, {
+      const updatedCourse = await Course.findByIdAndUpdate(courseId, { ...req.body, updatedBy: userId }, {
         new          : true,
         runValidators: true
       })

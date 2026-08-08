@@ -111,6 +111,9 @@ class BootcampController {
     }
 
     try {
+      // set creator metadata
+      req.body.createdBy = req.user?.id
+      req.body.updatedBy = req.user?.id
       const bootcamp = await Bootcamp.create(req.body)
 
       res.status(Code.CREATED).json({
@@ -146,7 +149,7 @@ class BootcampController {
     }
 
     try {
-      const updatedBootcamp = await Bootcamp.findByIdAndUpdate(bootcampId, req.body, {
+      const updatedBootcamp = await Bootcamp.findByIdAndUpdate(bootcampId, { ...req.body, updatedBy: req.user?.id }, {
         new          : true,
         runValidators: true
       })

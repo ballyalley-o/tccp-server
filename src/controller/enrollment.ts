@@ -122,7 +122,9 @@ class EnrollmentController {
         bootcamp      : course.bootcamp,
         status        : 'enrolled',
         startDate     : selectedStartDate,
-        lastAccessedAt: new Date()
+        lastAccessedAt: new Date(),
+        createdBy     : userId,
+        updatedBy     : userId
       })
 
       res.status(Code.CREATED).json({
@@ -169,7 +171,7 @@ class EnrollmentController {
     }
 
     try {
-      const updatedEnrollment = await Enrollment.findByIdAndUpdate(enrollmentId, { status: enrollmentStatus, startDate,...req.body}, {
+      const updatedEnrollment = await Enrollment.findByIdAndUpdate(enrollmentId, { status: enrollmentStatus, startDate, ...req.body, updatedBy: req.user?.id }, {
         new          : true,
         runValidators: true
       })

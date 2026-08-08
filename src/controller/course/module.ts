@@ -39,7 +39,9 @@ class CourseModuleController {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(course), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    const module = await CourseModule.create({ course, title, labelKey, description, order })
+    // attach creator metadata
+    const creatorId = (req as any).user?.id
+    const module = await CourseModule.create({ course, title, labelKey, description, order, createdBy: creatorId, updatedBy: creatorId })
     res.status(Code.CREATED).json({ success: true, data: module })
   }
 
@@ -53,10 +55,11 @@ class CourseModuleController {
       }
     }
 
-    const module = await CourseModule.findByIdAndUpdate(req.params.id, updates, {
+    const updated = await CourseModule.findByIdAndUpdate(req.params.id, { ...updates, updatedBy: (req as any).user?.id }, {
       new: true,
       runValidators: true
     }).lean()
+    const module = updated
     if (!module) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(req.params.id), (res.statusCode = Code.NOT_FOUND)))
     }

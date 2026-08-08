@@ -104,6 +104,12 @@ class FeedbackController {
     }
 
     try {
+      // attach bootcamp and user and metadata
+      req.body.bootcamp  = bootcampId
+      req.body.user      = userId
+      req.body.createdBy = userId
+      req.body.updatedBy = userId
+
       const feedback = await Feedback.create(req.body)
 
       res.status(Code.CREATED).json({
@@ -142,7 +148,7 @@ class FeedbackController {
     }
 
     try {
-      feedback = await Feedback.findByIdAndUpdate(feedbackId, req.body, {
+      feedback = await Feedback.findByIdAndUpdate(feedbackId, { ...req.body, updatedBy: req.user?.id }, {
         new          : true,
         runValidators: true
       })

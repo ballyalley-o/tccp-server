@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import DefaultSchema         from './Default'
 import { Key, SCHEMA }   from '@constant/enum'
 
 const TAG = Key.Skill
@@ -52,5 +53,10 @@ SkillSchema.pre(Key.Save, function (next) {
 
 SkillSchema.index({ category: 1, order: 1 })
 
+// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+SkillSchema.add(DefaultSchema.obj)
+ 
 const Skill = model(TAG, SkillSchema)
 export default Skill

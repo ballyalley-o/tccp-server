@@ -59,6 +59,10 @@ class UserController {
   @use(LogRequest)
   public static async createUser(req: Request, res: Response, next: NextFunction) {
     try {
+      // attach metadata about who created the user
+      req.body.createdBy = (req as any).user?.id
+      req.body.updatedBy = (req as any).user?.id
+
       const user = await User.create(req.body)
       const { email, username, role } = req.body
       const emailExist = await User.findOne({ email })
@@ -111,7 +115,7 @@ class UserController {
   @use(LogRequest)
   public static async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      const user = await User.findByIdAndUpdate(req.params.id, { ...req.body, updatedBy: (req as any).user?.id }, {
         new: true,
         runValidators: true
       })
