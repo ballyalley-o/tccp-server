@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import { use, LogRequest }                      from '@decorator'
 import { SkillCategory }                        from '@model'
-import { Code, Key }                            from '@constant/enum'
+import { Code }                                 from '@constant/enum'
 import { RESPONSE }                             from '@constant'
 import { ErrorResponse }                        from '@util'
 
