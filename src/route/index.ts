@@ -7,11 +7,9 @@ import { linkEnrollmentRoute } from './enrollment'
 import { linkFeedbackRoute }   from './feedback'
 import { linkSkillRoute }      from './skill'
 import { linkSystemRoute }     from './system'
-import { linkUserRoute }       from './user'
 
 const mainRoute = (app: Application) => {
   linkAuthRoute(app)
-  linkUserRoute(app)
   linkBootcampRoute(app)
   linkFeedbackRoute(app)
   linkCourseRoute(app)
