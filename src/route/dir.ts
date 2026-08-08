@@ -25,6 +25,7 @@ export const HEALTH   = 'health'
 export const LOG_IN   = 'log-in'
 export const LOG_OUT  = 'log-out'
 export const REGISTER = 'register'
+export const ROLE     = 'role'
 
 export const LECTURE = 'lecture'
 export const MODULE  = 'module'
@@ -95,6 +96,8 @@ export class PathDir {
 
   static AUTH = pathBuilder(PathDir.API_ROOT, AUTH)
   static USER = pathBuilder(PathDir.AUTH, USER)
+
+  static ROLE = pathBuilder(PathDir.API_ROOT, AUTH, ROLE)
 
   static BOOTCAMP       = pathBuilder(PathDir.API_ROOT, BOOTCAMP)
   static CREATE         = pathBuilder(CREATE)
