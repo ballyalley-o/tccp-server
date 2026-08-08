@@ -1,4 +1,4 @@
-export { default as AuthController }       from './auth'
+export { default as AuthController }       from './auth/auth'
 export { default as bootcampController }   from './bootcamp'
 export { default as CourseController }     from './course/course'
 export { default as EnrollmentController } from './enrollment'
