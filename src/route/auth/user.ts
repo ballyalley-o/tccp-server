@@ -1,9 +1,9 @@
-import { Router } from 'express'
-import { advancedResult } from '@middleware'
-import { UserController } from '@controller'
-import { PathDir } from '@route/dir'
+import { Router }                   from 'express'
+import { UserController }           from '@controller'
+import { User }                     from '@model'
+import { advancedResult }           from '@middleware'
+import { PathDir }                  from '@route/dir'
 import { protect, authorizeAction } from '@route/guard'
-import { User } from '@model'
 
 const router = Router({ mergeParams: true })
 
@@ -18,4 +18,7 @@ router.delete(PathDir.ID, protect, authorizeAction('delete:user'), UserControlle
 
 router.put(PathDir.UPLOAD_AVATAR, protect, UserController.uploadUserAvatar)
 
+/**
+ * @path - {baseUrl}/api/v0.1/auth/user
+ */
 export default router
