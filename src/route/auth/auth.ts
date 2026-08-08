@@ -1,13 +1,10 @@
-import { Router } from 'express'
-import { AuthController } from '@controller'
-import { PathDir } from '@route/dir'
-import { protect } from '@route/guard'
+import { Router }         from 'express'
+import { AuthController } from '@controller/auth'
+import { PathDir }        from '@route/dir'
+import { protect }        from '@route/guard'
 
 const router = Router()
 
-/**
- * @path - {baseUrl}/api/v0.1/auth
- */
 router.post(PathDir.REGISTER, AuthController.register)
 router.post(PathDir.LOG_IN, AuthController.login)
 router.post(PathDir.LOG_OUT, AuthController.logout)
@@ -17,5 +14,7 @@ router.put(PathDir.UPDATE_PASSWORD, protect, AuthController.updatePassword)
 router.post(PathDir.FORGOT_PASSWORD, AuthController.forgotPassword)
 router.put(PathDir.RESET_PASSWORD, AuthController.resetPassword)
 
-const authRoute = router
-export default authRoute
+/**
+ * @path - {baseUrl}/api/{appVer}/auth
+ */
+export default router
