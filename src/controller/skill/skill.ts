@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import { use, LogRequest }                      from '@decorator'
 import { Skill, SkillCategory }                 from '@model'
-import { Code, Key }                            from '@constant/enum'
+import { Code }                                 from '@constant/enum'
 import { RESPONSE }                             from '@constant'
 import { ErrorResponse }                        from '@util'
 
@@ -13,8 +13,7 @@ class SkillController {
       filter.category = req.query.category
     }
 
-    const skills = await Skill.find(filter).populate('category').sort({ order: 1, name: 1 }).lean()
-    res.status(Code.OK).json({ success: true, count: skills.length, data: skills })
+    res.status(Code.OK).json(res.advanceResult)
   }
 
   @use(LogRequest)
