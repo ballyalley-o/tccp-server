@@ -94,8 +94,9 @@ export class PathDir {
 
   static DASHBOARD = pathBuilder(PathDir.API_ROOT, DASHBOARD)
 
-  static AUTH = pathBuilder(PathDir.API_ROOT, AUTH)
-  static USER = pathBuilder(PathDir.AUTH, USER)
+  static AUTH      = pathBuilder(PathDir.API_ROOT, AUTH)
+  static AUTH_USER = pathBuilder(PathDir.AUTH, USER)
+  static AUTH_ROLE = pathBuilder(PathDir.AUTH, ROLE)
 
   static ROLE = pathBuilder(PathDir.API_ROOT, AUTH, ROLE)
 
