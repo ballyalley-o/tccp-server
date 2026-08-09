@@ -1,12 +1,12 @@
-import mongoose, { Schema, model }                   from 'mongoose'
-import geocoder                                      from '@config/geocoder'
-import slugify                                       from 'slugify'
-import goodlog                                       from 'good-logs'
-import { DATABASE_INDEX }                            from '@db'
-import { REGEX }                                     from '@constant/regex'
-import RESPONSE                                      from '@constant/response'
-import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
-import DefaultSchema                                 from './Default'
+import mongoose, { Schema, model }            from 'mongoose'
+import geocoder                               from '@config/geocoder'
+import slugify                                from 'slugify'
+import goodlog                                from 'good-logs'
+import { DATABASE_INDEX }                     from '@db'
+import { REGEX }                              from '@constant/regex'
+import RESPONSE                               from '@constant/response'
+import { Key, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
+import DefaultSchema                          from './Default'
 
 const TAG = Key.Bootcamp
 
