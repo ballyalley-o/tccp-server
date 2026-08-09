@@ -211,7 +211,7 @@ BootcampSchema.pre(Key.Save, async function (_next) {
 })
 
 BootcampSchema.pre(new RegExp(Key.Remove), async function (this: IBootcamp, next) {
-  goodlog.custom(COLOR.INVERSE, RESPONSE.success.COURSES_DELETED(this.name as string))
+  goodlog.custom('inverse', RESPONSE.success.COURSES_DELETED(this.name as string))
   await mongoose.model(Key.Course).deleteMany({ bootcamp: this?._id as Schema.Types.ObjectId })
   next()
 })
