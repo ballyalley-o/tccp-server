@@ -1,8 +1,21 @@
-import { Schema, model }       from 'mongoose'
-import { Key, LEARNING_EVENT } from '@constant/enum'
-import DefaultSchema           from './Default'
+import { Schema, model }                                                             from 'mongoose'
+import { type LearningEventSourceType, type LearningEventType }                                              from '@constant/enum'
+import { Key, DEFAULT_LEARNING_EVENT_SOURCE, LEARNING_EVENT, LEARNING_EVENT_SOURCE } from '@constant/enum'
+import DefaultSchema                                                                 from './Default'
 
 const TAG = 'LearningEvent'
+
+declare interface ILearningEvent {
+  _id       ?: Schema.Types.ObjectId
+  user       : Schema.Types.ObjectId
+  course    ?: Schema.Types.ObjectId
+  bootcamp  ?: Schema.Types.ObjectId
+  eventType  : LearningEventType
+  occurredAt : Date
+  metadata  ?: Record<string, any>
+  source    ?: LearningEventSourceType
+}
+
 const LearningEventSchema = new Schema<ILearningEvent>(
   {
     user: {
@@ -38,8 +51,8 @@ const LearningEventSchema = new Schema<ILearningEvent>(
     },
     source: {
       type   : String,
-      default: 'web',
-      enum   : ['web', 'mobile', 'api']
+      enum   : LEARNING_EVENT_SOURCE,
+      default: DEFAULT_LEARNING_EVENT_SOURCE
     }
   },
   {

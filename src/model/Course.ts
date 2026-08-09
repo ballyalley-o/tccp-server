@@ -1,12 +1,32 @@
 import mongoose, { Schema, model }                      from 'mongoose'
 import goodlog                                          from 'good-logs'
 import slugify                                          from 'slugify'
-import { SCHEMA, LOCALE, MinimumSkill, Key, Aggregate } from '@constant/enum'
 import { DATABASE_INDEX }                               from '@db'
+import { SCHEMA, LOCALE, MinimumSkill, Key, Aggregate } from '@constant/enum'
 import DefaultSchema                                    from './Default'
 
 const TAG = Key.Course
-const CourseSchema: Schema<ICourseExtended> = new Schema<ICourseExtended>(
+
+interface ICourse extends Document {
+  title               : string
+  description         : string
+  duration            : string
+  tuition             : number
+  minimumSkill        : string
+  scholarshipAvailable: boolean
+  slug                : string
+  skills              : Schema.Types.ObjectId[]
+  modules             : Schema.Types.ObjectId[]
+  bootcamp            : Schema.Types.ObjectId
+  user                : Schema.Types.ObjectId
+  trainer             : Schema.Types.ObjectId
+}
+
+interface ICourseExtended extends ICourse {
+  getAverageCost(bootcampId: Schema.Types.ObjectId): Promise<void>
+}
+
+const CourseSchema = new Schema<ICourseExtended>(
   {
     title: {
       type    : String,

@@ -9,7 +9,47 @@ import { Key, COLOR, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 import DefaultSchema                                 from './Default'
 
 const TAG = Key.Bootcamp
-const BootcampSchema: Schema<IBootcamp> = new Schema<IBootcamp>(
+
+declare interface IBootcamp {
+  _id        : Schema.Types.ObjectId
+  name       : string
+  slug       : string
+  description: string
+  website    : string
+  phone      : string
+  email      : string
+  address    : string
+  location   : {
+    type            : string
+    coordinates     : [number | undefined, number | undefined]
+    formattedAddress: string
+    street          : string
+    city            : string
+    state           : string
+    zipcode         : string
+    country         : string
+  }
+  careers      : [string]
+  duration     : string
+  averageCost  : number
+  photo        : string
+  badge        : string
+  housing      : boolean
+  jobAssistance: boolean
+  jobGuarantee : boolean
+  acceptGi     : boolean
+  rating       : number
+  totalFeedback: number
+  feedback     : [Schema.Types.ObjectId]
+  course       : Schema.Types.ObjectId
+  user         : Schema.Types.ObjectId
+}
+
+declare interface IBootcampExtended extends IBootcamp {
+  getTotalFeedback(bootcampId: Schema.Types.ObjectId): Promise<void>
+}
+
+const BootcampSchema = new Schema<IBootcamp>(
   {
     name: {
       type     : String,

@@ -5,7 +5,20 @@ import { DATABASE_INDEX }          from '@db'
 import DefaultSchema               from './Default'
 
 const TAG = Key.Feedback
-export const FeedbackSchema: Schema<IFeedbackExtended> = new Schema<IFeedbackExtended>(
+
+interface IFeedback {
+  title   : string
+  body    : string
+  rating  : number
+  bootcamp: Schema.Types.ObjectId
+  user    : Schema.Types.ObjectId
+}
+
+interface IFeedbackExtended extends IFeedback {
+  getAverageRating: (bootcampId: Schema.Types.ObjectId) => Promise<void>
+}
+
+export const FeedbackSchema = new Schema<IFeedback>(
   {
     title: {
       type     : String,

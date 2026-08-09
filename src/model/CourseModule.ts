@@ -3,6 +3,16 @@ import { Key, SCHEMA }   from '@constant/enum'
 import DefaultSchema     from './Default'
 
 const TAG = Key.CourseModule
+
+interface ICourseModule {
+  _id        ?: Schema.Types.ObjectId
+  course      : Schema.Types.ObjectId
+  title       : string
+  labelKey    : string
+  description?: string
+  order       : number
+}
+
 const CourseModuleSchema = new Schema<ICourseModule>(
   {
     course: {

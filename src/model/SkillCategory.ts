@@ -3,6 +3,15 @@ import { Key, SCHEMA }   from '@constant/enum'
 import DefaultSchema     from './Default'
 
 const TAG = Key.SkillCategory
+
+interface ISkillCategory {
+  _id        ?: Schema.Types.ObjectId
+  name        : string
+  labelKey    : string
+  description?: string
+  slug        : string
+  order       : number
+}
 const SkillCategorySchema = new Schema<ISkillCategory>(
   {
     name: {

@@ -3,7 +3,28 @@ import { Key, SCHEMA }   from '@constant/enum'
 import DefaultSchema     from './Default'
 
 const TAG = Key.CourseQuiz
-const QuizQuestionSchema = new Schema(
+
+interface ICourseQuizQuestion {
+  prompt  : string
+  type   ?: string
+  options?: string[]
+  answer ?: any
+  points ?: number
+}
+
+interface ICourseQuiz {
+  _id         ?: Schema.Types.ObjectId
+  course       : Schema.Types.ObjectId
+  module       : Schema.Types.ObjectId
+  title        : string
+  labelKey     : string
+  description ?: string
+  questions    : ICourseQuizQuestion[]
+  passingScore : number
+  order        : number
+}
+
+const QuizQuestionSchema = new Schema<ICourseQuizQuestion>(
   {
     prompt: {
       type    : String,

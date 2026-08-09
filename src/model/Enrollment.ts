@@ -1,9 +1,23 @@
-import { Schema, model } from 'mongoose'
-import { Key }           from '@constant/enum'
-import DefaultSchema     from './Default'
+import { Schema, model }                                     from 'mongoose'
+import { type EnrollmentStatusType }                         from '@constant/enum'
+import { Key, ENROLLMENT_STATUS, DEFAULT_ENROLLMENT_STATUS } from '@constant/enum'
+import DefaultSchema                                         from './Default'
 
 const TAG = 'Enrollment'
-const EnrollmentSchema = new Schema(
+
+declare interface IEnrollment {
+  _id           ?: Schema.Types.ObjectId
+  user           : Schema.Types.ObjectId
+  bootcamp       : Schema.Types.ObjectId
+  course         : Schema.Types.ObjectId
+  status         : EnrollmentStatusType
+  progress       : number
+  startDate      : Date
+  completedAt    : Date
+  lastAccessedAt : Date
+}
+
+const EnrollmentSchema = new Schema<IEnrollment>(
   {
     user: {
         type    : Schema.ObjectId,
@@ -25,8 +39,8 @@ const EnrollmentSchema = new Schema(
     },
     status: {
         type   : String,
-        enum   : ['enrolled', 'in_progress', 'completed', 'dropped'],
-        default: 'enrolled'
+        enum   : ENROLLMENT_STATUS,
+        default: DEFAULT_ENROLLMENT_STATUS
     },
     progress: {
         type   : Number,
