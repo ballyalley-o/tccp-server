@@ -4,11 +4,11 @@ declare global {
   namespace Express {
     interface Request {
       user: {
-        id         : string
-        role       : string
+        id    : string
+        role  : string
         _role?: {
-          _id?: string
-          name?: string
+          _id    ?: string
+          name   ?: string
           actions?: string[]
         }
         roleActions?: string[]
