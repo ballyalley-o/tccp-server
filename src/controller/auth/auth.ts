@@ -22,6 +22,11 @@ class AuthController {
    */
   private static _sendTokenResponse = (user: any, statusCode: number, res: any) => {
     const token   = user.getSignedJwtToken()
+
+    if (user.isArchived) {
+      throw new ErrorResponse(RESPONSE.error.ACCOUNT_DELETED, (res.statusCode = Code.UNAUTHORIZED))
+    }
+
     const options = {
       expires : thirtyDaysFromNow,
       httpOnly: true,
@@ -84,7 +89,7 @@ class AuthController {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
       }
 
-      const user = await User.findOne({ email }).select(Key.Password)
+      const user = await User.findOne({ email, archivedAt: null }).select(Key.Password)
 
       if (!user || !(await user.matchPassword(password))) {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
