@@ -1,6 +1,5 @@
 import goodlog      from 'good-logs'
 import App          from '@config/server'
-import { COLOR }    from '@constant/enum'
 import { RESPONSE } from '@constant'
 import { ARGV }     from '@constant/enum'
 import {
@@ -87,7 +86,7 @@ const destroy = async () => {
     await SkillCategory.deleteMany()
     await Role.deleteMany()
 
-    goodlog.custom(COLOR.BG_RED, RESPONSE.success.COLLECTION_DESTROYED)
+    goodlog.custom('bgRed', RESPONSE.success.COLLECTION_DESTROYED)
     process.exit(1)
   } catch (error: any) {
     goodlog.error(error.message)
