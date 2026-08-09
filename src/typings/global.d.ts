@@ -35,13 +35,4 @@ declare interface IEmailOptions {
   html   ?: string | IHTMLContent
 }
 
-declare type AppThemeType      = 'primary' | 'success' | 'info' | 'warning' | 'error'
-declare type LearningEventType =
-  'lesson_started' |
-  'lesson_completed' |
-  'quiz_passed' |
-  'assignment_submitted' |
-  'resource_viewed' |
-  'discussion_posted' |
-  'login' |
-  'badge_earned'
+declare type AppThemeType = 'primary' | 'success' | 'info' | 'warning' | 'error'
