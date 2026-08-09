@@ -26,6 +26,6 @@ router
   .delete(protect, authorizeAction('delete:course'), CourseController.deleteCourse)
 
 /**
- * @path - {baseUrl}/api/v0.1/course
+ * @path - {baseUrl}/api/{appVer}/course
  */
 export default router
