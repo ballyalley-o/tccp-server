@@ -7,7 +7,7 @@ import DefaultSchema                                    from './Default'
 
 const TAG = Key.Course
 
-interface ICourse extends Document {
+export interface ICourse extends Document {
   title               : string
   description         : string
   duration            : string

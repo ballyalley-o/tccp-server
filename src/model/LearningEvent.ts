@@ -5,7 +5,7 @@ import DefaultSchema                                                            
 
 const TAG = 'LearningEvent'
 
-declare interface ILearningEvent {
+export interface ILearningEvent {
   _id       ?: Schema.Types.ObjectId
   user       : Schema.Types.ObjectId
   course    ?: Schema.Types.ObjectId

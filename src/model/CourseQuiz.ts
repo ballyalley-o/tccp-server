@@ -4,7 +4,7 @@ import DefaultSchema     from './Default'
 
 const TAG = Key.CourseQuiz
 
-interface ICourseQuizQuestion {
+export interface ICourseQuizQuestion {
   prompt  : string
   type   ?: string
   options?: string[]
@@ -12,7 +12,7 @@ interface ICourseQuizQuestion {
   points ?: number
 }
 
-interface ICourseQuiz {
+export interface ICourseQuiz {
   _id         ?: Schema.Types.ObjectId
   course       : Schema.Types.ObjectId
   module       : Schema.Types.ObjectId

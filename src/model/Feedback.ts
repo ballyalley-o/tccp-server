@@ -6,7 +6,7 @@ import DefaultSchema               from './Default'
 
 const TAG = Key.Feedback
 
-interface IFeedback {
+export interface IFeedback {
   title   : string
   body    : string
   rating  : number
@@ -14,7 +14,7 @@ interface IFeedback {
   user    : Schema.Types.ObjectId
 }
 
-interface IFeedbackExtended extends IFeedback {
+export interface IFeedbackExtended extends IFeedback {
   getAverageRating: (bootcampId: Schema.Types.ObjectId) => Promise<void>
 }
 

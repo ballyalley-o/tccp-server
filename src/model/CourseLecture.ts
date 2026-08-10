@@ -4,7 +4,7 @@ import DefaultSchema     from './Default'
 
 const TAG = Key.CourseLecture
 
-interface ICourseLecture {
+export interface ICourseLecture {
   _id            ?: Schema.Types.ObjectId
   course          : Schema.Types.ObjectId
   module          : Schema.Types.ObjectId

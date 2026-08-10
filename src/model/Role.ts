@@ -1,11 +1,17 @@
-import { Schema, model } from 'mongoose'
-import DefaultSchema     from './Default'
+import { Schema, model }       from 'mongoose'
+import { PERMISSION, type PermissionType } from '@constant'
+import DefaultSchema           from './Default'
 
 const TAG = 'Role'
 
+export interface IRole {
+  name    : string
+  label   : string
+  metadata: Record<string, any>
+  actions : PermissionType[]
+}
 
-
-const RoleSchema: Schema = new Schema(
+const RoleSchema: Schema = new Schema<IRole>(
   {
     name: {
       type     : String,
@@ -23,6 +29,7 @@ const RoleSchema: Schema = new Schema(
     },
     actions: {
       type   : [String],
+      enum   : PERMISSION,
       default: []
     }
   },

@@ -4,7 +4,7 @@ import DefaultSchema     from './Default'
 
 const TAG = Key.SkillCategory
 
-interface ISkillCategory {
+export interface ISkillCategory {
   _id        ?: Schema.Types.ObjectId
   name        : string
   labelKey    : string

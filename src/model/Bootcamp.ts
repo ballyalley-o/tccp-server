@@ -10,7 +10,7 @@ import DefaultSchema                          from './Default'
 
 const TAG = Key.Bootcamp
 
-declare interface IBootcamp {
+export interface IBootcamp {
   _id        : Schema.Types.ObjectId
   name       : string
   slug       : string

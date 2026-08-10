@@ -5,7 +5,7 @@ import DefaultSchema                                         from './Default'
 
 const TAG = 'Enrollment'
 
-declare interface IEnrollment {
+export interface IEnrollment {
   _id           ?: Schema.Types.ObjectId
   user           : Schema.Types.ObjectId
   bootcamp       : Schema.Types.ObjectId

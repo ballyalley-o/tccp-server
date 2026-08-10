@@ -8,11 +8,11 @@ import { REGEX }                                                         from '@
 import { Key }                                                           from '@constant/enum'
 import { oneDayFromNow }                                                 from '@constant/max-age'
 import { SCHEMA, USER_STATUS, DEFAULT_USER_STATUS, type UserStatusType } from '@constant/enum'
-import DefaultSchema                                                     from './Default'
+import DefaultSchema, { IDefault }                                       from './Default'
 
 const TAG = Key.User
 
-declare interface IUser {
+export interface IUser extends IDefault {
   _id                                   ?: Schema.Types.ObjectId
   firstname                              : string
   lastname                               : string
@@ -26,8 +26,12 @@ declare interface IUser {
   progress                               : Schema.Types.ObjectId
   organization                          ?: string
   status                                 : UserStatusType
+  deletedAt                              : Date
+  deletedBy                              : Schema.Types.ObjectId
+  deleteScheduledAt                      : Date
   resetPasswordToken                     : string
   resetPasswordExpire                    : Date
+  tokenVersion                           : number
   getSignedJwtToken()                    : string
   getResetPasswordToken()                : string
   matchPassword(enteredPassword: string) : Promise<boolean>
@@ -93,7 +97,24 @@ const UserSchema = new Schema<IUser>(
       type   : String,
       enum   : USER_STATUS,
       default: DEFAULT_USER_STATUS
-  },
+    },
+    deletedAt: {
+      type   : Date,
+      default: null
+    },
+    deletedBy: {
+      type   : Schema.Types.ObjectId,
+      ref    : Key.User,
+      default: null
+    },
+    deleteScheduledAt: {
+      type   : Date,
+      default: null
+    },
+    tokenVersion: {
+      type   : Number,
+      default: 0
+    },
     resetPasswordToken : String,
     resetPasswordExpire: Date
   },
@@ -116,7 +137,7 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id }, GLOBAL.JWT_SECRET || '', {
+  return jwt.sign({ id: this._id, tokenVersion: this.tokenVersion }, GLOBAL.JWT_SECRET || '', {
     expiresIn: GLOBAL.JWT_EXP
   })
 }
@@ -126,7 +147,7 @@ UserSchema.methods.matchPassword = async function (enteredPassword: string) {
 }
 
 UserSchema.methods.getResetPasswordToken = function () {
-  // refactor this to bcrypt
+  //TODO: refactor this to bcrypt
   const resetToken = crypto.randomBytes(20).toString(Key.Hex)
 
   this.resetPasswordToken  = crypto.createHash(Key.CryptoHash).update(resetToken).digest(Key.Hex)
