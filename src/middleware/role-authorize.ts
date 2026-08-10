@@ -27,6 +27,7 @@ const isInstructor = asyncHandler(
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
+
     const userRoleName = typeof req.user.role === 'string' ? req.user.role : req.user.role?.name
 
     if (course.trainer?.toString() !== req.user._id.toString() && userRoleName !== Key.Admin) {
@@ -49,7 +50,6 @@ const isEnrolled = asyncHandler(
       return next(new ErrorResponse(RESPONSE.error.IS_REQUIRED('course id'), (res.statusCode = Code.BAD_REQUEST)))
     }
 
-    const { Enrollment } = await import('@model')
     const enrollment     = await Enrollment.findOne({
       user  : req.user._id,
       course: courseId,
