@@ -1,14 +1,20 @@
-export { default as Bootcamp }      from './Bootcamp'
-export { default as Course }        from './Course'
-export { default as CourseLecture } from './CourseLecture'
-export { default as CourseModule }  from './CourseModule'
-export { default as CourseQuiz }    from './CourseQuiz'
-export { default as Default }       from './Default'
-export { default as Enrollment }    from './Enrollment'
-export { default as Feedback }      from './Feedback'
-export { default as LearningEvent } from './LearningEvent'
-export { default as Role }          from './Role'
-export { default as Skill }         from './Skill'
-export { default as SkillCategory } from './SkillCategory'
-export { default as User }          from './User'
-export *                            from './User'
+export { default as Role }          from './auth/role/Role'
+export { default as User }          from './auth/user/User'
+
+export { default as Bootcamp}       from './bootcamp/Bootcamp'
+
+export { default as Course }        from './course/Course'
+export { default as CourseLecture } from './course/lecture/CourseLecture'
+export { default as CourseModule }  from './course/module/CourseModule'
+export { default as CourseQuiz }    from './course/quiz/CourseQuiz'
+
+export { default as Default }       from './default/Default'
+
+export { default as Enrollment }    from './enrollment/Enrollment'
+
+export { default as Feedback }      from './feedback/Feedback'
+
+export { default as LearningEvent } from './learning-event/LearningEvent'
+
+export { default as Skill }         from './skill/Skill'
+export { default as SkillCategory } from './skill/category/SkillCategory'
