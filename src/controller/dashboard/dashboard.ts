@@ -1,12 +1,11 @@
-import jwt                                                             from 'jsonwebtoken'
 import type { Request, Response }                                      from 'express'
-import { use, LogRequest }                                             from '@decorator'
+import jwt                                                             from 'jsonwebtoken'
 import GLOBAL                                                          from '@config/global'
-import { cache }                                                       from '@util/cache'
+import { use, LogRequest }                                             from '@decorator'
 import { Bootcamp, Course, Enrollment, Feedback, LearningEvent, User } from '@model'
-import { Code, Key, LOCALE, LEARNING_EVENT }                           from '@constant/enum'
+import { Code, Key, LOCALE, LEARNING_EVENT, LearningEventType }        from '@constant/enum'
 import { RESPONSE }                                                    from '@constant'
-
+import { cache }                                                       from '@util/cache'
 import { buildSkillDistribution }                                      from './util'
 
 class DashboardController {
