@@ -241,9 +241,9 @@ class BootcampController {
           }
         }
 
-        const feedback = { title, body, rating, user: userId }
+        const feedback = { title, body, rating, user: userId as any }
 
-        bootcamp.feedback.push(feedback)
+        bootcamp.feedback.push(feedback as any)
         bootcamp.totalFeedback = bootcamp.feedback.length
         bootcamp.rating        = bootcamp.feedback.reduce((acc: number, rev: any) => acc + rev.rating, 0) / bootcamp.feedback.length
 
@@ -252,7 +252,7 @@ class BootcampController {
         res.status(Code.CREATED).json({
           success: true,
           message: RESPONSE.success[201],
-          data: bootcamp
+          data   : bootcamp
         })
       }
     } catch (error: any) {
