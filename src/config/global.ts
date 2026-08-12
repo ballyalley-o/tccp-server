@@ -1,6 +1,6 @@
-import path from 'path'
-import fs from 'fs'
-import { ObjectId } from 'mongoose'
+import path           from 'path'
+import fs             from 'fs'
+import type { Types } from 'mongoose'
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -27,9 +27,9 @@ const GLOBAL = {
   MAX_AVATAR_UPLOAD  : process.env.MAX_AVATAR_UPLOAD || 500000,
   MAX_FILE_UPLOAD    : process.env.MAX_FILE_UPLOAD || 1000000,
   PHOTO_UPLOAD_PATH  : process.env.PHOTO_UPLOAD_PATH,
-  PHOTO_FILENAME     : (bootcampId: ObjectId, name: string) => `tccp-${bootcampId}${path.parse(name).ext}`,
-  BADGE_FILENAME     : (bootcampId: ObjectId, name: string) => `tccp-b-${bootcampId}${path.parse(name).ext}`,
-  AVATAR_FILENAME    : (userId: ObjectId, name: string) => `tccp-av-${userId}${path.parse(name).ext}`,
+  PHOTO_FILENAME     : (bootcampId: Types.ObjectId, name: string) => `tccp-${bootcampId}${path.parse(name).ext}`,
+  BADGE_FILENAME     : (bootcampId: Types.ObjectId, name: string) => `tccp-b-${bootcampId}${path.parse(name).ext}`,
+  AVATAR_FILENAME    : (userId: Types.ObjectId, name: string) => `tccp-av-${userId}${path.parse(name).ext}`,
 
   // file upload
   PHOTO_UPLOAD_MV    : (photo: any, bootcamp: IBootcamp, cb: any) => {
@@ -59,8 +59,8 @@ const GLOBAL = {
   EXPRESS_MAX_BODY_SIZE: '10mb',
   RATE_LIMIT           : 100,
   LIMITER              : {
-                          windowMs: 10 * 60 * 1000, // ten min,
-                          max: 100
+                          windowMs: 10 * 60 * 1000,   // ten min,
+                          max     : 100
                         },
   // geocoder
   GEOCODER_PROVIDER   : process.env.GEOCODER_PROVIDER,
