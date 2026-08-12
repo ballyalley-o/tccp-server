@@ -1,12 +1,14 @@
 import 'reflect-metadata'
 import type { Request, Response, NextFunction } from 'express'
+import bcrypt                                   from 'bcryptjs'
 import goodlog                                  from 'good-logs'
-import { Key, Code, NumKey }                    from '@constant/enum'
-import { RESPONSE }                             from '@constant'
 import GLOBAL                                   from '@config/global'
-import { ErrorResponse, DataResponse }          from '@util'
 import { User, Role }                           from '@model'
 import { use, LogRequest }                      from '@decorator'
+import { Key, Code, NumKey }                    from '@constant/enum'
+import { RESPONSE }                             from '@constant'
+import { cache }                                from '@util/cache'
+import { ErrorResponse, DataResponse }          from '@util'
 
 /**
  * User Controller
@@ -59,23 +61,24 @@ class UserController {
   @use(LogRequest)
   public static async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      // attach metadata about who created the user
-      req.body.createdBy = (req as any).user?.id
-      req.body.updatedBy = (req as any).user?.id
+      const createdBy = (req as any).user?.id
+      const userData  = { ...req.body, createdBy, updatedBy: createdBy }
 
-      const user = await User.create(req.body)
-      const { email, username, role } = req.body
-      const emailExist = await User.findOne({ email })
-      const usernameExist = await User.findOne({ username })
+      const { email, username, role } = userData
+      const emailExist                = await User.findOne({ email })
 
       if (emailExist) {
-        res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-        return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(email), (res.statusCode = Code.FORBIDDEN)))
+        const message = RESPONSE.error.ALREADY_EXISTS(email)
+        res.status(Code.FORBIDDEN).json({ message })
+        return next(new ErrorResponse(message, (res.statusCode = Code.FORBIDDEN)))
       }
 
+      const usernameExist = await User.findOne({ username })
+
       if (usernameExist) {
-        res.status(Code.FORBIDDEN).json({ message: RESPONSE.error.ALREADY_EXISTS(email) })
-        return next(new ErrorResponse(RESPONSE.error.ALREADY_EXISTS(username), (res.statusCode = Code.FORBIDDEN)))
+        const message = RESPONSE.error.ALREADY_EXISTS(username)
+        res.status(Code.FORBIDDEN).json({ message })
+        return next(new ErrorResponse(message, (res.statusCode = Code.FORBIDDEN)))
       }
 
       if (role) {
@@ -89,15 +92,19 @@ class UserController {
        }
 
        if ((roleName as string) === Key.Admin && !req.body.organization) {
-         res.status(Code.BAD_REQUEST).json({ message: RESPONSE.error.ORG_REQUIRED })
-         return next(new ErrorResponse(RESPONSE.error.ORG_REQUIRED, (res.statusCode = Code.BAD_REQUEST)))
+        const message = RESPONSE.error.ORG_REQUIRED
+        res.status(Code.BAD_REQUEST).json({ message })
+        return next(new ErrorResponse(message, (res.statusCode = Code.BAD_REQUEST)))
        }
       }
+
+      const createdUser                          = await User.create(userData)
+      const { password: _password, ...userResp } = createdUser.toObject()
 
       res.status(Code.CREATED).json({
         success: true,
         message: RESPONSE.success[201],
-        data: user
+        data   : userResp
       })
     } catch (error: any) {
       goodlog.error(error?.message)
@@ -110,7 +117,7 @@ class UserController {
   }
 
   //@desc     Update a user
-  //@route    PUT /:id
+  //@route    PUT /
   //@access   PRIVATE/Admin
   @use(LogRequest)
   public static async updateUser(req: Request, res: Response, next: NextFunction) {
@@ -177,18 +184,94 @@ class UserController {
   @use(LogRequest)
   public static async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
-      await User.findByIdAndDelete(req.params.id)
+      const userId = (req as any).user?.id
+      const user   = await User.findById(userId).select('+password')
+
+      if (!user) {
+        res.status(Code.NOT_FOUND).json({ message: RESPONSE.error.NOT_FOUND })
+        return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userId), (res.statusCode = Code.NOT_FOUND)))
+      }
+
+      if (user.status === 'pending_deletion') {
+        return next(new ErrorResponse(RESPONSE.error.ACCOUNT_SCHEDULED_DELETE, (res.statusCode = Code.BAD_REQUEST)))
+      }
+
+      const passwordValid = await bcrypt.compare(req.body.password, user.password)
+
+      if (!passwordValid) {
+        return next(new ErrorResponse(RESPONSE.error.INVALID_PASSWORD, (res.statusCode = Code.UNAUTHORIZED)))
+      }
+
+      const now        = new Date()
+      const deleteDate = new Date(now)
+      deleteDate.setDate(deleteDate.getDate() + 30)
+
+      user.status             = 'pending_deletion'
+      user.deletedAt          = now
+      user.deleteScheduledAt  = deleteDate
+      user.tokenVersion      += 1
+
+      await user.save()
+
+      await User.findByIdAndDelete(user._id)
+
+      res.clearCookie(Key.Token, {
+        httpOnly: true,
+        secure  : process.env.NODE_ENV === Key.Production
+      })
 
       res.status(Code.OK).json({
         success: true,
         message: RESPONSE.success.DELETED,
-        data: {}
+        data   : {
+          deleteScheduledAt: deleteDate
+        }
       })
     } catch (error: any) {
       res.status(Code.BAD_REQUEST).json({
         success: false,
         message: error?.message || RESPONSE.error.FAILED_DELETE,
         error
+      })
+    }
+  }
+
+  //@desc     Archive my account
+  //@route    DELETE /users/me
+  //@access   PRIVATE
+  public static async archiveMyAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = (req as any).user?.id
+      const user   = await User.findById(userId)
+
+      if (!user) {
+        return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userId), Code.NOT_FOUND))
+      }
+
+      user.status     = 'archived'
+      user.archivedAt = new Date()
+      user.archivedBy = userId
+
+      user.tokenVersion += 1
+
+      await user.save()
+
+      cache.delete(`user:${userId}`)
+      res.clearCookie(Key.Token, {
+        httpOnly: true,
+        secure  : process.env.NODE_ENV === Key.Production,
+      })
+
+      res.status(Code.OK).json({
+        success: true,
+        message: RESPONSE.success.DELETED_ACCOUNT,
+      })
+    } catch (error: any) {
+      goodlog.error(error?.message)
+
+      res.status(Code.BAD_REQUEST).json({
+        success: false,
+        message: error?.message || RESPONSE.error.FAILED_DELETE_ACCOUNT,
       })
     }
   }
