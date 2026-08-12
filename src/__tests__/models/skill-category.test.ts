@@ -1,6 +1,6 @@
 /// <reference types="jest" />
 import { connect, clearDatabase, closeDatabase } from '../setup/mongo-memory'
-import SkillCategory                             from '../../model/SkillCategory'
+import SkillCategory                             from '../../model/skill/category/SkillCategory'
 
 describe('SkillCategory model', () => {
   beforeAll(async () => {

@@ -1,9 +1,9 @@
 /// <reference types="jest" />
 import { connect, clearDatabase, closeDatabase } from '../setup/mongo-memory'
-import CourseLecture                             from '../../model/CourseLecture'
-import CourseModule                              from '../../model/CourseModule'
-import Course                                    from '../../model/Course'
-import Bootcamp                                  from '../../model/Bootcamp'
+import CourseLecture                             from '../../model/course/lecture/CourseLecture'
+import CourseModule                              from '../../model/course/module/CourseModule'
+import Course                                    from '../../model/course/Course'
+import Bootcamp                                  from '../../model/bootcamp/Bootcamp'
 import mongoose                                  from 'mongoose'
 
 describe('CourseLecture model', () => {
