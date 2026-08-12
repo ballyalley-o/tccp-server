@@ -1,11 +1,9 @@
-declare global {
-  namespace Mongoose {
-    interface Schema {
-      Types: {
-        ObjectId: any
-      }
-    }
-  }
-}
+// declare namespace Mongoose {
+//   namespace Schema {
+//     namespace Types {
+//       type ObjectId = any
+//     }
+//   }
+// }
 
-type Model = IBootcamp | IUser | IDefault | ICourse | ICourseExtended | IFeedback | IFeedbackExtended
+// declare type ModelType = IBootcamp | IUser | IDefault | ICourse | ICourseExtended | IFeedback | IFeedbackExtended
