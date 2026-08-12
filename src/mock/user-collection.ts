@@ -10,6 +10,7 @@ const studentCollection = [
     location : 'Chicago, Illinois, US',
     email    : 'tina@test.com',
     bootcamp : ObjectID('5c3b08cf6d663a3c4e8f3568'),
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   },
   {
@@ -19,6 +20,7 @@ const studentCollection = [
     role     : 'student',
     location : 'New York, NY, US',
     email    : 'john@example.com',
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   },
   {
@@ -28,6 +30,7 @@ const studentCollection = [
     role     : 'student',
     location : 'Los Angeles, CA, US',
     email    : 'alice@example.com',
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   },
   {
@@ -38,6 +41,7 @@ const studentCollection = [
     role     : 'trainer',
     location : 'Houston, TX, US',
     email    : 'bob@example.com',
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   },
   {
@@ -48,6 +52,7 @@ const studentCollection = [
     role     : 'trainer',
     location : 'Miami, FL, US',
     email    : 'emily@example.com',
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   },
   {
@@ -58,6 +63,7 @@ const studentCollection = [
     role     : 'student',
     location : 'San Francisco, CA, US',
     email    : 'david@example.com',
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   },
   {
@@ -68,6 +74,7 @@ const studentCollection = [
     role     : 'student',
     location : 'Dallas, TX, US',
     email    : 'linda@example.com',
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   },
   {
@@ -87,17 +94,19 @@ const studentCollection = [
     role     : 'trainer',
     location : 'Denver, CO, US',
     email    : 'sophia@example.com',
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   },
-    {
-      firstname: 'Daniel',
-      lastname : 'Wilson',
-      username : '@danielwilson',
-      role     : 'student',
-      location : 'Boston, MA, US',
-      email    : 'daniel@example.com',
-      password : bcrypt.hashSync('123456', 10),
-    },
+  {
+    firstname: 'Daniel',
+    lastname : 'Wilson',
+    username : '@danielwilson',
+    role     : 'student',
+    location : 'Boston, MA, US',
+    email    : 'daniel@example.com',
+    status   : 'active',
+    password : bcrypt.hashSync('123456', 10),
+  },
       // {
       //   firstname: 'test',
       //   lastname : 'TRUE',
@@ -116,6 +125,7 @@ const studentCollection = [
     role     : 'admin',
     avatar   : 'no-photo.jpg',
     location : 'Auckland, NZ',
+    status   : 'active',
     password : bcrypt.hashSync('123456', 10)
   }
 ]
