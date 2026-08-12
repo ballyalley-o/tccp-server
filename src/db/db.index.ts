@@ -27,6 +27,44 @@ const DATABASE_INDEX = {
     tuition : 1,
     bootcamp: 1,
     user    : 1
+  }),
+  COURSE_LECTURE: createIndex({
+    course: 1,
+    module: 1,
+    order : 1
+  }),
+  COURSE_MODULE: createIndex({
+    course: 1,
+    order : 1
+  }),
+  COURSE_QUIZ: createIndex({
+    course: 1,
+    module: 1,
+    order : 1
+  }),
+  ENROLLMENT: {
+    user       : createIndex({ user: 1, updatedAt: -1 }),
+    user_course: createIndex({ user: 1, course: 1 }),
+  },
+  LEARNING_EVENT: {
+    user: createIndex({
+        user      : 1,
+        occurredAt: -1
+    }),
+    course: createIndex({
+        course    : 1,
+        occurredAt: -1
+    })
+  },
+  ROLE: createIndex({
+    name: 1
+  }),
+  SKILL: createIndex({
+    category: 1,
+    order   : 1
+  }),
+  SKILL_CATEGORY: createIndex({
+    order: 1
   })
 }
 
