@@ -1,28 +1,9 @@
-import { Schema, model } from 'mongoose'
-import { Key, SCHEMA }   from '@constant/enum'
-import DefaultSchema     from './Default'
+import { Schema, model }  from 'mongoose'
+import { DATABASE_INDEX } from '@db'
+import DefaultSchema      from '@model/default/Default'
+import { Key, SCHEMA }    from '@constant/enum'
 
 const TAG = Key.CourseQuiz
-
-export interface ICourseQuizQuestion {
-  prompt  : string
-  type   ?: string
-  options?: string[]
-  answer ?: any
-  points ?: number
-}
-
-export interface ICourseQuiz {
-  _id         ?: Schema.Types.ObjectId
-  course       : Schema.Types.ObjectId
-  module       : Schema.Types.ObjectId
-  title        : string
-  labelKey     : string
-  description ?: string
-  questions    : ICourseQuizQuestion[]
-  passingScore : number
-  order        : number
-}
 
 const QuizQuestionSchema = new Schema<ICourseQuizQuestion>(
   {
@@ -100,7 +81,7 @@ const CourseQuizSchema = new Schema<ICourseQuiz>(
   }
 )
 
-CourseQuizSchema.index({ course: 1, module: 1, order: 1 })
+CourseQuizSchema.index(DATABASE_INDEX.COURSE_QUIZ)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

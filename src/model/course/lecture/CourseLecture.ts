@@ -1,21 +1,9 @@
-import { Schema, model } from 'mongoose'
-import { Key, SCHEMA }   from '@constant/enum'
-import DefaultSchema     from './Default'
+import { Schema, model }  from 'mongoose'
+import { DATABASE_INDEX } from '@db'
+import { Key, SCHEMA }    from '@constant/enum'
+import DefaultSchema      from '../../default/Default'
 
 const TAG = Key.CourseLecture
-
-export interface ICourseLecture {
-  _id            ?: Schema.Types.ObjectId
-  course          : Schema.Types.ObjectId
-  module          : Schema.Types.ObjectId
-  title           : string
-  labelKey        : string
-  description    ?: string
-  content        ?: string
-  resources      ?: string[]
-  durationMinutes : number
-  order           : number
-}
 
 const CourseLectureSchema = new Schema<ICourseLecture>(
   {
@@ -70,7 +58,7 @@ const CourseLectureSchema = new Schema<ICourseLecture>(
   }
 )
 
-CourseLectureSchema.index({ course: 1, module: 1, order: 1 })
+CourseLectureSchema.index(DATABASE_INDEX.COURSE_LECTURE)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

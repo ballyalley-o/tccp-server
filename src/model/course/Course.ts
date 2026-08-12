@@ -1,30 +1,11 @@
-import mongoose, { Schema, model }                      from 'mongoose'
+import { Types, Schema, model, type Model }                    from 'mongoose'
 import goodlog                                          from 'good-logs'
 import slugify                                          from 'slugify'
 import { DATABASE_INDEX }                               from '@db'
 import { SCHEMA, LOCALE, MinimumSkill, Key, Aggregate } from '@constant/enum'
-import DefaultSchema                                    from './Default'
+import DefaultSchema                                    from '../default/Default'
 
 const TAG = Key.Course
-
-export interface ICourse extends Document {
-  title               : string
-  description         : string
-  duration            : string
-  tuition             : number
-  minimumSkill        : string
-  scholarshipAvailable: boolean
-  slug                : string
-  skills              : Schema.Types.ObjectId[]
-  modules             : Schema.Types.ObjectId[]
-  bootcamp            : Schema.Types.ObjectId
-  user                : Schema.Types.ObjectId
-  trainer             : Schema.Types.ObjectId
-}
-
-interface ICourseExtended extends ICourse {
-  getAverageCost(bootcampId: Schema.Types.ObjectId): Promise<void>
-}
 
 const CourseSchema = new Schema<ICourseExtended>(
   {
@@ -101,9 +82,9 @@ const CourseSchema = new Schema<ICourseExtended>(
   }
 )
 
-CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.ObjectId): Promise<void> {
-  const bootcampObjectId = mongoose.Types.ObjectId.isValid(String(bootcampId))
-    ? new mongoose.Types.ObjectId(String(bootcampId))
+CourseSchema.statics.getAverageCost = async function (bootcampId: Types.ObjectId): Promise<void> {
+  const bootcampObjectId = Types.ObjectId.isValid(String(bootcampId))
+    ? new Types.ObjectId(String(bootcampId))
     : bootcampId
 
   const obj = await this.aggregate([
@@ -118,7 +99,7 @@ CourseSchema.statics.getAverageCost = async function (bootcampId: Schema.Types.O
     }
   ])
   try {
-    await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
+    await model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
       averageCost: obj[0]?.averageCost ? Math.ceil(obj[0].averageCost / 10) * 10 : 0
     })
   } catch (error) {
@@ -136,7 +117,7 @@ CourseSchema.pre('validate', async function (next) {
   const baseSlug = slugify(this.title, { lower: true, strict: true })
   let   slug     = baseSlug
 
-  const existingSlugs = await (this.constructor as mongoose.Model<ICourseExtended>).distinct('slug', {
+  const existingSlugs = await (this.constructor as Model<ICourseExtended>).distinct('slug', {
     slug: new RegExp(`^${baseSlug}(-[0-9]+)?$`, 'i'),
     _id : { $ne: this._id }
   })

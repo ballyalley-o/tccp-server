@@ -1,41 +1,16 @@
-import bcrypt                                                            from 'bcryptjs'
-import crypto                                                            from 'crypto'
-import jwt                                                               from 'jsonwebtoken'
-import { Schema, model }                                                 from 'mongoose'
-import GLOBAL                                                            from '@config/global'
-import { DATABASE_INDEX }                                                from '@db'
-import { REGEX }                                                         from '@constant/regex'
-import { Key }                                                           from '@constant/enum'
-import { oneDayFromNow }                                                 from '@constant/max-age'
-import { SCHEMA, USER_STATUS, DEFAULT_USER_STATUS, type UserStatusType } from '@constant/enum'
-import DefaultSchema, { IDefault }                                       from './Default'
+import bcrypt                                       from 'bcryptjs'
+import crypto                                       from 'crypto'
+import jwt                                          from 'jsonwebtoken'
+import { Schema, model }                            from 'mongoose'
+import GLOBAL                                       from '@config/global'
+import { DATABASE_INDEX }                           from '@db'
+import { REGEX }                                    from '@constant/regex'
+import { Key }                                      from '@constant/enum'
+import { oneDayFromNow }                            from '@constant/max-age'
+import { SCHEMA, USER_STATUS, DEFAULT_USER_STATUS } from '@constant/enum'
+import DefaultSchema                                from '@model/default/Default'
 
 const TAG = Key.User
-
-export interface IUser extends IDefault {
-  _id                                   ?: Schema.Types.ObjectId
-  firstname                              : string
-  lastname                               : string
-  email                                  : string
-  role                                   : Schema.Types.ObjectId
-  password                               : string
-  location                               : string
-  username                               : string
-  avatar                                 : string
-  cohort                                 : Schema.Types.ObjectId
-  progress                               : Schema.Types.ObjectId
-  organization                          ?: string
-  status                                 : UserStatusType
-  deletedAt                              : Date
-  deletedBy                              : Schema.Types.ObjectId
-  deleteScheduledAt                      : Date
-  resetPasswordToken                     : string
-  resetPasswordExpire                    : Date
-  tokenVersion                           : number
-  getSignedJwtToken()                    : string
-  getResetPasswordToken()                : string
-  matchPassword(enteredPassword: string) : Promise<boolean>
-}
 
 const UserSchema = new Schema<IUser>(
   {

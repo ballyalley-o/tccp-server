@@ -1,19 +1,11 @@
-import { Schema, model } from 'mongoose'
-import { Key, SCHEMA }   from '@constant/enum'
-import DefaultSchema     from './Default'
+import { Schema, model }  from 'mongoose'
+import { DATABASE_INDEX } from '@db'
+import DefaultSchema      from '@model/default/Default'
+import { Key, SCHEMA }    from '@constant/enum'
 
-const TAG = Key.Skill
+const TAG = Key.SkillCategory
 
-export interface ISkill {
-  _id        ?: Schema.Types.ObjectId
-  name        : string
-  labelKey    : string
-  description?: string
-  category    : Schema.Types.ObjectId
-  slug        : string
-  order       : number
-}
-const SkillSchema = new Schema<ISkill>(
+const SkillCategorySchema = new Schema<ISkillCategory>(
   {
     name: {
       type    : String,
@@ -32,12 +24,6 @@ const SkillSchema = new Schema<ISkill>(
       trim   : true,
       default: ''
     },
-    category: {
-      type    : Schema.Types.ObjectId,
-      ref     : Key.SkillCategory,
-      required: true,
-      index   : true
-    },
     slug: {
       type    : String,
       required: true,
@@ -55,16 +41,16 @@ const SkillSchema = new Schema<ISkill>(
   }
 )
 
-SkillSchema.pre(Key.Save, function (next) {
+SkillCategorySchema.pre(Key.Save, function (next) {
   this.slug = String(this.name).toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-_]/g, '')
   next()
 })
 
-SkillSchema.index({ category: 1, order: 1 })
+SkillCategorySchema.index(DATABASE_INDEX.SKILL_CATEGORY)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-SkillSchema.add(DefaultSchema.obj)
+SkillCategorySchema.add(DefaultSchema.obj)
 
-const Skill = model(TAG, SkillSchema)
-export default Skill
+const SkillCategory = model(TAG, SkillCategorySchema)
+export default SkillCategory

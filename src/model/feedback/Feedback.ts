@@ -1,22 +1,10 @@
-import goodlog                     from 'good-logs'
-import mongoose, { Schema, model } from 'mongoose'
-import { SCHEMA, LOCALE, Key }     from '@constant/enum'
-import { DATABASE_INDEX }          from '@db'
-import DefaultSchema               from './Default'
+import { Schema, model }       from 'mongoose'
+import goodlog                 from 'good-logs'
+import { DATABASE_INDEX }      from '@db'
+import DefaultSchema           from '@model/default/Default'
+import { SCHEMA, LOCALE, Key } from '@constant/enum'
 
 const TAG = Key.Feedback
-
-export interface IFeedback {
-  title   : string
-  body    : string
-  rating  : number
-  bootcamp: Schema.Types.ObjectId
-  user    : Schema.Types.ObjectId
-}
-
-export interface IFeedbackExtended extends IFeedback {
-  getAverageRating: (bootcampId: Schema.Types.ObjectId) => Promise<void>
-}
 
 export const FeedbackSchema = new Schema<IFeedback>(
   {
@@ -73,7 +61,7 @@ FeedbackSchema.statics.getAverageRating = async function (bootcampId) {
     }
   ])
   try {
-    await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
+    await model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
       rating: obj[0].rating
     })
   } catch (error) {

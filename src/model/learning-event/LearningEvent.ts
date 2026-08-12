@@ -1,20 +1,10 @@
-import { Schema, model }                                                             from 'mongoose'
-import { type LearningEventSourceType, type LearningEventType }                                              from '@constant/enum'
+import { type Types, Schema, model }                                                 from 'mongoose'
+import { type LearningEventSourceType, type LearningEventType }                      from '@constant/enum'
+import { DATABASE_INDEX }                                                            from '@db'
 import { Key, DEFAULT_LEARNING_EVENT_SOURCE, LEARNING_EVENT, LEARNING_EVENT_SOURCE } from '@constant/enum'
-import DefaultSchema                                                                 from './Default'
+import DefaultSchema                                                                 from '../default/Default'
 
 const TAG = 'LearningEvent'
-
-export interface ILearningEvent {
-  _id       ?: Schema.Types.ObjectId
-  user       : Schema.Types.ObjectId
-  course    ?: Schema.Types.ObjectId
-  bootcamp  ?: Schema.Types.ObjectId
-  eventType  : LearningEventType
-  occurredAt : Date
-  metadata  ?: Record<string, any>
-  source    ?: LearningEventSourceType
-}
 
 const LearningEventSchema = new Schema<ILearningEvent>(
   {
@@ -61,8 +51,8 @@ const LearningEventSchema = new Schema<ILearningEvent>(
   }
 )
 
-LearningEventSchema.index({ user: 1, occurredAt: -1 })
-LearningEventSchema.index({ course: 1, occurredAt: -1 })
+LearningEventSchema.index(DATABASE_INDEX.LEARNING_EVENT.user)
+LearningEventSchema.index(DATABASE_INDEX.LEARNING_EVENT.course)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

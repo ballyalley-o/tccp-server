@@ -1,21 +1,9 @@
 import { Schema, model }                                     from 'mongoose'
-import { type EnrollmentStatusType }                         from '@constant/enum'
+import { DATABASE_INDEX }                                    from '@db'
+import DefaultSchema                                         from '@model/default/Default'
 import { Key, ENROLLMENT_STATUS, DEFAULT_ENROLLMENT_STATUS } from '@constant/enum'
-import DefaultSchema                                         from './Default'
 
 const TAG = 'Enrollment'
-
-export interface IEnrollment {
-  _id           ?: Schema.Types.ObjectId
-  user           : Schema.Types.ObjectId
-  bootcamp       : Schema.Types.ObjectId
-  course         : Schema.Types.ObjectId
-  status         : EnrollmentStatusType
-  progress       : number
-  startDate      : Date
-  completedAt    : Date
-  lastAccessedAt : Date
-}
 
 const EnrollmentSchema = new Schema<IEnrollment>(
   {
@@ -58,8 +46,8 @@ const EnrollmentSchema = new Schema<IEnrollment>(
   { timestamps: true, collection: TAG  }
 )
 
-EnrollmentSchema.index({ user: 1, course: 1 }, { unique: true })
-EnrollmentSchema.index({ user: 1, updatedAt: -1 })
+EnrollmentSchema.index(DATABASE_INDEX.ENROLLMENT.user_course, { unique: true })
+EnrollmentSchema.index(DATABASE_INDEX.ENROLLMENT.user)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

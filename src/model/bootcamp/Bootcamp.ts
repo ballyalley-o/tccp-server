@@ -1,4 +1,4 @@
-import mongoose, { Schema, model }            from 'mongoose'
+import { type Types, Schema, model }          from 'mongoose'
 import geocoder                               from '@config/geocoder'
 import slugify                                from 'slugify'
 import goodlog                                from 'good-logs'
@@ -6,48 +6,9 @@ import { DATABASE_INDEX }                     from '@db'
 import { REGEX }                              from '@constant/regex'
 import RESPONSE                               from '@constant/response'
 import { Key, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
-import DefaultSchema                          from './Default'
+import DefaultSchema                          from '../default/Default'
 
 const TAG = Key.Bootcamp
-
-export interface IBootcamp {
-  _id        : Schema.Types.ObjectId
-  name       : string
-  slug       : string
-  description: string
-  website    : string
-  phone      : string
-  email      : string
-  address    : string
-  location   : {
-    type            : string
-    coordinates     : [number | undefined, number | undefined]
-    formattedAddress: string
-    street          : string
-    city            : string
-    state           : string
-    zipcode         : string
-    country         : string
-  }
-  careers      : [string]
-  duration     : string
-  averageCost  : number
-  photo        : string
-  badge        : string
-  housing      : boolean
-  jobAssistance: boolean
-  jobGuarantee : boolean
-  acceptGi     : boolean
-  rating       : number
-  totalFeedback: number
-  feedback     : [Schema.Types.ObjectId]
-  course       : Schema.Types.ObjectId
-  user         : Schema.Types.ObjectId
-}
-
-declare interface IBootcampExtended extends IBootcamp {
-  getTotalFeedback(bootcampId: Schema.Types.ObjectId): Promise<void>
-}
 
 const BootcampSchema = new Schema<IBootcamp>(
   {
@@ -140,7 +101,7 @@ const BootcampSchema = new Schema<IBootcamp>(
       default: 0
     },
     user: {
-      type    : Schema.Types.ObjectId,
+      type    : Schema.ObjectId,
       ref     : Key.User,
       required: true
     }
@@ -154,7 +115,7 @@ const BootcampSchema = new Schema<IBootcamp>(
   }
 )
 
-BootcampSchema.statics.getTotalFeedback = async function (bootcampId: Schema.Types.ObjectId) {
+BootcampSchema.statics.getTotalFeedback = async function (bootcampId: Types.ObjectId) {
   try {
     const [result] = await this.aggregate([
       {
@@ -168,7 +129,7 @@ BootcampSchema.statics.getTotalFeedback = async function (bootcampId: Schema.Typ
       }
     ])
 
-    await mongoose.model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
+    await model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
       totalFeedback: result?.totalFeedback ?? 0
     })
   } catch (error) {
@@ -212,7 +173,7 @@ BootcampSchema.pre(Key.Save, async function (_next) {
 
 BootcampSchema.pre(new RegExp(Key.Remove), async function (this: IBootcamp, next) {
   goodlog.custom('inverse', RESPONSE.success.COURSES_DELETED(this.name as string))
-  await mongoose.model(Key.Course).deleteMany({ bootcamp: this?._id as Schema.Types.ObjectId })
+  await model(Key.Course).deleteMany({ bootcamp: this?._id as Types.ObjectId })
   next()
 })
 

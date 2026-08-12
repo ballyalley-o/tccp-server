@@ -1,15 +1,9 @@
-import { Schema, model }       from 'mongoose'
-import { PERMISSION, type PermissionType } from '@constant'
-import DefaultSchema           from './Default'
+import { Schema, model }  from 'mongoose'
+import { DATABASE_INDEX } from '@db'
+import { Default }        from '@model'
+import { PERMISSION }     from '@constant'
 
 const TAG = 'Role'
-
-export interface IRole {
-  name    : string
-  label   : string
-  metadata: Record<string, any>
-  actions : PermissionType[]
-}
 
 const RoleSchema: Schema = new Schema<IRole>(
   {
@@ -39,9 +33,11 @@ const RoleSchema: Schema = new Schema<IRole>(
   }
 )
 
+RoleSchema.index(DATABASE_INDEX.ROLE)
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-RoleSchema.add(DefaultSchema.obj)
+RoleSchema.add(Default.obj)
 
 const Role = model(TAG, RoleSchema)
 export default Role
