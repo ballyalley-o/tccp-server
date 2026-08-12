@@ -20,27 +20,25 @@ class AuthController {
    * @param res - Response
    * @returns void
    */
-  private static _sendTokenResponse = (user: any, statusCode: number, res: any) => {
-    const token   = user.getSignedJwtToken()
+  private static _sendTokenResponse = (user: IUser, statusCode: number, res: any) => {
 
-    if (user.isArchived) {
+    if (user.status !== 'active') {
       throw new ErrorResponse(RESPONSE.error.ACCOUNT_DELETED, (res.statusCode = Code.UNAUTHORIZED))
     }
 
+    const token   = user.getSignedJwtToken()
     const options = {
       expires : thirtyDaysFromNow,
       httpOnly: true,
-      secure  : false
+      secure  : process.env.NODE_ENV === Key.Production
     }
 
-    if (process.env.NODE_ENV === Key.Production) {
-      options.secure = true
-    }
-
-    res.status(statusCode).cookie(Key.Token, token, options).json({
-      success: true,
-      token,
-      user
+    res
+      .status(statusCode)
+      .cookie(Key.Token, token, options)
+      .json({
+        success: true,
+        user
     })
   }
 
@@ -163,13 +161,14 @@ class AuthController {
 
     const fieldsToUpdate = {
       firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      role: req.body.role,
-      avatar: req.body.avatar,
-      location: req.body.location
+      lastname : req.body.lastname,
+      username : req.body.username,
+      password : req.body.password,
+      email    : req.body.email,
+      role     : req.body.role,
+      avatar   : req.body.avatar,
+      location : req.body.location,
+      status   : req.body.status
     }
 
     try {
@@ -201,16 +200,17 @@ class AuthController {
     const userId = req.user.id
     const user   = await User.findById(userId).select(Key.Password)
 
+    if (!user) {
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userId), (res.statusCode = Code.NOT_FOUND)))
+    }
+
     if (!(await user?.matchPassword(req.body.currentPassword))) {
       return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
     }
 
     try {
-      if (user) {
-        user.password = req.body.password
-      }
-
-      await user?.save()
+      user.password = req.body.password
+      await user.save()
 
       AuthController._sendTokenResponse(user, Code.OK, res)
     } catch (error: any) {
