@@ -86,6 +86,12 @@ export const MODULE = {
         path    : 'setting',
         action  : ACTION
     },
+    LearningEvent: {
+        name    : 'learning-event',
+        labelKey: 'learning_event',
+        path    : 'learning-event',
+        action  :ACTION
+    },
     Audit: {
         name    : 'audit',
         labelKey: 'audit',
