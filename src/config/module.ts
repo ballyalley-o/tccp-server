@@ -1,6 +1,6 @@
 import { ACTION } from "./permission"
 
-export const MODULE    = {
+export const MODULE  = {
     Auth: {
         name     : 'auth',
         labelKey : 'auth',
@@ -97,3 +97,25 @@ export const MODULE    = {
     }
 
 } as const satisfies Record<string, Module.ConfigType>
+
+
+export const _getKey    = <T extends object, K extends keyof T>(_obj: T, key: K): K => key
+export const MODULE_KEY = {
+    AUTH          : _getKey(MODULE, 'Auth'),
+    ROLE          : _getKey(MODULE.Auth.submodule, 'Role'),
+    USER          : _getKey(MODULE.Auth.submodule, 'User'),
+    BOOTCAMP      : _getKey(MODULE, 'Bootcamp'),
+    COURSE        : _getKey(MODULE, 'Course'),
+    COURSE_LECTURE: _getKey(MODULE.Course.submodule, 'CourseLecture'),
+    COURSE_MODULE : _getKey(MODULE.Course.submodule, 'CourseModule'),
+    COURSE_QUIZ   : _getKey(MODULE.Course.submodule, 'CourseQuiz'),
+    ENROLLMENT    : _getKey(MODULE, 'Enrollment'),
+    FEEDBACK      : _getKey(MODULE, 'Feedback'),
+    SKILL         : _getKey(MODULE, 'Skill'),
+    SKILL_CATEGORY: _getKey(MODULE.Skill.submodule, 'SkillCategory'),
+    DASHBOARD     : _getKey(MODULE, 'Dashboard'),
+    SETTING       : _getKey(MODULE, 'Setting'),
+    LEARNING_EVENT: _getKey(MODULE, 'LearningEvent'),
+    AUDIT         : _getKey(MODULE, 'Audit'),
+    AUDIT_LOG     : _getKey(MODULE.Audit.submodule, 'AuditLog'),
+} as const
