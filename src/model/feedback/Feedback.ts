@@ -1,10 +1,11 @@
-import { Schema, model }       from 'mongoose'
-import goodlog                 from 'good-logs'
-import { DATABASE_INDEX }      from '@db'
-import DefaultSchema           from '@model/default/Default'
-import { SCHEMA, LOCALE, Key } from '@constant/enum'
+import { Schema, model }  from 'mongoose'
+import goodlog            from 'good-logs'
+import { MODULE_KEY }     from '@config/module'
+import { DATABASE_INDEX } from '@db'
+import { SCHEMA, LOCALE } from '@constant/enum'
+import Audit              from '@model/audit/Audit'
 
-const TAG = Key.Feedback
+const TAG = MODULE_KEY.FEEDBACK
 
 export const FeedbackSchema = new Schema<IFeedback>(
   {
@@ -26,12 +27,12 @@ export const FeedbackSchema = new Schema<IFeedback>(
     },
     bootcamp: {
       type    : Schema.Types.ObjectId,
-      ref     : Key.Bootcamp,
+      ref     : MODULE_KEY.BOOTCAMP,
       required: true
     },
     user: {
       type    : Schema.Types.ObjectId,
-      ref     : Key.User,
+      ref     : MODULE_KEY.USER,
       required: true
     }
   },
@@ -61,7 +62,7 @@ FeedbackSchema.statics.getAverageRating = async function (bootcampId) {
     }
   ])
   try {
-    await model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
+    await model(MODULE_KEY.BOOTCAMP).findByIdAndUpdate(bootcampId, {
       rating: obj[0].rating
     })
   } catch (error) {
@@ -71,11 +72,11 @@ FeedbackSchema.statics.getAverageRating = async function (bootcampId) {
   }
 }
 
-FeedbackSchema.post(Key.Save, function () {
+FeedbackSchema.post('save', function () {
   ;(this.constructor as any as IFeedbackExtended).getAverageRating(this.bootcamp)
 })
 
-FeedbackSchema.pre(new RegExp(Key.Remove), function (this: IFeedback, next: any) {
+FeedbackSchema.pre(new RegExp('remove'), function (this: IFeedback, next: any) {
   ;(this.constructor as any as IFeedbackExtended).getAverageRating(this.bootcamp)
   next()
 })
@@ -84,7 +85,7 @@ FeedbackSchema.index(DATABASE_INDEX.FEEDBACK)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-FeedbackSchema.add(DefaultSchema.obj)
+FeedbackSchema.add(Audit.obj)
 
 const Feedback = model(TAG, FeedbackSchema)
 export default Feedback

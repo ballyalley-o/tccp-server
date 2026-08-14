@@ -1,27 +1,28 @@
-import { Schema, model }                                     from 'mongoose'
-import { DATABASE_INDEX }                                    from '@db'
-import DefaultSchema                                         from '@model/default/Default'
-import { Key, ENROLLMENT_STATUS, DEFAULT_ENROLLMENT_STATUS } from '@constant/enum'
+import { Schema, model }                                from 'mongoose'
+import { MODULE_KEY }                                   from '@config/module'
+import { DATABASE_INDEX }                               from '@db'
+import { ENROLLMENT_STATUS, DEFAULT_ENROLLMENT_STATUS } from '@constant/enum'
+import Audit                                            from '@model/audit/Audit'
 
-const TAG = 'Enrollment'
+const TAG =  MODULE_KEY.ENROLLMENT
 
 const EnrollmentSchema = new Schema<IEnrollment>(
   {
     user: {
         type    : Schema.ObjectId,
-        ref     : Key.User,
+        ref     : MODULE_KEY.ENROLLMENT,
         required: true,
         index   : true
     },
     bootcamp: {
         type    : Schema.ObjectId,
-        ref     : Key.Bootcamp,
+        ref     : MODULE_KEY.BOOTCAMP,
         required: true,
         index   : true
     },
     course: {
         type    : Schema.ObjectId,
-        ref     : Key.Course,
+        ref     : MODULE_KEY.COURSE,
         required: true,
         index   : true
     },
@@ -51,6 +52,6 @@ EnrollmentSchema.index(DATABASE_INDEX.ENROLLMENT.user)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-EnrollmentSchema.add(DefaultSchema.obj)
+EnrollmentSchema.add(Audit.obj)
 
 export default model(TAG, EnrollmentSchema)

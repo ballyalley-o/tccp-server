@@ -1,14 +1,16 @@
-import { type Types, Schema, model }          from 'mongoose'
-import geocoder                               from '@config/geocoder'
-import slugify                                from 'slugify'
-import goodlog                                from 'good-logs'
-import { DATABASE_INDEX }                     from '@db'
-import { REGEX }                              from '@constant/regex'
-import RESPONSE                               from '@constant/response'
-import { Key, SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
-import DefaultSchema                          from '../default/Default'
+import { type Types, Schema, model }     from 'mongoose'
+import geocoder                          from '@config/geocoder'
+import slugify                           from 'slugify'
+import goodlog                           from 'good-logs'
+import { MODULE_KEY }                    from '@config/module'
+import { DATABASE_INDEX }                from '@db'
+import { Key }                           from '@constant'
+import { REGEX }                         from '@constant/regex'
+import RESPONSE                          from '@constant/response'
+import { SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
+import Audit                             from '@model/audit/Audit'
 
-const TAG = Key.Bootcamp
+const TAG = MODULE_KEY.BOOTCAMP
 
 const BootcampSchema = new Schema<IBootcamp>(
   {
@@ -102,7 +104,7 @@ const BootcampSchema = new Schema<IBootcamp>(
     },
     user: {
       type    : Schema.ObjectId,
-      ref     : Key.User,
+      ref     : MODULE_KEY.USER,
       required: true
     }
   },
@@ -129,7 +131,7 @@ BootcampSchema.statics.getTotalFeedback = async function (bootcampId: Types.Obje
       }
     ])
 
-    await model(Key.Bootcamp).findByIdAndUpdate(bootcampId, {
+    await model(TAG).findByIdAndUpdate(bootcampId, {
       totalFeedback: result?.totalFeedback ?? 0
     })
   } catch (error) {
@@ -173,19 +175,19 @@ BootcampSchema.pre(Key.Save, async function (_next) {
 
 BootcampSchema.pre(new RegExp(Key.Remove), async function (this: IBootcamp, next) {
   goodlog.custom('inverse', RESPONSE.success.COURSES_DELETED(this.name as string))
-  await model(Key.Course).deleteMany({ bootcamp: this?._id as Types.ObjectId })
+  await model(MODULE_KEY.COURSE).deleteMany({ bootcamp: this?._id as Types.ObjectId })
   next()
 })
 
 BootcampSchema.virtual(Key.CourseVirtual, {
-  ref         : Key.Course,
+  ref         : MODULE_KEY.COURSE,
   localField  : Key.id,
   foreignField: Key.BootcampVirtual,
   justOne     : false
 })
 
 BootcampSchema.virtual(Key.FeedbackVirtual, {
-  ref         : Key.Feedback,
+  ref         : MODULE_KEY.FEEDBACK,
   localField  : Key.id,
   foreignField: Key.BootcampVirtual,
   justOne     : false
@@ -193,10 +195,9 @@ BootcampSchema.virtual(Key.FeedbackVirtual, {
 
 BootcampSchema.index(DATABASE_INDEX.BOOTCAMP)
 
-// attach default metadata fields (createdBy, updatedBy, isActive, isArchived)
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-BootcampSchema.add(DefaultSchema.obj)
+BootcampSchema.add(Audit.obj)
 
 BootcampSchema.virtual(Key.TotalFeedback, {}).get(function (this: IBootcamp) {
   return this.feedback?.length

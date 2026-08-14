@@ -1,9 +1,10 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model }  from 'mongoose'
+import { MODULE_KEY }     from '@config/module'
 import { DATABASE_INDEX } from '@db'
-import DefaultSchema     from '@model/default/Default'
-import { Key, SCHEMA }   from '@constant/enum'
+import { SCHEMA }         from '@constant/enum'
+import Audit              from '@model/audit/Audit'
 
-const TAG = Key.Skill
+const TAG = MODULE_KEY.SKILL
 
 const SkillSchema = new Schema<ISkill>(
   {
@@ -26,7 +27,7 @@ const SkillSchema = new Schema<ISkill>(
     },
     category: {
       type    : Schema.Types.ObjectId,
-      ref     : Key.SkillCategory,
+      ref     : MODULE_KEY.SKILL_CATEGORY,
       required: true,
       index   : true
     },
@@ -47,7 +48,7 @@ const SkillSchema = new Schema<ISkill>(
   }
 )
 
-SkillSchema.pre(Key.Save, function (next) {
+SkillSchema.pre('save', function (next) {
   this.slug = String(this.name).toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-_]/g, '')
   next()
 })
@@ -56,7 +57,7 @@ SkillSchema.index(DATABASE_INDEX.SKILL)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-SkillSchema.add(DefaultSchema.obj)
+SkillSchema.add(Audit.obj)
 
 const Skill = model(TAG, SkillSchema)
 export default Skill

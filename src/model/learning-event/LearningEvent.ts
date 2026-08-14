@@ -1,8 +1,8 @@
-import { type Types, Schema, model }                                                 from 'mongoose'
-import { type LearningEventSourceType, type LearningEventType }                      from '@constant/enum'
-import { DATABASE_INDEX }                                                            from '@db'
-import { Key, DEFAULT_LEARNING_EVENT_SOURCE, LEARNING_EVENT, LEARNING_EVENT_SOURCE } from '@constant/enum'
-import DefaultSchema                                                                 from '../default/Default'
+import { Schema, model }                                                        from 'mongoose'
+import { MODULE_KEY }                                                           from '@config/module'
+import { DATABASE_INDEX }                                                       from '@db'
+import { DEFAULT_LEARNING_EVENT_SOURCE, LEARNING_EVENT, LEARNING_EVENT_SOURCE } from '@constant/enum'
+import Audit                                                                    from '@model/audit/Audit'
 
 const TAG = 'LearningEvent'
 
@@ -10,18 +10,18 @@ const LearningEventSchema = new Schema<ILearningEvent>(
   {
     user: {
       type    : Schema.Types.ObjectId,
-      ref     : Key.User,
+      ref     : MODULE_KEY.USER,
       required: true,
       index   : true
     },
     course: {
       type : Schema.Types.ObjectId,
-      ref  : Key.Course,
+      ref  : MODULE_KEY.COURSE,
       index: true
     },
     bootcamp: {
       type : Schema.Types.ObjectId,
-      ref  : Key.Bootcamp,
+      ref  : MODULE_KEY.BOOTCAMP,
       index: true
     },
     eventType: {
@@ -56,7 +56,7 @@ LearningEventSchema.index(DATABASE_INDEX.LEARNING_EVENT.course)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-LearningEventSchema.add(DefaultSchema.obj)
+LearningEventSchema.add(Audit.obj)
 
 const LearningEvent = model(TAG, LearningEventSchema)
 export default LearningEvent

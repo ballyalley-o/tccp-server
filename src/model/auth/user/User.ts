@@ -3,14 +3,15 @@ import crypto                                       from 'crypto'
 import jwt                                          from 'jsonwebtoken'
 import { Schema, model }                            from 'mongoose'
 import GLOBAL                                       from '@config/global'
+import { MODULE_KEY }                               from '@config/module'
 import { DATABASE_INDEX }                           from '@db'
+import { Key }                                      from '@constant'
 import { REGEX }                                    from '@constant/regex'
-import { Key }                                      from '@constant/enum'
 import { oneDayFromNow }                            from '@constant/max-age'
 import { SCHEMA, USER_STATUS, DEFAULT_USER_STATUS } from '@constant/enum'
-import DefaultSchema                                from '@model/default/Default'
+import Audit                                        from '@model/audit/Audit'
 
-const TAG = Key.User
+const TAG = MODULE_KEY.USER
 
 const UserSchema = new Schema<IUser>(
   {
@@ -79,7 +80,7 @@ const UserSchema = new Schema<IUser>(
     },
     deletedBy: {
       type   : Schema.Types.ObjectId,
-      ref    : Key.User,
+      ref    : TAG,
       default: null
     },
     deleteScheduledAt: {
@@ -135,7 +136,7 @@ UserSchema.index(DATABASE_INDEX.USER)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-UserSchema.add(DefaultSchema.obj)
+UserSchema.add(Audit.obj)
 
 const User = model(TAG, UserSchema)
 export default User

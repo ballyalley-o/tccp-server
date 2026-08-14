@@ -1,9 +1,10 @@
 import { Schema, model }  from 'mongoose'
 import { DATABASE_INDEX } from '@db'
-import { Default }        from '@model'
-import { PERMISSION }     from '@constant'
+import { MODULE_KEY }     from '@config/module'
+import { PERMISSION }     from '@config/permission'
+import Audit              from '@model/audit/Audit'
 
-const TAG = 'Role'
+const TAG = MODULE_KEY.ROLE
 
 const RoleSchema: Schema = new Schema<IRole>(
   {
@@ -37,7 +38,7 @@ RoleSchema.index(DATABASE_INDEX.ROLE)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-RoleSchema.add(Default.obj)
+RoleSchema.add(Audit.obj)
 
 const Role = model(TAG, RoleSchema)
 export default Role

@@ -1,15 +1,16 @@
 import { Schema, model }  from 'mongoose'
+import { MODULE_KEY }     from '@config'
 import { DATABASE_INDEX } from '@db'
-import DefaultSchema      from '@model/default/Default'
-import { Key, SCHEMA }    from '@constant/enum'
+import { SCHEMA }         from '@constant/enum'
+import Audit              from '@model/audit/Audit'
 
-const TAG = Key.CourseModule
+const TAG    = MODULE_KEY.COURSE_MODULE
 
 const CourseModuleSchema = new Schema<ICourseModule>(
   {
     course: {
       type    : Schema.Types.ObjectId,
-      ref     : Key.Course,
+      ref     : MODULE_KEY.COURSE,
       required: true,
       index   : true
     },
@@ -43,7 +44,7 @@ CourseModuleSchema.index(DATABASE_INDEX.COURSE_MODULE)
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-CourseModuleSchema.add(DefaultSchema.obj)
+CourseModuleSchema.add(Audit.obj)
 
 const CourseModule = model(TAG, CourseModuleSchema)
 export default CourseModule
