@@ -68,6 +68,11 @@ export const MODULE    = {
         labelKey: 'dashboard',
         action  : ACTION,
     },
+    Enrollment: {
+        name    : 'enrollment',
+        labelKey: 'enrollment',
+        action  : ACTION
+    },
     Setting: {
         name    : 'setting',
         labelKey: 'setting',
