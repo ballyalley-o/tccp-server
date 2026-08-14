@@ -1,20 +1,20 @@
-import { Schema } from 'mongoose'
-import { Key }    from '@constant'
+import { Schema }     from 'mongoose'
+import { MODULE_KEY } from '@config'
 
-const DefaultSchema: Schema<IDefault> = new Schema<IDefault>({
+const AuditSchema = new Schema<IAudit>({
   createdBy: {
     type   : Schema.Types.ObjectId,
-    ref    : Key.User,
+    ref    : MODULE_KEY.USER,
     default: null
   },
   updatedBy: {
     type   : Schema.Types.ObjectId,
-    ref    : Key.User,
+    ref    : MODULE_KEY.USER,
     default: null
   },
   archivedBy: {
     type   : Schema.Types.ObjectId,
-    ref    : Key.User,
+    ref    : MODULE_KEY.USER,
     default: null
   },
   archivedAt: {
@@ -23,4 +23,4 @@ const DefaultSchema: Schema<IDefault> = new Schema<IDefault>({
   }
 })
 
-export default DefaultSchema
+export default AuditSchema
