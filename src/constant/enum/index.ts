@@ -1,4 +1,4 @@
-export { default as Aggregate }     from './aggregate'
+
 export { default as ARGV }          from './argv'
 export { default as CareerOptions } from './career-options'
 export { default as Code }          from './code'
