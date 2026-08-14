@@ -1,5 +1,7 @@
-export { default as Role }          from './auth/role/Role'
-export { default as User }          from './auth/user/User'
+export { default as Audit } from './audit/Audit'
+
+export { default as Role }  from './auth/role/Role'
+export { default as User }  from './auth/user/User'
 
 export { default as Bootcamp}       from './bootcamp/Bootcamp'
 
@@ -8,7 +10,6 @@ export { default as CourseLecture } from './course/lecture/CourseLecture'
 export { default as CourseModule }  from './course/module/CourseModule'
 export { default as CourseQuiz }    from './course/quiz/CourseQuiz'
 
-export { default as Default }       from './default/Default'
 
 export { default as Enrollment }    from './enrollment/Enrollment'
 
