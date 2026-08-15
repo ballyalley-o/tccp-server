@@ -1,10 +1,9 @@
-import { Router }             from 'express'
-import { CourseController }   from '@controller'
-import { advancedResult }     from '@middleware'
-import { Course }             from '@model'
-import { PathDir }            from '@route/dir'
+import { Router }                   from 'express'
+import { CourseController }         from '@controller'
+import { advancedResult }           from '@middleware'
+import { Course }                   from '@model'
+import { PathDir }                  from '@route/dir'
 import { protect, authorizeAction } from '@route/guard'
-import { Key }                from '@constant/enum'
 
 const router = Router({ mergeParams: true })
 
@@ -12,8 +11,8 @@ router
   .route(PathDir.ROOT)
   .get(
     advancedResult(Course, {
-      path  : Key.BootcampVirtual,
-      select: Key.DefaultSelect
+      path  : 'bootcamp',
+      select: 'name description'
     }),
     CourseController.getCourses
   )
