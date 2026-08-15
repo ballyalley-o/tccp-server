@@ -5,7 +5,7 @@ import goodlog                                  from 'good-logs'
 import GLOBAL                                   from '@config/global'
 import { User, Role }                           from '@model'
 import { use, LogRequest }                      from '@decorator'
-import { Key, Code, NumKey }                    from '@constant/enum'
+import { Code, NumKey }                         from '@constant/enum'
 import { RESPONSE }                             from '@constant'
 import { cache }                                from '@util/cache'
 import { ErrorResponse, DataResponse }          from '@util'
@@ -91,7 +91,7 @@ class UserController {
          // ignore - fall back to provided value
        }
 
-       if ((roleName as string) === Key.Admin && !req.body.organization) {
+       if ((roleName as string) === 'admin' && !req.body.organization) {
         const message = RESPONSE.error.ORG_REQUIRED
         res.status(Code.BAD_REQUEST).json({ message })
         return next(new ErrorResponse(message, (res.statusCode = Code.BAD_REQUEST)))
@@ -158,7 +158,7 @@ class UserController {
           // ignore
         }
 
-        if ((roleName as string) === Key.Admin && !req.body.organization) {
+        if ((roleName as string) === 'admin' && !req.body.organization) {
           res.status(Code.BAD_REQUEST).json({ message: RESPONSE.error.ORG_REQUIRED })
           return next(new ErrorResponse(RESPONSE.error.ORG_REQUIRED, (res.statusCode = Code.BAD_REQUEST)))
         }
@@ -215,9 +215,9 @@ class UserController {
 
       await User.findByIdAndDelete(user._id)
 
-      res.clearCookie(Key.Token, {
+      res.clearCookie('token', {
         httpOnly: true,
-        secure  : process.env.NODE_ENV === Key.Production
+        secure  : process.env.NODE_ENV === 'production'
       })
 
       res.status(Code.OK).json({
@@ -257,9 +257,9 @@ class UserController {
       await user.save()
 
       cache.delete(`user:${userId}`)
-      res.clearCookie(Key.Token, {
+      res.clearCookie('token', {
         httpOnly: true,
-        secure  : process.env.NODE_ENV === Key.Production,
+        secure  : process.env.NODE_ENV === 'production'
       })
 
       res.status(Code.OK).json({
@@ -293,7 +293,7 @@ class UserController {
       return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
-    if (!avatar.mimetype.startsWith(Key.Image)) {
+    if (!avatar.mimetype.startsWith('image')) {
       return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD_AVATAR, (res.statusCode = Code.BAD_REQUEST)))
     }
 
