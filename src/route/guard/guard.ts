@@ -1,13 +1,13 @@
-import GLOBAL                            from '@config/global'
-import type { Response, NextFunction }   from 'express'
-import jwt                               from 'jsonwebtoken'
-import type { MiddlewareFunction }       from '@typings/middleware'
-import { asyncHandler }                  from '@middleware'
-import { User }                          from '@model'
-import { Key, Code }                     from '@constant/enum'
-import { type PermissionType, RESPONSE } from '@constant'
-import { ErrorResponse }                 from '@util'
-import { cache }                         from '@util/cache'
+import type { Response, NextFunction } from 'express'
+import jwt                             from 'jsonwebtoken'
+import GLOBAL                          from '@config/global'
+import type { MiddlewareFunction }     from '@typings/middleware'
+import { asyncHandler }                from '@middleware'
+import { User }                        from '@model'
+import { RESPONSE }                    from '@constant'
+import { Code }                        from '@constant/enum'
+import { ErrorResponse }               from '@util'
+import { cache }                       from '@util/cache'
 
 const getRoleActions = (req: any): string[] => {
   const roleActions = req.user?.roleActions
@@ -36,7 +36,7 @@ export const protect = asyncHandler(async (req: any, res, next) => {
 
   if (req.cookies?.token) {
     token = req.cookies.token
-  } else if (req.headers.authorization && req.headers.authorization.startsWith(Key.Bearer)) {
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
   }
 
@@ -51,7 +51,7 @@ export const protect = asyncHandler(async (req: any, res, next) => {
     let user = cache.get(cacheKey)
 
     if (!user) {
-      user = await User.findById(decoded.id).populate('role').select(Key.PasswordSelect)
+      user = await User.findById(decoded.id).populate('role').select('-password')
 
       if (!user) {
         return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
@@ -104,7 +104,7 @@ export const authorize = (...roles: AppUserRoleType[]): MiddlewareFunction => {
 export const authorizeAction = (action: PermissionType): MiddlewareFunction => {
   return async (req: any, res: Response, next: NextFunction): Promise<void> => {
     if (!hasAction(req, action)) {
-      const role = req.user?.role ?? Key.None
+      const role = req.user?.role ?? 'none'
       return next(new ErrorResponse(RESPONSE.error.ROLE_NOT_ALLOWED(role), (res.statusCode = Code.FORBIDDEN)))
     }
     next()
