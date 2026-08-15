@@ -3,9 +3,9 @@ import geocoder                                 from '@config/geocoder'
 import { Bootcamp }                             from '@model'
 import type { Request, Response, NextFunction } from 'express'
 import { use, LogRequest }                      from '@decorator'
-import { Key, NumKey, Code }                    from '@constant/enum'
 import { hasAction }                            from '@route/guard'
 import { RESPONSE }                             from '@constant'
+import { NumKey, Code }                         from '@constant/enum'
 import { ErrorResponse, DataResponse }          from '@util'
 
 /**
@@ -308,7 +308,7 @@ class BootcampController {
       return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
-    if (!photo.mimetype.startsWith(Key.Image)) {
+    if (!photo.mimetype.startsWith('image')) {
       return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
@@ -360,7 +360,7 @@ class BootcampController {
       return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
-    if (!badge.mimetype.startsWith(Key.Image)) {
+    if (!badge.mimetype.startsWith('image')) {
       return next(new ErrorResponse(RESPONSE.error.FAILED_UPLOAD, (res.statusCode = Code.BAD_REQUEST)))
     }
 
