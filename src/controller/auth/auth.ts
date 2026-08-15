@@ -4,8 +4,8 @@ import goodlog                                                 from 'good-logs'
 import { User }                                                from '@model'
 import { use, LogRequest }                                     from '@decorator'
 import { PathDir }                                             from '@route/dir'
-import { Key, Code }                                           from '@constant/enum'
 import { RESPONSE, thirtyDaysFromNow, fiveSecFromNow, expire } from '@constant'
+import { Code }                                                from '@constant/enum'
 import { ErrorResponse, htmlContent, sendEmail }               from '@util'
 
 /**
@@ -30,12 +30,12 @@ class AuthController {
     const options = {
       expires : thirtyDaysFromNow,
       httpOnly: true,
-      secure  : process.env.NODE_ENV === Key.Production
+      secure  : process.env.NODE_ENV === 'production'
     }
 
     res
       .status(statusCode)
-      .cookie(Key.Token, token, options)
+      .cookie('token', token, options)
       .json({
         success: true,
         user
@@ -87,7 +87,7 @@ class AuthController {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
       }
 
-      const user = await User.findOne({ email, archivedAt: null }).select(Key.Password)
+      const user = await User.findOne({ email, archivedAt: null }).select('+password')
 
       if (!user || !(await user.matchPassword(password))) {
         return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
@@ -107,7 +107,7 @@ class AuthController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async logout(_req: Request, res: Response, _next: NextFunction) {
-    res.cookie(Key.Token, Key.None, {
+    res.cookie('token', 'none', {
       expires: fiveSecFromNow,
       httpOnly: true
     })
@@ -198,7 +198,7 @@ class AuthController {
   @use(LogRequest)
   public static async updatePassword(req: Request, res: Response, next: NextFunction) {
     const userId = req.user.id
-    const user   = await User.findById(userId).select(Key.Password)
+    const user   = await User.findById(userId).select('+password')
 
     if (!user) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(userId), (res.statusCode = Code.NOT_FOUND)))
@@ -280,7 +280,7 @@ class AuthController {
   //@access PUBLIC
   @use(LogRequest)
   public static async resetPassword(req: Request, res: Response, next: NextFunction) {
-    let resetPasswordToken = crypto.createHash(Key.CryptoHash).update(req.params.resetToken).digest(Key.Hex)
+    let resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex')
 
     const user = await User.findOne({
       resetPasswordToken,
