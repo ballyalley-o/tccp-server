@@ -1,7 +1,8 @@
 import App                 from '@config/server'
 import goodlog             from 'good-logs'
 import { SentMessageInfo } from 'nodemailer'
-import { Key }             from '@constant/enum'
+import { RESPONSE }        from '@constant'
+
 import dotenv              from 'dotenv'
 dotenv.config()
 
@@ -10,10 +11,10 @@ const sendEmail = async (options: IEmailOptions) => {
 
   try {
     const info: SentMessageInfo = await App.transporter.sendMail(App.message(options))
-    goodlog.log(Key.MessageSent, info.messageId)
+    goodlog.log(RESPONSE.success.NODEMAILER_MESSAGE, info.messageId)
   } catch (error) {
     if (error instanceof Error) {
-      goodlog.error(Key.MessageError, error.message)
+      goodlog.error(RESPONSE.error.NODEMAILER_MESSAGE, error.message)
     }
   }
 }

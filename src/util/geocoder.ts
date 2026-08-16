@@ -1,14 +1,13 @@
 import { Options } from 'node-geocoder'
-import { Key } from '@constant/enum'
 
 type OptionsExtended = Options & { httpAdapter?: string }
 
 const options = (apiKey: string): OptionsExtended => {
   return {
-    provider: Key.MapQuest,
-    httpAdapter: Key.HTTPAdapter,
-    apiKey: apiKey || '',
-    formatter: null,
+    provider   : 'mapquest',
+    httpAdapter: 'https',
+    apiKey     : apiKey || '',
+    formatter  : null,
   }
 }
 
