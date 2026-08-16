@@ -1,8 +1,7 @@
 import path            from 'path'
-import GLOBAL          from '@config/global'
+import GLOBAL          from '@config/global.config'
 import { __dirname }   from '@config/paths'
 import { RESPONSE }    from '@constant'
-import { Key }         from '@constant/enum'
 import { pathBuilder } from '@util/builder'
 
   /**
@@ -138,7 +137,7 @@ export class PathDir {
   static FORGOT_PASSWORD  = pathBuilder(FORGOT_PASSWORD)
   static RESET_URL        = pathBuilder(RESET_PASSWORD)
   static RESET_PASSWORD   = pathBuilder(RESET_PASSWORD, RESET_TOKEN)
-  static RESET_FULL_EMAIL = (req: any, resetToken: string) => pathBuilder(`${req.protocol}://${req.get(Key.Host)}`, RESET_PASSWORD, resetToken)
+  static RESET_FULL_EMAIL = (req: any, resetToken: string) => pathBuilder(`${req.protocol}://${req.get('host')}`, RESET_PASSWORD, resetToken)
 
     // @production
     // static BUILD_LOC = path.resolve(__dirname, PathParam.DIST)
