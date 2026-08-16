@@ -1,10 +1,10 @@
 import type { Response, NextFunction } from 'express'
 import jwt                             from 'jsonwebtoken'
-import GLOBAL                          from '@config/global'
+import GLOBAL                          from '@config/global.config'
 import type { MiddlewareFunction }     from '@typings/middleware'
 import { asyncHandler }                from '@middleware'
 import { User }                        from '@model'
-import { RESPONSE }                    from '@constant'
+import { AUTH_KEY, RESPONSE }          from '@constant'
 import { Code }                        from '@constant/enum'
 import { ErrorResponse }               from '@util'
 import { cache }                       from '@util/cache'
@@ -36,7 +36,7 @@ export const protect = asyncHandler(async (req: any, res, next) => {
 
   if (req.cookies?.token) {
     token = req.cookies.token
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  } else if (req.headers.authorization && req.headers.authorization.startsWith(AUTH_KEY.BEARER)) {
     token = req.headers.authorization.split(' ')[1]
   }
 
