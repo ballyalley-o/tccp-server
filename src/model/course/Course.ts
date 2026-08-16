@@ -1,7 +1,7 @@
 import { Types, Schema, model, type Model } from 'mongoose'
 import goodlog                              from 'good-logs'
 import slugify                              from 'slugify'
-import { MODULE_KEY }                       from '@config/module'
+import { MODULE_KEY }                       from '@config/module.config'
 import { DATABASE_INDEX }                   from '@db'
 import { SCHEMA, LOCALE, MinimumSkill }     from '@constant/enum'
 import Audit                                from '@model/audit/Audit'

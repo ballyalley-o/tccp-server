@@ -1,6 +1,6 @@
 import { Schema, model }  from 'mongoose'
 import goodlog            from 'good-logs'
-import { MODULE_KEY }     from '@config/module'
+import { MODULE_KEY }     from '@config/module.config'
 import { DATABASE_INDEX } from '@db'
 import { SCHEMA, LOCALE } from '@constant/enum'
 import Audit              from '@model/audit/Audit'
