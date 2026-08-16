@@ -2,7 +2,6 @@ import type { Request, Response, NextFunction } from 'express'
 import { Document, Model as MongooseModel }     from 'mongoose'
 import RESPONSE                                 from '@constant/response'
 import { REMOVE_FIELDS }                        from '@constant/remove-fields'
-import { Key }                                  from '@constant/enum'
 
 interface Model<T extends Document> extends MongooseModel<T> {}
 
@@ -16,7 +15,6 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
   const startIndex = (page - 1) * limit
   const endIndex   = page * limit
 
-  // Batch countDocuments and find query to avoid N+1 pattern
   let countQuery = model.countDocuments(reqQuery)
   let dataQuery  = model.find(reqQuery)
 
@@ -29,7 +27,7 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
     const sortBy    = (req.query.sort as string).split(',').join(' ')
           dataQuery = dataQuery.sort(sortBy)
   } else {
-    dataQuery = dataQuery.sort(Key.Name)
+    dataQuery = dataQuery.sort('name')
   }
 
   dataQuery = dataQuery.skip(startIndex).limit(limit)
@@ -38,10 +36,7 @@ const advancedResult = (model: Model<any>, populate: any) => async (req: Request
     dataQuery = dataQuery.populate(populate)
   }
 
-  // Always use lean() for read-only queries to improve performance
   dataQuery = dataQuery.lean()
-
-  // Execute both queries in parallel to reduce latency
   const [total, results] = await Promise.all([countQuery, dataQuery])
 
   const pagination: IPagination = {}
