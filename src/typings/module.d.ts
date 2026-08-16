@@ -1,4 +1,4 @@
-import { MODULE } from "@config/module"
+import { MODULE } from "@config/module.config"
 
 declare global {
     namespace Module {
