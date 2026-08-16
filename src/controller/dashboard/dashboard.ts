@@ -1,10 +1,10 @@
 import type { Request, Response }                                      from 'express'
 import jwt                                                             from 'jsonwebtoken'
-import GLOBAL                                                          from '@config/global'
+import GLOBAL                                                          from '@config/global.config'
 import { use, LogRequest }                                             from '@decorator'
 import { Bootcamp, Course, Enrollment, Feedback, LearningEvent, User } from '@model'
-import { Code, Key, LOCALE, LEARNING_EVENT, LearningEventType }        from '@constant/enum'
-import { RESPONSE }                                                    from '@constant'
+import { AUTH_KEY, RESPONSE }                                          from '@constant'
+import { Code, LOCALE, LEARNING_EVENT, LearningEventType }             from '@constant/enum'
 import { cache }                                                       from '@util/cache'
 import { buildSkillDistribution }                                      from './util'
 
@@ -13,7 +13,7 @@ class DashboardController {
     const request = req as any
     const token =
       request.cookies?.token ??
-      (typeof request.headers?.authorization === 'string' && request.headers.authorization.startsWith(Key.Bearer)
+      (typeof request.headers?.authorization === 'string' && request.headers.authorization.startsWith(AUTH_KEY.BEARER)
         ? request.headers.authorization.split(' ')[1]
         : undefined)
 
@@ -31,7 +31,7 @@ class DashboardController {
       let user = cache.get(cacheKey)
 
       if (!user) {
-        user = await User.findById(decoded.id).select(Key.PasswordSelect).lean()
+        user = await User.findById(decoded.id).select('-password').lean()
         if (user) {
           cache.set(cacheKey, user, 5 * 60 * 1000)
         }
@@ -363,8 +363,8 @@ class DashboardController {
     try {
       const [userCount, trainerCount, adminCount, bootcampCount, courseCount, feedbackCount] = await Promise.all([
         User.countDocuments(),
-        User.countDocuments({ role: Key.Trainer }),
-        User.countDocuments({ role: Key.Admin }),
+        User.countDocuments({ role: 'trainer' }),
+        User.countDocuments({ role: 'admin' }),
         Bootcamp.countDocuments(),
         Course.countDocuments(),
         Feedback.countDocuments()
