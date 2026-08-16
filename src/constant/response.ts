@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import GLOBAL                     from '@config/global'
+import GLOBAL                     from '@config/global.config'
 
 const RESPONSE = {
   server: (req: Request, res: Response) => {
