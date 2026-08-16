@@ -1,6 +1,6 @@
-import GLOBAL                                         from '@config/global'
+import GLOBAL                                         from '@config/global.config'
 import dotenv                                         from 'dotenv'
-import express   ,                                        { Application } from 'express'
+import express, { Application }                       from 'express'
 import session                                        from 'express-session'
 import nodemailer                                     from 'nodemailer'
 import goodlog                                        from 'good-logs'
@@ -14,14 +14,14 @@ import helmet                                         from 'helmet'
 import hpp                                            from 'hpp'
 import rateLimit                                      from 'express-rate-limit'
 import compression                                    from 'compression'
-import connectDb                                      from '@config/db'
+import connectDb                                      from '@config/db.config'
+import { corsOption, compressionOption, redisOption } from '@config/option'
 import { AppRouter }                                  from '@app-router'
 import { mainRoute }                                  from '@route'
 import { xssHandler, errorHandler, notFound }         from '@middleware'
 import { LogInitRequest, ServerStatus }               from '@decorator'
-import { Key }                                        from '@constant/enum'
 import options                                        from '@util/geocoder'
-import { corsOption, compressionOption, redisOption } from '@config/option'
+import { ERROR }                                      from '@constant'
 
 dotenv.config()
 
@@ -93,7 +93,7 @@ class App {
     this._app.use(compression(compressionOption))
     this._app.use(express.json({ limit: GLOBAL.EXPRESS_MAX_BODY_SIZE }))
     this._app.use(express.urlencoded({ extended: true, limit: GLOBAL.EXPRESS_MAX_BODY_SIZE }))
-    this._app.use(express.static(Key.Public))
+    this._app.use(express.static('public'))
     this._app.use(morgan('combined'))
     this._app.use(cookieParser())
     this._app.use(session(redisOption))
@@ -142,7 +142,7 @@ class App {
   @ServerStatus
   public start(): void {
     let prod: boolean = false
-    if (this._env === Key.Production) {
+    if (this._env === 'production') {
       prod = true
     }
 
@@ -151,7 +151,7 @@ class App {
         goodlog.server(GLOBAL.PORT as number, GLOBAL.API_VERSION, prod, this.isConnected)
       })
     } catch (error: any) {
-      process.on(Key.UnhandledRejection, (err) => {
+      process.on(ERROR.UNHANDLED_REJECTION, (err) => {
         goodlog.server(GLOBAL.PORT as number, GLOBAL.API_VERSION, prod, this.isConnected)
         goodlog.error(error.message)
         this.isConnected = false

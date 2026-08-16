@@ -1,7 +1,7 @@
-import GLOBAL            from '@config/global'
-import type { Redis }    from 'ioredis'
 import session           from 'express-session'
 import * as connectRedis from 'connect-redis'
+import type { Redis }    from 'ioredis'
+import GLOBAL            from '@config/global.config'
 import redis             from '@config/redis.config'
 
 const RedisStore = (connectRedis as any).RedisStore || (connectRedis as any).default || connectRedis
