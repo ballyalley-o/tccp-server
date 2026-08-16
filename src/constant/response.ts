@@ -34,7 +34,8 @@ const RESPONSE = {
     UPDATED             : `Entity updated`,
     DELETED             : `Entity deleted`,
     DELETED_ACCOUNT     : `Your account has been deleted.`,
-    EMAIL_SENT          : 'Email sent'
+    EMAIL_SENT          : 'Email sent',
+    NODEMAILER_MESSAGE  : ' Message sent: %s ',
   },
 
   /**
@@ -84,6 +85,7 @@ const RESPONSE = {
     INVALID_CREDENTIAL        : 'Please provide a valid email and password',
     INVALID_PASSWORD          : 'Invali password',
     INVALID_TOKEN             : 'Invalid token',
+    NODEMAILER_MESSAGE        : ' Error occurred: %s ',
     NOT_STUDENT               : (user: string) => `User ${user} is not a student`,
     NOT_OWNER                 : (user: string, course: string) => `User ${user} is unauthorized to update course ${course}`,
     ROLE_NOT_ALLOWED          : (data: string) => `Current role ${data} is unauthorized to access this route`,
