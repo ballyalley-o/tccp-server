@@ -73,15 +73,32 @@ export const MODULE  = {
         labelKey: 'enrollment',
         action  : ACTION
     },
+    LearningEvent: {
+        name    : 'learning-event',
+        labelKey: 'learning_event',
+        action  :ACTION
+    },
     Setting: {
         name    : 'setting',
         labelKey: 'setting',
         action  : ACTION
     },
-    LearningEvent: {
-        name    : 'learning-event',
-        labelKey: 'learning_event',
-        action  :ACTION
+    System: {
+        name     : 'system',
+        labelKey : 'system',
+        action   : ACTION,
+        submodule: {
+            SystemInfo: {
+                name    : 'info',
+                labelKey: 'system_info',
+                action  : ACTION
+            },
+            SystemHealth: {
+                name    : 'health',
+                labelKey: 'system_health',
+                action  : ACTION
+            }
+        }
     },
     Audit: {
         name    : 'audit',
