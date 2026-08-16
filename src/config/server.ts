@@ -35,9 +35,9 @@ dotenv.config()
  * @returns void
  */
 class App {
-  private _app       : Application
-  private _env       : string = GLOBAL.ENV
-          isConnected: boolean = false
+  private _app: Application
+  private     _env     = GLOBAL.ENV
+  isConnected: boolean = false
 
   public static globalConfig = GLOBAL
   public static transporter  = nodemailer.createTransport(GLOBAL.MAIL)
