@@ -1,14 +1,13 @@
-import path                       from 'path'
-import { fileURLToPath }          from 'url'
-import express, { Router }        from 'express'
-import type { Request, Response } from 'express'
-import GLOBAL                     from '@config/global'
-import { PathDir }                from '@route/dir'
-import { Key }                    from '@constant/enum'
+import path                               from 'path'
+import { fileURLToPath }                  from 'url'
+import express                            from 'express'
+import type { Router, Request, Response } from 'express'
+import GLOBAL                             from '@config/global.config'
+import { PathDir }                        from '@route/dir'
 
-const ENV        = Key.Production
-const __filename = fileURLToPath(import.meta.url)
-const __dirname  = path.dirname(__filename)
+const ENV:AppEnvType = 'production'
+const __filename     = fileURLToPath(import.meta.url)
+const __dirname      = path.dirname(__filename)
 
 class AppRouter {
   private static _router: Router
