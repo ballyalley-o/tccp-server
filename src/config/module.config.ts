@@ -1,4 +1,4 @@
-import { ACTION } from "./permission"
+import { ACTION } from "./permission.config"
 
 export const MODULE  = {
     Auth: {

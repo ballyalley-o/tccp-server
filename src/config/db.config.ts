@@ -1,9 +1,8 @@
 import mongoose from 'mongoose'
-import goodlog from 'good-logs'
-import GLOBAL from '@config/global'
+import goodlog  from 'good-logs'
+import GLOBAL   from '@config/global.config'
 
 mongoose.set('strictQuery', true)
-
 
 const connectDb = async (isConnected: boolean) => {
   try {

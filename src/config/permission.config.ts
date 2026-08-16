@@ -1,4 +1,4 @@
-import { MODULE } from "./module"
+import { MODULE } from "./module.config"
 
 export const ACTION = [
     'create',
