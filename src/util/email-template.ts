@@ -1,9 +1,13 @@
-import GLOBAL            from '@config/global'
+import GLOBAL            from '@config/global.config'
 import writeSync         from 'clipboardy'
 import * as PathParam    from '@route/dir'
 import { HTML, CONTENT } from '@constant'
-import { Key }           from '@constant/enum'
 
+const _TEMPLATE_PARAM = {
+  RESET_LINK   : '{{resetLink}}',
+  USERNAME     : '{{username}}',
+  EMAIL_CONTENT: '{{emailContent}}',
+} as const
 /**
  *  HTML content for password reset
  *
@@ -16,9 +20,9 @@ const htmlContent = (user: IUser, resetToken: string): string | undefined => {
     return
   }
   const resetLink = `${GLOBAL.API_URL}/auth${PathParam.RESET_PASSWORD}/${resetToken}`
-  let   result    = HTML.PASSWORD_RESET.replace(Key.ResetLink, GLOBAL.API_HOST)
-        result    = result.replace(Key.Username, user.firstname)
-        result    = result.replace(Key.EmailContent, CONTENT.RESET_PASSWORD_MSG)
+  let   result    = HTML.PASSWORD_RESET.replace(_TEMPLATE_PARAM.RESET_LINK, GLOBAL.API_HOST)
+        result    = result.replace(_TEMPLATE_PARAM.USERNAME, user.firstname)
+        result    = result.replace(_TEMPLATE_PARAM.EMAIL_CONTENT, CONTENT.RESET_PASSWORD_MSG)
 
   writeSync.writeSync(resetLink)
 
