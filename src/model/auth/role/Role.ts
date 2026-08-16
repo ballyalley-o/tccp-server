@@ -1,7 +1,7 @@
 import { Schema, model }  from 'mongoose'
 import { DATABASE_INDEX } from '@db'
-import { MODULE_KEY }     from '@config/module'
-import { PERMISSION }     from '@config/permission'
+import { MODULE_KEY }     from '@config/module.config'
+import { PERMISSION }     from '@config/permission.config'
 import Audit              from '@model/audit/Audit'
 
 const TAG = MODULE_KEY.ROLE

@@ -1,14 +1,17 @@
 import { type Types, Schema, model }     from 'mongoose'
-import geocoder                          from '@config/geocoder'
+import geocoder                          from '@config/geocoder.config'
 import slugify                           from 'slugify'
 import goodlog                           from 'good-logs'
-import { MODULE_KEY }                    from '@config/module'
+import { MODULE, MODULE_KEY }            from '@config/module.config'
 import { DATABASE_INDEX }                from '@db'
-import { Key }                           from '@constant'
 import { REGEX }                         from '@constant/regex'
 import RESPONSE                          from '@constant/response'
 import { SCHEMA, LOCALE, CareerOptions } from '@constant/enum'
 import Audit                             from '@model/audit/Audit'
+
+const _EXTENDED_BOOTCAMP = {
+  TOTAL_FEEDBACK: 'totalFeedback'
+}
 
 const TAG = MODULE_KEY.BOOTCAMP
 
@@ -141,7 +144,7 @@ BootcampSchema.statics.getTotalFeedback = async function (bootcampId: Types.Obje
   }
 }
 
-BootcampSchema.post(Key.Save, function () {
+BootcampSchema.post('save', function () {
   ;(this.constructor as any as IBootcampExtended).getTotalFeedback(this._id)
 })
 
@@ -151,8 +154,7 @@ BootcampSchema.pre('validate', function (next) {
   next()
 })
 
-BootcampSchema.pre(Key.Save, async function (_next) {
-  // Only geocode when an address is provided to avoid network calls in tests
+BootcampSchema.pre('save', async function (_next) {
   if (!this.address) {
     this.address = ''
     return
@@ -160,7 +162,7 @@ BootcampSchema.pre(Key.Save, async function (_next) {
 
   const loc = await geocoder.geocode(this.address)
   this.location = {
-    type            : Key.GeocoderType,
+    type            : 'Point'                                                                                    ,
     coordinates     : [loc[0].longitude, loc[0].latitude],
     formattedAddress: loc[0].formattedAddress || '',
     street          : loc[0].streetName || '',
@@ -173,23 +175,23 @@ BootcampSchema.pre(Key.Save, async function (_next) {
   this.address = ''
 })
 
-BootcampSchema.pre(new RegExp(Key.Remove), async function (this: IBootcamp, next) {
+BootcampSchema.pre(new RegExp('remove'), async function (this: IBootcamp, next) {
   goodlog.custom('inverse', RESPONSE.success.COURSES_DELETED(this.name as string))
   await model(MODULE_KEY.COURSE).deleteMany({ bootcamp: this?._id as Types.ObjectId })
   next()
 })
 
-BootcampSchema.virtual(Key.CourseVirtual, {
+BootcampSchema.virtual(MODULE.Course.name, {
   ref         : MODULE_KEY.COURSE,
-  localField  : Key.id,
-  foreignField: Key.BootcampVirtual,
+  localField  : '_id',
+  foreignField: MODULE.Bootcamp.name,
   justOne     : false
 })
 
-BootcampSchema.virtual(Key.FeedbackVirtual, {
+BootcampSchema.virtual(MODULE.Feedback.name, {
   ref         : MODULE_KEY.FEEDBACK,
-  localField  : Key.id,
-  foreignField: Key.BootcampVirtual,
+  localField  : '_id',
+  foreignField: MODULE.Bootcamp.name,
   justOne     : false
 })
 
@@ -199,7 +201,7 @@ BootcampSchema.index(DATABASE_INDEX.BOOTCAMP)
 // @ts-ignore
 BootcampSchema.add(Audit.obj)
 
-BootcampSchema.virtual(Key.TotalFeedback, {}).get(function (this: IBootcamp) {
+BootcampSchema.virtual(_EXTENDED_BOOTCAMP.TOTAL_FEEDBACK, {}).get(function (this: IBootcamp) {
   return this.feedback?.length
 })
 

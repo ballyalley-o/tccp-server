@@ -2,10 +2,10 @@ import bcrypt                                       from 'bcryptjs'
 import crypto                                       from 'crypto'
 import jwt                                          from 'jsonwebtoken'
 import { Schema, model }                            from 'mongoose'
-import GLOBAL                                       from '@config/global'
-import { MODULE_KEY }                               from '@config/module'
+import GLOBAL                                       from '@config/global.config'
+import { MODULE_KEY }                               from '@config/module.config'
+import { SECURITY }                                 from '@config/security.config'
 import { DATABASE_INDEX }                           from '@db'
-import { Key }                                      from '@constant'
 import { REGEX }                                    from '@constant/regex'
 import { oneDayFromNow }                            from '@constant/max-age'
 import { SCHEMA, USER_STATUS, DEFAULT_USER_STATUS } from '@constant/enum'
@@ -124,9 +124,9 @@ UserSchema.methods.matchPassword = async function (enteredPassword: string) {
 
 UserSchema.methods.getResetPasswordToken = function () {
   //TODO: refactor this to bcrypt
-  const resetToken = crypto.randomBytes(20).toString(Key.Hex)
+  const resetToken = crypto.randomBytes(20).toString()
 
-  this.resetPasswordToken  = crypto.createHash(Key.CryptoHash).update(resetToken).digest(Key.Hex)
+  this.resetPasswordToken  = crypto.createHash(SECURITY.CRYPTO.HASH_256).update(resetToken).digest(SECURITY.HEX)
   this.resetPasswordExpire = oneDayFromNow
 
   return resetToken

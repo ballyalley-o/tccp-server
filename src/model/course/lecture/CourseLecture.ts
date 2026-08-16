@@ -1,5 +1,5 @@
 import { Schema, model }  from 'mongoose'
-import { MODULE_KEY }     from '@config/module'
+import { MODULE_KEY }     from '@config/module.config'
 import { DATABASE_INDEX } from '@db'
 import { SCHEMA }         from '@constant/enum'
 import Audit              from '@model/audit/Audit'
