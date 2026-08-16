@@ -1,4 +1,4 @@
-import GLOBAL                     from '@config/global'
+import GLOBAL                     from '@config/global.config'
 import type { Request, Response } from 'express'
 import { use, LogRequest }        from '@decorator'
 import { Code }                   from '@constant/enum'
