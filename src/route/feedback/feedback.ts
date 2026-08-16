@@ -1,26 +1,26 @@
-import express                 from 'express'
-import { FeedbackController  } from '@controller'
-import { advancedResult }      from '@middleware'
-import { Feedback }            from '@model'
-import { Key }                 from '@constant/enum'
-import { PathDir }             from '@route/dir'
-import { protect, authorizeAction }  from '@route/guard'
+import express                      from 'express'
+import { MODULE }                   from '@config/module.config'
+import { FeedbackController  }      from '@controller'
+import { advancedResult }           from '@middleware'
+import { Feedback }                 from '@model'
+import { PathDir }                  from '@route/dir'
+import { protect, authorizeAction } from '@route/guard'
 
 const router = express.Router({ mergeParams: true })
 
 /**
- * @path - {baseUrl}/api/v{apiVer}/feedback
+ * @path - {baseUrl}/api/{apiVer}/feedback
  */
 router
   .route(PathDir.ROOT)
   .get(
     advancedResult(Feedback, [
       {
-        path  : Key.BootcampVirtual,
-        select: Key.DefaultSelect
+        path  : MODULE.Bootcamp.name,
+        select: 'name description'
       },
       {
-        path  : Key.UserVirtual,
+        path  : MODULE.Auth.submodule.User.name,
         select: 'firstname email role'
       }
     ]),
