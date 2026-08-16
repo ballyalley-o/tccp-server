@@ -1,12 +1,12 @@
-import type { Request, Response, NextFunction }                from 'express'
-import crypto                                                  from 'crypto'
-import goodlog                                                 from 'good-logs'
-import { User }                                                from '@model'
-import { use, LogRequest }                                     from '@decorator'
-import { PathDir }                                             from '@route/dir'
-import { RESPONSE, thirtyDaysFromNow, fiveSecFromNow, expire } from '@constant'
-import { Code }                                                from '@constant/enum'
-import { ErrorResponse, htmlContent, sendEmail }               from '@util'
+import type { Request, Response, NextFunction }                          from 'express'
+import crypto                                                            from 'crypto'
+import goodlog                                                           from 'good-logs'
+import { User }                                                          from '@model'
+import { use, LogRequest }                                               from '@decorator'
+import { PathDir }                                                       from '@route/dir'
+import { RESPONSE, thirtyDaysFromNow, fiveSecFromNow, expire, AUTH_KEY } from '@constant'
+import { Code }                                                          from '@constant/enum'
+import { ErrorResponse, htmlContent, sendEmail }                         from '@util'
 
 /**
  * @path {baseUrl}/auth
@@ -35,7 +35,7 @@ class AuthController {
 
     res
       .status(statusCode)
-      .cookie('token', token, options)
+      .cookie(AUTH_KEY.TOKEN, token, options)
       .json({
         success: true,
         user
@@ -107,8 +107,8 @@ class AuthController {
   //@access   PRIVATE
   @use(LogRequest)
   public static async logout(_req: Request, res: Response, _next: NextFunction) {
-    res.cookie('token', 'none', {
-      expires: fiveSecFromNow,
+    res.cookie(AUTH_KEY.TOKEN, 'none', {
+      expires : fiveSecFromNow,
       httpOnly: true
     })
 
