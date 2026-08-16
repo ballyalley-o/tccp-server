@@ -1,10 +1,11 @@
 import type { Request, Response, NextFunction } from 'express'
 import { Feedback, Bootcamp }                   from '@model'
-import { ErrorResponse }                        from '@util'
-import { Key, Code }                            from '@constant/enum'
-import { RESPONSE }                             from '@constant'
+import { MODULE }                               from '@config/module.config'
 import { LogRequest, use }                      from '@decorator'
 import { hasAction }                            from '@route/guard'
+import { RESPONSE }                             from '@constant'
+import { Code }                                 from '@constant/enum'
+import { ErrorResponse }                        from '@util'
 
 /**
  * Feedback Controller
@@ -22,11 +23,11 @@ class FeedbackController {
       try {
         const feedbacks = await Feedback.find({ bootcamp: req.params.bootcampId })
           .populate({
-            path  : Key.BootcampVirtual,
-            select: Key.DefaultSelect
+            path  : MODULE.Bootcamp.name,
+            select: 'name description'
           })
           .populate({
-            path  : Key.UserVirtual,
+            path  : MODULE.Auth.submodule.User.name,
             select: 'firstname email role avatar'
           })
           .lean()
@@ -66,8 +67,8 @@ class FeedbackController {
 
     const feedback = await Feedback.findById(feedbackId)
     .populate({
-      path  : Key.BootcampVirtual,
-      select: Key.DefaultSelect
+      path  : MODULE.Bootcamp.name,
+      select: 'name description'
     })
     .lean()
 

@@ -1,5 +1,5 @@
-import GLOBAL                                   from '@config/global'
-import geocoder                                 from '@config/geocoder'
+import GLOBAL                                   from '@config/global.config'
+import geocoder                                 from '@config/geocoder.config'
 import { Bootcamp }                             from '@model'
 import type { Request, Response, NextFunction } from 'express'
 import { use, LogRequest }                      from '@decorator'

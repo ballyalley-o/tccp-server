@@ -1,11 +1,12 @@
 import goodlog                                  from 'good-logs'
 import type { Request, Response, NextFunction } from 'express'
 import { use, LogRequest }                      from '@decorator'
+import { MODULE }                               from '@config/module.config'
 import { Enrollment, Bootcamp, Course }         from '@model'
-import { Key, Code }                            from '@constant/enum'
-import { RESPONSE }                             from '@constant'
-import { ErrorResponse }                        from '@util'
 import { hasAction }                            from '@route/guard'
+import { RESPONSE }                             from '@constant'
+import { Code }                                 from '@constant/enum'
+import { ErrorResponse }                        from '@util'
 
 /**
  * Enrollment Controller
@@ -39,7 +40,7 @@ class EnrollmentController {
 
     const enrollment = await Enrollment.findById(enrollmentId)
       .populate({
-        path  : Key.BootcampVirtual,
+        path  : MODULE.Bootcamp.name,
         select: 'bootcamp course status progress'
       })
       .lean()
@@ -63,7 +64,7 @@ class EnrollmentController {
     const courseId = req.params.courseId
     const course   = await Course.findById(courseId)
       .populate({
-        path  : Key.BootcampVirtual,
+        path  : MODULE.Bootcamp.name,
         select: 'bootcamp course status progress'
       })
       .lean()
