@@ -2,11 +2,11 @@ import 'reflect-metadata'
 import type { Request, Response, NextFunction } from 'express'
 import bcrypt                                   from 'bcryptjs'
 import goodlog                                  from 'good-logs'
-import GLOBAL                                   from '@config/global'
+import GLOBAL                                   from '@config/global.config'
 import { User, Role }                           from '@model'
 import { use, LogRequest }                      from '@decorator'
+import { AUTH_KEY, RESPONSE }                   from '@constant'
 import { Code, NumKey }                         from '@constant/enum'
-import { RESPONSE }                             from '@constant'
 import { cache }                                from '@util/cache'
 import { ErrorResponse, DataResponse }          from '@util'
 
@@ -215,7 +215,7 @@ class UserController {
 
       await User.findByIdAndDelete(user._id)
 
-      res.clearCookie('token', {
+      res.clearCookie(AUTH_KEY.TOKEN, {
         httpOnly: true,
         secure  : process.env.NODE_ENV === 'production'
       })
@@ -257,7 +257,7 @@ class UserController {
       await user.save()
 
       cache.delete(`user:${userId}`)
-      res.clearCookie('token', {
+      res.clearCookie(AUTH_KEY.TOKEN, {
         httpOnly: true,
         secure  : process.env.NODE_ENV === 'production'
       })
