@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
-import { RESPONSE }                             from '@constant'
-import GLOBAL                                   from '@config/global'
-import { Key }                                  from '@constant/enum'
+import GLOBAL                                   from '@config/global.config'
+import { ERROR, RESPONSE }                      from '@constant'
 
 class ErrorCallback extends Error {
   kind  : string
@@ -18,12 +17,12 @@ class ErrorCallback extends Error {
 }
 
 const errorHandler = (err: ErrorCallback, req: Request, res: Response, next: NextFunction) => {
-  let statusCode = res.statusCode === 0 ? 500 : res.statusCode
-  let message    = err.message
-  let errors     = err.errors
-  let ENV        = Key.Production
+  let statusCode     = res.statusCode === 0 ? 500 : res.statusCode
+  let message        = err.message
+  let errors         = err.errors
+  let ENV:AppEnvType = 'production'
 
-  if (err.name === Key.CastError && err.kind === Key.ObjectId) {
+  if (err.name === ERROR.CAST_ERROR && err.kind === ERROR.OBJECT_ID) {
     statusCode = 404
     message    = RESPONSE.error[404]
   }

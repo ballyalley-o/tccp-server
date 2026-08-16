@@ -1,12 +1,12 @@
-import GLOBAL                                   from '@config/global'
+import GLOBAL                                   from '@config/global.config'
 import type { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary }                     from 'express-serve-static-core'
 import { ParsedQs }                             from 'qs'
 import jwt                                      from 'jsonwebtoken'
 import { asyncHandler }                         from '@middleware'
 import { User }                                 from '@model'
-import { Key, Code }                            from '@constant/enum'
-import { RESPONSE }                             from '@constant'
+import { AUTH_KEY, RESPONSE }                   from '@constant'
+import { Code }                                 from '@constant/enum'
 import { ErrorResponse }                        from '@util'
 import { cache }                                from '@util/cache'
 
@@ -18,7 +18,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
 
   if (req.cookies.token) {
     token = req.cookies.token
-  } else if (req.headers.authorization && req.headers.authorization.startsWith(Key.Bearer)) {
+  } else if (req.headers.authorization && req.headers.authorization.startsWith(AUTH_KEY.BEARER)) {
     token = req.headers.authorization.split(' ')[1]
   }
 
@@ -33,7 +33,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
     let user = cache.get(cacheKey)
 
     if (!user) {
-      user = await User.findById(decoded.id).populate('role').select(Key.PasswordSelect)
+      user = await User.findById(decoded.id).populate('role').select('-password')
 
       if (user && user.role && typeof user.role === 'object') {
         ;(user as any)._role = user.role

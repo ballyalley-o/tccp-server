@@ -2,7 +2,7 @@ import type { Response, NextFunction } from 'express'
 import { asyncHandler }                from '@middleware'
 import { Enrollment, Course }          from '@model'
 import { RESPONSE }                    from '@constant'
-import { Code, Key }                   from '@constant/enum'
+import { Code }                        from '@constant/enum'
 import { ErrorResponse }               from '@util'
 
 /**
@@ -30,7 +30,7 @@ const isInstructor = asyncHandler(
 
     const userRoleName = typeof req.user.role === 'string' ? req.user.role : req.user.role?.name
 
-    if (course.trainer?.toString() !== req.user._id.toString() && userRoleName !== Key.Admin) {
+    if (course.trainer?.toString() !== req.user._id.toString() && userRoleName !== 'admin') {
       return next(new ErrorResponse(RESPONSE.error[403], (res.statusCode = Code.FORBIDDEN)))
     }
 
@@ -83,11 +83,11 @@ const contentAccess = asyncHandler(
     }
 
     const userRoleName = typeof req.user.role === 'string' ? req.user.role : req.user.role?.name
-    if (userRoleName === Key.Admin) {
+    if (userRoleName === 'admin') {
       return next()
     }
 
-    if (userRoleName === Key.Trainer) {
+    if (userRoleName === 'trainer') {
 
       const course     = await Course.findById(courseId)
 
