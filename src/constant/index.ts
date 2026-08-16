@@ -1,4 +1,6 @@
+export *                       from './auth'
 export { default as CONTENT }  from './content'
+export *                       from './error'
 export { default as HTML }     from './html'
 export { default as Key }      from './key'
 export { REGEX }               from './regex'
