@@ -13,10 +13,10 @@ const mainRoute = (app: Application) => {
   linkBootcampRoute(app)
   linkFeedbackRoute(app)
   linkCourseRoute(app)
-  linkAdminRoute(app)
   linkEnrollmentRoute(app)
   linkDashboardRoute(app)
   linkSkillRoute(app)
+  linkAdminRoute(app)
 }
 
 /**
