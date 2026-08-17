@@ -1,5 +1,5 @@
 import { Schema }     from 'mongoose'
-import { MODULE_KEY } from '@config'
+import { MODULE_KEY } from '@config/module.config'
 
 const AuditSchema = new Schema<IAudit>({
   createdBy: {
