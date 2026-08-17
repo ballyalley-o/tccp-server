@@ -16,6 +16,26 @@ export const MODULE  = {
                 labelKey: 'role',
                 action  : ACTION,
             },
+            Account: {
+                name    : 'account',
+                labelKey: 'account',
+                action  : ACTION
+            },
+            Register: {
+                name    : 'register',
+                labelKey: 'register',
+                action  : ACTION
+            },
+            LogIn: {
+                name    : 'log-in',
+                labelKey: 'log_in',
+                action  : ACTION
+            },
+            LogOut: {
+                name    : 'log-out',
+                labelKey: 'log_out',
+                action  : ACTION
+            }
         }
     },
     Bootcamp: {
