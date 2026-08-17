@@ -55,8 +55,8 @@ export const RESET_PASSWORD  = 'reset-password'
 export const ADMIN = 'admin'
 export const API   = 'api'
 
-export const BOOTCAMP_ID   = ':bootcampId'
-export const BOOTCAMP_SLUG = ':bootcampSlug'
+export const BOOTCAMP_ID   = `:${BOOTCAMP}Id`
+export const BOOTCAMP_SLUG = `:${BOOTCAMP}Slug`
 export const DISTANCE      = ':distance'
 export const ID            = ':id'
 export const RESET_TOKEN   = ':resetToken'
