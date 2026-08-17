@@ -6,14 +6,14 @@ import { linkDashboardRoute }  from './dashboard'
 import { linkEnrollmentRoute } from './enrollment'
 import { linkFeedbackRoute }   from './feedback'
 import { linkSkillRoute }      from './skill'
-import { linkSystemRoute }     from './admin/system'
+import { linkAdminRoute }      from './admin'
 
 const mainRoute = (app: Application) => {
   linkAuthRoute(app)
   linkBootcampRoute(app)
   linkFeedbackRoute(app)
   linkCourseRoute(app)
-  linkSystemRoute(app)
+  linkAdminRoute(app)
   linkEnrollmentRoute(app)
   linkDashboardRoute(app)
   linkSkillRoute(app)

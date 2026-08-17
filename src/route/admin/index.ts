@@ -7,6 +7,6 @@ const linkAdminRoute = (app: Application) => {
 }
 
 /**
- * @path - {baseUrl}/api/{apiVer}/admin/system
+ * @path - {baseUrl}/api/{apiVer}/admin
  */
 export { linkAdminRoute }
