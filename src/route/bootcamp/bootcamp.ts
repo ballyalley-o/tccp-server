@@ -1,11 +1,13 @@
-import express                from 'express'
-import { bootcampController } from '@controller'
-import { advancedResult }     from '@middleware'
-import { Bootcamp }           from '@model'
+import express                      from 'express'
+import { MODULE }                   from '@config/module.config'
+import { bootcampController }       from '@controller'
+import { advancedResult }           from '@middleware'
+import { Bootcamp }                 from '@model'
+import { PathDir }                  from '@route/dir'
 import { protect, authorizeAction } from '@route/guard'
-import courseRoute            from '@route/course/course'
-import feedbackRoute          from '@route/feedback/feedback'
-import { PathDir }            from '@route/dir'
+
+import courseRoute                  from '@route/course/course'
+import feedbackRoute                from '@route/feedback/feedback'
 
 const router = express.Router()
 
@@ -21,15 +23,15 @@ router
   .get(
     advancedResult(Bootcamp, [
       {
-        path  : 'user',
+        path  : MODULE.Auth.submodule.User.name,
         select: 'firstname email role'
       },
       {
-        path  : 'course',
+        path  : MODULE.Course.name,
         select: 'title duration tuition'
       },
       {
-        path  : 'feedback',
+        path  : MODULE.Feedback.name,
         select: 'title rating user'
       }
     ]),
