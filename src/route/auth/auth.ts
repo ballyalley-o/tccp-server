@@ -15,6 +15,6 @@ router.post(PathDir.FORGOT_PASSWORD, AuthController.forgotPassword)
 router.put(PathDir.RESET_PASSWORD, AuthController.resetPassword)
 
 /**
- * @path - {baseUrl}/api/{appVer}/auth
+ * @path - {baseUrl}/api/{appVer}/auth/...
  */
 export default router

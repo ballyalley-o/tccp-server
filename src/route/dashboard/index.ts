@@ -6,4 +6,7 @@ const linkDashboardRoute = (app: Application) => {
   app.use(PathDir.DASHBOARD, dashboardRoute)
 }
 
+/**
+ * @path - {baseUrl}/api/{apiVer}/dashboard
+ */
 export { linkDashboardRoute }

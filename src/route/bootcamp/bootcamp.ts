@@ -50,4 +50,8 @@ router
 router.put(PathDir.UPLOAD_PHOTO, protect, authorizeAction('update:bootcamp'), bootcampController.uploadBootcampPhoto)
 router.put(PathDir.UPLOAD_BADGE, protect, authorizeAction('update:bootcamp'), bootcampController.uploadBootcampBadge)
 
+
+/**
+ * @path - {baseUrl}/api/{apiVer}/bootcamp/...
+ */
 export default router

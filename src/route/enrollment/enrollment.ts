@@ -33,6 +33,6 @@ router
   .delete(protect, authorizeAction('delete:enrollment'), EnrollmentController.deleteEnrollment)
 
 /**
- * @path - {baseUrl}/api/{apiVer}/enrollment
+ * @path - {baseUrl}/api/{apiVer}/enrollment/...
  */
 export default router

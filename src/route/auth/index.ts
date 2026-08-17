@@ -10,4 +10,7 @@ const linkAuthRoute = (app: Application) => {
   app.use(PathDir.AUTH, authRoute)
 }
 
+/**
+ * @path - {baseUrl}/api/{apiVer}/auth
+ */
 export { linkAuthRoute }

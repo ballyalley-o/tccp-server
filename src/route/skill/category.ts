@@ -12,6 +12,6 @@ router.put(PathDir.ID, protect, authorizeAction('update:category'), SkillCategor
 router.delete(PathDir.ID, protect, authorizeAction('delete:category'), SkillCategoryController.deleteSkillCategory)
 
 /**
- * @path - {baseUrl}/api/{apiVer}/skill/category
+ * @path - {baseUrl}/api/{apiVer}/skill/category/...
  */
 export default router

@@ -8,9 +8,6 @@ import { protect, authorizeAction } from '@route/guard'
 
 const router = express.Router({ mergeParams: true })
 
-/**
- * @path - {baseUrl}/api/{apiVer}/feedback
- */
 router
   .route(PathDir.ROOT)
   .get(
@@ -34,4 +31,7 @@ router
   .put(protect, authorizeAction('update:feedback'), FeedbackController.updateFeedback)
   .delete(protect, authorizeAction('delete:feedback'), FeedbackController.deleteFeedback)
 
+/**
+ * @path - {baseUrl}/api/{apiVer}/feedback/...
+ */
 export default router

@@ -14,6 +14,6 @@ router.put(PathDir.ID, protect, authorizeAction('update:role'), RoleController.u
 router.delete(PathDir.ID, protect, authorizeAction('delete:role'), RoleController.deleteRole)
 
 /**
- * @path - {baseUrl}/api/{apiVer}/auth/role
+ * @path - {baseUrl}/api/{apiVer}/auth/role/...
  */
 export default router

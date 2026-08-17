@@ -6,4 +6,7 @@ const linkSystemRoute = (app: Application) => {
   app.use(PathDir.SYSTEM, systemRoute)
 }
 
+/**
+ * @path - {baseUrl}/api/{apiVer}/system
+ */
 export { linkSystemRoute }

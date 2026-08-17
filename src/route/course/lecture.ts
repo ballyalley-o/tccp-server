@@ -12,6 +12,6 @@ router.put(PathDir.ID, protect, authorizeAction('update:course-lecture'), Course
 router.delete(ID, protect, authorizeAction('delete:course-lecture'), CourseLectureController.deleteCourseLecture)
 
 /**
- * @path - {baseUrl}/api/{apiVer}/course/lecture
+ * @path - {baseUrl}/api/{apiVer}/course/lecture/...
  */
 export default router

@@ -6,4 +6,7 @@ const linkEnrollmentRoute = (app: Application) => {
   app.use(PathDir.ENROLLMENT, enrollmentRoute)
 }
 
+/**
+ * @path - {baseUrl}/api/{apiVer}/enrollment
+ */
 export { linkEnrollmentRoute }

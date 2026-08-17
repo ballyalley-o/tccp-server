@@ -19,4 +19,7 @@ const mainRoute = (app: Application) => {
   linkSkillRoute(app)
 }
 
+/**
+ * @path - {baseUrl}/api/{apiVer}/...
+ */
 export { mainRoute }

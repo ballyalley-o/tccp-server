@@ -20,6 +20,6 @@ router.put(PathDir.ID, protect, authorizeAction('update:skill'), SkillController
 router.delete(PathDir.ID, protect, authorizeAction('delete:skill'), SkillController.deleteSkill)
 
 /**
- * @path - {baseUrl}/api/{apiVer}/skill
+ * @path - {baseUrl}/api/{apiVer}/skill/...
  */
 export default router

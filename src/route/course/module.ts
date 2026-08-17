@@ -11,4 +11,8 @@ router.post(PathDir.ROOT, protect, authorizeAction('create:course-module'), Cour
 router.put(PathDir.ID, protect, authorizeAction('update:course-module'), CourseModuleController.updateCourseModule)
 router.delete(PathDir.ID, protect, authorizeAction('delete:course-module'), CourseModuleController.deleteCourseModule)
 
+
+/**
+ * @path - {baseUrl}/api/{apiVer}/course/module/...
+ */
 export default router

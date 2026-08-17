@@ -13,4 +13,7 @@ const linkCourseRoute = (app: Application) => {
   app.use(PathDir.COURSE, courseRoute)
 }
 
+/**
+ * @path - {baseUrl}/api/{apiVer}/course
+ */
 export { linkCourseRoute }
