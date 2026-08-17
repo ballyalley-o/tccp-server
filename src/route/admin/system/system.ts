@@ -1,6 +1,6 @@
-import { Router } from 'express'
-import { SystemController } from '@controller/system'
-import { PathDir } from '@route/dir'
+import { Router }                   from 'express'
+import { SystemController }         from '@controller'
+import { PathDir }                  from '@route/dir'
 import { protect, authorizeAction } from '@route/guard';
 
 const router = Router({ mergeParams: true })
