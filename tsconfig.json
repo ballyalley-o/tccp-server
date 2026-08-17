@@ -23,7 +23,7 @@
     "resolveJsonModule"           : true,
     "strict"                      : true,
     "isolatedModules"             : true,
-    "typeRoots"                   : ["node_modules/@types", "types", "typings"]
+    "typeRoots"                   : ["node_modules/@types", "types"]
   },
 
   "tsc-alias": {

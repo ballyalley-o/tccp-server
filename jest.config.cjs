@@ -20,7 +20,7 @@ module.exports = {
     '^@middleware(.*)$': '<rootDir>/src/middleware$1',
     '^@route(.*)$'     : '<rootDir>/src/route$1',
     '^@mock(.*)$'      : '<rootDir>/src/mock$1',
-    '^@typings(.*)$'   : '<rootDir>/src/typings$1',
+    '^@types(.*)$'   : '<rootDir>/src/types$1',
     '^@db(.*)$'        : '<rootDir>/src/db$1',
     '^@app-router(.*)$': '<rootDir>/src/app-router$1'
   }
