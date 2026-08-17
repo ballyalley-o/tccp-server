@@ -18,10 +18,20 @@ declare global {
         : never
     }
 
-
-    type ResourceName<T> = T extends { name: infer N extends string }
-      ? N | (T extends { submodule: infer S } ? (S extends Record<string, unknown> ? ResourceName<S[keyof S]> : never) : never)
-      : never
+type ResourceName<T, Prefix extends string = ''> = T extends { name: infer N extends string }
+    ? N | (Prefix extends '' ? T extends { submodule: infer S }
+            ? S extends Record<string, unknown>
+              ? ResourceName<S[keyof S], N>
+              : never
+            : never
+          : T extends { submodule: infer S }
+            ? S extends Record<string, unknown>
+              ? `${Prefix}-${N}` |
+                ResourceName<S[keyof S], `${Prefix}-${N}`>
+              : `${Prefix}-${N}`
+            : `${Prefix}-${N}`
+    )
+    : never
 
     type ResourceType = ResourceName<typeof MODULE[keyof typeof MODULE]>
 }
