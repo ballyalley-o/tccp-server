@@ -1,6 +1,5 @@
 export { default as connectDb } from './db.config'
 export { default as GLOBAL }    from './global.config'
 export *                        from './module.config'
-export { __dirname }            from './paths'
 export *                        from './permission.config'
 export *                        from './security.config'
