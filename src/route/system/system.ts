@@ -9,6 +9,6 @@ router.get(PathDir.INFO, protect, authorizeAction('manage:any'), SystemControlle
 router.get(PathDir.HEALTH, protect, authorizeAction('manage:any'), SystemController.getHealth)
 
 /**
- * @path - {baseUrl}/api/{API_VERSION}/system
+ * @path - {baseUrl}/api/{apiVer}/system
  */
 export default router
