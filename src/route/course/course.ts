@@ -1,4 +1,5 @@
 import { Router }                   from 'express'
+import { MODULE }                   from '@config/module.config'
 import { CourseController }         from '@controller'
 import { advancedResult }           from '@middleware'
 import { Course }                   from '@model'
@@ -11,7 +12,7 @@ router
   .route(PathDir.ROOT)
   .get(
     advancedResult(Course, {
-      path  : 'bootcamp',
+      path  : MODULE.Bootcamp.name,
       select: 'name description'
     }),
     CourseController.getCourses
@@ -25,6 +26,6 @@ router
   .delete(protect, authorizeAction('delete:course'), CourseController.deleteCourse)
 
 /**
- * @path - {baseUrl}/api/{appVer}/course
+ * @path - {baseUrl}/api/{apiVer}/course
  */
 export default router
