@@ -1,44 +1,46 @@
-import path            from 'path'
-import GLOBAL          from '@config/global.config'
-import { __dirname }   from '@config/paths'
-import { RESPONSE }    from '@constant'
-import { pathBuilder } from '@util/builder'
+import path                  from 'path'
+import GLOBAL                from '@config/global.config'
+import { __dirname }         from '@config/paths'
+import { MODULE as _MODULE } from '@config/module.config'
+import { RESPONSE }          from '@constant'
+import { pathBuilder }       from '@util/builder'
 
-  /**
+/**
  * @module
  */
-export const AUTH       = 'auth'
-export const BOOTCAMP   = 'bootcamp'
-export const COURSE     = 'course'
-export const ENROLLMENT = 'enrollment'
-export const USER       = 'user'
-export const FEEDBACK   = 'feedback'
-export const SYSTEM     = 'system'
+export const AUTH       = _MODULE.Auth.name
+export const BOOTCAMP   = _MODULE.Bootcamp.name
+export const COURSE     = _MODULE.Course.name
+export const ENROLLMENT = _MODULE.Enrollment.name
+export const USER       = _MODULE.Auth.submodule.User.name
+export const FEEDBACK   = _MODULE.Feedback.name
+export const SYSTEM     = _MODULE.System.name
+export const SKILL      = _MODULE.Skill.name
+export const DASHBOARD  = _MODULE.Dashboard.name
 
-  /**
+/**
  * @submodule
  */
-export const ACCOUNT  = 'account'
-export const INFO     = 'info'
-export const HEALTH   = 'health'
-export const LOG_IN   = 'log-in'
-export const LOG_OUT  = 'log-out'
-export const REGISTER = 'register'
-export const ROLE     = 'role'
+export const ACCOUNT  = _MODULE.Auth.submodule.Account.name
+export const LOG_IN   = _MODULE.Auth.submodule.LogIn.name
+export const LOG_OUT  = _MODULE.Auth.submodule.LogOut.name
+export const REGISTER = _MODULE.Auth.submodule.Register.name
+export const ROLE     = _MODULE.Auth.submodule.User.name
 
-export const LECTURE = 'lecture'
-export const MODULE  = 'module'
-export const QUIZ    = 'quiz'
+export const LECTURE = _MODULE.Course.submodule.CourseLecture.name
+export const MODULE  = _MODULE.Course.submodule.CourseModule.name
+export const QUIZ    = _MODULE.Course.submodule.CourseQuiz.name
 
-export const SKILL    = 'skill'
-export const CATEGORY = 'category'
+export const CATEGORY = _MODULE.Skill.submodule.SkillCategory.name
+
+export const INFO     = _MODULE.System.submodule.SystemInfo.name
+export const HEALTH   = _MODULE.System.submodule.SystemHealth.name
 
 export const ALL             = '*'
 export const ROOT            = '/'
 export const AVATAR          = 'avatar'
 export const BADGE           = 'badge'
 export const CREATE          = 'create'
-export const DASHBOARD       = 'dashboard'
 export const DIST            = 'dist'
 export const EVENT           = 'event'
 export const FORGOT_PASSWORD = 'forgot-password'
