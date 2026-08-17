@@ -3,7 +3,7 @@ import type { UserStatusType } from '@constant/enum'
 
 
 declare global {
-    interface IUser extends IDefault {
+    interface IUser extends IAudit {
         _id                                   ?: Types.ObjectId
         firstname                              : string
         lastname                               : string
