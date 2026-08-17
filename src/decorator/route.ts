@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import { Method, MetaKey } from '@constant/enum'
-import { RouteHandlerDescriptor } from '@typings/middleware'
 
 /**
  *
@@ -18,9 +17,9 @@ export function bindRoute(method: string) {
   }
 }
 
-export const get = bindRoute(Method.get)
-export const post = bindRoute(Method.post)
-export const put = bindRoute(Method.put)
-export const del = bindRoute(Method.del)
-export const patch = bindRoute(Method.patch)
+export const get     = bindRoute(Method.get)
+export const post    = bindRoute(Method.post)
+export const put     = bindRoute(Method.put)
+export const del     = bindRoute(Method.del)
+export const patch   = bindRoute(Method.patch)
 export const options = bindRoute(Method.options)

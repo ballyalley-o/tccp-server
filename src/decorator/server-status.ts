@@ -1,12 +1,12 @@
-function ServerStatus(target: IIsConnected, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor {
+function ServerStatus(target: IAppDbTarget, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor {
   const originalMethod = descriptor.value
 
   descriptor.value = function (...args: any[]) {
     try {
       originalMethod.apply(this, args)
-      ;(this as IIsConnected).isConnected = true
+      ;(this as IAppDbTarget).isConnected = true
     } catch (error: any) {
-      ;(this as IIsConnected).isConnected = false
+      ;(this as IAppDbTarget).isConnected = false
       throw error
     }
   }

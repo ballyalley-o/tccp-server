@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { RequestHandler } from 'express'
-import { MetaKey } from '@constant/enum'
+import { MetaKey }        from '@constant/enum'
 
 function use(middleware: RequestHandler) {
   return function (target: any, key: string, desc: PropertyDescriptor) {
