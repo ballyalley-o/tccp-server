@@ -9,4 +9,7 @@ const linkSkillRoute = (app: Application) => {
   app.use(PathDir.SKILL, skillRoute)
 }
 
+/**
+ * @path - {baseUrl}/api/{apiVer}/skill
+ */
 export { linkSkillRoute }
