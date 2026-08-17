@@ -6,7 +6,7 @@ import { linkDashboardRoute }  from './dashboard'
 import { linkEnrollmentRoute } from './enrollment'
 import { linkFeedbackRoute }   from './feedback'
 import { linkSkillRoute }      from './skill'
-import { linkSystemRoute }     from './system'
+import { linkSystemRoute }     from './admin/system'
 
 const mainRoute = (app: Application) => {
   linkAuthRoute(app)

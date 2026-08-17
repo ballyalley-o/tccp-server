@@ -119,11 +119,13 @@ export class PathDir {
   static SKILL          = pathBuilder(PathDir.API_ROOT, SKILL)
   static SKILL_CATEGORY = pathBuilder(PathDir.API_ROOT, SKILL, CATEGORY)
 
-  static SYSTEM        = pathBuilder(PathDir.API_ROOT, SYSTEM)
+
   static INFO          = pathBuilder(INFO)
   static HEALTH        = pathBuilder(HEALTH)
-  static SYSTEM_INFO   = pathBuilder(PathDir.API_ROOT, SYSTEM, INFO)
-  static SYSTEM_HEALTH = pathBuilder(PathDir.API_ROOT, SYSTEM, HEALTH)
+  static ADMIN         = pathBuilder(PathDir.API_ROOT, ADMIN)
+  static SYSTEM        = pathBuilder(PathDir.ADMIN, SYSTEM)
+  static SYSTEM_INFO   = pathBuilder(PathDir.SYSTEM, INFO)
+  static SYSTEM_HEALTH = pathBuilder(PathDir.SYSTEM, HEALTH)
 
   static FEEDBACK = pathBuilder(PathDir.API_ROOT, FEEDBACK)
 
