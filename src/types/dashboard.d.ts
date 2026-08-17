@@ -1,42 +1,46 @@
-declare type DashboardCountSummaryType = {
-  users    : number
-  trainers : number
-  admins   : number
-  bootcamps: number
-  courses  : number
-  feedback : number
-}
+declare global {
+  type DashboardCountSummaryType = {
+    users    : number
+    trainers : number
+    admins   : number
+    bootcamps: number
+    courses  : number
+    feedback : number
+  }
 
-declare type DashboardRecommendationType = {
-  id    : string
-  title : string
-  meta  : string
-  action: string
-  path  : string
-}
+  type DashboardRecommendationType = {
+    id    : string
+    title : string
+    meta  : string
+    action: string
+    path  : string
+  }
 
-declare type DashboardCardType = {
-  id      : string
-  label   : string
-  value   : string | number
-  tone    : AppThemeType
-  subtitle: string
-}
+  type DashboardCardType = {
+    id      : string
+    label   : string
+    value   : string | number
+    tone    : AppThemeType
+    subtitle: string
+  }
 
-declare type DashboardActionType = {
-  id     : string
-  icon   : string
-  label  : string
-  path   : string
-  variant: 'contained' | 'outlined' | 'text'
-}
+  type DashboardActionType = {
+    id     : string
+    icon   : string
+    label  : string
+    path   : string
+    variant: AppVariantType
+  }
 
-declare type DashboardCourseType = {
-  id      : string
-  title   : string
-  meta    : string
-  status  : string
-  progress: number
-  tone    : AppThemeType
-  subtitle: string
+  type DashboardCourseType = {
+    id      : string
+    title   : string
+    meta    : string
+    status  : string
+    progress: number
+    tone    : AppThemeType
+    subtitle: string
+  }
+
 }
+export {}
