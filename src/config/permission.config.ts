@@ -1,18 +1,4 @@
-import { MODULE } from "./module.config"
-
-export const ACTION = [
-    'create',
-    'read',
-    'update',
-    'delete',
-    'manage',
-    'suspend',
-    'restore',
-    'archive',
-    'reset',
-    'change',
-    'force'
-] as const
+import { MODULE, ACTION } from "./module.config"
 
 function _getResource(modules: Record<string, any>): string[] {
   const resources: string[] = []

@@ -1,4 +1,4 @@
-import { ACTION } from "./permission.config"
+export const ACTION = ['create', 'read', 'update', 'delete', 'manage', 'suspend', 'restore', 'archive', 'reset', 'change', 'force'] as const
 
 export const MODULE  = {
     Auth: {
