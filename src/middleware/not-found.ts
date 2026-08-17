@@ -1,5 +1,4 @@
 import 'colors'
-import { ExpressCallback } from '@typings'
 import { Code } from '@constant/enum'
 
 const notFound: ExpressCallback = (req, res, next) => {

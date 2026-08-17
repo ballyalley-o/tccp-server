@@ -1,7 +1,6 @@
 import type { Response, NextFunction } from 'express'
 import jwt                             from 'jsonwebtoken'
 import GLOBAL                          from '@config/global.config'
-import type { MiddlewareFunction }     from '@typings/middleware'
 import { asyncHandler }                from '@middleware'
 import { User }                        from '@model'
 import { AUTH_KEY, RESPONSE }          from '@constant'
