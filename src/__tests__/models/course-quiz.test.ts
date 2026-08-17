@@ -22,7 +22,7 @@ describe('CourseQuiz model', () => {
   test('creates quiz with default questions array and accepts questions', async () => {
     const userId = new mongoose.Types.ObjectId()
     const bootcamp = await Bootcamp.create({ name: 'QB', description: 'Long enough description for testing purposes', duration: '1', careers: ['Web Development'], user: userId } as any)
-    const course = await Course.create({ title: 'CQ', slug: 'cq', description: 'Long enough description for testing purposes', duration: '1', tuition: 10, minimumSkill: 'beginner', bootcamp: bootcamp._id, user: userId } as any)
+    const course = await Course.create({ title: 'CQ', slug: 'cq', description: 'Long enough description for testing purposes', duration: '1', tuition: 10, minimumSkill: 'beginner', bootcamp: bootcamp._id, user: userId, trainer: userId } as any)
     const module = await CourseModule.create({ course: course._id, title: 'Mod', labelKey: 'course.module.mod' })
 
     const quiz = await CourseQuiz.create({ course: course._id, module: module._id, title: 'Quiz 1', labelKey: 'course.quiz.1' })

@@ -27,8 +27,8 @@ describe('Course model', () => {
       user       : userId
     } as any)
 
-    await Course.create({ title: 'Course A', slug: 'course-a', description: 'This course has enough chars to be valid', duration: '2 weeks', tuition: 100, minimumSkill: 'beginner', bootcamp: bootcamp._id, user: userId } as any)
-    await Course.create({ title: 'Course B', slug: 'course-b', description: 'This course has enough chars to be valid', duration: '3 weeks', tuition: 200, minimumSkill: 'beginner', bootcamp: bootcamp._id, user: userId } as any)
+    await Course.create({ title: 'Course A', slug: 'course-a', description: 'This course has enough chars to be valid', duration: '2 weeks', tuition: 100, minimumSkill: 'beginner', bootcamp: bootcamp._id, user: userId, trainer: userId } as any)
+    await Course.create({ title: 'Course B', slug: 'course-b', description: 'This course has enough chars to be valid', duration: '3 weeks', tuition: 200, minimumSkill: 'beginner', bootcamp: bootcamp._id, user: userId, trainer: userId } as any)
 
     // call static method
     await (Course as any).getAverageCost(bootcamp._id)
