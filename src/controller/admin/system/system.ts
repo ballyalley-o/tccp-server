@@ -2,7 +2,7 @@ import GLOBAL                     from '@config/global.config'
 import type { Request, Response } from 'express'
 import { use, LogRequest }        from '@decorator'
 import { Code }                   from '@constant/enum'
-import packageJson                from '../../../package.json' with { type: 'json' }
+import packageJson                from '../../../../package.json' with { type: 'json' }
 
 class SystemController {
 
