@@ -16,6 +16,15 @@ router
     advancedResult(Course, {
       path  : MODULE.Bootcamp.name,
       select: 'name description'
+    }, {
+      select : ['_id', 'title', 'slug', 'description', 'duration', 'tuition', 'minimumSkill', 'skills', 'modules', 'scholarshipAvailable', 'bootcamp', 'trainer', 'createdAt', 'updatedAt'],
+      sort   : ['title', 'duration', 'tuition', 'minimumSkill', 'createdAt', 'updatedAt'],
+      include: {
+        bootcamp: {
+          path  : MODULE.Bootcamp.name,
+          select: '_id name description'
+        }
+      }
     }),
     CourseController.getCourses
   )

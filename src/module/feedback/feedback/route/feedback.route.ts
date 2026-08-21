@@ -20,7 +20,20 @@ router
         path  : MODULE.Auth.submodule.AuthUser.name,
         select: 'firstname email role'
       }
-    ]),
+    ], {
+      select : ['_id', 'title', 'body', 'rating', 'bootcamp', 'user', 'createdAt', 'updatedAt'],
+      sort   : ['title', 'rating', 'createdAt', 'updatedAt'],
+      include: {
+        bootcamp: {
+          path  : MODULE.Bootcamp.name,
+          select: '_id name description'
+        },
+        user: {
+          path  : MODULE.Auth.submodule.AuthUser.name,
+          select: '_id firstname email role avatar'
+        }
+      }
+    }),
     FeedbackController.getFeedbacks
   )
   .post(protect, authorizeAction('create:feedback'), FeedbackController.addFeedback)

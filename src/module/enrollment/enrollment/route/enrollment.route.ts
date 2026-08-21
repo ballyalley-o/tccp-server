@@ -23,7 +23,24 @@ router
                 path  : MODULE.Course.name,
                 select: '_id title duration'
             }
-        ]), EnrollmentController.getEnrollments)
+        ], {
+            select : ['_id', 'user', 'bootcamp', 'course', 'status', 'progress', 'startDate', 'completedAt', 'lastAccessedAt', 'createdAt', 'updatedAt'],
+            sort   : ['status', 'progress', 'startDate', 'completedAt', 'lastAccessedAt', 'createdAt', 'updatedAt'],
+            include: {
+                user: {
+                    path  : MODULE.Auth.submodule.AuthUser.name,
+                    select: '_id firstname email'
+                },
+                bootcamp: {
+                    path  : MODULE.Bootcamp.name,
+                    select: '_id name email'
+                },
+                course: {
+                    path  : MODULE.Course.name,
+                    select: '_id title duration'
+                }
+            }
+        }), EnrollmentController.getEnrollments)
   .post(protect, authorizeAction('create:enrollment'), EnrollmentController.createEnrollment)
 
 router

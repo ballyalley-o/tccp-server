@@ -30,7 +30,24 @@ router
         path  : MODULE.Feedback.name,
         select: 'title rating user'
       }
-    ]),
+    ], {
+      select : ['_id', 'name', 'slug', 'description', 'website', 'phone', 'email', 'location', 'duration', 'careers', 'averageCost', 'photo', 'badge', 'housing', 'jobAssistance', 'jobGuarantee', 'acceptGi', 'rating', 'createdAt', 'updatedAt'],
+      sort   : ['name', 'duration', 'averageCost', 'rating', 'createdAt', 'updatedAt'],
+      include: {
+        user: {
+          path  : MODULE.Auth.submodule.AuthUser.name,
+          select: '_id firstname email role'
+        },
+        course: {
+          path  : MODULE.Course.name,
+          select: '_id title duration tuition'
+        },
+        feedback: {
+          path  : MODULE.Feedback.name,
+          select: '_id title rating user'
+        }
+      }
+    }),
     BootcampController.getBootcamps
   )
   .post(protect, authorizeAction('create:bootcamp'), BootcampController.createBootcamp)

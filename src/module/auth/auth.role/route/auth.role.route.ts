@@ -7,7 +7,14 @@ import { protect }                      from '@common/security/protect'
 
 const router = Router({ mergeParams: true })
 
-router.get(PathDir.ROOT, advancedResult(AuthRole, ''), AuthRoleController.getRoles)
+router.get(
+  PathDir.ROOT,
+  advancedResult(AuthRole, '', {
+    select: ['_id', 'name', 'label', 'actions', 'createdAt', 'updatedAt'],
+    sort  : ['name', 'label', 'createdAt', 'updatedAt']
+  }),
+  AuthRoleController.getRoles
+)
 router.get(PathDir.ID, AuthRoleController.getRole)
 router.post(PathDir.ROOT, protect, authorizeAction('create:role'), AuthRoleController.createRole)
 router.put(PathDir.ID, protect, authorizeAction('update:role'), AuthRoleController.updateRole)
