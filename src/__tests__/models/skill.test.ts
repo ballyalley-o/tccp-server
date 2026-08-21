@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 import { connect, clearDatabase, closeDatabase } from '../setup/mongo-memory'
-import Skill                                     from '../../model/skill/Skill'
-import SkillCategory                             from '../../model/skill/category/SkillCategory'
+import Skill                                     from '../../module/skill/skill/model/Skill'
+import SkillCategory                             from '../../module/skill/skill.category/model/SkillCategory'
 
 describe('Skill model', () => {
   beforeAll(async () => {
@@ -17,7 +17,7 @@ describe('Skill model', () => {
   })
 
   test('pre-save should generate slug and store category reference', async () => {
-    const cat = await SkillCategory.create({ name: 'Backend', labelKey: 'skills.backend', slug: 'backend' })
+    const cat   = await SkillCategory.create({ name: 'Backend', labelKey: 'skills.backend', slug: 'backend' })
     const skill = await Skill.create({ name: 'Node JS', labelKey: 'skills.node', category: cat._id, slug: 'node-js' })
 
     expect(skill.slug).toBe('node-js')

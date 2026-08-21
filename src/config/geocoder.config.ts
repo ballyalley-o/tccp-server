@@ -1,5 +1,5 @@
 import NodeGeocoder from 'node-geocoder'
-import options      from '@util/geocoder'
+import options      from '@common/util/geocoder'
 import GLOBAL       from './global.config'
 
 const opts = options(GLOBAL.GEOCODER_API_KEY || '')

@@ -1,0 +1,1 @@
+export { default as CourseEvent } from './model/CourseEvent'

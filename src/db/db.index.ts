@@ -42,11 +42,7 @@ const DATABASE_INDEX = {
     module: 1,
     order : 1
   }),
-  ENROLLMENT: {
-    user       : createIndex({ user: 1, updatedAt: -1 }),
-    user_course: createIndex({ user: 1, course: 1 }),
-  },
-  LEARNING_EVENT: {
+  COURSE_EVENT: {
     user: createIndex({
         user      : 1,
         occurredAt: -1
@@ -55,6 +51,10 @@ const DATABASE_INDEX = {
         course    : 1,
         occurredAt: -1
     })
+  },
+  ENROLLMENT: {
+    user       : createIndex({ user: 1, updatedAt: -1 }),
+    user_course: createIndex({ user: 1, course: 1 }),
   },
   ROLE: createIndex({
     name: 1

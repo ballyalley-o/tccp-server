@@ -1,10 +1,10 @@
 /// <reference types="jest" />
-import { connect, clearDatabase, closeDatabase } from '../setup/mongo-memory'
-import CourseLecture                             from '../../model/course/lecture/CourseLecture'
-import CourseModule                              from '../../model/course/module/CourseModule'
-import Course                                    from '../../model/course/Course'
-import Bootcamp                                  from '../../model/bootcamp/Bootcamp'
 import mongoose                                  from 'mongoose'
+import { connect, clearDatabase, closeDatabase } from '../setup/mongo-memory'
+import CourseLecture                             from '../../module/course/course.lecture/model/CourseLecture'
+import CourseModule                              from '../../module/course/course.module/model/CourseModule'
+import Course                                    from '../../module/course/course/model/Course'
+import Bootcamp                                  from '../../module/bootcamp/bootcamp/model/Bootcamp'
 
 describe('CourseLecture model', () => {
   beforeAll(async () => {
