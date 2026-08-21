@@ -18,7 +18,12 @@ class SkillController {
 
   @use(LogRequest)
   public static async getSkill(req: Request, res: Response, next: NextFunction) {
-    const skill = await Skill.findById(req.params.id).populate('category').lean()
+    const skill = await Skill.findById(req.params.id)
+      .populate({
+        path  : 'category',
+        select: 'name labelKey order'
+      })
+      .lean()
     if (!skill) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND(req.params.id), (res.statusCode = Code.NOT_FOUND)))
     }
@@ -57,7 +62,10 @@ class SkillController {
       new          : true,
       runValidators: true
     })
-      .populate('category')
+      .populate({
+        path  : 'category',
+        select: 'name labelKey order'
+      })
       .lean()
 
     if (!skill) {
