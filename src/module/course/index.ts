@@ -1,0 +1,6 @@
+export { registerCourseRoute }                                        from './course._module'
+export { CourseEvent }                                                from './course.event'
+export { Course, CourseController, CourseRoute }                      from './course'
+export { CourseModule, CourseModuleController, CourseModuleRoute }    from './course.module'
+export { CourseLecture, CourseLectureController, CourseLectureRoute } from './course.lecture'
+export { CourseQuiz, CourseQuizController, CourseQuizRoute }          from './course.quiz'

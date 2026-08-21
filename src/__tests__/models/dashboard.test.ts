@@ -1,9 +1,9 @@
 /// <reference types="jest" />
-import { buildSkillDistribution } from '../../controller/dashboard/util'
+import DashboardService from '../../module/dashboard/dashboard/service/dashboard.service'
 
 describe('Dashboard controller utilities', () => {
   test('buildSkillDistribution ranks and weights skills', () => {
-    const fn = buildSkillDistribution
+    const fn = DashboardService.buildSkillDistribution
     const items = [
       { course: { skills: [{ labelKey: 'skills.js' }, { labelKey: 'skills.node' }] }, progress: 100 },
       { course: { skills: [{ labelKey: 'skills.js' }] }, progress: 50 },

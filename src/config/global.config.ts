@@ -40,7 +40,7 @@ const GLOBAL = {
     fs.mkdirSync(`${process.env.BADGE_UPLOAD_PATH}/${bootcamp._id}`, { recursive: true })
     badge.mv(`${process.env.BADGE_UPLOAD_PATH}/${bootcamp._id}/${badge.name}`, cb)
   },
-  AVATAR_UPLOAD_MV   : (avatar: any, user: IUser, cb: any) => {
+  AVATAR_UPLOAD_MV   : (avatar: any, user: IAuthUser, cb: any) => {
     fs.mkdirSync(`${process.env.AVATAR_UPLOAD_PATH}/${user._id}`, { recursive: true })
     avatar.mv(`${process.env.AVATAR_UPLOAD_PATH}/${user._id}/${avatar.name}`, cb)
   },

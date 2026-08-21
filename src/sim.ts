@@ -1,7 +1,6 @@
 import goodlog      from 'good-logs'
 import App          from '@config/server'
-import { RESPONSE } from '@constant'
-import { ARGV }     from '@constant/enum'
+import { RESPONSE } from '@common/constant'
 import {
   userCollection,
   feedbackCollection,
@@ -14,26 +13,24 @@ import {
   skillCategoryCollection,
   roleCollection
 } from '@mock'
-import {
-  User,
-  Course,
-  Bootcamp,
-  Feedback,
-  CourseLecture,
-  CourseModule,
-  CourseQuiz,
-  Skill,
-  SkillCategory,
-  Role
-} from '@model'
+import { AuthUser }      from '@module/auth/auth.user'
+import { AuthRole }      from '@module/auth/auth.role'
+import { Bootcamp }      from '@module/bootcamp'
+import { Feedback }      from '@module/feedback'
+import { Course }        from '@module/course'
+import { CourseLecture } from '@module/course/course.lecture'
+import { CourseModule }  from '@module/course/course.module'
+import { CourseQuiz }    from '@module/course/course.quiz'
+import { Skill }         from '@module/skill'
+import { SkillCategory } from '@module/skill/skill.category'
 
 const app = new App()
 app.connectDb()
 
 const seeder = async () => {
   try {
-    await Role.deleteMany()
-    await User.deleteMany()
+    await AuthRole.deleteMany()
+    await AuthUser.deleteMany()
     await Course.deleteMany()
     await Bootcamp.deleteMany()
     await Feedback.deleteMany()
@@ -43,7 +40,7 @@ const seeder = async () => {
     await Skill.deleteMany()
     await SkillCategory.deleteMany()
 
-    const createdRoles = await Role.insertMany(roleCollection)
+    const createdRoles = await AuthRole.insertMany(roleCollection)
     const roleByName: Record<string, any> = {}
 
     createdRoles.forEach((r: any) => {
@@ -55,7 +52,7 @@ const seeder = async () => {
       role: typeof u.role === 'string' ? (roleByName[u.role] ?? u.role) : u.role
     }))
 
-    await User.insertMany(usersToInsert)
+    await AuthUser.insertMany(usersToInsert)
     await Course.insertMany(courseCollection)
     await Bootcamp.insertMany(bootcampCollection)
     await Feedback.insertMany(feedbackCollection)
@@ -75,7 +72,7 @@ const seeder = async () => {
 
 const destroy = async () => {
   try {
-    await User.deleteMany()
+    await AuthUser.deleteMany()
     await Course.deleteMany()
     await Bootcamp.deleteMany()
     await Feedback.deleteMany()
@@ -84,7 +81,7 @@ const destroy = async () => {
     await CourseQuiz.deleteMany()
     await Skill.deleteMany()
     await SkillCategory.deleteMany()
-    await Role.deleteMany()
+    await AuthRole.deleteMany()
 
     goodlog.custom('bgRed', RESPONSE.success.COLLECTION_DESTROYED)
     process.exit(1)
@@ -93,6 +90,11 @@ const destroy = async () => {
     throw new Error(RESPONSE.error.FAILED_DESTROY)
   }
 }
+
+const ARGV = {
+  SEED   : '-i',
+  DESTROY: '-d',
+} as const
 
 if (process.argv[2] === ARGV.DESTROY) {
   destroy()

@@ -16,12 +16,12 @@ import rateLimit                                      from 'express-rate-limit'
 import compression                                    from 'compression'
 import connectDb                                      from '@config/db.config'
 import { corsOption, compressionOption, redisOption } from '@config/option'
-import { AppRouter }                                  from '@app-router'
-import { mainRoute }                                  from '@route'
-import { xssHandler, errorHandler, notFound }         from '@middleware'
-import { LogInitRequest, ServerStatus }               from '@decorator'
-import options                                        from '@util/geocoder'
-import { ERROR }                                      from '@constant'
+import { AppRouter }                                  from '@app.router'
+import { mainRoute }                                  from '@module/main.route'
+import { xssHandler, errorHandler, notFound }         from '@common/middleware'
+import { LogInitRequest, ServerStatus }               from '@common/decorator'
+import options                                        from '@common/util/geocoder'
+import { ERROR }                                      from '@common/constant'
 
 dotenv.config()
 
