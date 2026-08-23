@@ -3,6 +3,7 @@ import geocoder                                    from '@config/geocoder.config
 import slugify                                     from 'slugify'
 import goodlog                                     from 'good-logs'
 import { MODULE, MODULE_KEY }                      from '@config/module.config'
+import { BOOTCAMP_CONFIG }                         from '@module/bootcamp/bootcamp.module'
 import { DATABASE_INDEX }                          from '@db'
 import { RESPONSE, CAREER_OPTION, SCHEMA, LOCALE } from '@common/constant'
 import { REGEX }                                   from '@common/constant/regex'
@@ -51,11 +52,11 @@ const BootcampSchema = new Schema<IBootcamp>(
         // GeoJSON Point
       type: {
         type: String,
-        enum: [SCHEMA.LOCATION_TYPE as string]
+        enum: [BOOTCAMP_CONFIG.LOCATION_TYPE as string]
       },
       coordinates: {
         type : [Number],
-        index: SCHEMA.LOCATION_COORDINATES_INDEX as string
+        index: BOOTCAMP_CONFIG.LOCATION_COORDINATES_INDEX as string
       },
       formattedAddress: String,
       street          : String,
