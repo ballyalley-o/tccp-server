@@ -84,20 +84,20 @@ class AuthController {
 
     try {
       if (!email || !password) {
-        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
+        return next(ErrorResponse.localized((res.statusCode = Code.BAD_REQUEST), 'INVALID_CREDENTIAL', 'server.response.error.invalid_credential'))
       }
 
       const user = await AuthUser.findOne({ email, archivedAt: null }).select('+password')
 
       if (!user || !(await user.matchPassword(password))) {
-        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.UNAUTHORIZED)))
+        return next(ErrorResponse.localized((res.statusCode = Code.UNAUTHORIZED), 'INVALID_CREDENTIAL', 'server.response.error.invalid_credential'))
       }
 
       AuthController._sendTokenResponse(user, Code.OK, res)
     } catch (error: any) {
       if (error instanceof Error) {
         goodlog.log(error.message)
-        return next(new ErrorResponse(RESPONSE.error.INVALID_CREDENTIAL, (res.statusCode = Code.BAD_REQUEST)))
+        return next(ErrorResponse.localized((res.statusCode = Code.BAD_REQUEST), 'INVALID_CREDENTIAL', 'server.response.error.invalid_credential'))
       }
     }
   }
@@ -106,7 +106,7 @@ class AuthController {
   //@route    GET /auth/log-out
   //@access   PRIVATE
   @use(LogRequest)
-  public static async logout(_req: Request, res: Response, _next: NextFunction) {
+  public static async logout(req: Request, res: Response, _next: NextFunction) {
     res.cookie(AUTH_KEY.TOKEN, 'none', {
       expires : fiveSecFromNow,
       httpOnly: true
@@ -115,7 +115,8 @@ class AuthController {
     try {
       res.status(Code.OK).json({
         success: true,
-        message: RESPONSE.success.LOGOUT,
+        messageKey: 'server.response.success.logout',
+        message: req.t('server.response.success.logout'),
         data: {}
       })
     } catch (error: any) {
