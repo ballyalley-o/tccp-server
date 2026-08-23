@@ -1,33 +1,29 @@
-export const SCHEMA = {
-      // @bootcamp
-  NAME                      : 'Please add a bootcamp name/title',
-  MAX_LENGTH_NAME           : 'Name can not be more than 50 characters',
-  DESCRIPTION               : 'Please add a description',
-  MIN_LENGTH_DESCRIPTION    : 'Description can not be less than 20 characters',
-  MAX_LENGTH_DESCRIPTION    : 'Description can not be more than 250 characters',
-  URL                       : 'Please use a valid URL with HTTP or HTTPS',
-  MAX_LENGTH_PHONE          : 'Phone number can not be longer than 20 characters',
-  EMAIL                     : 'Please add a valid email',
-  ADDRESS                   : 'Please add an address',
-  DURATION                  : 'Please add a duration',
-  LOCATION_TYPE             : 'Point',
-  LOCATION_COORDINATES_INDEX: '2dsphere',
-  AVERAGE_RATING_MIN        : 'Rating must be at least 1',
-  AVERAGE_RATING_MAX        : 'Rating must can not be more than 10',
-  DEFAULT_PHOTO             : '/upload/no-photo.jpeg',
-  DEFAULT_BADGE             : '/upload/badge/no-badge.png',
-  DEFAULT_AVATAR            : '/upload/avatar/no-avatar.jpeg',
-  CAREERS                   : 'Please add one or more careers',
+export const SCHEMA: Record<string, LocaleKey> = {
+// @bootcamp
+  NAME                  : 'server.schema.name',
+  MAX_LENGTH_NAME       : 'server.schema.max_length_name',
+  DESCRIPTION           : 'server.schema.description',
+  MIN_LENGTH_DESCRIPTION: 'server.schema.min_length_description',
+  MAX_LENGTH_DESCRIPTION: 'server.schema.max_length_description',
+  URL                   : 'server.schema.url',
+  MAX_LENGTH_PHONE      : 'server.schema.max_length_phone',
+  EMAIL                 : 'server.schema.email',
+  ADDRESS               : 'server.schema.address',
+  DURATION              : 'server.schema.duration',
+  AVERAGE_RATING_MIN    : 'server.schema.average_rating_min',
+  AVERAGE_RATING_MAX    : 'server.schema.average_rating_max',
+
+  CAREERS                   : 'server.schema.careers',
         // @course
-  COURSE_TITLE  : 'Please add a course title',
-  COURSE_WEEK   : 'Please add number of weeks',
-  COURSE_TUITION: 'Please add a tuition cost',
-  MINIMUM_SKILL : 'Please add a minimum skill',
+  COURSE_TITLE  : 'server.schema.course_title',
+  COURSE_WEEK   : 'server.schema.course_week',
+  COURSE_TUITION: 'server.schema.course_tuition',
+  MINIMUM_SKILL : 'server.schema.minimum_skill',
       // @feedback
-  FEEDBACK_TITLE : 'Please add a title to your Feedback',
-  FEEDBACK_RATING: 'Please rating is required',
+  FEEDBACK_TITLE : 'server.schema.feedback_title',
+  FEEDBACK_RATING: 'server.schema.feedback_rating',
       // @user
-  FIRST_NAME: 'Please provide your first name',
-  LAST_NAME : 'Please provide your family/last name',
-  PASSWORD  : 'Please add a password'
+  FIRST_NAME: 'server.schema.first_name',
+  LAST_NAME : 'server.schema.last_name',
+  PASSWORD  : 'server.schema.password'
 } as const
