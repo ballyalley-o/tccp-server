@@ -10,6 +10,7 @@ const GLOBAL = {
   APP_SERVER_NAME    : 'tccp-server',
   API_HOST           : process.env.API_HOST || '',
   API_URL            : process.env.API_URL,
+  LOCALE             : process.env.LOCALE || 'en',
   CORS_ALLOWED_ORIGIN: process.env.CORS_ALLOWED_ORIGIN?.split(',') || [],
   API_VERSION        : process.env.API_VERSION || '',
   PORT               : process.env.PORT || 3005,
