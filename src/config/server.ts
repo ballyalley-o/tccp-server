@@ -19,6 +19,7 @@ import { corsOption, compressionOption, redisOption } from '@config/option'
 import { AppRouter }                                  from '@app.router'
 import { mainRoute }                                  from '@module/main.route'
 import { xssHandler, errorHandler, notFound }         from '@common/middleware'
+import { localeMiddleware }                           from '@common/i18n'
 import { LogInitRequest, ServerStatus }               from '@common/decorator'
 import options                                        from '@common/util/geocoder'
 import { ERROR }                                      from '@common/constant'
@@ -96,6 +97,7 @@ class App {
     this._app.use(express.static('public'))
     this._app.use(morgan('combined'))
     this._app.use(cookieParser())
+    this._app.use(localeMiddleware)
     this._app.use(session(redisOption))
     this._app.use(fileupload({ limits: { fileSize: 50 * 1024 * 1024 } }))
     this._app.use(cors(corsOption))
