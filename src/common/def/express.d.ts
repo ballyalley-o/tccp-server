@@ -1,9 +1,12 @@
 import { Response } from 'express'
+import type { LocaleKey, LocaleLang, LocaleParams } from '@common/i18n'
 
 declare global {
   namespace Express {
     interface Request {
-      user: {
+      locale: LocaleLang
+      t     : (key: LocaleKey, params?: LocaleParams) => string
+      user  : {
         id    : string
         role  : string
         _role?: {
