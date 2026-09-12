@@ -29,9 +29,11 @@ export const validate = (schema: ZodSchema) => {
         }))
 
         return res.status(400).json({
-          success: false,
-          error  : 'Validation failed',
-          details: formattedErrors,
+          success   : false,
+          errorCode : 'VALIDATION_FAILED',
+          messageKey: 'server.error.validation_failed',
+          message   : req.t('server.error.validation_failed'),
+          details   : formattedErrors,
         })
       }
 
