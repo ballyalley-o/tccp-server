@@ -1,6 +1,6 @@
 import jwt                    from 'jsonwebtoken'
 import GLOBAL                 from '@config/global.config'
-import { AUTH_KEY, RESPONSE } from '@common/constant'
+import { AUTH_KEY }           from '@common/constant'
 import { Code }               from '@common/constant/enum'
 import { cache }              from '@common/util/cache'
 
@@ -20,7 +20,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
   }
 
   if (!token) {
-    return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
+    return next(ErrorResponse.localized((res.statusCode = Code.UNAUTHORIZED), 'UNAUTHORIZED', 'server.response.error.status_401'))
   }
 
   try {
@@ -33,7 +33,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
       user = await AuthUser.findById(decoded.id).populate('role').select('-password')
 
       if (!user) {
-        return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
+        return next(ErrorResponse.localized((res.statusCode = Code.UNAUTHORIZED), 'UNAUTHORIZED', 'server.response.error.status_401'))
       }
 
       if (user && user.role && typeof user.role === 'object') {
@@ -47,17 +47,17 @@ const protect = asyncHandler(async (req: any, res, next) => {
     }
 
     if (user.status !== 'active') {
-      return next(new ErrorResponse(RESPONSE.error.ACCOUNT_DELETED, Code.UNAUTHORIZED))
+      return next(ErrorResponse.localized(Code.UNAUTHORIZED, 'ACCOUNT_DELETED', 'server.response.error.account_deleted'))
     }
 
     if (user.tokenVersion !== decoded.tokenVersion) {
-      return next(new ErrorResponse(RESPONSE.error.SESSION_EXPIRED, Code.UNAUTHORIZED))
+      return next(ErrorResponse.localized(Code.UNAUTHORIZED, 'SESSION_EXPIRED', 'server.response.error.session_expired'))
     }
 
     req.user = user
     next()
   } catch (err) {
-    return next(new ErrorResponse(RESPONSE.error[401], (res.statusCode = Code.UNAUTHORIZED)))
+    return next(ErrorResponse.localized((res.statusCode = Code.UNAUTHORIZED), 'UNAUTHORIZED', 'server.response.error.status_401'))
   }
 })
 
