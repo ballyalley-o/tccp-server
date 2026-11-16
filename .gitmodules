@@ -1,0 +1,3 @@
+[submodule "src/shared/i18n"]
+	path = src/shared/i18n
+	url = https://github.com/ballyalley-o/tccp-i18n.git
