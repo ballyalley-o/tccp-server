@@ -1,6 +1,7 @@
 declare global {
   type DashboardCountSummaryType = {
     users    : number
+    students : number
     trainers : number
     admins   : number
     bootcamps: number

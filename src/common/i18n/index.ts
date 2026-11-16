@@ -1,3 +1,2 @@
-export * from './locale.config'
-export * from './locale.middleware'
-export * from './transl'
+export * from '@i18n'
+export * from '../middleware/locale'

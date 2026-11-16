@@ -30,7 +30,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
     let user = cache.get(cacheKey)
 
     if (!user) {
-      user = await AuthUser.findById(decoded.id).populate('role').select('-password')
+      user = await AuthUser.findById(decoded.id).populate('role').select('-password').lean()
 
       if (!user) {
         return next(ErrorResponse.localized((res.statusCode = Code.UNAUTHORIZED), 'UNAUTHORIZED', 'server.response.error.status_401'))
@@ -54,7 +54,7 @@ const protect = asyncHandler(async (req: any, res, next) => {
       return next(ErrorResponse.localized(Code.UNAUTHORIZED, 'SESSION_EXPIRED', 'server.response.error.session_expired'))
     }
 
-    req.user = user
+    req.user = { ...user, id: user._id.toString() }
     next()
   } catch (err) {
     return next(ErrorResponse.localized((res.statusCode = Code.UNAUTHORIZED), 'UNAUTHORIZED', 'server.response.error.status_401'))

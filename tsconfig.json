@@ -9,8 +9,11 @@
     "rootDir": "./src",
     "baseUrl": "src",
     "paths"  : {
-      "@*"   : ["./*"],
-      "@enum": ["@constant/enum"]
+      "@*"         : ["./*"],
+      "@enum"     : ["@constant/enum"],
+      "@i18n"     : ["shared/i18n/src/index"],
+      "@i18n/*"   : ["shared/i18n/src/*"],
+      "@i18n-tool/*": ["shared/i18n/tool/*"]
     },
     "experimentalDecorators"      : true,
     "emitDecoratorMetadata"       : true,

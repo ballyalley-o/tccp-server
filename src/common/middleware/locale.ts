@@ -1,6 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
-import { DEFAULT_LOCALE, isSupportedLocale }    from './locale.config'
-import { transl }                               from './transl'
+import { DEFAULT_LOCALE, isSupportedLocale, transl } from '@i18n'
 
 const normalizeLocale = (value?: string): string | undefined => value?.trim().split(',')[0]?.split('-')[0]?.toLowerCase()
 

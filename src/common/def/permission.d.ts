@@ -1,4 +1,4 @@
-import { ACTION } from "@config/permission.config"
+import { ACTION } from "@config/module.config"
 
 declare global {
     type ActionType     = (typeof ACTION)[number]

@@ -7,6 +7,7 @@ import { Enrollment }                                                 from '@mod
 import { Feedback }                                                   from '@module/feedback'
 import { CourseEvent }                                                from '@module/course/course.event'
 import { AuthUser }                                                   from '@module/auth/auth.user'
+import { AuthRole }                                                   from '@module/auth/auth.role'
 import { DashboardService }                                           from '@module/dashboard'
 import { use, LogRequest }                                            from '@common/decorator'
 import { AUTH_KEY, RESPONSE, LOCALE,  COURSE_EVENT, CourseEventType } from '@common/constant'
@@ -32,32 +33,27 @@ class DashboardController {
         return null
       }
 
-      const cacheKey = `user:${decoded.id}`
+      const cacheKey = `dashboard-user:${decoded.id}`
       let user = cache.get(cacheKey)
 
       if (!user) {
-        user = await AuthUser.findById(decoded.id).select('-password').lean()
+        user = await AuthUser.findById(decoded.id).populate('role').select('-password').lean()
         if (user) {
           cache.set(cacheKey, user, 5 * 60 * 1000)
         }
       }
 
+      if (!user || user.status !== 'active' || user.tokenVersion !== decoded.tokenVersion) return null
       return user
     } catch {
       return null
     }
   }
 
-  private static getAudience(req: Request, authUser: any): AppUserRoleExtendedType {
-    const roleQuery = String(req.query.role ?? '').toLowerCase()
-
-    if (roleQuery === 'guest' || roleQuery === 'user' || roleQuery === 'trainer' || roleQuery === 'admin') {
-      return roleQuery as AppUserRoleExtendedType
-    }
-
-    if (authUser?.role === 'user' || authUser?.role === 'trainer' || authUser?.role === 'admin') {
-      return authUser.role
-    }
+  private static getAudience(authUser: any): AppUserRoleExtendedType {
+    const role = typeof authUser?.role === 'string' ? authUser.role : authUser?.role?.name
+    if (role === 'student' || role === 'user') return 'user'
+    if (role === 'admin' || role === 'trainer') return role
 
     return 'guest'
   }
@@ -70,11 +66,11 @@ class DashboardController {
 
   private static buildTopBootcampRecommendations(bootcamps: any[]): DashboardRecommendationType[] {
     return bootcamps.map((bootcamp, index) => ({
-      id: bootcamp._id?.toString() ?? `bootcamp-${index}`,
-      title: bootcamp.name ?? `dashboard.bootcamp_${index + 1}`,
-      meta: 'dashboard.similar_bootcamps_in_market',
+      id    : bootcamp._id?.toString() ?? `bootcamp-${index}`,
+      title : bootcamp.name ?? `dashboard.bootcamp_${index + 1}`,
+      meta  : 'dashboard.similar_bootcamps_in_market',
       action: 'dashboard.explore',
-      path: '/bootcamp'
+      path  : '/bootcamp'
     }))
   }
 
@@ -255,7 +251,7 @@ class DashboardController {
     return {
       audience            : 'trainer',
       welcomeTitleFallback: 'dashboard.welcome_back',
-      welcomeMessage      : 'dashboard.welcome_message_user',
+      welcomeMessage      : 'dashboard.welcome_message_trainer',
       currentCourseTitle  : 'dashboard.your_current_courses',
       featuredTitle       : 'dashboard.featured_bootcamps',
       featuredDescription : 'dashboard.featured_description',
@@ -295,7 +291,7 @@ class DashboardController {
     return {
       audience            : 'admin',
       welcomeTitleFallback: 'dashboard.welcome_back',
-      welcomeMessage      : 'dashboard.welcome_message_user',
+      welcomeMessage      : 'dashboard.welcome_message_admin',
       currentCourseTitle  : 'dashboard.your_current_courses',
       featuredTitle       : 'dashboard.featured_bootcamps',
       featuredDescription : 'dashboard.featured_description',
@@ -366,10 +362,22 @@ class DashboardController {
   @use(LogRequest)
   public static async getDashboard(req: Request, res: Response) {
     try {
-      const [userCount, trainerCount, adminCount, bootcampCount, courseCount, feedbackCount] = await Promise.all([
+
+      const roles = await AuthRole.find({ name: { $in: ['student', 'trainer', 'admin'] } }).select('_id name').lean()
+
+      const countByRole = (name: string) => {
+        const role = roles.find((item) => item.name === name)
+
+        return role
+          ? AuthUser.countDocuments({ role: role._id }).exec()
+          : Promise.resolve(0)
+      }
+
+      const [userCount, studentCount, trainerCount, adminCount, bootcampCount, courseCount, feedbackCount] = await Promise.all([
         AuthUser.countDocuments(),
-        AuthUser.countDocuments({ role: 'trainer' }),
-        AuthUser.countDocuments({ role: 'admin' }),
+        countByRole('student'),
+        countByRole('trainer'),
+        countByRole('admin'),
         Bootcamp.countDocuments(),
         Course.countDocuments(),
         Feedback.countDocuments()
@@ -383,6 +391,7 @@ class DashboardController {
 
       const counts: DashboardCountSummaryType = {
         users    : userCount,
+        students : studentCount,
         trainers : trainerCount,
         admins   : adminCount,
         bootcamps: bootcampCount,
@@ -391,7 +400,7 @@ class DashboardController {
       }
 
       const locale              = DashboardController.getLocale(req)
-      const audience            = DashboardController.getAudience(req, authUser)
+      const audience            = DashboardController.getAudience(authUser)
       const recommendations     = DashboardController.buildTopBootcampRecommendations(topBootcamps)
       const featured            = DashboardController.buildFeaturedBootcamps(topBootcamps)
       const activityWindowStart = new Date()

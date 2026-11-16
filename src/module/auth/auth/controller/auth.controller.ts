@@ -20,12 +20,13 @@ class AuthController {
    * @param res - Response
    * @returns void
    */
-  private static _sendTokenResponse = (user: IAuthUser, statusCode: number, res: any) => {
+  private static _sendTokenResponse = async (user: import('mongoose').HydratedDocument<IAuthUser>, statusCode: number, res: any) => {
 
     if (user.status !== 'active') {
       throw new ErrorResponse(RESPONSE.error.ACCOUNT_DELETED, (res.statusCode = Code.UNAUTHORIZED))
     }
 
+    await user.populate('role')
     const token   = user.getSignedJwtToken()
     const options = {
       expires : thirtyDaysFromNow,
@@ -64,7 +65,7 @@ class AuthController {
       }
 
       const user = await AuthUser.create(req.body)
-      AuthController._sendTokenResponse(user, Code.CREATED, res)
+      await AuthController._sendTokenResponse(user, Code.CREATED, res)
     } catch (error: any) {
       goodlog.error(error?.message)
       res.status(Code.BAD_REQUEST).json({
@@ -93,7 +94,7 @@ class AuthController {
         return next(ErrorResponse.localized((res.statusCode = Code.UNAUTHORIZED), 'INVALID_CREDENTIAL', 'server.response.error.invalid_credential'))
       }
 
-      AuthController._sendTokenResponse(user, Code.OK, res)
+      await AuthController._sendTokenResponse(user, Code.OK, res)
     } catch (error: any) {
       if (error instanceof Error) {
         goodlog.log(error.message)
@@ -135,7 +136,7 @@ class AuthController {
   @use(LogRequest)
   public static async myAccount(req: any, res: Response, _next: NextFunction) {
     try {
-      const user = (await AuthUser.findById(req.user.id)) || null
+      const user = (await AuthUser.findById(req.user.id).populate('role')) || null
 
       if (!user) {
         return new ErrorResponse(RESPONSE.error[404], (res.statusCode = Code.NOT_FOUND))
@@ -176,7 +177,7 @@ class AuthController {
       const user = await AuthUser.findByIdAndUpdate(userId, fieldsToUpdate, {
         new          : true,
         runValidators: true
-      })
+      }).populate('role')
 
       res.status(Code.OK).json({
         success: true,
@@ -213,7 +214,7 @@ class AuthController {
       user.password = req.body.password
       await user.save()
 
-      AuthController._sendTokenResponse(user, Code.OK, res)
+      await AuthController._sendTokenResponse(user, Code.OK, res)
     } catch (error: any) {
       goodlog.error(error?.message)
       res.status(Code.BAD_REQUEST).json({
@@ -297,7 +298,7 @@ class AuthController {
     user.resetPasswordExpire = expire
     await user.save()
 
-    AuthController._sendTokenResponse(user, Code.OK, res)
+    await AuthController._sendTokenResponse(user, Code.OK, res)
   }
 }
 

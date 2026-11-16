@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import GLOBAL                     from '@config/global.config'
-import { transl }                 from '@tccp/i18n'
+import { transl }                 from '@common/i18n'
 
 const RESPONSE = {
   server: (req: Request, res: Response) => {
@@ -15,7 +15,7 @@ const RESPONSE = {
     }
     res.send(response)
   },
-  exists: (data: string) => transl('server.response.exists', { entity: data }),
+  exists : (data: string) => transl('server.response.exists', { entity: data }),
   dbSaved: (data: string) => transl('server.response.db_saved', { entity: data }),
 
   /**
