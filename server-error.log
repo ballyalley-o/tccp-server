@@ -1,0 +1,4 @@
+
+> tccp-server@1.0.0 start:prod
+> node dist/app.js
+
