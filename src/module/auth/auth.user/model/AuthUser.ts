@@ -60,7 +60,7 @@ const AuthUserSchema = new Schema<IAuthUser>(
     },
     role: {
       type: Schema.Types.ObjectId,
-      ref : 'Role'
+      ref : MODULE_KEY.AUTH_ROLE
     },
     avatar: {
       type   : String,
