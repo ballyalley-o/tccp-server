@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose'
 import goodlog                                  from 'good-logs'
 import type { Request, Response, NextFunction } from 'express'
 import { MODULE }                               from '@config/module.config'
@@ -92,15 +93,28 @@ class EnrollmentController {
     const userId            = req.user.id
     const selectedStartDate = new Date(req.body.startDate)
 
-    const bootcamp = await Bootcamp.findById(bootcampId).select('user').lean()
-    const course   = await Course.findById(courseId).lean()
+    if (!isValidObjectId(courseId)) {
+      return next(new ErrorResponse('A valid course ID is required', (res.statusCode = Code.BAD_REQUEST)))
+    }
+
+    const course = await Course.findById(courseId).lean()
 
     if (!course) {
         return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
+    const resolvedBootcampId = course.bootcamp
+    if (!isValidObjectId(resolvedBootcampId)) {
+      return next(new ErrorResponse('This course is not associated with a valid bootcamp', (res.statusCode = Code.BAD_REQUEST)))
+    }
+
+    if (bootcampId && (!isValidObjectId(bootcampId) || String(bootcampId) !== String(resolvedBootcampId))) {
+      return next(new ErrorResponse('The selected bootcamp does not match this course', (res.statusCode = Code.BAD_REQUEST)))
+    }
+
+    const bootcamp = await Bootcamp.findById(resolvedBootcampId).select('user').lean()
     if (!bootcamp) {
-        return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(bootcampId), (res.statusCode = Code.NOT_FOUND)))
+      return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(String(resolvedBootcampId)), (res.statusCode = Code.NOT_FOUND)))
     }
 
     if (!hasAction(req, 'create:enrollment') && !hasAction(req, 'manage:any')) {
@@ -122,7 +136,7 @@ class EnrollmentController {
       const enrollment = await Enrollment.create({
         user          : userId,
         course        : course._id,
-        bootcamp      : course.bootcamp,
+        bootcamp      : resolvedBootcampId,
         status        : 'enrolled',
         startDate     : selectedStartDate,
         lastAccessedAt: new Date(),

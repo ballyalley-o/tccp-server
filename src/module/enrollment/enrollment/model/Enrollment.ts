@@ -11,7 +11,7 @@ const EnrollmentSchema = new Schema<IEnrollment>(
   {
     user: {
         type    : Schema.ObjectId,
-        ref     : MODULE_KEY.ENROLLMENT,
+        ref     : MODULE_KEY.AUTH_USER,
         required: true,
         index   : true
     },
