@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose'
 import goodlog                                  from 'good-logs'
 import type { Request, Response, NextFunction } from 'express'
 import { use, LogRequest }                      from '@common/decorator'
@@ -105,19 +106,33 @@ class CourseController {
   public static async updateCourse(req: any, res: Response, next: NextFunction) {
     const courseId = req.params.id
     const userId   = req.user.id
-    const course   = await Course.findById(courseId).select('user').lean()
+    if (!isValidObjectId(courseId)) {
+      return next(new ErrorResponse('Invalid course ID', (res.statusCode = Code.BAD_REQUEST)))
+    }
+    const course   = await Course.findById(courseId).select('user bootcamp').lean()
 
     if (!course) {
       return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_COURSE(courseId), (res.statusCode = Code.NOT_FOUND)))
     }
 
-    if (course.user.toString() !== userId && !hasAction(req, 'manage:any')) {
+    if (String(course.user || '') !== userId && !hasAction(req, 'manage:any')) {
       return next(
         new ErrorResponse(RESPONSE.error.NOT_OWNER(userId, courseId), (res.statusCode = Code.UNAUTHORIZED))
       )
     }
 
+    if (req.body.bootcamp !== undefined) {
+      if (!isValidObjectId(req.body.bootcamp)) {
+        return next(new ErrorResponse('A valid bootcamp ID is required', (res.statusCode = Code.BAD_REQUEST)))
+      }
+      const targetBootcamp = await Bootcamp.findById(req.body.bootcamp).select('_id').lean()
+      if (!targetBootcamp) {
+        return next(new ErrorResponse(RESPONSE.error.NOT_FOUND_BOOTCAMP(req.body.bootcamp), (res.statusCode = Code.NOT_FOUND)))
+      }
+    }
+
     try {
+      const previousBootcamp = course.bootcamp
       const updatedCourse = await Course.findByIdAndUpdate(courseId, { ...req.body, updatedBy: userId }, {
         new          : true,
         runValidators: true
@@ -125,6 +140,9 @@ class CourseController {
 
       if (updatedCourse) {
         await (Course as any).getAverageCost(updatedCourse.bootcamp)
+        if (previousBootcamp && String(previousBootcamp) !== String(updatedCourse.bootcamp)) {
+          await (Course as any).getAverageCost(previousBootcamp)
+        }
       }
 
       res.status(Code.OK).json({
